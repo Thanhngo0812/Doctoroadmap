@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khung Quiz Kiểm tra Y khoa (W-10) — WayFinder Design Preview</title>
+  <title>Khung Quiz & Tài liệu Theo Yêu cầu (W-10) — WayFinder Design Preview</title>
   <link rel="stylesheet" href="../tokens/tokens.css">
   <style>
     * {
@@ -43,7 +43,7 @@
       justify-content: center;
     }
     .container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -68,6 +68,7 @@
     .badge-success { background: var(--color-success-tint); color: var(--color-success); }
     .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
     .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-module { background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border); }
 
     .btn {
       display: inline-flex;
@@ -124,6 +125,96 @@
       background: var(--color-danger-tint);
     }
 
+    /* Filter Tabs for Document Library */
+    .filter-tabs {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      min-height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: background-color var(--motion-fast), color var(--motion-fast);
+    }
+    .filter-tab:hover {
+      background: var(--color-bg-subtle);
+    }
+    .filter-tab.active {
+      background: var(--color-primary);
+      color: var(--color-primary-text);
+      border-color: var(--color-primary);
+    }
+
+    /* Module Scope Chips */
+    .module-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: var(--space-3) 0;
+    }
+    .module-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      font-size: var(--text-small);
+      cursor: pointer;
+      min-height: 44px;
+      transition: border-color var(--motion-fast);
+    }
+    .module-chip:hover {
+      border-color: var(--color-primary);
+    }
+    .module-chip input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+    }
+
+    /* KaTeX formula typography and layout styles */
+    .katex {
+      font-family: KaTeX_Main, "Times New Roman", serif;
+      font-size: 1.1em;
+      text-rendering: auto;
+      line-height: 1.2;
+      text-indent: 0;
+    }
+    .katex-display {
+      display: block;
+      margin: var(--space-3) 0;
+      text-align: center;
+    }
+    .katex .mathnormal { font-style: italic; }
+    .katex .mord.text { font-style: normal; }
+    .katex .mbin, .katex .mrel { padding: 0 0.2778em; }
+    .katex-html { display: inline-block; }
+    .katex .base { position: relative; white-space: nowrap; width: min-content; display: inline-block; }
+    .katex .msupsub, .katex .msub { display: inline-block; font-size: 0.75em; vertical-align: -0.25em; line-height: 1; }
+    .katex .vlist-t { display: inline-table; table-layout: fixed; vertical-align: -0.25em; }
+    .katex .vlist-r { display: table-row; }
+    .katex .vlist { display: table-cell; vertical-align: bottom; position: relative; }
+    .katex .vlist-s { display: table-cell; vertical-align: bottom; font-size: 1px; min-width: 1px; line-height: 1px; }
+    .katex-mathml {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+      padding: 0;
+      border: 0;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+    }
+
     /* Skeleton Loading Pulse */
     @keyframes pulse {
       0%, 100% { opacity: 1; }
@@ -154,10 +245,10 @@
   <div class="header-bar">
     <div>
       <h1 style="font-size: var(--text-h2); font-weight: var(--font-bold); color: var(--color-text);">
-        Khung Quiz Kiểm tra Y khoa (W-10)
+        Khung Quiz & Tài liệu Theo Yêu cầu (W-10)
       </h1>
       <p style="font-size: var(--text-small); color: var(--color-text-muted);">
-        Thể hiện 3 trạng thái theo Spec Mục 11: Đang sinh câu hỏi, đang làm bài (chưa chọn / đã chọn), kết quả bài làm kèm trích dẫn đối chiếu.
+        Chuẩn hoá theo quiz-3 (ADR 0028) và document-3 (ADR 0027): Ẩn chat khi làm quiz, kết quả sau nộp kèm giải thích & trích dẫn trang, tạo tài liệu theo yêu cầu chọn ≤5 module, thư viện phân loại Tạo ở đây / Tạo ở nơi khác.
       </p>
     </div>
     <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
@@ -172,17 +263,17 @@
         <div>
           <span class="badge badge-accent">⚡ Đang xử lý</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            1. Trạng thái: Đang sinh câu hỏi kiểm tra (Generating State)
+            1. Trạng thái: Đang sinh câu hỏi kiểm tra (quiz-3)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • Bài 3</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • 3 mức Bloom: Nhớ, Hiểu, Vận dụng</span>
       </div>
 
       <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5);">
         <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
-          <div style="width: 24px; height: 24px; border: 3px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <div style="width: 24px; height: 24px; border: 3px solid var(--color-primary); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
           <strong style="color: var(--color-primary); font-size: var(--text-body);">
-            WayFinder đang biên soạn bộ 5 câu hỏi trắc nghiệm từ Harrison 21st...
+            WayFinder đang biên soạn câu hỏi trắc nghiệm kèm giải mù có suy nghĩ (quiz-verify-5)...
           </strong>
         </div>
 
@@ -199,56 +290,70 @@
       </div>
     </section>
 
-    <!-- TRẠNG THÁI 2: ĐANG LÀM BÀI (ACTIVE QUIZ QUESTION) -->
+    <!-- TRẠNG THÁI 2: ĐANG LÀM BÀI (ACTIVE QUIZ QUESTION & ẨN CHAT) -->
     <section class="card" id="section-quiz-taking">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
         <div>
-          <span class="badge badge-primary">Câu hỏi 3/5</span>
+          <span class="badge badge-primary">Câu hỏi 3/5 • Mức độ: Vận dụng (Tính toán ngắn)</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            2. Trạng thái: Đang làm bài (Question & Option Selection)
+            2. Trạng thái: Đang làm bài (Quiz Active & Tự động Ẩn Chat)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Thời gian: Không giới hạn</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Thời gian: Tự do</span>
+      </div>
+
+      <!-- CHỈ BÁO ẨN CHAT THEO QUIZ-3 -->
+      <div id="quiz-chat-hidden-indicator" style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-bg-subtle); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm); margin-bottom: var(--space-4);">
+        <span style="font-size: 20px;">🔒</span>
+        <span style="font-size: var(--text-small); color: var(--color-text-muted); line-height: 1.4;">
+          <strong>Trợ lý Trò chuyện tạm ẩn:</strong> Để bảo đảm tính khách quan khi làm bài kiểm tra, khung chat trợ lý được tự động thu gọn và tạm ngắt kết nối cho đến khi bạn hoàn tất bài nộp.
+        </span>
       </div>
 
       <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5);">
-        <p style="font-size: var(--text-h3); font-weight: var(--font-semibold); color: var(--color-text); margin-bottom: var(--space-4);">
-          Động mạch vành nào chịu trách nhiệm cấp máu chính cho nút nhĩ thất (AV node) ở 90% dân số (kiểu ưu thế phải)?
+        <p style="font-size: var(--text-h3); font-weight: var(--font-semibold); color: var(--color-text); margin-bottom: var(--space-3); line-height: 1.6;">
+          Một bệnh nhân nam 62 tuổi có huyết áp tâm trương 
+          <span class="katex" role="math" aria-label="P_diastolic = 80 mmHg"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>diastolic</mtext></msub><mo>=</mo><mn>80</mn><mtext>&nbsp;mmHg</mtext></mrow><annotation encoding="application/x-tex">P_{\text{diastolic}} = 80\text{ mmHg}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord">80</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">mmHg</span></span></span></span></span> 
+          và áp lực cuối tâm trương thất trái 
+          <span class="katex" role="math" aria-label="P_LVEDP = 15 mmHg"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>LVEDP</mtext></msub><mo>=</mo><mn>15</mn><mtext>&nbsp;mmHg</mtext></mrow><annotation encoding="application/x-tex">P_{\text{LVEDP}} = 15\text{ mmHg}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord">15</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">mmHg</span></span></span></span></span>. 
+          Áp lực tưới máu vành hiệu dụng 
+          <span class="katex" role="math" aria-label="P_coronary"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>coronary</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{coronary}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 
+          của bệnh nhân trong thì tâm trương là bao nhiêu?
         </p>
 
         <div class="quiz-options">
           <label class="quiz-option">
             <input type="radio" name="q3" value="A" style="accent-color: var(--color-primary);">
-            <span style="color: var(--color-text); font-size: var(--text-body);">A. Động mạch liên thất trước (LAD)</span>
+            <span style="color: var(--color-text); font-size: var(--text-body);">A. 95 mmHg (Cộng dồn hai chỉ số áp lực)</span>
           </label>
           <label class="quiz-option selected" id="opt-q3-selected">
             <input type="radio" name="q3" value="B" checked style="accent-color: var(--color-primary);">
-            <strong style="color: var(--color-primary); font-size: var(--text-body);">B. Động mạch vành phải (RCA) [ĐÃ CHỌN]</strong>
+            <strong style="color: var(--color-primary); font-size: var(--text-body);">B. 65 mmHg (Hiệu số áp lực tâm trương và cuối tâm trương thất trái) [ĐÃ CHỌN]</strong>
           </label>
           <label class="quiz-option">
             <input type="radio" name="q3" value="C" style="accent-color: var(--color-primary);">
-            <span style="color: var(--color-text); font-size: var(--text-body);">C. Động mạch mũ (LCx)</span>
+            <span style="color: var(--color-text); font-size: var(--text-body);">C. 80 mmHg (Chỉ tính riêng áp lực tâm trương động mạch chủ)</span>
           </label>
           <label class="quiz-option">
             <input type="radio" name="q3" value="D" style="accent-color: var(--color-primary);">
-            <span style="color: var(--color-text); font-size: var(--text-body);">D. Động mạch bờ góc (Marginal artery)</span>
+            <span style="color: var(--color-text); font-size: var(--text-body);">D. 50 mmHg (Ước tính áp lực tâm thu)</span>
           </label>
         </div>
 
-        <div class="quiz-action-bar" style="display: flex; justify-content: space-between; margin-top: var(--space-5); gap: var(--space-3);">
+        <div class="quiz-action-bar" style="display: flex; justify-content: space-between; margin-top: var(--space-5); gap: var(--space-3); flex-wrap: wrap;">
           <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">◀ Câu trước</button>
           <button class="btn btn-primary" id="btn-submit-quiz-answer" style="min-height: 44px; min-width: 44px;">Nộp bài kiểm tra ▶</button>
         </div>
       </div>
     </section>
 
-    <!-- TRẠNG THÁI 3: KẾT QUẢ BÀI LÀM & TRÍCH DẪN ĐỐI CHIẾU (RESULT & CITATION VIEW) -->
+    <!-- TRẠNG THÁI 3: KẾT QUẢ BÀI LÀM & TRÍCH DẪN ĐỐI CHIẾU (POST-SUBMISSION REVIEW) -->
     <section class="card" id="section-quiz-result">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
         <div>
           <span class="badge badge-success">✓ Hoàn thành</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            3. Kết quả bài làm: 10/10 điểm & Đối chiếu nguồn y khoa
+            3. Kết quả bài làm: 10/10 điểm & Giải thích chi tiết theo quiz-3
           </h2>
         </div>
         <span class="badge badge-primary">Xếp loại: Xuất sắc</span>
@@ -262,26 +367,276 @@
               Chúc mừng bạn đã trả lời đúng 5/5 câu hỏi (10/10 điểm)!
             </h3>
             <p style="font-size: var(--text-small); color: var(--color-text-muted);">
-              Khái niệm "Giải phẫu động mạch vành" đã được cập nhật trạng thái <strong>Đã học</strong> trên Lộ trình của bạn.
+              Khái niệm "Giải phẫu & Sinh lý động mạch vành" đã được cập nhật trạng thái <strong>Đã học</strong> trên Lộ trình của bạn.
             </p>
           </div>
         </div>
 
+        <!-- Bảng giải thích chi tiết từng phương án (quy cách quiz-3) -->
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-4);">
+          <h4 style="font-size: var(--text-small); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-2);">
+            Phân tích câu hỏi 3 (Mức độ: Vận dụng):
+          </h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-small);">
+            <li style="padding: var(--space-2); border-radius: var(--radius-sm); background: var(--color-danger-tint); color: var(--color-danger);">
+              <strong>A. 95 mmHg (Sai):</strong> Hiểu nhầm thường gặp do cộng dồn hai áp lực thay vì lấy hiệu số giữa áp lực đẩy và lực cản buồng tim.
+            </li>
+            <li style="padding: var(--space-2); border-radius: var(--radius-sm); background: var(--color-success-tint); color: var(--color-success);">
+              <strong>B. 65 mmHg (Đúng):</strong> Theo định luật huyết động, áp lực tưới máu vành hữu hiệu trong thì tâm trương là hiệu số giữa áp lực tâm trương động mạch chủ và áp lực đè ép buồng tim: P_coronary = 80 - 15 = 65 mmHg.
+            </li>
+            <li style="padding: var(--space-2); border-radius: var(--radius-sm); background: var(--color-danger-tint); color: var(--color-danger);">
+              <strong>C. 80 mmHg (Sai):</strong> Chỉ tính áp lực gốc động mạch chủ mà bỏ qua sức ép cơ tim buồng thất trái lên lớp dưới nội tâm mạc.
+            </li>
+            <li style="padding: var(--space-2); border-radius: var(--radius-sm); background: var(--color-danger-tint); color: var(--color-danger);">
+              <strong>D. 50 mmHg (Sai):</strong> Giá trị suy đoán không có cơ sở sinh lý.
+            </li>
+          </ul>
+        </div>
+
         <!-- Trích dẫn nguồn y khoa cuộn được -->
-        <div id="quiz-citation-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 4px solid var(--color-brand); border-radius: var(--radius-sm); padding: var(--space-4);">
+        <div id="quiz-citation-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm); padding: var(--space-4);">
           <strong style="color: var(--color-primary); font-size: var(--text-small); display: block; margin-bottom: var(--space-1);">
-            📖 Đối chiếu trích dẫn nguồn (Harrison 21st, Trang 1892):
+            📖 [S1] Đối chiếu trích dẫn nguồn (Harrison 21st, Chương 273, Trang 1892):
           </strong>
           <p style="font-size: var(--text-small); color: var(--color-text); font-style: italic; line-height: 1.5;">
-            "In approximately 90% of individuals, the AV nodal artery originates from the distal right coronary artery (right-dominant circulation). In the remaining 10%, it arises from the distal circumflex branch of the left coronary artery."
+            "Coronary perfusion pressure is approximately equal to aortic diastolic pressure minus left ventricular end-diastolic pressure (LVEDP). Subendocardial flow is particularly vulnerable to elevations in LVEDP."
           </p>
         </div>
       </div>
 
       <div class="quiz-action-bar" style="display: flex; justify-content: flex-end; gap: var(--space-3);">
-        <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-primary" id="btn-next-roadmap-lesson" style="min-height: 44px; min-width: 44px;">
+        <a href="#roadmap" class="btn btn-primary" id="btn-next-roadmap-lesson" style="min-height: 44px; min-width: 44px;">
           Bài học tiếp theo ➔
         </a>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 4: TẠO TÀI LIỆU HỌC TẬP THEO YÊU CẦU (DOCUMENT-3 / SA-67) -->
+    <section class="card" id="section-document-create">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-primary">📝 document-3 (ADR 0027)</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            4. Trạng thái: Tạo tài liệu học tập theo yêu cầu (Chọn ≤ 5 module)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Viết tự nhiên Markdown/LaTeX</span>
+      </div>
+
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); margin-bottom: var(--space-4);">
+        <div style="margin-bottom: var(--space-4);">
+          <label for="input-doc-request" style="display: block; font-size: var(--text-small); font-weight: var(--font-bold); margin-bottom: var(--space-2); color: var(--color-text);">
+            Yêu cầu nội dung tài liệu:
+          </label>
+          <input type="text" id="input-doc-request" class="chat-input" style="width: 100%; min-height: 44px; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-input); border-radius: var(--radius-md); font-size: var(--text-body); background: var(--color-bg);" value="Tóm tắt công thức huyết động và bảng so sánh các nhánh mạch vành chính" aria-label="Nội dung yêu cầu soạn tài liệu">
+        </div>
+
+        <div style="margin-bottom: var(--space-4);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: var(--text-small); font-weight: var(--font-bold); color: var(--color-text);">
+              Phạm vi module lựa chọn:
+            </span>
+            <span class="badge badge-primary" id="scope-count-indicator">Đã chọn: 2 / 5 module tối đa</span>
+          </div>
+
+          <div class="module-chips">
+            <label class="module-chip">
+              <input type="checkbox" checked onchange="updateScopeCount(this)">
+              <span>Module 1: Giải phẫu mạch vành</span>
+            </label>
+            <label class="module-chip">
+              <input type="checkbox" checked onchange="updateScopeCount(this)">
+              <span>Module 2: Sinh lý tưới máu</span>
+            </label>
+            <label class="module-chip">
+              <input type="checkbox" onchange="updateScopeCount(this)">
+              <span>Module 3: Bệnh mạch vành mạn</span>
+            </label>
+            <label class="module-chip">
+              <input type="checkbox" onchange="updateScopeCount(this)">
+              <span>Module 4: Hội chứng vành cấp</span>
+            </label>
+            <label class="module-chip">
+              <input type="checkbox" onchange="updateScopeCount(this)">
+              <span>Module 5: Điện tâm đồ thiếu máu</span>
+            </label>
+            <label class="module-chip">
+              <input type="checkbox" onchange="updateScopeCount(this)">
+              <span>Module 6: Can thiệp mạch vành</span>
+            </label>
+          </div>
+
+          <!-- Cảnh báo khi vượt quá trần 5 module (scope_too_large) -->
+          <div id="scope-warning-box" style="display: none; padding: var(--space-3); background: var(--color-danger-tint); color: var(--color-danger); border-radius: var(--radius-sm); font-size: var(--text-small); margin-top: var(--space-2);">
+            ⚠️ <strong>Phạm vi quá lớn (scope_too_large):</strong> Bạn đang chọn vượt quá 5 module. Vui lòng thu hẹp phạm vi chọn tối đa 5 module để đảm bảo tài liệu sâu sát và đúng trọng tâm giáo trình.
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-create-document" style="min-height: 44px; width: 100%;">
+          ⚡ Soạn thảo tài liệu theo yêu cầu
+        </button>
+      </div>
+
+      <!-- Khối hiển thị tài liệu Markdown đã sinh ra -->
+      <div id="document-rendered-view" style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); flex-wrap: wrap; gap: var(--space-2);">
+          <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Văn bản Markdown tự nhiên • Bám sát Harrison 21st</span>
+          <button class="btn btn-secondary" id="btn-download-markdown" style="min-height: 44px; height: 44px;">
+            📥 Tải bản Markdown (.md)
+          </button>
+        </div>
+
+        <article style="line-height: 1.7; font-size: var(--text-body); color: var(--color-text);">
+          <h3 style="font-size: var(--text-h3); margin-bottom: var(--space-3); color: var(--color-primary);">
+            # Bảng Tóm tắt Công thức Huyết động & So sánh Nhánh Mạch Vành
+          </h3>
+
+          <p style="margin-bottom: var(--space-3);">
+            Hệ thống tuần hoàn vành chịu trách nhiệm cung cấp máu cho cơ tim liên tục suốt đời. Không giống như các cơ quan ngoại vi khác nhận máu chủ yếu ở thì tâm thu, 80% lưu lượng máu vành diễn ra ở <em>thì tâm trương</em> [S1].
+          </p>
+
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: var(--space-4); font-size: var(--text-small);">
+            <thead>
+              <tr style="background: var(--color-surface); border-bottom: 2px solid var(--color-border); text-align: left;">
+                <th style="padding: var(--space-2);">Nhánh động mạch</th>
+                <th style="padding: var(--space-2);">Vùng cấp máu chính</th>
+                <th style="padding: var(--space-2);">Đặc điểm lâm sàng [S1]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--color-border);">
+                <td style="padding: var(--space-2); font-weight: var(--font-bold);">LAD (Liên thất trước)</td>
+                <td style="padding: var(--space-2);">Thành trước thất trái & 2/3 trước vách liên thất</td>
+                <td style="padding: var(--space-2);">Tắc gây nhồi máu trước rộng, tỷ lệ tử vong cao</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--color-border);">
+                <td style="padding: var(--space-2); font-weight: var(--font-bold);">LCx (Mũ)</td>
+                <td style="padding: var(--space-2);">Thành bên và sau-dưới thất trái</td>
+                <td style="padding: var(--space-2);">Tắc gây nhồi máu thành bên, biến đổi ECG kín đáo</td>
+              </tr>
+              <tr>
+                <td style="padding: var(--space-2); font-weight: var(--font-bold);">RCA (Vành phải)</td>
+                <td style="padding: var(--space-2);">Thất phải, thành dưới và nút AV (90%)</td>
+                <td style="padding: var(--space-2);">Tắc dễ gây block nhĩ thất và tụt huyết áp</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Khối trích dẫn Trong sách -->
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-3); font-size: var(--text-small); color: var(--color-text-muted);">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 4px;">📚 Trong sách:</strong>
+            <span>[S1] Harrison's Principles of Internal Medicine, 21st Edition • Trang 1892 • Chương 273 (Mục Phân bố mạch vành).</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 5: THƯ VIỆN TÀI LIỆU HỌC TẬP (DOCUMENT LIBRARY) -->
+    <section class="card" id="section-document-library">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-accent">📚 Thư viện tài liệu</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            5. Trạng thái: Thư viện tài liệu học tập (Lọc Tạo ở đây / Tạo ở nơi khác)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Lọc theo nhóm home_scope (Pha B2 mục 4: here / elsewhere độc lập với origin)</span>
+      </div>
+
+      <!-- Bộ lọc Tabs: Tất cả / Tạo ở đây (Module này) / Tạo ở nơi khác -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" id="tab-lib-all" onclick="filterLibrary('all', this)">
+          Tất cả (4)
+        </button>
+        <button class="filter-tab" id="tab-lib-here" onclick="filterLibrary('here', this)">
+          Tạo ở đây (Module này - 2)
+        </button>
+        <button class="filter-tab" id="tab-lib-elsewhere" onclick="filterLibrary('elsewhere', this)">
+          Tạo ở nơi khác (Khác - 2)
+        </button>
+      </div>
+
+      <!-- Danh sách tài liệu (Phân loại theo data-group here/elsewhere, độc lập với data-origin) -->
+      <div style="display: flex; flex-direction: column; gap: var(--space-3);" id="library-list-container">
+        <!-- Item 1: here + assistant (Crossed origin) -->
+        <div class="doc-card" data-group="here" data-origin="assistant" data-testid="assistant-created-in-A" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-accent">Trợ lý chat (assistant)</span>
+              <span class="badge badge-module">Tạo tại Module 1 (here)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Trợ lý chat tại Module 1 • 940 từ • 3 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 2: elsewhere + button (Crossed origin) -->
+        <div class="doc-card" data-group="elsewhere" data-origin="button" data-testid="button-created-in-roadmap-about-A" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-primary">Nút giao diện (button)</span>
+              <span class="badge badge-module">Tạo từ Lộ trình chung (elsewhere)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Nút tạo tài liệu ở Lộ trình chung về Module 1 & 2 • 1.250 từ • 2 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 3: here + button -->
+        <div class="doc-card" data-group="here" data-origin="button" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-primary">Nút giao diện (button)</span>
+              <span class="badge badge-module">Tạo tại Module 1 (here)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Nút tạo tài liệu tại Module 1 • 820 từ • 1 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 4: elsewhere + assistant -->
+        <div class="doc-card" data-group="elsewhere" data-origin="assistant" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-accent">Trợ lý chat (assistant)</span>
+              <span class="badge badge-module">Tạo từ Module 2 (elsewhere)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Trợ lý chat tại Module 2 liên quan đến Module 1 • 1.100 từ • 2 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -291,6 +646,45 @@
       const html = document.documentElement;
       const cur = html.getAttribute('data-theme');
       html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+
+    function updateScopeCount(input) {
+      const checked = document.querySelectorAll('.module-chips input:checked').length;
+      const indicator = document.getElementById('scope-count-indicator');
+      const warning = document.getElementById('scope-warning-box');
+      const btnCreate = document.getElementById('btn-create-document');
+      indicator.textContent = `Đã chọn: ${checked} / 5 module tối đa`;
+      if (checked > 5) {
+        indicator.className = 'badge badge-danger';
+        warning.style.display = 'block';
+        if (btnCreate) {
+          btnCreate.setAttribute('disabled', 'true');
+          btnCreate.style.opacity = '0.6';
+          btnCreate.style.cursor = 'not-allowed';
+        }
+      } else {
+        indicator.className = 'badge badge-primary';
+        warning.style.display = 'none';
+        if (btnCreate) {
+          btnCreate.removeAttribute('disabled');
+          btnCreate.style.opacity = '1';
+          btnCreate.style.cursor = 'pointer';
+        }
+      }
+    }
+
+    function filterLibrary(group, tabBtn) {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      tabBtn.classList.add('active');
+      const cards = document.querySelectorAll('.doc-card');
+      cards.forEach(card => {
+        const cardGroup = card.getAttribute('data-group') || (card.dataset ? card.dataset.group : '');
+        if (group === 'all' || cardGroup === group) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
