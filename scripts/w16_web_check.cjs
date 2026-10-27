@@ -31,6 +31,17 @@ async function main() {
       const hold = submitHolds.get(url);
       if (hold) { hold.ready = true; return hold.gate; }
     });
+    await context.exposeBinding('__w16RecordJson', (_, row) => {
+      const receipt = { ...row, stage, path: new URL(row.url).pathname, via: 'fetch-json-clone' };
+      audit.http.push(receipt);
+      if (row.readErrorName) {
+        assert.equal(row.readErrorName, 'AbortError');
+        assert.equal(row.signalAborted, true);
+      } else {
+        try { JSON.parse(row.body); inspectPayload(row.url, row.body); }
+        catch (error) { audit.privacyFailures.push({ path: receipt.path, message: error.message }); throw error; }
+      }
+    });
     const streams = new Map();
     await context.exposeBinding('__w16RecordStream', (_, row) => {
       if (row.event === 'start') {
@@ -54,7 +65,21 @@ async function main() {
       window.fetch = async (...args) => {
         const response = await original(...args);
         if (response.url.endsWith('/submit')) await window.__w16HoldSubmit(response.url);
-        if (!response.url.startsWith(prefix) || !response.body || !response.headers.get('content-type')?.startsWith('text/event-stream')) return response;
+        if (!response.url.startsWith(prefix) || !response.body) return response;
+        const type = response.headers.get('content-type') ?? '';
+        if (type.includes('json')) {
+          const row = { url: response.url, method: args[1]?.method ?? 'GET', status: response.status, type };
+          try {
+            const body = await response.clone().text();
+            await window.__w16RecordJson({ ...row, body, complete: true });
+          } catch (error) {
+            await window.__w16RecordJson({ ...row, body: null, complete: false, readErrorName: error.name,
+              signalAborted: args[1]?.signal?.aborted === true });
+            throw error;
+          }
+          return response;
+        }
+        if (!type.startsWith('text/event-stream')) return response;
         const id = crypto.randomUUID(), [application, recording] = response.body.tee();
         const appReader = application.getReader(), recorder = recording.getReader(), decoder = new TextDecoder();
         const record = event => window.__w16RecordStream({ id, ...event });
@@ -78,7 +103,7 @@ async function main() {
         });
         return new Response(body, { status: response.status, statusText: response.statusText, headers: response.headers });
       };
-    }, { prefix: base + '/api/v1/courses/' });
+    }, { prefix: base + '/api/v1/' });
     const page = await context.newPage(); contexts.push({ context, page, name });
     page.on('pageerror', error => audit.pageErrors.push({ stage, message: error.message }));
     page.on('console', message => { if (message.type() === 'error') audit.console.push({ stage, message: message.text() }); });
@@ -91,7 +116,7 @@ async function main() {
       const when = stage;
       const job = (async () => {
         const type = response.headers()['content-type'] ?? '';
-        if (type.startsWith('text/event-stream')) return; // The fetch tee records each chunk before the app sees it.
+        if (type.startsWith('text/event-stream') || (type.includes('json') && response.request().resourceType() === 'fetch')) return; // Fetch bodies are recorded before the app sees them.
         const body = /json|markdown/.test(type) ? await response.text() : null;
         if (body) inspectPayload(response.url(), body);
         audit.http.push({ stage: when, path: new URL(response.url()).pathname, method: response.request().method(), status: response.status(), type, body });
@@ -297,7 +322,7 @@ async function main() {
     assert.deepEqual(audit.pageErrors,[]);
   } catch(error) { audit.failure={stage,message:error.message,stack:error.stack};throw error;
   } finally {
-    for(const {context,page,name} of contexts){const video=page.video();await context.close();if(video)await video.saveAs(path.join(out,name+'.webm'));}
+    for(const {context,page,name} of contexts){await page.waitForLoadState('networkidle');const video=page.video();await context.close();if(video)await video.saveAs(path.join(out,name+'.webm'));}
     const results=await Promise.allSettled(pending);audit.pendingRejections=results.filter(r=>r.status==='rejected').map(r=>String(r.reason));
     await fs.writeFile(path.join(out,'audit.json'),JSON.stringify(audit,null,2)+'\n');await browser.close();
     assert.deepEqual(audit.pendingRejections,[]);assert.deepEqual(audit.privacyFailures,[]);
