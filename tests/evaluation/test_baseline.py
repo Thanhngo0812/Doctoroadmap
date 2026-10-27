@@ -234,3 +234,16 @@ def test_b4_khai_niem_khong_co_bang_chung_co_cau_neo_null():
     u["evidence"] = []
     hd = hop_dong_b4(dt.hop_dong([dt.khai_niem("N1")], [], ["N1"]), [u], TRANG)
     assert hd["khai_niem"][0]["cau_neo"] is None and kiem(hd) == []
+
+
+def test_baseline_khong_nhap_pipeline():
+    import ast
+    from pathlib import Path
+    thu_muc = Path(__file__).resolve().parents[2] / "evaluation" / "danhgia" / "xuat" / "baseline"
+    tep = sorted(thu_muc.glob("*.py"))
+    assert {p.name for p in tep} >= {"b2.py", "b3.py", "b4.py", "chung.py", "lenh.py"}
+    for p in tep:
+        for nut in ast.walk(ast.parse(p.read_text(encoding="utf-8"))):
+            ten = [x.name for x in nut.names] if isinstance(nut, ast.Import) else \
+                [nut.module or ""] if isinstance(nut, ast.ImportFrom) and nut.level == 0 else []
+            assert not any(t.split(".")[0] == "doc2roadmap" for t in ten), f"{p.name}: {ten}"

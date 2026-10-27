@@ -5,7 +5,7 @@ Chạy một lần để ghi lại; kho chung chỉ được ĐỌC. Fixture kh�
 Cách cắt (đều có chủ ý, để thử các nhánh thật):
 - 17 node = 7 đầu mút của 4 cạnh bị R17 làm mềm trong A10 v63 (nên tắt R17 có tác dụng) + 10 hàng xóm nhiều cạnh nhất; chỉ giữ cạnh có cả hai đầu trong tập;
 - chunks: chỉ các chunk được node hay cạnh nhắc tới, giữ nguyên `order_index`; sections: chuỗi cha của các chunk đó;
-- vector node cắt theo node; canonical thay bằng bản tối thiểu (không cạnh canonical, không hoãn);
+- vector node cắt theo node; canonical thay bằng bản tối thiểu (không cạnh canonical, không hoãn; giữ `source_candidates` của các node đã chọn cho B4);
 - chuỗi dựng trong kho mới: v1 clusters (vector), v2 edges, v3 A9, v4 đặt tên, v5 A10, v6 đặt tên module (mô phỏng Pha B).
 Cách chạy: python tao_kho_phat_lai.py <đường dẫn artifacts chung> <thư mục đích>   (PYTHONPATH có `src`)
 """
@@ -109,8 +109,11 @@ def main(kho, dich):
         "node_vectors_version": 1, "topic_edges": [], "decision_log": [], "executor_log": [],
         "pair_cluster_ledger": [], "pair_cluster_relative_means": {}, "contact_pairs": [],
     }
+    ung_vien_giu = {ma for n in nodes for ma in n.get("members", [])}
     canonical = {"stage": "gop", "doc_id": DOC, "upstream_chain": "gop", "canonical_has_anchors": True, "edges": [],
-                 "deferred": [], "deferred_pairs": [], "redirects": {}, "nodes": [], "members": {}}
+                 "deferred": [], "deferred_pairs": [], "redirects": {}, "nodes": [], "members": {},
+                 "source_candidates": [c for c in doc(kho / "canonical" / DOC / f"v{CANONICAL}" / "canonical.json")["source_candidates"]
+                                       if c["candidate_id"] in ung_vien_giu]}
 
     luu = JsonArtifactStore(dich)
     ghi(dich / "chunks" / DOC / "v1" / "chunks.json", chunks_giu)
@@ -143,7 +146,7 @@ def main(kho, dich):
     ghi(dich / "graph" / DOC / "v6" / "manifest.json", {
         "version": 6, "doc_id": DOC, "source_hash": "fixture", "config_hash": "fixture-ten-module", "stage": "stages",
         "upstream_version": roadmap.version,
-        "config": {"algorithm_id": "phase-b-module-names-v6", "model_id": "ghi-san", "chunks_version": 1,
+        "config": {"algorithm_id": "phase-b-module-names-v6", "model_id": "ghi-san", "chunks_version": 1, "canonical_version": 1,
                    "upstream_version": roadmap.version, "module_cap": 8}})
     print("đã dựng", dich, "node", len(nodes), "cạnh", len(main_edges), len(secondary_edges),
           "A10 v", roadmap.version, "dãy", len(roadmap.payload["sequence"]),
