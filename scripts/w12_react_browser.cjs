@@ -44,6 +44,8 @@ async function main(){
     }
     async function capture(name, axe = false) {
       await settled();
+      const images=await learner.locator('img').evaluateAll(nodes=>Promise.all(nodes.map(async image=>{await image.decode();return {src:new URL(image.src).pathname,width:image.naturalWidth,height:image.naturalHeight};})));
+      for(const image of images)assert.ok(image.width>0&&image.height>0,'Visible page image must decode: '+image.src);
       const width = learner.viewportSize().width;
       const theme = await learner.locator('html').getAttribute('data-theme');
       const reduced = await learner.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -60,7 +62,7 @@ async function main(){
       assert.deepEqual(layout.targets, [], name + ' 44px targets');
       if (width < 1280 && name.startsWith('library-')) await learner.locator('.content-library').evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - document.querySelector('.courses-header').getBoundingClientRect().height - 16, behavior: 'instant' }));
       else await learner.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-      await learner.screenshot({ path: path.join(out, file), fullPage: !(await learner.locator('dialog[open]').count()) }); audit.screens.push({ file, width, theme, reduced, layout });
+      await learner.screenshot({ path: path.join(out, file), fullPage: !(await learner.locator('dialog[open]').count()) }); audit.screens.push({ file, width, theme, reduced, layout, images });
       if (axe) {
         const result = await new AxeBuilder({ page: learner }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
         const row = { file, scope: 'document', violations: result.violations, incomplete: result.incomplete, passes: result.passes.length };

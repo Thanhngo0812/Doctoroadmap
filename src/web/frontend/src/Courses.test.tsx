@@ -3,6 +3,7 @@ import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
+import { existsSync, readFileSync } from 'node:fs';
 
 const account = { id: 'learner', email: 'an@example.vn', display_name: 'Nguyễn An', role: 'user', email_verified: true };
 const sample = { course_id: 'sample-1', doc_id: 'doc-1', title: 'Đại số tuyến tính', description: 'Từ không gian vector đến ánh xạ tuyến tính.', status: 'ready', is_sample: true, published_graph_version: 8, role: null, owner: { user_id: 'admin', display_name: 'Cô Mai' }, module_count: 35, member_count: null, progress: null, resume: null };
@@ -67,6 +68,15 @@ it('hides samples in an empty production-shaped response and offers the specifie
   expect(await screen.findByText('Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.')).toBeInTheDocument();
   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: 'Tải tài liệu' }).every(link => link.getAttribute('href') === '/tai-len')).toBe(true);
+});
+it('serves a real PNG illustration when the invitations page has no courses in dark mode', async () => {
+  localStorage.setItem('wayfinder-theme','dark');
+  vi.stubGlobal('fetch', mockFetch({owned:[],joined:[],samples:[]}));
+  renderPage();await screen.findByText('Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.');
+  const image=document.querySelector<HTMLImageElement>('.courses-empty img')!;
+  const asset=new URL('../public'+image.getAttribute('src'),import.meta.url);
+  expect(existsSync(asset)).toBe(true);
+  expect([...readFileSync(asset).subarray(0,8)]).toEqual([137,80,78,71,13,10,26,10]);
 });
 
 it('keeps the page frame while loading and retries a failed request', async () => {

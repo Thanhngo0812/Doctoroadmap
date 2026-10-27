@@ -114,7 +114,7 @@ export function CoursesPage(props: ThemeProps) {
     {auth.account && <InvitationsInbox key={auth.account.id} onJoined={() => setReload(value => value + 1)} />}
     {error && <div className="courses-error"><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
     {!data && !error && <Loading />}
-    {empty && <section className="courses-empty" aria-labelledby="courses-empty-title"><img src={props.theme === 'dark' ? '/assets/OTP1.png' : '/assets/OTP4.png'} alt="" /><h2 id="courses-empty-title">Bắt đầu hành trình của bạn</h2><p>Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.</p><div className="courses-empty-actions"><Link className="button button-primary" to="/tai-len">Tải tài liệu</Link>{data.samples.length > 0 && <a className="button button-secondary" href="#sample-courses">Thử khoá mẫu</a>}</div></section>}
+    {empty && <section className="courses-empty" aria-labelledby="courses-empty-title"><img src="/assets/OTP4.png" alt="" /><h2 id="courses-empty-title">Bắt đầu hành trình của bạn</h2><p>Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.</p><div className="courses-empty-actions"><Link className="button button-primary" to="/tai-len">Tải tài liệu</Link>{data.samples.length > 0 && <a className="button button-secondary" href="#sample-courses">Thử khoá mẫu</a>}</div></section>}
     {data && (['owned', 'joined', 'samples'] as const).map(group => {
       if (group === 'samples' && !data.samples.length) return null;
       if (empty && group !== 'samples') return null;
