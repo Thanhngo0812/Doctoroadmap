@@ -1,10 +1,12 @@
 # W-12 — Mời qua email, lời mời trong ứng dụng
 
+**Nghiệm thu lần 9, 2026-10-27: nhận backend f5cd2060, ghép local 1513ac7f; toàn W-12 vẫn mở.** Sáu HTTP route/mẫu thư/FakeMailer/migration w12_0008 nối w11_0007; đúng email đã xác minh, 50 email/lần, 200 thư/chủ/ngày, TTL 7 ngày, race/rollback PostgreSQL đã kiểm. Link đăng ký dùng fragment theo lựa chọn chủ dự án; token không tự cấp membership. Sáu tiêu chí logic dưới đạt ở backend, còn hộp mời/inbox/luồng đăng ký React do web sau W-04. Không gửi SMTP thật, 0 USD/chưa push. [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
+
 **Phân công sau nghiệm thu lần 8, 2026-10-26:** lõi đã xong mốc backend W-04, được giao **mốc backend W-12** trong nhánh/worktree mới; web làm React/tích hợp sau W-16/W-04. Dùng lại SharingService/AuthStore/Mailer W-03/W-11; thêm invitation/migration đúng một head, 50 email/lần, 200 thư/chủ/ngày, TTL 7 ngày, đúng email đã xác minh và membership nguyên tử. Mẫu thư dùng FakeMailer/0 USD; không gửi thư thật, không tự đóng toàn W-12 từ backend. [biên bản lần 8](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan8-2026-10-26.md) và [lời giao lần 8](../../report/lenh-giao-viec-ba-nhom-lan8-2026-10-26.md).
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 6 (mời theo email), user story 36–37; [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md),
 bảng `invitation`; spec thiết kế, hộp mời, khối lời mời ở trang chủ, mẫu thư.
-**Ai:** lõi làm mốc backend/mẫu thư; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend/mẫu thư; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** backend đạt; còn React/tích hợp
 
 ## Vì sao
 
@@ -37,12 +39,12 @@ Giảng viên hay trưởng nhóm thường có sẵn danh sách email. Mời đ
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Mời một email chưa có tài khoản; đăng ký bằng email đó **chưa xác minh** thì chưa thấy lời mời; xác minh xong thì thấy.
-- [ ] Đăng ký bằng email khác rồi mở link mời: không được gắn lời mời.
-- [ ] Mời lại cùng email: vẫn một hàng `pending`, hạn được làm mới.
-- [ ] Lời mời quá 7 ngày (đồng hồ giả) không chấp nhận được.
-- [ ] Thư thứ 201 trong ngày của một chủ khoá bị `rate_limited`.
-- [ ] Người không phải người được mời không chấp nhận được lời mời (`not_found`).
+- [x] Mời một email chưa có tài khoản; đăng ký bằng email đó **chưa xác minh** thì chưa thấy lời mời; xác minh xong thì thấy.
+- [x] Đăng ký bằng email khác rồi mở link mời: không được gắn lời mời.
+- [x] Mời lại cùng email: vẫn một hàng `pending`, hạn được làm mới.
+- [x] Lời mời quá 7 ngày (đồng hồ giả) không chấp nhận được.
+- [x] Thư thứ 201 trong ngày của một chủ khoá bị `rate_limited`.
+- [x] Người không phải người được mời không chấp nhận được lời mời (`not_found`).
 - [ ] Ảnh chụp hộp mời, khối lời mời; một thư mời xuất ra HTML.
 
 ## Ngoài vé

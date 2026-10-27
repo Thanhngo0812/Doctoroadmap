@@ -1,0 +1,89 @@
+{
+  "source_commit": "bda1366b8d033ce0dcf4660651959293c178f7c8",
+  "sources": [
+    {
+      "path": "scripts/test_w10_library_filter_vm.cjs",
+      "pinned_blob_sha256": "2f0294a81d9c5c1acb58318426032f617686d97447a455a24de9abcbcb77b8da",
+      "scratch_sha256": "2f0294a81d9c5c1acb58318426032f617686d97447a455a24de9abcbcb77b8da",
+      "worker_sha256": "2f0294a81d9c5c1acb58318426032f617686d97447a455a24de9abcbcb77b8da",
+      "equal_normalized_LF": true
+    },
+    {
+      "path": "tests/unit/presentation/test_tokens_and_wcag.py",
+      "pinned_blob_sha256": "833a167b488c0aab68743fbfcdaaa992681dc577f3655e60419b678d7d53a8d8",
+      "scratch_sha256": "833a167b488c0aab68743fbfcdaaa992681dc577f3655e60419b678d7d53a8d8",
+      "worker_sha256": "833a167b488c0aab68743fbfcdaaa992681dc577f3655e60419b678d7d53a8d8",
+      "equal_normalized_LF": true
+    },
+    {
+      "path": "design/preview/w10_quiz_screens.html",
+      "pinned_blob_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+      "scratch_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+      "worker_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+      "equal_normalized_LF": true
+    }
+  ],
+  "baseline": {
+    "label": "resume-baseline",
+    "source_commit": "bda1366b8d033ce0dcf4660651959293c178f7c8",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/unit/presentation/test_tokens_and_wcag.py",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027\\runs\\resume-baseline.xml"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027",
+    "native_exit_code": 0,
+    "tests": 64,
+    "failures": 0,
+    "errors": 0,
+    "elapsed_seconds": 5.62
+  },
+  "mutation": {
+    "label": "resume-actual-onclick-mutant",
+    "source_commit": "bda1366b8d033ce0dcf4660651959293c178f7c8",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w10_library_filters_by_group_independent_of_origin",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027\\runs\\resume-actual-onclick-mutant.xml"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027",
+    "native_exit_code": 1,
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "elapsed_seconds": 3.38
+  },
+  "restored": {
+    "label": "resume-restored",
+    "source_commit": "bda1366b8d033ce0dcf4660651959293c178f7c8",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "tests/unit/presentation/test_tokens_and_wcag.py",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027\\runs\\resume-restored.xml"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-design-review-20261027",
+    "native_exit_code": 0,
+    "tests": 64,
+    "failures": 0,
+    "errors": 0,
+    "elapsed_seconds": 4.7
+  },
+  "scratch_html_original_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+  "scratch_html_mutant_sha256": "f03b276bc298794e139d87e7a16d8595d5723d2e06d8f169d6bd998c9941cce5",
+  "scratch_html_restored_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+  "worker_html_unchanged": true,
+  "external_spend_usd": 0,
+  "postgres_runs": 0
+}

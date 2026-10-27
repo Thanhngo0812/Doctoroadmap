@@ -1,0 +1,41 @@
+{
+  "review": "R9 QA JSON capture addendum",
+  "verdict": "approve",
+  "before": "2d36ed7b",
+  "initialQaCommit": "605d13d25019ed0293963aac6a272f29393209a6",
+  "approvedQaCommit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+  "approvedScriptGitSha256": "e083b48f928cbeb4c1d6a44a709658dd865b9681aea4b8d9796efeda024bfcae",
+  "Critical": [],
+  "Required": [],
+  "Optional": [],
+  "closedFindings": [
+    {
+      "id": "QA-R9-JSON-1",
+      "severity": "Required",
+      "location": "scripts/w16_web_check.cjs:38",
+      "originalProblem": "Unexpected clone read errors rejected only into app.catch and could leave both final audit failure lists empty.",
+      "fix": "Entire readError/parse/privacy branch uses one catch that stores privacyFailures before rethrow.",
+      "finalAssertion": "scripts/w16_web_check.cjs:327"
+    }
+  ],
+  "actualJsProbe": {
+    "driver": "qa-json-guard-check.cjs",
+    "extracts": ["inspectPayload", "JSON binding", "fetch wrapper", "final audit assertions"],
+    "cases": 6,
+    "redCommitNativeExitCode": 1,
+    "greenCommitNativeExitCode": 0,
+    "safeJsonAccepted": true,
+    "privateJsonRejected": true,
+    "malformedJsonRejected": true,
+    "abortedSignalAbortErrorAccepted": true,
+    "unexpectedAbortErrorRejectedEvenIfAppCatches": true,
+    "unexpectedTypeErrorRejectedEvenIfAppCatches": true
+  },
+  "previousReactReviewUnchanged": true,
+  "rootIntegrationGatesStillRequiredAtApprovedSha": true,
+  "reviewerPgRun": false,
+  "reviewerBrowserFullRun": false,
+  "reviewerNetworkTest": false,
+  "productFilesModified": false,
+  "externalCostUsd": 0
+}

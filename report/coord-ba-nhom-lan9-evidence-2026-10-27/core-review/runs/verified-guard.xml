@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.195" timestamp="2026-10-27T13:38:13.292577+07:00" hostname="ADMIN"><testcase classname="tests.test_independent_w12" name="test_unverified_actor_and_db_account_cannot_accept" time="0.573"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;">rt = namespace(service=&lt;wayfinder.application.sharing.SharingService object at 0x000002BFEF8B8710&gt;, port=&lt;test_independent_...verified=True, status='active'), outsider=Actor(user_id='outsider', role='user', email_verified=True, status='active'))
+
+    def test_unverified_actor_and_db_account_cannot_accept(rt):
+        identity=issue(rt)
+        actor=replace(rt.receiver,email_verified=False)
+&gt;       denied(lambda:rt.service.accept_invitation(actor,identity),'email_unverified')
+
+tests\test_independent_w12.py:97:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fn = &lt;function test_unverified_actor_and_db_account_cannot_accept.&lt;locals&gt;.&lt;lambda&gt; at 0x000002BFEF920040&gt;
+code = 'email_unverified'
+
+    def denied(fn,code):
+&gt;       with pytest.raises(WebError) as e:fn()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;
+
+tests\test_independent_w12.py:72: Failed</failure></testcase></testsuite></testsuites>

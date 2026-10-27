@@ -1,0 +1,57 @@
+[
+  {
+    "name": "foreign-recipient",
+    "mutant_source_reconstructed": true,
+    "selected_test": "other_user"
+  },
+  {
+    "name": "unverified-recipient",
+    "mutant_source_reconstructed": true,
+    "selected_test": "other_user"
+  },
+  {
+    "name": "expired-equality",
+    "mutant_source_reconstructed": true,
+    "selected_test": "expiry_exact"
+  },
+  {
+    "name": "daily-owner-lock",
+    "mutant_source_reconstructed": true,
+    "selected_test": "two_runtimes and mail"
+  },
+  {
+    "name": "course-seat-lock",
+    "mutant_source_reconstructed": true,
+    "selected_test": "two_runtimes and capacity"
+  },
+  {
+    "name": "replay-rejected",
+    "mutant_source_reconstructed": true,
+    "selected_test": "accept_replay"
+  },
+  {
+    "name": "verify-hook-skipped",
+    "mutant_source_reconstructed": true,
+    "selected_test": "registration_not_bound"
+  },
+  {
+    "name": "bind-unverified",
+    "mutant_source_reconstructed": true,
+    "selected_test": "direct_binding"
+  },
+  {
+    "name": "dto-bypassed",
+    "mutant_source_reconstructed": true,
+    "selected_test": "dto_filters"
+  },
+  {
+    "name": "respond-not-atomic",
+    "mutant_source_reconstructed": true,
+    "selected_test": "rollback_on_audit_failure and accept"
+  },
+  {
+    "name": "pending-unique-removed",
+    "mutant_source_reconstructed": true,
+    "selected_test": "schema_pending_unique"
+  }
+]

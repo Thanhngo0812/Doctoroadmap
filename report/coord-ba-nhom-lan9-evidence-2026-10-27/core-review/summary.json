@@ -1,0 +1,33 @@
+{
+  "reviewed_head": "f5cd20609913ac2c99b6ccb905a365275d8c13a1",
+  "coordinator_main_pin": "e52bf4f245e9e6c0454ee83760ea4bf8ad55adff",
+  "verdict": "approve_backend_milestone_subject_to_fresh_coordinator_integration_gates",
+  "critical": [],
+  "required": [],
+  "optional": [
+    {
+      "path": "src/web/backend/wayfinder/application/accounts.py",
+      "line": 170,
+      "finding": "Post-commit binding callback exception reports verification failure after verification/token consumption committed; idempotent invitation-list repair preserves the agreed contract.",
+      "suggestion": "Consider a generic operational warning while returning successful verification; preserve list repair."
+    }
+  ],
+  "independent_tests": {
+    "command": ["C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe", "scripts/w05_run_tests.py", "-o", "addopts=", "-q", "tests/test_independent_w12.py", "--basetemp=tmp/r9-independent-final", "--junitxml=runs/independent-final.xml"],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r9-core-review-20261027",
+    "passed": 21,
+    "native": 0,
+    "junit": "runs/independent-final.xml",
+    "log": "runs/independent-final.log",
+    "actual_service": true,
+    "binding_actual_sqlite_sql": true,
+    "postgres_used": false
+  },
+  "independent_mutants": {"caught": 3, "setup_errors": 0, "exact_restoration": true, "evidence": "mutation-summary.json"},
+  "evidence_audit": {"committed_manifest_files_verified": 383, "source_identity_files_verified": 17, "copied_source_files_verified_restored": 280, "author_mutant_hashes_reconstructed": 11, "author_mutant_xml_failures_verified": 11, "evidence": ["independent-evidence-audit.json", "author-mutation-provenance.json"]},
+  "audited_author_gates": {"full_passed": 3139, "full_skipped_or_xfailed": 2, "react_passed": 219, "head_tested": "c6a6ae5de7206633770582b318ffa14d0c5f85c2", "independently_rerun": false},
+  "external_calls": 0,
+  "worker_or_main_edited": false,
+  "backend_only": true,
+  "whole_w12_complete": false
+}

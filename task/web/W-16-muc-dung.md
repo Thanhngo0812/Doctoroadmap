@@ -1,5 +1,7 @@
 # W-16 — Trang mức dùng và dải hết trần
 
+**Nghiệm thu lần 9, 2026-10-27: đóng toàn W-16.** Nhận React 6ee15386 cùng backend d1bf42b đã nhận, ghép **local 1513ac7f**. Cổng 8a3c262f: 3407 Python/0 fail/3 skip/1 xfail cũ, 229 React/build; browser 12 cấu hình/66 ảnh/66 Axe, bài đã có và quiz ngân hàng vẫn dùng khi hết trần, model-call không tăng. Ngưỡng nhãn gần hết 80% là trình bày, không đổi quota core. Không USD cho người học/max=null/giờ Việt Nam được kiểm; không tuyên bố terminal quiz đã thu đủ. Chi mới 0 USD, chưa push; [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
+
 **Điều phối lần 8, 2026-10-26:** W-10 đã đạt/ghép local `1be7e1c`, web được mở nhánh React W-16 riêng từ main cuối; backend d1bf42b giữ mốc đã nhận, 13 ca trong cổng mới vẫn xanh. Trang/dải usage-1: ba trạng thái, giờ Việt Nam, max=null, không USD, giữ đọc nội dung đã có khi hết trần. Không bật trần demo hoặc viết lại core/backend. [biên bản lần 8](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan8-2026-10-26.md) và [lời giao lần 8](../../report/lenh-giao-viec-ba-nhom-lan8-2026-10-26.md).
 
 **Nghiệm thu lần 7, 2026-10-26: nhận mốc backend `d1bf42b`, ghép local `c5b4f5f`; toàn W-16 vẫn mở.** Projection qua usage_rows, ngày/tháng nửa mở theo giờ Việt Nam, counts_quota là lượt, tách purpose/actor và trace build không cộng trùng, max=null khi demo tắt, HTTP không USD. 13 ca PG nằm trong cổng ghép 2.735 Python/203 React/build; probe độc lập 12 đạt/7 mutant bị bắt. Web còn trang và dải React sau khi sửa/nhận W-10; không giao làm lại backend, không thay cấu hình giá/trần. [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md) và [lời giao](../../report/lenh-giao-viec-ba-nhom-lan7-2026-10-26.md).
@@ -8,7 +10,7 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 8 (`usage-1`, bốn trần); [spec Pha B2](../../doc/pha-b2-spec.md), mục 8; spec thiết kế, trang
 mức dùng và dải hết trần.
-**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-09, W-14 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-09, W-14 · **Trạng thái:** đạt, ghép local lần 9
 
 ## Vì sao
 
@@ -37,7 +39,7 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [x] Phản hồi `my_usage` của người dùng thường không có trường nào chứa USD (quét đệ quy tên khoá có `usd`, `cost`).
 - [x] Đầu ngày mới theo giờ Việt Nam (đồng hồ giả ở 16:59 và 17:00 UTC) thì tỉ lệ về 0.
 - [x] Chi ở hai khoá cộng chung vào tỉ lệ.
-- [ ] Ảnh chụp trang mức dùng ở ba trạng thái (còn nhiều, gần hết, hết) và dải hết trần trong khung chat.
+- [x] Ảnh chụp trang mức dùng ở ba trạng thái (còn nhiều, gần hết, hết) và dải hết trần trong khung chat.
 
 ## Ngoài vé
 

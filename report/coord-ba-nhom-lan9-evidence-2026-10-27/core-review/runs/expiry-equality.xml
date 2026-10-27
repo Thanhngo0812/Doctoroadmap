@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.289" timestamp="2026-10-27T13:38:22.232661+07:00" hostname="ADMIN"><testcase classname="tests.test_independent_w12" name="test_expiry_exact_boundary_denies_without_membership" time="0.442"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;">rt = namespace(service=&lt;wayfinder.application.sharing.SharingService object at 0x0000020710E731A0&gt;, port=&lt;test_independent_...verified=True, status='active'), outsider=Actor(user_id='outsider', role='user', email_verified=True, status='active'))
+
+    def test_expiry_exact_boundary_denies_without_membership(rt):
+        identity=issue(rt);rt.clock.instant=rt.port.rows[identity].expires_at
+&gt;       denied(lambda:rt.service.accept_invitation(rt.receiver,identity),'link_invalid')
+
+tests\test_independent_w12.py:110:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fn = &lt;function test_expiry_exact_boundary_denies_without_membership.&lt;locals&gt;.&lt;lambda&gt; at 0x0000020710EE0040&gt;
+code = 'link_invalid'
+
+    def denied(fn,code):
+&gt;       with pytest.raises(WebError) as e:fn()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;
+
+tests\test_independent_w12.py:72: Failed</failure></testcase></testsuite></testsuites>
