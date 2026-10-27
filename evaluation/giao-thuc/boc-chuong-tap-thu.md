@@ -17,7 +17,8 @@ seed hay N theo kết quả bốc. Spec mục 4; kế hoạch mục 5; Q36, Q37.
 ## Đơn vị "chương"
 
 - Chương là mục cấp cao nhất có đánh số trong mục lục in, ví dụ "Chương 3", "Bài 3", "Chủ đề 3". Sách có cấp "Phần" bọc ngoài chương thì đơn vị vẫn là chương.
-- Trang đầu của chương là trang PDF chứa tiêu đề chương. Trang cuối là trang ngay trước tiêu đề của chương kế tiếp, hoặc của mục cuối sách kế tiếp.
+- Trang đầu của chương là trang PDF chứa tiêu đề chương. Trang cuối là trang chứa dòng cuối cùng trước tiêu đề của chương kế tiếp, hoặc của mục cuối sách
+  kế tiếp. Nếu chương kế tiếp bắt đầu giữa trang thì hai chương chung trang đó.
 - Số trang là trang của tệp PDF, đánh từ 1, không phải số in trên sách.
 - **Dự phòng:** cuốn nào có dưới 3 chương hợp lệ thì đơn vị đổi xuống mục cấp hai có đánh số (ví dụ 2.1, 2.2), N = 3, cùng seed. Cách đổi này ghi trong
   manifest của cuốn đó.
