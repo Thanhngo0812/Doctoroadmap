@@ -12,15 +12,15 @@ const scrub=value=>Array.isArray(value)?value.map(scrub):value&&typeof value==='
 const safeText=text=>[P0,P1,'Wrong W04 private passphrase!'].reduce((s,v)=>s.split(v).join('[REDACTED]'),text);
 async function main(){
  const runtime=JSON.parse(await fs.readFile(runtimePath,'utf8')),base=runtime.base,api=base+'/api/v1';
- const browser=await chromium.launch(),contexts=[],pending=[];let holdGet=null,holdPatch=null;
+ const browser=await chromium.launch(),contexts=[];let holdGet=null,holdPatch=null;
  async function userPage(name){
   const context=await browser.newContext({viewport:{width:1280,height:900},recordVideo:{dir:path.join(root,'tmp/w04-react-video'),size:{width:1280,height:900}}});
   await context.exposeBinding('__w04Hold',(_,method)=>{const held=method==='GET'?holdGet:holdPatch;if(held){held.ready=true;return held.promise;}});
-  await context.addInitScript(()=>{const original=window.fetch.bind(window);window.fetch=async(...args)=>{const response=await original(...args);if(response.url.endsWith('/api/v1/me'))await window.__w04Hold(args[1]?.method??'GET');return response;};});
+  await context.exposeBinding('__w04Record',(_,row)=>audit.http.push({stage,...scrub(row),via:'fetch-clone-before-application'}));
+  await context.addInitScript(()=>{const original=window.fetch.bind(window);window.fetch=async(...args)=>{const response=await original(...args);if(response.url.includes('/api/v1/')&&response.headers.get('content-type')?.includes('json'))await window.__w04Record({path:new URL(response.url).pathname,status:response.status,method:args[1]?.method??'GET',body:await response.clone().json()});if(response.url.endsWith('/api/v1/me'))await window.__w04Hold(args[1]?.method??'GET');return response;};});
   const page=await context.newPage();contexts.push({context,page,name});
   page.on('pageerror',e=>audit.pageErrors.push({stage,message:safeText(e.message)}));
   page.on('console',m=>{if(m.type()==='error')audit.console.push({stage,message:safeText(m.text())});});
-  page.on('response',response=>{if(!response.url().startsWith(api))return;const when=stage;const job=(async()=>{const type=response.headers()['content-type']??'';if(!type.includes('json'))return;const body=scrub(await response.json());audit.http.push({stage:when,path:new URL(response.url()).pathname,status:response.status(),method:response.request().method(),body});})();pending.push(job);void job.catch(()=>{});});
   return page;
  }
  const a=await userPage('a'),b=await userPage('b'),learner=a;
@@ -128,7 +128,7 @@ async function main(){
   if(reduced)assert.equal(await a.locator('.profile-feedback.success').evaluate(e=>getComputedStyle(e).animationName),'none');
   await a.getByLabel('Mật khẩu hiện tại',{exact:true}).fill('Wrong W04 private passphrase!');await a.getByLabel('Mật khẩu mới',{exact:true}).fill(P1);await a.getByLabel('Xác nhận mật khẩu mới',{exact:true}).fill(P1);await a.getByRole('button',{name:'Đổi mật khẩu',exact:true}).click();
   await a.getByText('Mật khẩu hiện tại chưa đúng.',{exact:true}).waitFor();assert.equal(await a.getByLabel('Mật khẩu hiện tại',{exact:true}).getAttribute('aria-invalid'),'true');
-  await a.getByLabel('Mật khẩu hiện tại',{exact:true}).focus();assert.equal(await a.getByLabel('Mật khẩu hiện tại',{exact:true}).evaluate(e=>getComputedStyle(e).outlineColor),await a.getByLabel('Mật khẩu hiện tại',{exact:true}).evaluate(e=>getComputedStyle(e).borderColor));
+  await a.getByLabel('Mật khẩu hiện tại',{exact:true}).focus();await settled();assert.equal(await a.getByLabel('Mật khẩu hiện tại',{exact:true}).evaluate(e=>getComputedStyle(e).outlineColor),await a.getByLabel('Mật khẩu hiện tại',{exact:true}).evaluate(e=>getComputedStyle(e).borderColor));
   await capture('password-invalid',true);const wrong=await probe('wrong-current');assert.equal(wrong.originalPasswordValid,true);assert.equal(wrong.replacementPasswordValid,false);assert.equal(count(wrong,runtime.accountId),2);
   await a.getByRole('button',{name:'Đăng xuất khỏi mọi thiết bị',exact:true}).click();await a.getByRole('dialog',{name:'Đăng xuất khỏi mọi thiết bị?'}).waitFor();await capture('logout-confirm',true);
   assert.equal(await a.getByRole('button',{name:'Giữ đăng nhập'}).evaluate(e=>e===document.activeElement),true);await a.keyboard.press('Escape');assert.equal(await a.getByRole('dialog').count(),0);
@@ -188,11 +188,10 @@ async function main(){
  }catch(error){audit.failure={stage,message:safeText(error.message),stack:safeText(error.stack??'')};throw error;
  }finally{
   if(releaseGet)releaseGet();if(releasePatch)releasePatch();
-  for(const {page}of contexts){await page.waitForLoadState('networkidle');page.removeAllListeners('response');}
-  const results=await Promise.allSettled(pending);audit.pendingRejections=results.filter(r=>r.status==='rejected').map(r=>safeText(String(r.reason)));
+  for(const {page}of contexts)await page.waitForLoadState('networkidle');
   for(const {context,page,name}of contexts){const video=page.video();await context.close();if(video)await video.saveAs(path.join(out,name+'.webm'));}
   await observer.close();
-  await fs.writeFile(path.join(out,'audit.json'),JSON.stringify(audit,null,2)+'\n');await browser.close();assert.deepEqual(audit.pendingRejections,[]);
+  await fs.writeFile(path.join(out,'audit.json'),JSON.stringify(audit,null,2)+'\n');await browser.close();
  }
 }
 main().catch(e=>{console.error(safeText(e.stack??String(e)));process.exitCode=1;});
