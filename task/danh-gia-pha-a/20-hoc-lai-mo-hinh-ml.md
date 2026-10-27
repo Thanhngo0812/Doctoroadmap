@@ -54,13 +54,15 @@ Chỉ M3 có phần này; hai mô hình A1 không cần.
 
 - **Đầu vào:** đúng thiết kế E6 (`report/nghien-cuu-pass-phu-vong-2-ke-hoach-2026-10-10.md`, mục 3), tức phiếu D-01 gồm tên Y, cửa sổ có X được đánh dấu, và
   `x_dinh_nghia`. Nhãn nhị phân giống M3 (`can_de_hieu`).
-- **Mô hình:** `FacebookAI/xlm-roberta-base` (MIT), đóng băng lớp embedding để vừa GPU 4 GB, độ dài 256, fp16, lô 8 với tích luỹ gradient 4, học 2e-5, 3 epoch,
-  seed `20261027`. PhoBERT-base không chọn vì cần tách từ, dễ lệch với lúc huấn luyện trước; PhoBERT-v2 là AGPL.
+- **Mô hình:** `intfloat/multilingual-e5-base` (MIT, kiến trúc XLM-R base). Đợt E6 (12–13/10) đã học mô hình này trên chính máy GPU 4 GB: dùng lại
+  `scripts/pass-phu-ml/e6_cross_encoder.py`, dữ liệu dạng `tmp/pass-phu-ml/e6/du-lieu` và môi trường `~/e6/venv` trên máy GPU (torch 2.14 cu130, transformers
+  5.19). Siêu tham số giữ như E6, seed `20261027`. PhoBERT-base không chọn vì cần tách từ, dễ lệch với lúc huấn luyện trước; PhoBERT-v2 là AGPL. Kết quả E6 cũ
+  (học trên D-01, chấm trên tài liệu phát triển) được ghi vào báo cáo làm bối cảnh, không dùng để chọn.
 - **Chia:** 4 phần theo cuốn (mỗi phần 4 cuốn), tất định theo seed. Học lại 16 lần trên máy GPU 4 GB không kịp trước ngày đóng băng. LightGBM đã chọn và
   logistic cũng được chấm lại trên **cùng 4 phần** để so ngang hàng.
 - **Hiệu chỉnh và ngưỡng** như M3: isotonic trên dự đoán ngoài mẫu, rồi luật top-k của sản phẩm (`k = round(tổng xác suất hiệu chỉnh)`).
 - **Đo phút trên CPU** của laptop cho 1.000 cặp, đặt cạnh LightGBM. Đây là chi phí nếu đưa vào sản phẩm.
-- **Mã chạy được trên máy GPU Linux** (`venv` riêng, ghi rõ gói và phiên bản). Claude chạy phần học; agent C không SSH. Ghi danh sách dữ liệu chép lên máy GPU:
+- **Mã chạy được trên máy GPU Linux**, trong `~/e6/venv` đã có; ghi rõ gói và phiên bản. Claude chạy phần học; agent C không SSH. Ghi danh sách dữ liệu chép lên máy GPU:
   chỉ phiếu D-01, không sách thử.
 
 ## Phần D — đưa vào bộ đánh giá trên tập thử
