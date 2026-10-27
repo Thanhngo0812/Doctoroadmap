@@ -215,3 +215,18 @@ def test_cli_cham_a1a2(tmp_path, capsys):
     out = capsys.readouterr().out
     assert "a1.m1" in out and "a2.recall_noi_dung_muc" in out
     assert json.loads((tmp_path / "bang.json").read_text(encoding="utf-8"))["theo_cuon"]
+
+
+def test_khop_tieu_de_can_phu_tu_nua_so_dong_vang_tro_len():
+    bang = [{"id": f"p0005-l{i:03d}", "trang": 5, "text": f"dong {i} cua tieu de dai"} for i in range(1, 5)]
+    vang = [h("g", [b["id"] for b in bang], "tieu de dai", 1, None, "noi_dung")]
+    ma = lambda *ids: {"headings": [h("a", [bang[i]["id"] for i in ids], "x", 1, None, "noi_dung")], "evaluation_excluded": []}  # noqa: E731
+    dem = lambda dd: tm(a1a2.cham(vang, dd, bang, he="chinh", ma_sach=MA), "a1.m1")["tp"]  # noqa: E731
+    assert dem(ma(0)) == 0                    # 1/4 dòng: chưa đủ nửa
+    assert dem(ma(0, 1)) == 1                 # 2/4 dòng: đủ nửa
+
+
+def test_macro_f1_bo_vai_tro_khong_co_muc_vang_khoi_trung_binh_khong_tinh_thanh_0():
+    rows = [dong.f1("chinh", MA, "cuon", "a2.f1_vai_tro.noi_dung", 1, 0, 0), dong.f1("chinh", MA, "cuon", "a2.f1_vai_tro.mo_dau", 0, 0, 0)]
+    kq = a1a2.macro_f1_vai_tro(rows)
+    assert kq["gia_tri"] == 1.0 and (kq["so_vai_tro_co_so"], kq["so_vai_tro"]) == (1, 2)
