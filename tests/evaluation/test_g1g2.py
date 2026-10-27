@@ -15,6 +15,7 @@ import pytest
 
 from danhgia.__main__ import main
 from danhgia.g1g2 import goi, kiem_cay, loi_cai, nguoi_hai, phieu, vang
+from danhgia.xuat import bang_dong
 from tests.evaluation.ho_tro import tao_pdf
 
 GOC = Path(__file__).resolve().parents[2]
@@ -63,7 +64,7 @@ def sach(tmp_path):
 
 @pytest.fixture
 def dong(sach):
-    return goi.dong_tu_pdf(sach[1])
+    return bang_dong.dong_tu_pdf(sach[1])
 
 
 def nhap_mau(dong):
@@ -102,14 +103,41 @@ def chay_d02(thu_muc):
 
 
 def test_dong_tu_pdf_ma_dong_theo_trang(dong):
-    assert dong[0] == {"id": "p0001-l001", "trang": 1, "text": "LOI NOI DAU"}
+    assert {k: dong[0][k] for k in ("id", "trang", "text")} == {"id": "p0001-l001", "trang": 1, "text": "LOI NOI DAU"}
     assert [d["text"] for d in dong if d["trang"] == 5][:3] == ["CHUONG 2", "NHIP DIEU", "2.1 Nhip"]
     assert len({d["id"] for d in dong}) == len(dong)
 
 
+def test_bang_dong_dung_bo_doc_nhe_cua_pipeline(sach, dong):
+    """Hàng có đủ trường D-02 và các số lấy từ chính `doc_nhe` (bản trong src), không phải lớp chữ pypdfium2 trần."""
+    import pypdfium2
+    from doc2roadmap.infrastructure.parsing.nhe import doc_nhe
+    pdf = pypdfium2.PdfDocument(sach[1].read_bytes())
+    mong = []
+    for i in range(len(pdf)):
+        trang = pdf[i]
+        rong, cao = trang.get_size()
+        for chars in doc_nhe.page_lines(trang):
+            r = doc_nhe.describe(chars, i + 1, cao, rong)
+            if r:
+                mong.append((r["text"], [r["x0"], r["top"], r["x1"], r["bottom"]], r["size"], r["bold"]))
+    assert [(d["text"], d["bbox"], d["co_chu"], d["dam"]) for d in dong] == mong
+    assert all(set(d) == {"id", "trang", "text", "bbox", "co_chu", "dam"} and len(d["bbox"]) == 4 for d in dong)
+    assert 10 < dong[0]["co_chu"] < 14 and dong[0]["dam"] is False  # Helvetica cỡ 11 (hộp chữ lỏng cao hơn cỡ một chút), không đậm
+
+
+def test_bang_dong_giu_moi_chu_cai_dung_mot_lan(sach, dong):
+    chu_cai = bang_dong.chu_cai_pdf(sach[1])
+    bang_dong.kiem_chu_cai(chu_cai, dong)  # không ném
+    with pytest.raises(ValueError, match="chữ cái"):
+        bang_dong.kiem_chu_cai(chu_cai, dong[:3] + dong[4:])  # bỏ một hàng
+    with pytest.raises(ValueError, match="chữ cái"):
+        bang_dong.kiem_chu_cai(chu_cai, dong + [dong[0]])  # lặp một hàng
+
+
 def test_goi_day_du_va_validator_d02_cua_ban_nhap_dat(tmp_path, sach, dong, nhap):
     manifest, pdf = sach
-    ra = goi.sinh_goi(manifest, pdf, tmp_path / "goi")
+    ra = goi.sinh_goi(manifest, pdf, tmp_path / "goi", dong)
     for tep in ("HUONG-DAN.md", "kiem_cay.py", f"dong/{MA}.jsonl", f"chon-trang-mau/{MA}.json", "thong-tin.json"):
         assert (ra / tep).is_file(), tep
     assert (ra / "cay-muc").is_dir() and not list((ra / "cay-muc").iterdir())  # chỗ trả bài trống
@@ -122,11 +150,11 @@ def test_goi_day_du_va_validator_d02_cua_ban_nhap_dat(tmp_path, sach, dong, nhap
     assert kq.returncode == 0 and "ĐẠT" in kq.stdout, kq.stdout + kq.stderr
 
 
-def test_goi_tu_choi_pdf_sai_sha(tmp_path, sach):
+def test_goi_tu_choi_pdf_sai_sha(tmp_path, sach, dong):
     manifest, pdf = sach
     manifest["pdf_sha256"] = "1" * 64
     with pytest.raises(ValueError, match="sha256"):
-        goi.sinh_goi(manifest, pdf, tmp_path / "goi")
+        goi.sinh_goi(manifest, pdf, tmp_path / "goi", dong)
 
 
 @pytest.mark.parametrize("sua, mong", [
@@ -407,7 +435,7 @@ def test_bat_loi_vi_du_dung_tay(dong, nhap):
     assert bao_cao["theo_loai"]["doi_cap"] == {"da_cai": 2, "bat": 1, "ti_le": 0.5}
     assert bao_cao["theo_loai"]["gan_sai_vai_tro"] == {"da_cai": 1, "bat": 0, "ti_le": 0.0}
     assert bao_cao["theo_loai"]["bo_tieu_de"] == {"da_cai": 1, "bat": 1, "ti_le": 1.0}
-    assert bao_cao["sua_nham"] == 1  # chỉ sửa 1.3, các lỗi cài không tính vào
+    assert bao_cao["sua_ngoai_loi_cai"] == 1  # chỉ sửa 1.3, các lỗi cài không tính vào
     # sửa nhầm vẫn nằm trong vàng (đó là phán đoán của sinh viên); lỗi bỏ sót thì không
     cap = {h["dong"][0]: (h["cap"], h["vai_tro"]) for h in muc}
     assert cap[nhap[5]["dong"][0]][0] == 3
@@ -435,7 +463,7 @@ def test_vang_cuoi_giu_sua_dung_cua_sinh_vien_va_xoa_that(dong, nhap):
     assert loi == []
     khoa = [h["dong"][0] for h in muc]
     assert nhap[7]["dong"][0] not in khoa and nhap[13]["dong"][0] in khoa
-    assert bao_cao["sua_nham"] == 1
+    assert bao_cao["sua_ngoai_loi_cai"] == 1
     assert [h["id"] for h in muc] == [f"h{i:03d}" for i in range(1, len(muc) + 1)]
 
 
@@ -486,18 +514,40 @@ def test_phieu_hai_chi_co_mau_va_khong_lo_sua_nguoi_thu_nhat(tmp_path, sach, don
     nhap_cai, so = loi_cai.cai_loi(nhap, dong, seed=2)
     p1 = phieu.sinh_phieu(nhap_cai, dong, manifest, "S1", tmp_path / "p1.xlsx")
     dien(p1, {h["dong"][0]: {"cap": 6, "vai_tro": "de_cuong"} for h in nhap_cai[:4]})
-    mau = nguoi_hai.chon_mau([h["dong"][0] for h in nhap_cai], seed=5)
+    mau = nguoi_hai.chon_mau([h["dong"][0] for h in nhap_cai], seed=5, loai_tru={x["khoa"] for x in so})
+    assert not set(mau) & {x["khoa"] for x in so}
     p2 = phieu.sinh_phieu(nhap_cai, dong, manifest, "S2", tmp_path / "p2.xlsx", khoa=mau)
     wb = openpyxl.load_workbook(p2)
     assert "Thêm" not in wb.sheetnames
     d = wb["Duyệt"]
     assert [d.cell(r, 1).value for r in range(2, d.max_row + 1)] == mau
-    goc = {h["dong"][0]: h for h in nhap_cai}
-    for r in range(2, d.max_row + 1):  # giá trị khởi đầu của phiếu hai là bản nháp, không phải bản sửa của người thứ nhất
+    goc = {h["dong"][0]: h for h in nhap}  # bản nháp SẠCH: người hai không thấy giá trị bị cài, cũng không thấy sửa của người một
+    for r in range(2, d.max_row + 1):
         h = goc[d.cell(r, 1).value]
         assert (d.cell(r, 3).value, d.cell(r, 5).value) == (h["cap"], h["vai_tro"])
     chuoi, tho = quet_phieu(p2)
     assert not any(DAU_VET[i] in c.lower() for i in range(len(DAU_VET)) for c in chuoi)
+
+
+def test_mau_nguoi_hai_khong_bao_gio_chua_muc_bi_cai(dong, nhap):
+    co_mau_lan_loi = False
+    for seed in range(1, 41):
+        nhap_cai, so = loi_cai.cai_loi(nhap, dong, seed=seed)
+        loi = {x["khoa"] for x in so}
+        khoa = [h["dong"][0] for h in nhap_cai]
+        mau = nguoi_hai.chon_mau(khoa, seed=seed * 7 + 1, loai_tru=loi)
+        assert not set(mau) & loi, seed
+        sach_ = [k for k in khoa if k not in loi]
+        assert len(mau) == int(0.3 * len(sach_) + 0.5) and len(set(mau)) == len(mau) and set(mau) <= set(sach_), seed
+        co_mau_lan_loi |= bool(set(nguoi_hai.chon_mau(khoa, seed=seed * 7 + 1)) & loi)  # không loại trừ thì có lúc lẫn: test này không rỗng
+    assert co_mau_lan_loi
+    assert any(x["loai"] == "bo_tieu_de" for x in so)
+
+
+def test_cli_phieu_hai_bat_buoc_so_loi(tmp_path, capsys):
+    from danhgia.g1g2 import lenh
+    assert lenh.kiem_doi_so_phieu(type("A", (), {"mau_seed": 3, "so_loi": None})()) is not None
+    assert lenh.kiem_doi_so_phieu(type("A", (), {"mau_seed": None, "so_loi": None})()) is None
 
 
 def test_kappa_tren_phan_chung_cua_hai_nguoi():
@@ -548,7 +598,12 @@ def test_cli_tron_vong(tmp_path, sach, dong, nhap, capsys):
     p1, p2 = tmp_path / "p1.xlsx", tmp_path / "p2.xlsx"
     chung = ["--manifest", str(m), "--thu-muc", str(goi_dir), "--nhap-cai", str(nhap_cai_tep)]
     assert main(["g1g2", "phieu", *chung, "--nguoi", "S1", "--ra", str(p1)]) == 0
-    assert main(["g1g2", "phieu", *chung, "--nguoi", "S2", "--ra", str(p2), "--mau-seed", "9"]) == 0
+    assert main(["g1g2", "phieu", *chung, "--nguoi", "S2", "--ra", str(p2), "--mau-seed", "9"]) == 1  # thiếu --so-loi
+    assert not p2.exists()
+    assert main(["g1g2", "phieu", *chung, "--nguoi", "S2", "--ra", str(p2), "--mau-seed", "9", "--so-loi", str(so_tep)]) == 0
+    khoa_loi = {x["khoa"] for x in json.loads(so_tep.read_text(encoding="utf-8"))["loi"]}
+    d2 = openpyxl.load_workbook(p2)["Duyệt"]
+    assert not {d2.cell(r, 1).value for r in range(2, d2.max_row + 1)} & khoa_loi
     ra = tmp_path / "vang"
     assert main(["g1g2", "vang", *chung, "--so-loi", str(so_tep), "--phieu", str(p1), "--ra", str(ra),
                  "--ra-bao-cao", str(tmp_path / "bc.json")]) == 0
@@ -562,7 +617,8 @@ def test_cli_tron_vong(tmp_path, sach, dong, nhap, capsys):
     kq = json.loads(capsys.readouterr().out)
     n_mau = openpyxl.load_workbook(p2)["Duyệt"].max_row - 1
     n_nhap_cai = len(nhap_cai_tep.read_text(encoding="utf-8").splitlines())
-    assert kq["vai_tro"]["dong_y"] == 1.0 and kq["so_mau"] == n_mau == int(0.3 * n_nhap_cai + 0.5)
+    n_sach = n_nhap_cai - len(khoa_loi - {x["khoa"] for x in json.loads(so_tep.read_text(encoding="utf-8"))["loi"] if x["loai"] == "bo_tieu_de"})
+    assert kq["so_mau"] == n_mau == int(0.3 * n_sach + 0.5)
 
 
 def test_cli_vang_tu_choi_phieu_sai_va_khong_ghi(tmp_path, sach, dong, nhap):

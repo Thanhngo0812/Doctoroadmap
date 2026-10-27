@@ -31,7 +31,9 @@ def _nap(a):
 
 
 def _goi(a):
-    ra = goi.sinh_goi(_doc(a.manifest), a.pdf, a.ra)
+    from danhgia.xuat import bang_dong  # seam xuất: chỉ nơi này chạm bộ đọc của pipeline
+
+    ra = goi.sinh_goi(_doc(a.manifest), a.pdf, a.ra, bang_dong.dong_tu_pdf(a.pdf))
     print(f"đã ghi gói nháp vào {ra}: {json.loads((ra / 'thong-tin.json').read_text(encoding='utf-8'))['so_dong']} dòng")
     return 0
 
@@ -55,11 +57,23 @@ def _cai_loi(a):
     return 0
 
 
+def kiem_doi_so_phieu(a):
+    """Phiếu người hai phải biết sổ lỗi cài để loại mục bị cài khỏi mẫu; trả thông điệp lỗi hoặc None."""
+    if a.mau_seed is not None and not a.so_loi:
+        return "phiếu người hai cần --so-loi (sổ lỗi cài) để mẫu không chứa mục bị cài"
+    return None
+
+
 def _phieu(a):
+    loi = kiem_doi_so_phieu(a)
+    if loi:
+        print("LỖI", loi)
+        return 1
     m, dong, nhap_cai = _nap(a)
     khoa = None
     if a.mau_seed is not None:
-        khoa = nguoi_hai.chon_mau([h["dong"][0] for h in nhap_cai], seed=a.mau_seed, ti_le=a.ti_le)
+        loai_tru = {x["khoa"] for x in _doc(a.so_loi)["loi"]}
+        khoa = nguoi_hai.chon_mau([h["dong"][0] for h in nhap_cai], seed=a.mau_seed, ti_le=a.ti_le, loai_tru=loai_tru)
     phieu.sinh_phieu(nhap_cai, dong, m, a.nguoi, a.ra, khoa=khoa)
     print(f"đã ghi {a.ra}: {len(nhap_cai) if khoa is None else len(khoa)} hàng")
     return 0
@@ -80,7 +94,7 @@ def _vang(a):
         shutil.copytree(Path(a.thu_muc) / ten, ra / ten, dirs_exist_ok=True)
     goi.ghi_jsonl(ra / "cay-muc" / f"{m['ma_sach']}.jsonl", muc)
     _ghi(a.ra_bao_cao, bao_cao)
-    print(f"vàng cuối {len(muc)} mục; bắt được {bao_cao['bat']}/{bao_cao['da_cai']} lỗi cài; sửa nhầm {bao_cao['sua_nham']}")
+    print(f"vàng cuối {len(muc)} mục; bắt được {bao_cao['bat']}/{bao_cao['da_cai']} lỗi cài; sửa ngoài lỗi cài {bao_cao['sua_ngoai_loi_cai']}")
     return 0
 
 
@@ -140,6 +154,7 @@ def them_lenh(parser):
     p.add_argument("--ra", required=True)
     p.add_argument("--mau-seed", type=int, default=None, help="có thì sinh phiếu mẫu cho người thứ hai")
     p.add_argument("--ti-le", type=float, default=0.30)
+    p.add_argument("--so-loi", default=None, help="sổ lỗi cài; bắt buộc khi có --mau-seed (mẫu chỉ bốc trong mục không bị cài)")
     p.set_defaults(chay=_phieu)
 
     p = sub.add_parser("vang", help="phiếu người thứ nhất -> vàng cuối và tỉ lệ bắt lỗi cài")

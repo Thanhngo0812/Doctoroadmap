@@ -1,6 +1,6 @@
 """Gói nháp G1/G2 cho người làm nháp (Codex): bảng dòng theo trang có mã dòng, hướng dẫn ngắn, validator chạy bằng thư viện chuẩn.
 
-Dòng đọc trực tiếp bằng pypdfium2 (không dùng đầu ra pipeline). Mã dòng `pNNNN-lNNN`, đánh số theo thứ tự đọc của lớp chữ PDF.
+Bảng dòng do `danhgia.xuat.bang_dong` dựng bằng bộ đọc nhẹ của pipeline (cùng mã dòng với đầu ra A1); gói này chỉ nhận bảng đó.
 """
 import hashlib
 import json
@@ -16,7 +16,7 @@ Việc của bạn: đọc cuốn giáo trình qua bảng dòng `dong/<sách>.js
 Đây là **bản nháp**: một sinh viên sẽ duyệt lại từng mục. Hãy làm cẩn thận như thể không ai duyệt; đừng cố ý để sót.
 
 ## Đầu vào
-- `dong/<sách>.jsonl`: mỗi dòng chữ của cả cuốn, có `id` (`p0031-l002` = trang PDF 31, dòng 2), `trang`, `text`.
+- `dong/<sách>.jsonl`: mỗi dòng chữ của cả cuốn, có `id` (`p0031-l002` = trang PDF 31, dòng 2), `trang`, `text`, `bbox` ([trái, trên, phải, dưới], toạ độ PDF gốc dưới-trái), `co_chu` (cỡ chữ), `dam` (true nếu phần lớn chữ đậm). Cỡ chữ và chữ đậm giúp nhận tiêu đề.
 - `muc_luc_dien_tu/<sách>.json`: bookmark của PDF nếu có (có thể rỗng hoặc sai).
 - Trang PDF được đếm từ 1, không phải số in trên sách.
 
@@ -54,30 +54,6 @@ Mục con thường cùng vai trò với mục cha; ghi vai trò khác khi mục
 """
 
 
-def dong_tu_pdf(pdf: str | Path) -> list[dict]:
-    """Các dòng chữ không rỗng của từng trang, mã `pNNNN-lNNN`."""
-    import pypdfium2
-
-    doc = pypdfium2.PdfDocument(Path(pdf).read_bytes())
-    ket = []
-    try:
-        for i in range(len(doc)):
-            trang = doc[i]
-            tp = trang.get_textpage()
-            chu = tp.get_text_range()
-            tp.close()
-            trang.close()
-            so = 0
-            for dong in chu.replace("\r", "\n").split("\n"):
-                dong = " ".join(dong.split())
-                if dong:
-                    so += 1
-                    ket.append({"id": f"p{i + 1:04d}-l{so:03d}", "trang": i + 1, "text": dong})
-    finally:
-        doc.close()
-    return ket
-
-
 def bookmark(pdf: str | Path) -> list[dict]:
     import pypdfium2
 
@@ -98,13 +74,13 @@ def ghi_jsonl(duong, ds):
     Path(duong).write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in ds), encoding="utf-8")
 
 
-def sinh_goi(manifest: dict, pdf: str | Path, ra: str | Path) -> Path:
+def sinh_goi(manifest: dict, pdf: str | Path, ra: str | Path, dong: list[dict]) -> Path:
+    """`dong`: bảng dòng dựng bởi `danhgia.xuat.bang_dong` (seam xuất); gói này không đọc PDF để lấy dòng."""
     ma = manifest["ma_sach"]
     sha = hashlib.sha256(Path(pdf).read_bytes()).hexdigest()
     if sha != manifest["pdf_sha256"]:
         raise ValueError("sha256 của PDF không khớp manifest")
     ra = Path(ra)
-    dong = dong_tu_pdf(pdf)
     ghi_jsonl(ra / "dong" / f"{ma}.jsonl", dong)
     (ra / "cay-muc").mkdir(parents=True, exist_ok=True)
     (ra / "chon-trang-mau").mkdir(exist_ok=True)

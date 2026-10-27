@@ -3,8 +3,11 @@ from danhgia.thong_ke.dong_thuan import cohen_kappa
 from danhgia.thong_ke.lcg import Lcg
 
 
-def chon_mau(khoa, *, seed, ti_le=0.30):
-    """`round(ti_le · N)` mục (ít nhất 1), bốc không hoàn lại bằng LCG theo seed; trả theo thứ tự đọc ban đầu."""
+def chon_mau(khoa, *, seed, ti_le=0.30, loai_tru=()):
+    """`round(ti_le · N')` mục (ít nhất 1), N' = số mục không nằm trong `loai_tru` (mục bị cài lỗi). Bốc không hoàn lại bằng LCG
+    theo seed; trả theo thứ tự đọc ban đầu. Mẫu không bao giờ chứa mục bị cài nên người hai không thấy giá trị bị cài."""
+    loai_tru = set(loai_tru)
+    khoa = [k for k in khoa if k not in loai_tru]
     n = len(khoa)
     if not n:
         raise ValueError("không có mục nào để bốc")

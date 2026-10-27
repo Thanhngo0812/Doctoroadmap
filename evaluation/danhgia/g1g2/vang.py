@@ -4,7 +4,7 @@ Một lỗi cài được tính là bắt được khi sinh viên đưa giá tr�
 - `doi_cap`, `gan_sai_vai_tro`: cấp (hay vai trò) sau duyệt bằng giá trị gốc, và hàng không bị xoá;
 - `bo_tieu_de`: sheet Thêm có tiêu đề trùng ít nhất một mã dòng với tiêu đề bị bỏ.
 Bỏ sót thì trả về giá trị nháp trước khi cài. Mọi sửa khác của sinh viên giữ nguyên (đó là phán đoán của họ); sửa ở tiêu đề không bị cài
-được đếm riêng là `sua_nham`, không tính vào tỉ lệ bắt.
+được đếm riêng là `sua_ngoai_loi_cai`, không tính vào tỉ lệ bắt.
 """
 import copy
 
@@ -28,12 +28,12 @@ def vang_cuoi(nhap_cai, so_loi, doc, dong, sach):
     sv = {h["khoa"]: h for h in doc["hang"]}
     khoa_loi = {x["khoa"] for x in so_loi}
     dong_goc_loi = [set(x["goc"]["dong"]) for x in so_loi if x["loai"] == "bo_tieu_de"]
-    cur, sua_nham = [], 0
+    cur, sua_ngoai_loi_cai = [], 0
     for h in nhap_cai:
         k = h["dong"][0]
         d = sv.get(k, {"cap": h["cap"], "vai_tro": h["vai_tro"], "xoa": False})
         if k not in khoa_loi and (d["xoa"] or (d["cap"], d["vai_tro"]) != (h["cap"], h["vai_tro"])):
-            sua_nham += 1
+            sua_ngoai_loi_cai += 1
         if d["xoa"]:
             continue
         x = copy.deepcopy(h)
@@ -41,7 +41,7 @@ def vang_cuoi(nhap_cai, so_loi, doc, dong, sach):
         cur.append(x)
     for i, t in enumerate(doc["them"]):
         if not any(set(t["dong"]) & g for g in dong_goc_loi):
-            sua_nham += 1
+            sua_ngoai_loi_cai += 1
         cur.append({"sach": sach, "id": f"n{i}", "dong": list(t["dong"]), "text": t["tieu_de"], "cap": t["cap"], "cha": None,
                     "vung": t["vai_tro"] if t["cap"] == 1 else None, "vai_tro": t["vai_tro"], "ghi_chu": ""})
     chi_tiet = []
@@ -73,7 +73,7 @@ def vang_cuoi(nhap_cai, so_loi, doc, dong, sach):
     bao_cao["theo_loai"] = {loai: _ti_le(sum(c["bat"] for c in chi_tiet if c["loai"] == loai),
                                          sum(c["loai"] == loai for c in chi_tiet))
                             for loai in LOAI if any(c["loai"] == loai for c in chi_tiet)}
-    bao_cao.update(sua_nham=sua_nham, chi_tiet=chi_tiet, ma_sach=sach)
+    bao_cao.update(sua_ngoai_loi_cai=sua_ngoai_loi_cai, chi_tiet=chi_tiet, ma_sach=sach)
     return muc, bao_cao, loi
 
 
