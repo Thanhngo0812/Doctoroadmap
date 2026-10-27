@@ -1,0 +1,187 @@
+{
+ "checkpoint_id": "main-a6464b2b48ece59b2d1424c8a7b99805ea66e95dd0499b07a984ce04589751ba",
+ "config_hash": "a6464b2b48ece59b2d1424c8a7b99805ea66e95dd0499b07a984ce04589751ba",
+ "input": {
+  "allowed_node_ids": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e",
+   "f",
+   "g",
+   "h"
+  ],
+  "chunks": [
+   {
+    "chunk_id": "c1",
+    "text": "A"
+   }
+  ],
+  "mentioned_elsewhere": [
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "B",
+    "node_id": "b",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "C",
+    "node_id": "c",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "D",
+    "node_id": "d",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "E",
+    "node_id": "e",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "F",
+    "node_id": "f",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "G",
+    "node_id": "g",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "H",
+    "node_id": "h",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "I",
+    "node_id": "i",
+    "teaching_status": null
+   },
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "description": "",
+    "name": "J",
+    "node_id": "j",
+    "teaching_status": null
+   }
+  ],
+  "previous_edges_in_chapter": [],
+  "previous_edges_omitted_count": 0,
+  "proposed_relations": [],
+  "route": "chapter",
+  "session_id": "s1",
+  "target_concepts": [
+   {
+    "aliases": [],
+    "anchor": null,
+    "defining_chunk_ids": [],
+    "definition_window": "",
+    "description": "",
+    "name": "A",
+    "node_id": "a",
+    "teaching_status": null
+   }
+  ]
+ },
+ "main_base_config_hash": "a6464b2b48ece59b2d1424c8a7b99805ea66e95dd0499b07a984ce04589751ba",
+ "main_edges": [
+  {
+   "chunk_ids": [
+    "c1"
+   ],
+   "confidence": 0.9,
+   "edge_type": "requires",
+   "evidence_hard": true,
+   "evidence_kind": "noi_ro",
+   "explicit_evidence": true,
+   "operation_index": 0,
+   "order_relation": "cùng chunk",
+   "reason": "Alpha is required before Beta",
+   "session_id": "main_single",
+   "source": "a",
+   "target": "b"
+  }
+ ],
+ "prompts": [
+  {
+   "allowed_node_ids": [
+    "a",
+    "b"
+   ],
+   "chunks": [
+    {
+     "chunk_id": "c1",
+     "text": "Alpha is required before Beta"
+    }
+   ],
+   "mentioned_elsewhere": [],
+   "previous_edges_in_chapter": [],
+   "previous_edges_omitted_count": 0,
+   "proposed_relations": [],
+   "route": "single",
+   "session_id": "main_single",
+   "target_concepts": [
+    {
+     "aliases": [],
+     "anchor": null,
+     "defining_chunk_ids": [
+      "c1"
+     ],
+     "definition_window": "",
+     "description": "Alpha",
+     "name": "Alpha",
+     "node_id": "a",
+     "teaching_status": null
+    },
+    {
+     "aliases": [],
+     "anchor": null,
+     "defining_chunk_ids": [
+      "c1"
+     ],
+     "definition_window": "",
+     "description": "Beta",
+     "name": "Beta",
+     "node_id": "b",
+     "teaching_status": null
+    }
+   ]
+  }
+ ]
+}

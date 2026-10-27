@@ -34,13 +34,18 @@ _BUILD_POLICY = {"reader_policy": "nhe-pdf-docling-docx-pypdfium2-v1",
                  "chain": "roles+a3+a3-prime+gop+roadmap+a12+concept-index+formulas-v1"}
 
 
+_EVALUATION_SWITCHES = ("main_context_shuffle_seed", "secondary_target_filter")
+
+
 def _pipeline_version(settings):
     try:
         commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
                                 text=True, check=True, cwd=Path(__file__).resolve().parents[2]).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         commit = "unknown"
-    values = {"settings": settings.model_dump(mode="json", exclude={"gemini_api_key", "artifact_dir"}),
+    # Công tắc đánh giá (DG-06) chỉ vào phiên bản khi được bật: tắt thì phiên bản y hệt trước khi có công tắc.
+    tat = {name for name in _EVALUATION_SWITCHES if getattr(settings, name) is None}
+    values = {"settings": settings.model_dump(mode="json", exclude={"gemini_api_key", "artifact_dir", *tat}),
               "build_policy": _BUILD_POLICY}
     config_hash = hashlib.sha256(json.dumps(values, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return f"{commit}:{config_hash}"

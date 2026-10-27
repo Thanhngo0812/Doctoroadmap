@@ -8,7 +8,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 SCHEMA = "danh-gia-g3-1"
 SCHEMA_MANIFEST = "danh-gia-sach-1"
-PHIEN_BAN_HUONG_DAN = "g3-1"
+PHIEN_BAN_HUONG_DAN = "g3-2"
 TRANG_THAI = ("day_o_day", "day_qua_vi_du", "chi_nhac", "kien_thuc_nen")
 TRANG_THAI_CAN_CAU = ("day_o_day", "day_qua_vi_du")  # hai trạng thái này bắt buộc có trang và câu định nghĩa
 CO_KHONG = ("có", "không")
@@ -90,9 +90,10 @@ def sinh_phieu(manifest: dict, nguoi: str, duong_dan: str | Path, *, so_dong: in
         dv_kc = DataValidation(type="list", formula1="=DS!$B$1:$B$2", allow_blank=True, showErrorMessage=True,
                                errorTitle="Không chắc", error="Chọn có hoặc không.")
         dv_kc.add(f"G2:G{cuoi}")
-        dv_tr = DataValidation(type="whole", operator="between", formula1=str(c["trang_dau"]),
-                               formula2=str(c["trang_cuoi"]), allow_blank=True, showErrorMessage=True,
-                               errorTitle="Trang", error=f"Trang PDF của chương này: {c['trang_dau']}–{c['trang_cuoi']}.")
+        dv_tr = DataValidation(type="whole", operator="between", formula1="1", formula2=str(manifest["so_trang"]),
+                               allow_blank=True, showErrorMessage=True, errorTitle="Trang",
+                               error=f"Trang PDF từ 1 đến {manifest['so_trang']}. day_o_day và day_qua_vi_du: trang phải trong chương "
+                                     f"({c['trang_dau']}–{c['trang_cuoi']}). chi_nhac và kien_thuc_nen: để trống hoặc trang bất kỳ trong sách.")
         dv_tr.add(f"E2:E{cuoi}")
         for dv in (dv_tt, dv_kc, dv_tr):
             ws.add_data_validation(dv)

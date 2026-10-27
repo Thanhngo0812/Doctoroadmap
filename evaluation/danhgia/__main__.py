@@ -16,6 +16,7 @@ _LENH = {
     "phieu-g4": "danhgia.phieu.lenh_g4",
     "can-khai-niem": "danhgia.can.lenh",
     "b5": "danhgia.xuat.b5.lenh",
+    "g1g2": "danhgia.g1g2.lenh",
 }
 
 
