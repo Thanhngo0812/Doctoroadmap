@@ -324,3 +324,27 @@ def test_khoang_trang_giua_ky_hieu_va_chi_so_khop_tron_o_ngưỡng_rat_cao():
     hd = hd_([nd("a", neo=(1, "Ước lượng θ 1 và θ 2 của mẫu cho trước."))])
     rows = khai_niem.truy_nguyen(hd, van_ban, nguong={"nghiem": 0.999, "noi": 0.5})
     assert tu_mau(rows, "truy_nguyen.cau_neo_co_that.nghiem", "toan_sach") == (1, 1)
+
+
+def test_a4_bcubed_p_va_r_bat_doi_xung():
+    # G1 căn 2 node (a, b); node c căn 3 vàng (G2, G3, G4). Liên kết: (G1,a) (G1,b) (G2,c) (G3,c) (G4,c)
+    g3 = g3_(*(vang(g, "c1") for g in ("G1", "G2", "G3", "G4")))
+    hd = hd_([nd("a"), nd("b"), nd("c")])
+    can = dt.can(MA, [("G1", "a", "khop"), ("G1", "b", "khop"), ("G2", "c", "khop"), ("G3", "c", "khop"), ("G4", "c", "khop")])
+    rows = cham(hd, g3, can)
+    p, r = so(rows, "a4.bcubed_p.nghiem", "c1"), so(rows, "a4.bcubed_r.nghiem", "c1")
+    # P = (1 + 1 + 1/3 + 1/3 + 1/3) / 5 = 3/5 ; R = (1/2 + 1/2 + 1 + 1 + 1) / 5 = 4/5 (tính tay)
+    assert (p["tong"], p["n"]) == (pytest.approx(3.0), 5) and (r["tong"], r["n"]) == (pytest.approx(4.0), 5)
+    assert dong.gia_tri(p) == pytest.approx(0.6) and dong.gia_tri(r) == pytest.approx(0.8)
+
+
+def test_anh_xa_nhap_unchecked_khong_quyet_dinh_not_subject_matter_luon_sai():
+    tep = Path(__file__).resolve().parents[2] / "evaluation" / "giao-thuc" / "anh-xa-trang-thai.json"
+    ax = khai_niem.doc_anh_xa(tep)["may_sang_vang"]
+    assert ax["unchecked"] is None and ax["uncertain"] is None and ax["not_subject_matter"] == []
+    g3 = g3_(vang("G1", "c1", "day_o_day"), vang("G2", "c1", "chi_nhac"), vang("G3", "c1", "day_o_day"))
+    hd = hd_([nd("n1", status="not_subject_matter"), nd("n2", status="not_subject_matter"), nd("n3", status="unchecked")])
+    rows = khai_niem.cham_khai_niem(hd, g3, dt.g4(MA, []), dt.can(MA, [("G1", "n1", "khop"), ("G2", "n2", "khop"), ("G3", "n3", "khop")]),
+                                    {}, khai_niem.doc_anh_xa(tep))
+    assert tu_mau(rows, "a5.trang_thai_chinh_xac.nghiem") == (0, 2)       # hai cặp not_subject_matter luôn sai; unchecked ra khỏi mẫu số
+    assert tu_mau(rows, "a5.trang_thai_phu.nghiem") == (2, 3)
