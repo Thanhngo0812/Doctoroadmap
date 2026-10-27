@@ -91,6 +91,7 @@ def main():
                                         "diem": [float(v) for v in iso.X_thresholds_], "xac_suat": [float(v) for v in iso.y_thresholds_]},
                          "sha256_model": hashlib.sha256((out / "model.txt").read_bytes()).hexdigest()})
     else:
+        mo.set_params(n_jobs=2)  # giữ n_jobs=2 như bản đang chạy trong sản phẩm (không ảnh hưởng điểm: deterministic=True)
         buffer = io.BytesIO()
         joblib.dump(mo, buffer)
         (out / ("heading.joblib" if mo_hinh == "m1" else "join.joblib")).write_bytes(buffer.getvalue())

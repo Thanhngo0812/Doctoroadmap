@@ -40,7 +40,10 @@ def du_doan_lgbm(frame, x, y, phan, so_la, so_vong):
     return oof
 
 
-def du_doan_logistic(frame, x, y, phan):
+C_RONG = (1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 0.1, 1.0, 10.0)
+
+
+def du_doan_logistic(frame, x, y, phan, luoi_c=logistic.C_LUOI):
     oof = np.full(len(y), np.nan)
     doc = frame.doc.to_numpy()
     for k, cuon in enumerate(phan):
@@ -48,8 +51,8 @@ def du_doan_logistic(frame, x, y, phan):
         hoc = sorted(set(doc[~mask]))
         dung, con = chon_dung_som(hoc, f"phan-{k}", seed=chung.SEED, so_cuon=3)
         m_dung, m_con = np.isin(doc, dung), np.isin(doc, con)
-        diem = {c: chung.ap(y[m_dung], logistic.mo_hinh(c).fit(x[m_con], y[m_con]).predict_proba(x[m_dung])[:, 1]) for c in logistic.C_LUOI}
-        tot = max(logistic.C_LUOI, key=lambda c: (diem[c], -c))
+        diem = {c: chung.ap(y[m_dung], logistic.mo_hinh(c).fit(x[m_con], y[m_con]).predict_proba(x[m_dung])[:, 1]) for c in luoi_c}
+        tot = max(luoi_c, key=lambda c: (diem[c], -c))
         oof[mask] = logistic.mo_hinh(tot).fit(x[~mask], y[~mask]).predict_proba(x[mask])[:, 1]
     return oof
 
@@ -108,7 +111,8 @@ def main():
     doc = frame.doc.to_numpy()
     he = {f"lightgbm_chon_{la}_la": du_doan_lgbm(frame, x, y, phan, la, vong),
           f"lightgbm_hien_tai_{chung.HIEN_TAI['m3']}_la": du_doan_lgbm(frame, x, y, phan, chung.HIEN_TAI["m3"], chung.VONG_HIEN_TAI["m3"]),
-          "logistic": du_doan_logistic(frame, x, y, phan)}
+          "logistic": du_doan_logistic(frame, x, y, phan),
+          "logistic_c_rong": du_doan_logistic(frame, x, y, phan, C_RONG)}
     epoch_ce = None
     if options.get("ce"):
         theo_epoch = doc_ce(options["ce"], list(khoa(frame)), phan)

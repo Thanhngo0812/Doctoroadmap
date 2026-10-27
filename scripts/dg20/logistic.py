@@ -2,7 +2,7 @@
 
 Ô thiếu thay bằng trung vị tập học kèm cột chỉ báo thiếu; chuẩn hoá đặc trưng; `class_weight` cân bằng; `C` ∈ {0,01; 0,1; 1; 10} chọn theo AP trên 3 cuốn
 dừng sớm của vòng trong. Ghi `tmp/dg20/logistic-<mô hình>.jsonl`.  `--khong-chuan-hoa` là phép phá (bảng phá, mục logistic không chuẩn hoá).
-  tmp/venv-ml/Scripts/python.exe scripts/dg20/logistic.py --mo-hinh=m3 [--khong-chuan-hoa]
+  tmp/venv-ml/Scripts/python.exe scripts/dg20/logistic.py --mo-hinh=m3 [--khong-chuan-hoa] [--c=0.0001,0.001,0.01,0.1,1,10]  (--c mở rộng lưới C, ghi logistic-<mô hình>-c-rong.jsonl)
 """
 import json
 import sys
@@ -29,15 +29,15 @@ def mo_hinh(c, chuan_hoa=True):
     return make_pipeline(*buoc)
 
 
-def lam_o(data, de_ra, chuan_hoa=True):
+def lam_o(data, de_ra, chuan_hoa=True, luoi_c=C_LUOI):
     dung, hoc = chon_dung_som(sorted(data), de_ra, seed=chung.SEED)
     kiem_tra_khong_ro_ri(de_ra, dung, hoc)
     xh, yh = chung.noi(data, hoc)
     xd, yd = chung.noi(data, dung)
     diem = {}
-    for c in C_LUOI:
+    for c in luoi_c:
         diem[c] = chung.ap(yd, mo_hinh(c, chuan_hoa).fit(xh, yh).predict_proba(xd)[:, 1])
-    tot = max(C_LUOI, key=lambda c: (diem[c] if diem[c] is not None else -1, -c))
+    tot = max(luoi_c, key=lambda c: (diem[c] if diem[c] is not None else -1, -c))
     x15, y15 = chung.noi(data, hoc + dung)
     xr, yr = data[de_ra]
     p = mo_hinh(tot, chuan_hoa).fit(x15, y15).predict_proba(xr)[:, 1]
@@ -51,11 +51,13 @@ def main():
     options = dict(a[2:].split("=", 1) for a in sys.argv[1:] if a.startswith("--") and "=" in a)
     ten = options["mo-hinh"]
     chuan_hoa = "--khong-chuan-hoa" not in sys.argv
+    luoi_c = tuple(float(v) for v in options["c"].split(",")) if "c" in options else C_LUOI
+    hau_to = "" if "c" not in options else "-c-rong"
     data, _ = chung.nap(ten)
-    duong = chung.ra() / f"logistic-{ten}{'' if chuan_hoa else '-khong-chuan-hoa'}.jsonl"
+    duong = chung.ra() / f"logistic-{ten}{'' if chuan_hoa else '-khong-chuan-hoa'}{hau_to}.jsonl"
     duong.write_text("", encoding="utf-8")
     for de_ra, _ in lobo(sorted(data)):
-        ban_ghi = lam_o(data, de_ra, chuan_hoa)
+        ban_ghi = lam_o(data, de_ra, chuan_hoa, luoi_c)
         with open(duong, "a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps(ban_ghi, ensure_ascii=False) + "\n")
         print(f"{ten} {de_ra}: C {ban_ghi['c']} AP {ban_ghi['ap']}", flush=True)
