@@ -5,7 +5,7 @@ from doc2roadmap.application.ports.secondary_scoring import SecondaryScorer
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.stage_measurements import measure_stage
-from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges
+from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges, chuan_hoa_loc_dich
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.prerequisites import merge_main_proposals, validate_main_proposals
 from doc2roadmap.domain.secondary import select_secondary_pairs
@@ -15,8 +15,9 @@ from doc2roadmap.domain.secondary_features import (
 
 
 class BuildSecondaryMLEdges(BuildSecondaryEdges):
-    def __init__(self, store, scorer: SecondaryScorer, tokenize):
+    def __init__(self, store, scorer: SecondaryScorer, tokenize, *, target_filter=None):
         self.store, self.scorer, self.tokenize = store, scorer, tokenize
+        self.target_filter = chuan_hoa_loc_dich(target_filter)
 
     @measure_stage
     def execute(self, doc_id, *, upstream=None):
@@ -41,11 +42,14 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
                   "tokenizer": self.tokenize.identifier, "candidate_rule": CANDIDATE_RULE,
                   "threshold_rule": "round-sum-isotonic-on-judged-directions-fixed-point-10-v1",
                   "prune_rule": "direct-hard-or-explicit-hard-path-v3", "route": route}
+        if self.target_filter is not None:  # chỉ khi bật: tắt thì hash cấu hình giữ nguyên từng bit
+            config["target_filter"] = self.target_filter
         source_hash, config_hash = digest(payload), digest(config)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
             return StagePlan("reused", artifact=cached) if planning else (cached, True)
         pairs, _ = select_secondary_pairs(nodes, payload.get("suspected_pairs", []), ledger, [], route=route)
+        pairs = self._loc_cap(pairs, nodes)
         if planning:
             return StagePlan("run", remaining_items=len(pairs), unit="pair", calls_estimate=0, usd_estimate=0.0,
                              note="Pass phụ ML chạy offline; không cần --allow-spend, không gọi LLM/embedding.")

@@ -16,6 +16,10 @@ class _Measurements:
         self.name = name
         self.started = perf_counter()
         self.previous_seconds = 0
+        self.previous_embedding_seconds = 0.0
+        self.embedding_seconds = 0.0
+        self.embedding_depth = 0
+        self.embedding_started = None
         self.previous_counts = dict.fromkeys(_COUNTS, 0)
         self.counts = dict.fromkeys(_COUNTS, 0)
         self.usage_responses = 0
@@ -31,7 +35,9 @@ class _Measurements:
 
     def snapshot(self):
         with self.lock:
+            open_wait = perf_counter() - self.embedding_started if self.embedding_depth else 0.0
             return {"runtime_seconds": self.previous_seconds + perf_counter() - self.started,
+                    "embedding_seconds": self.previous_embedding_seconds + self.embedding_seconds + open_wait,
                     **{key: self.previous_counts[key] + self.counts[key] for key in _COUNTS},
                     "usage_responses": self.previous_usage_responses + self.usage_responses,
                     "token_usage_complete": self.previous_counts["model_calls"] + self.counts["model_calls"] == self.previous_usage_responses + self.usage_responses,
@@ -45,6 +51,7 @@ class _Measurements:
             return
         # Several checkpoints in one stage describe the same cumulative run, not separate runs.
         self.previous_seconds = max(self.previous_seconds, value["runtime_seconds"])
+        self.previous_embedding_seconds = max(self.previous_embedding_seconds, value.get("embedding_seconds", 0.0))
         for key in _COUNTS:
             self.previous_counts[key] = max(self.previous_counts[key], value.get(key, 0))
         self.previous_usage_responses = max(self.previous_usage_responses, value.get("usage_responses", 0))
@@ -92,6 +99,30 @@ def measure_phase(name):
         if state is not None and name:
             phase = state.phases.setdefault(name, {"runtime_seconds": 0.0})
             phase["runtime_seconds"] += perf_counter() - started
+
+
+@contextmanager
+def measure_embedding_wait():
+    """Thời gian nằm trong lời gọi embedding (gồm retry và chờ lùi), chỉ telemetry.
+
+    Đo bằng hợp các khoảng: nhiều lời gọi chồng nhau hay lồng nhau chỉ cộng phần thời gian thực một lần.
+    Dùng ở đúng một chỗ, quanh `embed()`, nên retry bên trong không bị cộng hai lần."""
+    state = _current.get()
+    if state is None:
+        yield
+        return
+    with state.lock:
+        if state.embedding_depth == 0:
+            state.embedding_started = perf_counter()
+        state.embedding_depth += 1
+    try:
+        yield
+    finally:
+        with state.lock:
+            state.embedding_depth -= 1
+            if state.embedding_depth == 0:
+                state.embedding_seconds += perf_counter() - state.embedding_started
+                state.embedding_started = None
 
 
 def register_manifest(store, path, manifest):
