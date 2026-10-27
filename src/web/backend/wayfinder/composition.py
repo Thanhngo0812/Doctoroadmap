@@ -120,7 +120,9 @@ def compose_services(
     if database_engine is not None:
         courses, learning = compose_course_services(settings, database_engine, phase_b_store,
             model=model, embedding=embedding, graph_loader=graph_loader, clock=clock, media=build_media, model_for=model_for)
-        sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock)
+        sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock,
+                                          mailer=accounts.mailer)
+        accounts.on_email_verified = sharing.attach_verified_invitations
 
     def close_services():
         try:
@@ -182,11 +184,11 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
     return courses, gateway
 
 
-def compose_sharing_service(settings: WebSettings, engine, *, graph_loader=None, clock=None):
+def compose_sharing_service(settings: WebSettings, engine, *, graph_loader=None, clock=None, mailer=None):
     from wayfinder.application.sharing import SharingService
     from wayfinder.infrastructure.sharing_store import PostgresSharingStore
 
-    return SharingService(PostgresSharingStore(engine), settings, clock, graph_loader=graph_loader)
+    return SharingService(PostgresSharingStore(engine), settings, clock, graph_loader=graph_loader, mailer=mailer)
 
 
 def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> AccountService:
