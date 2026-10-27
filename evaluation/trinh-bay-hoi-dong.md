@@ -73,13 +73,13 @@ Bảng 3. Hai tập dữ liệu
 | Tập | Nội dung | Dùng để |
 |---|---|---|
 | Phát triển | ba khoảng chương của ba giáo trình đã dùng khi phát triển: thống kê, đại số tuyến tính, nhập môn học máy | tìm lỗi, chọn cải tiến |
-| Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, công nghệ thông tin, kinh tế, luật; mỗi cuốn khoảng 150–300 trang | số báo cáo cuối |
+| Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, công nghệ thông tin, kinh tế, luật; từ 57 tới 422 trang, tổng 1.749 trang | số báo cáo cuối |
 
-Danh sách 8 cuốn (Bảng 4) sẽ điền khi gom xong. Mọi cuốn là PDF gốc có lớp chữ, không phải bản quét. Hệ chạy trên **cả cuốn**, nên thời
+Bảng 4 liệt kê 8 cuốn. Mọi cuốn là PDF gốc có lớp chữ (từ 96,9% số trang trở lên), không phải bản quét. Hệ chạy trên **cả cuốn**, nên thời
 gian và chi phí đo được là của một giáo trình thật. Đáp án chuẩn có hai phạm vi:
 - cấu trúc mục và vai trò vùng được gán cho cả cuốn;
 - khái niệm và quan hệ tiên quyết được gán trên **3 chương bốc ngẫu nhiên theo một hạt giống cố định** (một chương phần đầu, một phần giữa,
-  một phần cuối, khoảng 25–30% cuốn).
+  một phần cuối). Ba chương chiếm từ 9% tới 75% cuốn, tuỳ chương dài hay ngắn; tổng cộng 561 trang.
 
 Một quan hệ có thể lấy khái niệm tiên quyết từ bất kỳ phần nào trước đó của sách, nên vẫn chấm được các quan hệ xuyên chương dù ba chương
 không liên quan với nhau. Khái niệm tiên quyết nằm ngoài ba chương được người gán ghi kèm trang nơi nó được định nghĩa.
@@ -88,18 +88,35 @@ Chương được bốc ngẫu nhiên trước khi chạy hệ, theo luật ghi 
 đủ dài, không phải chương mở đầu, không phải chương chỉ có bài tập hay phụ lục. Nhóm cố ý **không** chọn những chương "có nhiều quan hệ",
 vì muốn biết chương nào nhiều quan hệ thì phải đọc trước nội dung hoặc nhìn đầu ra của hệ, và kết quả khi đó sẽ thiên lệch.
 
-Bảng 4. Danh sách sách tập thử (điền sau)
+Bảng 4. Danh sách sách tập thử (tên sách công bố sau khi đóng băng hệ, 07/11)
 
-| Chủ đề | Mã | Tên sách | Số trang | Ba chương bốc |
+| Chủ đề | Mã | Tên sách | Số trang | Trang của ba chương bốc |
 |---|---|---|---|---|
-| Toán | T | — | — | — |
-| Vật lý | L | — | — | — |
-| Hoá học | H | — | — | — |
-| Sinh học | S | — | — | — |
-| Văn học | V | — | — | — |
-| Công nghệ thông tin | C | — | — | — |
-| Kinh tế | K | — | — | — |
-| Luật | LU | — | — | — |
+| Toán (xác suất thống kê) | T | — | 277 | 134 (48%) |
+| Vật lý (cơ học lý thuyết) | L | — | 140 | 52 (37%) |
+| Hoá học (hoá hữu cơ) | H | — | 179 | 134 (75%) |
+| Sinh học (thực vật dược) | S | — | 108 | 59 (55%) |
+| Văn học (lý luận văn học, phần tác phẩm) | V | — | 57 | 30 (53%) |
+| Công nghệ thông tin (học máy) | C | — | 422 | 39 (9%) |
+| Kinh tế (quản trị logistics) | K | — | 356 | 76 (21%) |
+| Luật (luật lao động) | LU | — | 210 | 37 (18%) |
+
+**Kiểm sách trước khi dùng.** Mỗi cuốn được kiểm ba điều trước khi bốc chương: có phải PDF gốc không; có trùng tệp (cùng mã băm SHA-256) với dữ liệu
+từng dùng để huấn luyện hay với tập phát triển không; có trùng đoạn văn bản với các sách đó không. Lượt gom đầu có 4/8 cuốn bị loại và thay:
+- cuốn hoá trùng hẳn một cuốn đã dùng huấn luyện;
+- cuốn công nghệ thông tin là bản đầy đủ của một giáo trình trong tập phát triển;
+- cuốn toán là sổ tay tóm tắt công thức, không phải giáo trình;
+- cuốn sinh là tài liệu bồi dưỡng học sinh trung học cơ sở.
+
+Đây là bằng chứng cho thấy kiểm nhiễm dữ liệu là cần thiết: nếu không kiểm, một phần tư tập thử sẽ là sách hệ đã thấy.
+
+**Luật bốc chương được chốt trước khi mở mục lục.** Tệp giao thức ghi hạt giống (20261027) và độ dài tối thiểu của chương (5 trang) được lưu vào
+lịch sử phiên bản trước khi người giữ sổ mở mục lục của bất kỳ cuốn thử nào. Mã băm của lần lưu đó chứng minh không ai chọn được hạt giống theo
+kết quả bốc.
+
+**Điều cần nói rõ về bộ sách:** cuốn văn chỉ có phần hai của một giáo trình lý luận văn học; cuốn sinh là giáo trình trình độ trung cấp; cuốn
+toán cùng môn xác suất thống kê với một cuốn của tập phát triển, và cuốn công nghệ thông tin cùng ngành học máy với một cuốn của tập phát
+triển (khác cuốn, không trùng đoạn văn bản nào).
 
 Chọn 8 chủ đề để có thể nói hệ dùng được cho nhiều ngành, không chỉ ngành toán hay công nghệ thông tin. Chọn giáo trình đầy đủ để chất
 lượng và chi phí đo được đúng với cách sản phẩm được dùng. Về thống kê, mỗi cuốn là một đơn vị độc lập, và ba chương trong cuốn là tầng thứ
