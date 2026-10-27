@@ -1,10 +1,12 @@
 # W-12 — React mời qua email và lời mời trong ứng dụng
 
+Bàn giao cuối sau nhận main đã chốt 530a8c9f: nguồn 07902011, 3.433 Python và 243 React đạt; build/browser native 0. Bằng chứng cuối ở browser-merged-final; phần cuối báo cáo ghi đầy đủ cổng sau merge, phần kiểm trên nền 4c69322c được giữ làm lịch sử.
+
 ## Nhánh và phạm vi
 
 Nhánh `work/w12-invitations-react`, worktree `tmp/w12-invitations-react`, tách main
 `4c69322c9ee23f65902a2ab4f42b519c5e4ca828`, có backend W-12 `f5cd2060` đã nhận.
-Nguồn sản phẩm/harness cuối `6cd3612264e35133381bfe3e14903267af35f2e9`.
+Nguồn web trước nhận main `6cd3612264e35133381bfe3e14903267af35f2e9`; mốc tích hợp cuối sau nhận main đã chốt là `079020110a975e6da211a7a36a1981082bc87fe6`.
 Không đổi backend/use case/migration, không sửa vé/kế hoạch/handoff, không ghép/push main.
 Head migration vẫn `w12_0008` nối `w11_0007`.
 
@@ -99,12 +101,12 @@ decode ảnh thực, lưu kích thước tự nhiên của ảnh trước khi ch
 
 ## HTTP/PostgreSQL/browser cuối
 
-Nguồn cuối `6cd36122`, `dirtySourcePaths=[]`; DB UUID riêng, real HTTP/auth/Argon2/PostgreSQL,
+Nguồn tích hợp cuối `07902011`, `dirtySourcePaths=[]`; DB UUID riêng, real HTTP/auth/Argon2/PostgreSQL,
 PostgresPhaseBStore và graph doc-1 v8 từ fixture đã chép/hash. FakeClock/FakeMailer, không gọi model,
 embedding/media/Cloudinary/SMTP; giữ transport Vertex và policy hiện hành. Không seed DB chủ dự án.
 
 12 cấu hình 390/768/1280 × sáng/tối × reduced-motion thường/giảm; ảnh/video, Axe đúng document từng
-trạng thái đã chụp, overflow/vùng bấm/focus/tab keyboard và font thực. Bằng chứng cuối ở `browser-final3`.
+trạng thái đã chụp, overflow/vùng bấm/focus/tab keyboard và font thực. Bằng chứng cuối sau nhận main ở `browser-merged-final`.
 Các request test-only `/__test/w12/*` chỉ có trong harness UUID, guard bằng actor quan sát riêng;
 đọc thư FakeMailer để mở link như người dùng, không phải endpoint sản phẩm. Không log body thư raw.
 HTML mẫu FakeMailer xuất ở `fake-invitation-redacted.html`, thay token bằng marker rõ ràng; không gửi mail thật.
@@ -125,15 +127,15 @@ Lỗi console HTTP 401/403/409/429 có chủ đích và cảnh báo CSP khi Axe 
 giữ trong audit. Không hạ CSP hay tuyên bố console sạch hoàn toàn. Pageerror và token leak phải rỗng.
 Không tuyên bố test đọc danh sách lỗi bằng fetch giả là bằng chứng HTTP/PG thật; ca đó thuộc suite React.
 
-## Cổng và bằng chứng
+## Lượt kiểm trước nhận main 530a8c9f (giữ để đối chiếu)
 
 Chủ dự án xác nhận cửa riêng cho W-12: “Cửa trống; web chạy khi chốt mã”. Một full PG mỗi lúc,
 mutation chạy trước server/gate và đã phục hồi; basetemp mới dưới tmp, không đưa fixture vào ảnh UI.
 3145 tệp fixture copy từ hai manifest W-06, SHA nguồn/đích trong fixture-copy.json; PDF candidate train
 được copy/hash riêng cho cổng. Không junction/symlink/hardlink, không nhập kho learner CLI vào web.
 
-Cổng cuối native 0: **3407 Python pass, 0 fail/0 error**; 3 skipped và 1 xfailed theo JUnit (phân loại nguyên văn ở log). **243 React pass**, build/browser native 0 trên cùng nguồn `6cd36122`. Browser: 12 cấu hình, 41 ảnh, 41 Axe/0 violations, 208 JSON HTTP, 5 video; 54 lượt decode ảnh đạt, font live Be Vietnam Pro, pageerror/token leak rỗng. Main nền kiểm trước cổng vẫn `4c69322c`.
-Lệnh/native/source SHA/JUnit trong capture của từng lượt; các lượt cũ được giữ, không ghi đè.
+Lượt nền 4c69322c native 0: **3407 Python pass, 0 fail/0 error**; 3 skipped và 1 xfailed theo JUnit (phân loại nguyên văn ở log). **243 React pass**, build/browser native 0 trên cùng nguồn `6cd36122`. Browser: 12 cấu hình, 41 ảnh, 41 Axe/0 violations, 208 JSON HTTP, 5 video; 54 lượt decode ảnh đạt, font live Be Vietnam Pro, pageerror/token leak rỗng. Main nền kiểm trước cổng vẫn `4c69322c`.
+Lệnh/native/source SHA/JUnit trong capture của từng lượt; các lượt cũ được giữ, không ghi đè. Xem phần tích hợp sau main 530a8c9f ở cuối báo cáo để lấy lượt cuối, thay vì lượt trên nền cũ.
 
 ```text
 C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/cong-w12-react-final3 --junitxml=report/w12-react-evidence/gate-python-final3.xml
@@ -151,4 +153,22 @@ Log/XML giữ nguyên byte bằng attributes riêng, không chuẩn hoá native 
 
 ## Nhận main sau lượt trên nền 4c69322c
 
-Trong lúc đóng gói, main nhận DG-10 ở 530a8c9f (mã/test đánh giá, không đổi src/scripts web). Chủ dự án chốt nguyên văn: “Chốt main nền 530a8c9f cho đợt W-12”. Lượt 6cd36122 trên nền 4c69322c được giữ làm lịch sử, chưa dùng làm cổng tích hợp sau nhận main mới. Nhóm web nhận đúng mốc đã chốt và chạy lại cổng; kết quả sau merge được bổ sung riêng bên dưới.
+Trong lúc đóng gói, main nhận DG-10 ở 530a8c9f (mã/test đánh giá, không đổi src/scripts web). Chủ dự án chốt nguyên văn: “Chốt main nền 530a8c9f cho đợt W-12”. Lượt 6cd36122 trên nền 4c69322c được giữ làm lịch sử, chưa dùng làm cổng tích hợp sau nhận main mới. Nhóm web đã nhận đúng mốc đã chốt và chạy lại cổng; kết quả sau merge ở phần tiếp theo.
+
+## Bàn giao tích hợp cuối sau nhận main 530a8c9f
+
+Main đã chốt `530a8c9f5109bac549b224f17ffee727d2767c07`, merge tại `079020110a975e6da211a7a36a1981082bc87fe6`. Không rebase/ghép main chung. Tất cả lượt kiểm dưới đây ghim nguồn merge này, mã src/scripts không đổi so với 6cd36122 (đối chiếu toàn bộ SHA trong web-source-equivalence.json). Đây là kết quả cuối của đợt W-12; các lượt nền 4c69322c phía trên là lịch sử.
+
+**3433 Python pass, 0 fail/0 error; 4 skipped/xfailed theo JUnit; 243 React pass; build và browser native 0.** PostgreSQL thật, 12 cấu hình, 41 ảnh, 41 Axe/0 violations, 208 JSON HTTP, 5 video, 54 lượt decode ảnh đạt. Pageerror/token leak rỗng, font CDP Be Vietnam Pro, DB UUID đã huỷ/server đã dừng, 0 USD.
+
+Guard fragment chạy lại trên 07902011: mutation-fragment-merged-final có 2 assertion fail/0 setup error, phục hồi nguyên byte trong mutation-restored-merged-final.json trước mọi server/cổng. Không gán receipt mutation cũ cho mốc merge.
+
+```text
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/cong-w12-react-merged-final --junitxml=report/w12-react-evidence/gate-python-merged-final.xml
+npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/gate-react-merged-final.xml
+npm.cmd --prefix src/web/frontend run build
+```
+
+Các capture gate-python/react/build/browser-merged-final ghi lệnh, source SHA và native exit. SQL/HTTP/runtime cuối trong browser-merged-final; HTTP mẫu ở http-examples-merged.json. source-snapshot-merged.zip giữ byte 11 tệp thay đổi đã kiểm; manifest.json cập nhật cho gói cuối, còn bản manifest nền cũ trong commit checkpoint trước merge. Chưa tự nghiệm thu/ghép main.
+
+Xem [hộp mời 1280 sáng](w12-react-evidence/browser-merged-final/email-pending-1280-light.png), [inbox 1280 sáng](w12-react-evidence/browser-merged-final/inbox-pending-1280-light.png), [inbox 390 tối](w12-react-evidence/browser-merged-final/inbox-pending-390-dark.png); video owner/receiver/newcomer/other/unverified cùng thư mục.
