@@ -475,3 +475,37 @@ def test_chi_ba_mo_dun_cua_luot_nhap_pipeline():
 def test_lenh_luot_trong_bang_lenh():
     from danhgia.__main__ import _LENH
     assert _LENH["luot"] == "danhgia.luot.lenh"
+
+
+# ---------- chép thượng nguồn: chốt chặn ----------
+
+def test_chep_thuong_nguon_khong_ghi_de_tep_dich_khac_noi_dung(tmp_path):
+    nguon, dich = tmp_path / "n", tmp_path / "d"
+    (nguon / "chunks").mkdir(parents=True)
+    (nguon / "chunks" / "a.json").write_text("moi", encoding="utf-8")
+    (dich / "chunks").mkdir(parents=True)
+    (dich / "chunks" / "a.json").write_text("cu-cua-luot-khac", encoding="utf-8")
+    with pytest.raises(thu_muc.KhoKhongHopLe, match="khác"):
+        thu_muc.chep_thuong_nguon(nguon, dich, ["chunks/a.json"])
+    assert (dich / "chunks" / "a.json").read_text(encoding="utf-8") == "cu-cua-luot-khac"
+    (dich / "chunks" / "a.json").write_text("moi", encoding="utf-8")
+    assert thu_muc.chep_thuong_nguon(nguon, dich, ["chunks/a.json"]) == 0  # cùng nội dung: bỏ qua, không đếm là đã chép
+
+
+def test_chep_thuong_nguon_tu_choi_cung_kho_va_duong_dan_thoat(tmp_path):
+    (tmp_path / "n").mkdir()
+    (tmp_path / "ngoai.txt").write_text("x", encoding="utf-8")
+    with pytest.raises(thu_muc.KhoKhongHopLe, match="là một"):
+        thu_muc.chep_thuong_nguon(tmp_path / "n", tmp_path / "n", [])
+    with pytest.raises(thu_muc.KhoKhongHopLe, match="thoát"):
+        thu_muc.chep_thuong_nguon(tmp_path / "n", tmp_path / "d", ["../ngoai.txt"])
+    assert not (tmp_path / "d").exists() or not any((tmp_path / "d").rglob("*.txt"))
+
+
+def test_chep_thuong_nguon_chep_tung_tep_that(tmp_path):
+    nguon, dich = tmp_path / "n", tmp_path / "d"
+    (nguon / "graph" / "D" / "v1").mkdir(parents=True)
+    (nguon / "graph" / "D" / "v1" / "graph.json").write_text("{}", encoding="utf-8")
+    assert thu_muc.chep_thuong_nguon(nguon, dich, ["graph/D/v1/graph.json"]) == 1
+    f = dich / "graph" / "D" / "v1" / "graph.json"
+    assert f.is_file() and not thu_muc.la_lien_ket(f) and f.read_text(encoding="utf-8") == "{}"
