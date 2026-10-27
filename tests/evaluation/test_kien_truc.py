@@ -47,7 +47,7 @@ def test_seam_phieu_co_mo_dun_cua_ve_dg02():
 
 
 def test_chi_xuat_va_doi_chieu_duoc_nhap_pipeline():
-    cho_phep = {"xuat", "doi_chieu.py", "phat_lai"}
+    cho_phep = {"xuat", "doi_chieu.py", "phat_lai", "luot"}
     for duong in GOC.rglob("*.py"):
         tuong_doi = duong.relative_to(GOC).parts
         if tuong_doi[0] in cho_phep:
