@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.445" timestamp="2026-10-27T12:32:34.693149+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_console_mailer_never_logs_invitation_token" time="0.288"><failure message="assert 'SYNTHETIC_I..._BE_REDACTED' not in 'INFO     wa...&gt;\n&lt;/html&gt;\n'&#10;  &#10;  'SYNTHETIC_INVITATI...EN_MUST_BE_REDACTED' is contained here:&#10;    nvitation=SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED&#10;    &#10;    Lời mời có hiệu lực trong 7 ngày. Nếu không muốn tham gia, hãy bỏ qua thư này.&#10;    &lt;!doctype html&gt;&#10;    &lt;html lang=&quot;vi&quot;&gt;...&#10;  &#10;  ...Full output truncated (19 lines hidden), use '-vv' to show">caplog = &lt;_pytest.logging.LogCaptureFixture object at 0x0000011D7CB1BE90&gt;
+
+    def test_console_mailer_never_logs_invitation_token(caplog):
+        import logging
+        from wayfinder.application.email_templates import render_invitation_email
+        from wayfinder.infrastructure.mail import ConsoleMailer
+        token='SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED'
+        content=render_invitation_email(course_title='Khóa kiểm thử',
+            action_url=ORIGIN+'/dang-ky#invitation='+token,base_url=ORIGIN)
+        caplog.set_level(logging.INFO,logger='wayfinder.infrastructure.mail')
+        ConsoleMailer().send('synthetic@example.vn',content.subject,content.text,html_body=content.html)
+&gt;       assert token not in caplog.text
+E       assert 'SYNTHETIC_I..._BE_REDACTED' not in 'INFO     wa...&gt;\n&lt;/html&gt;\n'
+E
+E         'SYNTHETIC_INVITATI...EN_MUST_BE_REDACTED' is contained here:
+E           nvitation=SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED
+E
+E           Lời mời có hiệu lực trong 7 ngày. Nếu không muốn tham gia, hãy bỏ qua thư này.
+E           &lt;!doctype html&gt;
+E           &lt;html lang="vi"&gt;...
+E
+E         ...Full output truncated (19 lines hidden), use '-vv' to show
+
+src\web\backend\tests\test_w12_invitations.py:520: AssertionError</failure></testcase></testsuite></testsuites>

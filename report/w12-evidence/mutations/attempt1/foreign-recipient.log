@@ -1,0 +1,172 @@
+FEFE                                                                     [100%]
+=================================== ERRORS ====================================
+_ ERROR at teardown of test_other_user_and_unverified_cannot_respond[accept] __
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a32b3cb1b0db404fbce0dc937811829a
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D6F7F1FAD0>
+
+    @pytest.fixture
+    def invited(postgres_database_url, monkeypatch):
+        bundle = build_test_application()
+        clock = bundle.phase_b.clock
+        settings = WebSettings(_env_file=None, database_url=postgres_database_url.render_as_string(hide_password=False), frontend_dist=Path('missing'),
+            public_base_url=ORIGIN, allowed_origins=[ORIGIN], artifact_root=Path('tmp/w12-artifacts'))
+        forbidden_calls = []
+        def forbidden(*args, **kwargs):
+            forbidden_calls.append(True)
+            raise AssertionError('W12 forbids real provider/ADC/SMTP/Cloudinary')
+        for target in ('doc2roadmap.infrastructure.llm.gemini.urlopen',
+            'doc2roadmap.infrastructure.embedding.gemini.urlopen',
+            'doc2roadmap.infrastructure.google_auth.VertexCredentials.headers', 'smtplib.SMTP',
+            'cloudinary.uploader.upload'):
+            monkeypatch.setattr(target, forbidden)
+        monkeypatch.setattr('wayfinder.composition.compose_mailer', lambda _: bundle.mailer)
+        services = compose_services(settings, core_settings=Settings(_env_file=None,
+            llm_transport='vertex', vertex_project='w12-no-network', vertex_location='global'),
+            auth_validator=lambda *_: None, model_factory=lambda *a, **k: bundle.phase_b.model,
+            embedding_factory=lambda *a, **k: bundle.phase_b.embedding, clock=clock,
+            graph_loader=lambda *_: bundle.phase_b.graph, build_media=bundle.media_store)
+        services.accounts.clock = clock
+        app = create_app(settings, services)
+        clients = []
+        def user(verified=True, email=None):
+            email = email or uuid4().hex + '@example.vn'
+            client = TestClient(app, base_url=ORIGIN)
+            clients.append(client)
+            response = client.post('/api/v1/auth/register', headers={'Origin': ORIGIN}, json={
+                'email': email, 'password': PASSWORD, 'display_name': 'Người học'})
+            assert response.status_code == 200
+            if verified:
+                verify(client, bundle.mailer.messages[-1])
+            return client
+        owner, receiver, outsider = user(), user(), user()
+        def actor(client):
+            account = client.get('/api/v1/me').json()['account']
+            return Actor(account['id'], account['role'], account['email_verified'], 'active')
+        course = services.courses.create_course(actor(owner), doc_id='w12-' + uuid4().hex,
+            title='Khoá <An & Bình>', graph_version=1, module_count=2)
+        rt = SimpleNamespace(services=services, service=services.sharing, engine=services.sharing.store.engine,
+            clock=clock, settings=settings, mailer=bundle.mailer, owner=owner, receiver=receiver,
+            outsider=outsider, course=course, user=user, actor=actor, app=app)
+        try:
+            yield rt
+        finally:
+>           record_data('sql-proof/'+re.sub(r'[^A-Za-z0-9_.-]','_',request.node.name), {
+                                                                   ^^^^^^^
+                'source':'Independent SQL connection, synthetic accounts, zero external mail/provider calls',
+                'course_id':course.id,
+                'invitations':sql(rt,'SELECT id,email_normalized,invitee_account_id,status,expires_at,responded_at FROM invitation WHERE course_id=:cid',cid=course.id),
+                'membership':sql(rt,'SELECT account_id,role,via FROM membership WHERE course_id=:cid',cid=course.id),
+                'audit':sql(rt,"SELECT action,actor_id,target_id,meta FROM audit_event WHERE target_id IN (SELECT id::text FROM invitation WHERE course_id=:cid)",cid=course.id)})
+E           NameError: name 'request' is not defined
+
+src\web\backend\tests\test_w12_invitations.py:80: NameError
+_ ERROR at teardown of test_other_user_and_unverified_cannot_respond[decline] _
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a32b3cb1b0db404fbce0dc937811829a
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D698037230>
+
+    @pytest.fixture
+    def invited(postgres_database_url, monkeypatch):
+        bundle = build_test_application()
+        clock = bundle.phase_b.clock
+        settings = WebSettings(_env_file=None, database_url=postgres_database_url.render_as_string(hide_password=False), frontend_dist=Path('missing'),
+            public_base_url=ORIGIN, allowed_origins=[ORIGIN], artifact_root=Path('tmp/w12-artifacts'))
+        forbidden_calls = []
+        def forbidden(*args, **kwargs):
+            forbidden_calls.append(True)
+            raise AssertionError('W12 forbids real provider/ADC/SMTP/Cloudinary')
+        for target in ('doc2roadmap.infrastructure.llm.gemini.urlopen',
+            'doc2roadmap.infrastructure.embedding.gemini.urlopen',
+            'doc2roadmap.infrastructure.google_auth.VertexCredentials.headers', 'smtplib.SMTP',
+            'cloudinary.uploader.upload'):
+            monkeypatch.setattr(target, forbidden)
+        monkeypatch.setattr('wayfinder.composition.compose_mailer', lambda _: bundle.mailer)
+        services = compose_services(settings, core_settings=Settings(_env_file=None,
+            llm_transport='vertex', vertex_project='w12-no-network', vertex_location='global'),
+            auth_validator=lambda *_: None, model_factory=lambda *a, **k: bundle.phase_b.model,
+            embedding_factory=lambda *a, **k: bundle.phase_b.embedding, clock=clock,
+            graph_loader=lambda *_: bundle.phase_b.graph, build_media=bundle.media_store)
+        services.accounts.clock = clock
+        app = create_app(settings, services)
+        clients = []
+        def user(verified=True, email=None):
+            email = email or uuid4().hex + '@example.vn'
+            client = TestClient(app, base_url=ORIGIN)
+            clients.append(client)
+            response = client.post('/api/v1/auth/register', headers={'Origin': ORIGIN}, json={
+                'email': email, 'password': PASSWORD, 'display_name': 'Người học'})
+            assert response.status_code == 200
+            if verified:
+                verify(client, bundle.mailer.messages[-1])
+            return client
+        owner, receiver, outsider = user(), user(), user()
+        def actor(client):
+            account = client.get('/api/v1/me').json()['account']
+            return Actor(account['id'], account['role'], account['email_verified'], 'active')
+        course = services.courses.create_course(actor(owner), doc_id='w12-' + uuid4().hex,
+            title='Khoá <An & Bình>', graph_version=1, module_count=2)
+        rt = SimpleNamespace(services=services, service=services.sharing, engine=services.sharing.store.engine,
+            clock=clock, settings=settings, mailer=bundle.mailer, owner=owner, receiver=receiver,
+            outsider=outsider, course=course, user=user, actor=actor, app=app)
+        try:
+            yield rt
+        finally:
+>           record_data('sql-proof/'+re.sub(r'[^A-Za-z0-9_.-]','_',request.node.name), {
+                                                                   ^^^^^^^
+                'source':'Independent SQL connection, synthetic accounts, zero external mail/provider calls',
+                'course_id':course.id,
+                'invitations':sql(rt,'SELECT id,email_normalized,invitee_account_id,status,expires_at,responded_at FROM invitation WHERE course_id=:cid',cid=course.id),
+                'membership':sql(rt,'SELECT account_id,role,via FROM membership WHERE course_id=:cid',cid=course.id),
+                'audit':sql(rt,"SELECT action,actor_id,target_id,meta FROM audit_event WHERE target_id IN (SELECT id::text FROM invitation WHERE course_id=:cid)",cid=course.id)})
+E           NameError: name 'request' is not defined
+
+src\web\backend\tests\test_w12_invitations.py:80: NameError
+================================== FAILURES ===================================
+____________ test_other_user_and_unverified_cannot_respond[accept] ____________
+
+invited = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001D6F845...unction invited.<locals>.actor at 0x000001D6F832ACA0>, app=<fastapi.applications.FastAPI object at 0x000001D6FFBC3200>)
+action = 'accept'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+        identity = iid(send(rt, [email(unverified)]))
+        for client, code in ((rt.outsider, 'not_found'), (unverified, 'email_unverified')):
+            response = client.post(f'/api/v1/invitations/{identity}/{action}', headers=headers(client))
+>           assert response.json()['error']['code'] == code
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'error'
+
+src\web\backend\tests\test_w12_invitations.py:205: KeyError
+___________ test_other_user_and_unverified_cannot_respond[decline] ____________
+
+invited = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001D6982C...unction invited.<locals>.actor at 0x000001D69834FA60>, app=<fastapi.applications.FastAPI object at 0x000001D6982FBBF0>)
+action = 'decline'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+        identity = iid(send(rt, [email(unverified)]))
+        for client, code in ((rt.outsider, 'not_found'), (unverified, 'email_unverified')):
+            response = client.post(f'/api/v1/invitations/{identity}/{action}', headers=headers(client))
+>           assert response.json()['error']['code'] == code
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'error'
+
+src\web\backend\tests\test_w12_invitations.py:205: KeyError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w12-email-invitations-backend\report\w12-evidence\mutations\attempt1\foreign-recipient.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w12_invitations.py::test_other_user_and_unverified_cannot_respond[accept]
+FAILED src/web/backend/tests/test_w12_invitations.py::test_other_user_and_unverified_cannot_respond[decline]
+ERROR src/web/backend/tests/test_w12_invitations.py::test_other_user_and_unverified_cannot_respond[accept]
+ERROR src/web/backend/tests/test_w12_invitations.py::test_other_user_and_unverified_cannot_respond[decline]
+2 failed, 22 deselected, 1 warning, 2 errors in 10.55s
