@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="5.496" timestamp="2026-10-27T23:00:49.684567+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_user_monthly_counts_match_existing_quota_at_vietnam_boundary[2026-01-31T16:59:00+00:00]" time="2.154"><failure message="assert 2 == 1">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002A41502..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000002A434BA9580&gt;)
+instant = '2026-01-31T16:59:00+00:00'
+
+    @pytest.mark.parametrize('instant', ['2026-01-31T16:59:00+00:00','2026-12-31T16:59:00+00:00','2028-02-29T16:59:00+00:00'])
+    def test_user_monthly_counts_match_existing_quota_at_vietnam_boundary(admin_case,instant):
+        from test_builds_w14 import pdf
+        rt=admin_case
+        before=datetime.fromisoformat(instant)
+        after=before+timedelta(minutes=1)
+        rt.clock.instant=before
+        assert rt.owner.client.post('/api/v1/auth/login',headers={'Origin':ORIGIN},
+            json={'email':rt.owner.email,'password':PASSWORD}).status_code==200
+        for stamp,counted,actor in ((before,True,rt.learner.actor),(before,False,rt.learner.actor),
+            (after,True,rt.learner.actor),(before-timedelta(days=35),True,rt.learner.actor),(before,True,rt.owner.actor)):
+            item=rt.services.builds.create_upload(actor,'fixture.pdf',pdf()+b'\n%'+uuid4().hex.encode(),rights_confirmed=True)
+            with rt.engine.begin() as connection:
+                connection.execute(text("UPDATE build SET status='failed',counts_quota=:counted,queued_at=:stamp WHERE id=:id"),
+                    {'counted':counted,'stamp':stamp,'id':item['build']['build_id']})
+        for now in (before,after):
+            rt.clock.instant=now
+            response=rt.owner.client.get('/api/v1/admin/users',params={'email':rt.learner.email})
+            assert response.status_code==200,response.text
+            item=response.json()['items'][0]
+            quota=rt.services.builds.store.quota(rt.learner.id,now,None)
+&gt;           assert item['builds_this_month']['used']==quota['builds_used']==1
+E           assert 2 == 1
+
+src\web\backend\tests\test_w17_admin.py:424: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_admin" name="test_user_monthly_counts_match_existing_quota_at_vietnam_boundary[2026-12-31T16:59:00+00:00]" time="0.843"><failure message="assert 2 == 1">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002A434E2..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000002A434FDE8E0&gt;)
+instant = '2026-12-31T16:59:00+00:00'
+
+    @pytest.mark.parametrize('instant', ['2026-01-31T16:59:00+00:00','2026-12-31T16:59:00+00:00','2028-02-29T16:59:00+00:00'])
+    def test_user_monthly_counts_match_existing_quota_at_vietnam_boundary(admin_case,instant):
+        from test_builds_w14 import pdf
+        rt=admin_case
+        before=datetime.fromisoformat(instant)
+        after=before+timedelta(minutes=1)
+        rt.clock.instant=before
+        assert rt.owner.client.post('/api/v1/auth/login',headers={'Origin':ORIGIN},
+            json={'email':rt.owner.email,'password':PASSWORD}).status_code==200
+        for stamp,counted,actor in ((before,True,rt.learner.actor),(before,False,rt.learner.actor),
+            (after,True,rt.learner.actor),(before-timedelta(days=35),True,rt.learner.actor),(before,True,rt.owner.actor)):
+            item=rt.services.builds.create_upload(actor,'fixture.pdf',pdf()+b'\n%'+uuid4().hex.encode(),rights_confirmed=True)
+            with rt.engine.begin() as connection:
+                connection.execute(text("UPDATE build SET status='failed',counts_quota=:counted,queued_at=:stamp WHERE id=:id"),
+                    {'counted':counted,'stamp':stamp,'id':item['build']['build_id']})
+        for now in (before,after):
+            rt.clock.instant=now
+            response=rt.owner.client.get('/api/v1/admin/users',params={'email':rt.learner.email})
+            assert response.status_code==200,response.text
+            item=response.json()['items'][0]
+            quota=rt.services.builds.store.quota(rt.learner.id,now,None)
+&gt;           assert item['builds_this_month']['used']==quota['builds_used']==1
+E           assert 2 == 1
+
+src\web\backend\tests\test_w17_admin.py:424: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_admin" name="test_user_monthly_counts_match_existing_quota_at_vietnam_boundary[2028-02-29T16:59:00+00:00]" time="0.865"><failure message="assert 2 == 1">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002A4351B..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000002A43537DE40&gt;)
+instant = '2028-02-29T16:59:00+00:00'
+
+    @pytest.mark.parametrize('instant', ['2026-01-31T16:59:00+00:00','2026-12-31T16:59:00+00:00','2028-02-29T16:59:00+00:00'])
+    def test_user_monthly_counts_match_existing_quota_at_vietnam_boundary(admin_case,instant):
+        from test_builds_w14 import pdf
+        rt=admin_case
+        before=datetime.fromisoformat(instant)
+        after=before+timedelta(minutes=1)
+        rt.clock.instant=before
+        assert rt.owner.client.post('/api/v1/auth/login',headers={'Origin':ORIGIN},
+            json={'email':rt.owner.email,'password':PASSWORD}).status_code==200
+        for stamp,counted,actor in ((before,True,rt.learner.actor),(before,False,rt.learner.actor),
+            (after,True,rt.learner.actor),(before-timedelta(days=35),True,rt.learner.actor),(before,True,rt.owner.actor)):
+            item=rt.services.builds.create_upload(actor,'fixture.pdf',pdf()+b'\n%'+uuid4().hex.encode(),rights_confirmed=True)
+            with rt.engine.begin() as connection:
+                connection.execute(text("UPDATE build SET status='failed',counts_quota=:counted,queued_at=:stamp WHERE id=:id"),
+                    {'counted':counted,'stamp':stamp,'id':item['build']['build_id']})
+        for now in (before,after):
+            rt.clock.instant=now
+            response=rt.owner.client.get('/api/v1/admin/users',params={'email':rt.learner.email})
+            assert response.status_code==200,response.text
+            item=response.json()['items'][0]
+            quota=rt.services.builds.store.quota(rt.learner.id,now,None)
+&gt;           assert item['builds_this_month']['used']==quota['builds_used']==1
+E           assert 2 == 1
+
+src\web\backend\tests\test_w17_admin.py:424: AssertionError</failure></testcase></testsuite></testsuites>

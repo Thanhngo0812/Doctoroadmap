@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="6.594" timestamp="2026-10-27T22:53:23.502083+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_users_public_projection_search_and_demo_null" time="1.856" /><testcase classname="src.web.backend.tests.test_w17_admin" name="test_disable_revokes_two_cookies_enable_never_resurrects" time="0.976" /><testcase classname="src.web.backend.tests.test_w17_admin" name="test_last_admin_demote_rejected" time="0.586" /><testcase classname="src.web.backend.tests.test_w17_admin" name="test_all_admin_routes_require_admin_and_no_store" time="0.573"><failure message="AssertionError: assert set() &gt;= {'/api/v1/adm.../users/{uid}'}&#10;  &#10;  Extra items in the right set:&#10;  '/api/v1/admin/audit'&#10;  '/api/v1/admin/users/{uid}'&#10;  '/api/v1/admin/users'">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002ED18BF..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000002ED18D01940&gt;)
+
+    def test_all_admin_routes_require_admin_and_no_store(admin_case):
+        rt = admin_case
+        routes = [(route, method) for route in rt.app.routes for method in getattr(route, 'methods', ())
+            if route.path.startswith('/api/v1/admin/') and method not in {'OPTIONS', 'HEAD'}]
+&gt;       assert {route.path for route, _ in routes} &gt;= {'/api/v1/admin/users', '/api/v1/admin/users/{uid}', '/api/v1/admin/audit'}
+E       AssertionError: assert set() &gt;= {'/api/v1/adm.../users/{uid}'}
+E
+E         Extra items in the right set:
+E         '/api/v1/admin/audit'
+E         '/api/v1/admin/users/{uid}'
+E         '/api/v1/admin/users'
+
+src\web\backend\tests\test_w17_admin.py:155: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_admin" name="test_update_and_audit_rollback_on_audit_failure" time="0.892" /></testsuite></testsuites>
