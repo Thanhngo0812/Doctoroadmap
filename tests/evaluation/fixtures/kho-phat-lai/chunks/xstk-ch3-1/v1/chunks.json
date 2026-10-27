@@ -1,0 +1,806 @@
+[
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 2355,
+  "char_start": 1280,
+  "chunk_id": "c_6a3b85102eef5166fcab0646",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 4,
+  "oversize_reason": null,
+  "page": 1,
+  "parent_section_id": "s_4eb49c3558adadf3a0242c12",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "1.1. Khái niệm tổng thể và mẫu"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "• Mẫu\nKhi nghiên cứu một tổng thể, vì nhi ều lý do mà ta không thể khảo sát trên toàn bộ các phần tử của tổng thể. Chẳng hạn như khi nghiên cứu về người có giới tính nam trong người Việt nam, nếu ta khảo sát trên toàn bộ các phần tử của tổng thể thì phải huy động một sức người, sức của rất lớn. Hoặc nghiên cứu về số người đi cai nghiện trong số người bị nghiện thì ta không xác định được tổng thể chính xác… Do đó người ta thường chọn từ tổng thể ra n phần tử để nghiên cứu vấn đề của tổng thể. Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu . Thường thì kích thước mẫu nhỏ hơn nhiều so với số phần tử của tổng thể nên có khả năng thực tế để thu thập, xử lý và khai thác thông tin mẫu một cách nhanh chóng, toàn diện hơn.\nVới các thông tin thu thập từ mẫu, bằng các phương pháp toán học, ta tiến hành suy rộng kết quả nghiên cứu trên mẫu cho tổng thể. Phương pháp lấy mẫu, sau đó khai thác thông tin trên mẫu, cuối cùng suy rộng kết quả cho tổng thể được gọi là phương pháp mẫu .",
+  "token_count": 270,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 3762,
+  "char_start": 2766,
+  "chunk_id": "c_123f030aa47ad75f527dae9c",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 7,
+  "oversize_reason": null,
+  "page": 2,
+  "parent_section_id": "s_9fea810f1f7436f5e6b4fa2a",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "1.2. Phân loại mẫu"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "• Mẫu tổng quát và mẫu cụ thể\nXét một mẫu có kích thước n. Khi khảo sát ngẫu nhiên dấu hiệu X của tổng thể tại phần tử thứ i của mẫu thì ta được đại lượng ngẫu nhiên ký hiệu là Xi (i = 1, 2, … , n). Khi đó đại lượng ngẫu nhiên n-chiều (X1, X2, … , Xn) được gọi là mẫu tổng quát. Mỗi giá trị có thể nhận (x1, x2, … , xn) của mẫu tổng quát (X1, X2, … , Xn) được gọi là một mẫu cụ thể. Hay nói khác đi, mỗi kết quả khảo sát cụ thể dấu hiệu X của tổng thể trên từng phần tử của mẫu cho ta một mẫu cụ thể. Trong lý thuyết thống kê, khi xét các vấn để lý thuyết thì ta sử dụng mẫu ngẫu nhiên. Còn khi giải quyết các vấn đề cụ thể thì ta sử dụng mẫu cụ thể.\n• Mẫu định tính và mẫu định lượng\nMẫu (x 1 , x 2 , … , xn) , trong đó x i chỉ nhận một trong hai giá trị là 0 và 1, được gọi là mẫu định tính. Như vậy, mẫu định tính là mẫu mà dấu hiệu X ta nghiên cứu trên mẫu là tính chất A. Khi khảo sát cụ thể tính chất A trên từng phần tử của mẫu, phần tử nào có tính chất A thì giá trị là 1, ngược lại là 0.",
+  "token_count": 316,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 4471,
+  "char_start": 3763,
+  "chunk_id": "c_4d0c6d63e55a4ca907aa398f",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 4288,
+    "formula_id": "44edde1cb2f8b54d1a0d9a8be001e89d264e4a4bd2c51288211bc89fd02cc29f"
+   },
+   {
+    "char_start": 4303,
+    "formula_id": "93473425eb30302d5450bb363df86f59e5312e55ec31b0a091acbc4577fcd7ac"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 8,
+  "oversize_reason": null,
+  "page": 2,
+  "parent_section_id": "s_9fea810f1f7436f5e6b4fa2a",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "1.2. Phân loại mẫu"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Trong thực tế, một mẫu định tính thường được xác định bằng hai số nguyên: n là kích thước mẫu và m là số phần tử trong mẫu có tính chất A.\nMẫu (x 1 , x 2 , … , xn) , trong đó x i nhận giá trị là một số thực tùy ý, được gọi là mẫu định lượng. Như vậy, mẫu định lượng là mẫu có dạng véctơ n-chiều (x1, x 2 , … , xn), trong đó x i là kết quả khảo sát cụ thể dấu hiệu X tại phần tử thứ i của mẫu.\nTrong thực tế, một mẫu định lượng có kích thước n với vấn đề nghiên cứu là dấu hiệu X, thường được xác định dưới dạng bảng như sau:\n[formula]\nHay:\n[formula]\nTrong ñoù: x 1 < x 2 < … < x k laø caùc kết quả khảo sát cụ thể của dấu hiệu X trên các phần tử của mẫu , n i là taàn soá c ủ a x i và n 1 + n 2 + … + n k = n",
+  "token_count": 236,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 5564,
+  "char_start": 4472,
+  "chunk_id": "c_df610dae8235a442cc47e8db",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 4624,
+    "formula_id": "2e16d51fe6a3c202249fc6ef1019be98b309fa31b2873cfa6b36126def648ab3"
+   },
+   {
+    "char_start": 4856,
+    "formula_id": "5124ead4c0408b13addddd5288cd49c2e00440fd96a120382db4dbf63d89391c"
+   },
+   {
+    "char_start": 5007,
+    "formula_id": "fe8a5302831e699938d3fe7c34672f287d442078d157c95e920763afb48af1c3"
+   },
+   {
+    "char_start": 5121,
+    "formula_id": "acd11e537f62ae52c1ab6d9804a56af723e53e25d4a867ca5d8b9a7bc8144cfe"
+   },
+   {
+    "char_start": 5195,
+    "formula_id": "77ad541ae82d208ce3f7cca8c07363690123588687661ba827a697471b7953c1"
+   },
+   {
+    "char_start": 5289,
+    "formula_id": "fbda218bc0ff1855ff9b49004e2584f5e5805e660ba189a8c1ca094b0138e8cc"
+   },
+   {
+    "char_start": 5299,
+    "formula_id": "8f6df27dd04f391907aec0943014e1cf771fe970901d7eb3059fa45f604d0def"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 10,
+  "oversize_reason": null,
+  "page": 3,
+  "parent_section_id": "s_81a2bfe39be7997c3ee616a6",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "1.3. Các số đặc trưng của mẫu cụ thể"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "• Tỉ lệ mẫu\nĐịnh nghĩa . Tỉ lệ mẫu của mẫu định tính có kích thước n, trong đó có m phần tử có tính chất A, là một số được ký hiệu và xác định như sau:\n[formula]\nVí dụ . Nghiên cứu về nam sinh viên trong một khoa, người ta khảo sát ngẫu nhiên 100 sinh viên thì thấy có 80 sinh viên nam. Tỉ lệ nam sinh viên trong số sinh viên được khảo sát được coi là tỉ lệ mẫu và được tính như sau:\n[formula]\n• Trung bình mẫu - Phương sai mẫu\nĐịnh nghĩa. Trung bình mẫu của mẫu định lượng (x1, x2, … , xn) là một số được ký hiệu và xác định như sau:\n[formula]\nPhương sai mẫu của mẫu định lượng (x1, x2, … , xn) là một số không âm được ký hiệu và xác định như sau:\n[formula]\nn\nTrong trường hợp mẫu định lượng được xác định dưới dạng bảng:\n[formula]\nThì trung bình mẫu và phương sai mẫu của mẫu trên được tính theo các công thức sau:\n[formula]\n[formula]\nVới phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s 2 (hay x σ n - 1 2 ) , độ lệch mẫu được ký hiệu là s (hay x σ n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay x σ n - 1 ) và được xác định như sau:",
+  "token_count": 334,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "table",
+   "formula"
+  ],
+  "char_end": 15820,
+  "char_start": 15134,
+  "chunk_id": "c_428d71652b14d162403239e5",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 15656,
+    "formula_id": "76d0f58c00728be5ed84f27d1ddd1a20dd8d9a9dc5068e7b2cd3c238183b9fa4"
+   },
+   {
+    "char_start": 15666,
+    "formula_id": "6015e3ba9f4459d5098ad8275d4f82cd44b1402d29676af287d7515b28c11da1"
+   },
+   {
+    "char_start": 15676,
+    "formula_id": "9d606aea6ceb0b122c94dbec133e9b021d7f1a2c4c0f9ee72379e967278578fe"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 31,
+  "oversize_reason": null,
+  "page": 12,
+  "parent_section_id": "s_d1fd0707d7deb12ce469823e",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "1.7. Các số đặc trưng của mẫu hai chiều"
+  ],
+  "split_index": 0,
+  "table_refs": [
+   {
+    "char_start": 15161,
+    "table_id": "863a60d1373f102ee5c1d6610e0edd30f7a684b6c6f6fa8de4dc2322648fd8d2"
+   },
+   {
+    "char_start": 15272,
+    "table_id": "887b5470250e6a096cb5435558aed716476d6eeb4a0ff033b0ea7f91d1fa038b"
+   }
+  ],
+  "text": "Cho mẫu hai chiều như sau:\n| X | y 1 | y 2 | … | y h | n i |\n| --- | --- | --- | --- | --- | --- |\n| x 1 | n 11 | n 12 | … | n 1h | n 1 |\n| x 2 | n 21 | n 22 | … | n 2h | n 2 |\n| --- | --- | --- | --- | --- | --- |\n| … | … | … | … | … | … |\n| ... | ... | ... | ... | ... | ... |\n| ... | ... | ... | ... | ... | ... |\n| x k | n k1 | n k2 | … | n kh | n k |\n| m j | m 1 | m 2 | … | m h | n |\nKhi xét theo dấu hiệu X, thì mẫu trên có hai số đặc trưng là trung bình mẫu và phương sai mẫu theo X được ký hiệu xác định như sau:\n[formula]\n[formula]\n[formula]\nKhi xét theo dấu hiệu Y, thì mẫu trên có hai số đặc trưng là trung bình mẫu và phương sai mẫu theo Y được ký hiệu và xác định như sau:",
+  "token_count": 273,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 27841,
+  "char_start": 27034,
+  "chunk_id": "c_7d32d39dc6dda90e06db3b97",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 27653,
+    "formula_id": "49e263fd11aef6cd0203147a2ab849c4e221b9fa865e46cc9da3d5089d663956"
+   },
+   {
+    "char_start": 27663,
+    "formula_id": "a65bcffbb81821c8fc71a31b73e63b76975834d704d55ed2b39cb34b03c6b2cb"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 52,
+  "oversize_reason": null,
+  "page": 22,
+  "parent_section_id": "s_8ccdf9c4babdd6e7dbe66cdd",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.1. Các khái niệm cơ bản"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Như vậy với một mẫu cụ thể cho trước: Ước lượng điểm không chệch của trung bình tổng thể μ là trung bình mẫu x , nghĩa là μ ≈ x . Ước lượng điểm không chệch của phương sai tổng thể σ 2 là phương sai mẫu hiệu chỉnh s 2 , nghĩa là σ 2 ≈ s 2 . Ước lượng điểm không chệch của tỉ lệ tổng thể p là tỉ lệ mẫu f, nghĩa là p ≈ f.\n• Ước lượng khoảng - Phương pháp khoảng tin cậy\nPhương pháp . Để ước lượng số đặc trưng θ của dấu hiệu X , ta chọn thống kê G = G(X1, X2, … , Xn , θ ) của mẫu tổng quát (X1, X2, … , Xn).\nVới α là số không âm khá bé (người ta thường lấy α ≤ 0,05), người ta tìm được các số thực g1, g2 sao cho:\nHay:\n[formula]\n[formula]\nKhi đó khoảng ngẫu nhiên (G1, G2) được gọi là khoảng tin cậy của θ . Số thực 1 -α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai lầm của ước lượng.",
+  "token_count": 275,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 28407,
+  "char_start": 28205,
+  "chunk_id": "c_f895797b68a180ff5b6618e0",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 55,
+  "oversize_reason": null,
+  "page": 23,
+  "parent_section_id": "s_60383131e3027f182eefef5d",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.2. Khoảng ước lượng của các số đặc trưng tổng thể • Khoảng ước lượng của tỉ lệ tổng thể"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Bài toán . Trên tổng thể, ta quan tâm đến tỉ lệ tổng thể p. Xét một mẫu có kích thước n (n ≥ 30) và tính được tỉ lệ mẫu là f. Hãy tìm khoảng ước lượng của tỉ lệ tổng thể p với độ tin cậy 1 -α cho trước?",
+  "token_count": 65,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 29171,
+  "char_start": 28408,
+  "chunk_id": "c_9c4674f8d69faee899c3e972",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 28472,
+    "formula_id": "aedc9d278ae2f79e42456536e670b6cc246b622c18d1fea8e45c79adfb49c585"
+   },
+   {
+    "char_start": 28549,
+    "formula_id": "2fb163bde85fa8f2fe932068449ec01a4577377193386083be6f102ccc7cb13b"
+   },
+   {
+    "char_start": 28591,
+    "formula_id": "3ac5b8e5a1572d209f6e91449134dfcaebc3f9434906dd6d61efb72b7e9886e4"
+   },
+   {
+    "char_start": 28808,
+    "formula_id": "33317b71ecc80047496daae3a6027813ed5155bdc55d2ee597632930ac56f25e"
+   },
+   {
+    "char_start": 28933,
+    "formula_id": "8122b2356fa22e4a3c8fc711666d03cef448c72db3e55278ffb414020283f328"
+   },
+   {
+    "char_start": 29078,
+    "formula_id": "8a121343a3212960e49d12001eccae33831b749b7437e565ef75bb89abc2d5e8"
+   },
+   {
+    "char_start": 29099,
+    "formula_id": "35bef2c072687168a43fefad2f036a47ceca79efec2b95fa50310600002186fb"
+   },
+   {
+    "char_start": 29109,
+    "formula_id": "0825bd95a39d840bd61707d4bbd4df634ba754698285539e4a4819ba8baa939b"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 57,
+  "oversize_reason": null,
+  "page": 23,
+  "parent_section_id": "s_ae2ccbadc7eea282dbde07df",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.2. Khoảng ước lượng của các số đặc trưng tổng thể • Khoảng ước lượng của tỉ lệ tổng thể",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Với độ tin cậy 1 -α cho trước, ta tìm được số t α từ công thức:\n[formula]\nKhi đó ta tính được độ chính xác ε của ước lượng p theo công thức:\n[formula]\nKhoảng ước lượng của p có dạng:\n[formula]\nVí dụ1 . Điều tra về tỉ lệ phế phẩm của một kho hàng, người ta kiểm tra ngẫu nhiên 100 sản phẩm của một kho hàng đó thì thấy có 10 phế phẩm. Với độ tin cậy 95%, hãy ước lượng tỉ lệ phế phẩm của kho hàng đó?\n[formula]\nGọi p là tỉ lệ phế phẩm của kho hàng đó. Ta sẽ ước lượng p với độ tin cậy 0,95.\nVởi độ tin cậy 0,95 đã cho, ta có:\n[formula]\nVới giả thiết của bài toán, mẫu để ước lượng p có kích thước n = 100 và tỉ lệ mẫu là f = 0,1. Do đó độ chính xác ε của ước lượng p là:\n[formula]\nTa có:\nf -\n[formula]\n[formula]\nNên khoảng ước lượng của p là p ∈ (0,0412 ; 0,1588).",
+  "token_count": 279,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "list_item",
+   "formula"
+  ],
+  "char_end": 32050,
+  "char_start": 31113,
+  "chunk_id": "c_3ce362b31f3c483851b2936f",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 31244,
+    "formula_id": "aedc9d278ae2f79e42456536e670b6cc246b622c18d1fea8e45c79adfb49c585"
+   },
+   {
+    "char_start": 31619,
+    "formula_id": "494442d671fe6817815d0e64c18c0155175b3dfef4bfe97a62fcab875473dfd3"
+   },
+   {
+    "char_start": 31661,
+    "formula_id": "0f072b4daf81e8b8db6784d78f54e655058b19522c47b945b59d02f41d4cbaab"
+   },
+   {
+    "char_start": 31671,
+    "formula_id": "6dad92d8459802dfc82cc39d34997224c09ef7f6d521bbf8a29df3d3f251da81"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 62,
+  "oversize_reason": null,
+  "page": 25,
+  "parent_section_id": "s_467e4492630d4ddda18ed581",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.2. Khoảng ước lượng của các số đặc trưng tổng thể • Khoảng ước lượng của tỉ lệ tổng thể",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Với độ tin cậy 1 -α cho trước, ta tìm được số t α theo một trong hai trường hợp sau:\nNếu n ≥ 30 thì số t α được tính từ công thức:\n[formula]\nTrong đó ϕ (u) có giá trị được tính sẵn trong bảng phụ lục 2.\nNếu n < 30 và dấu hiệu X nghiên cứu trên tổng thể được coi là đại lượng ngẫu nhiên có phân phối chuẩn, thì t α là số t α (k) trong bảng phụ lục 5 (Phân phối Student với k bậc tự do), trong đó α được suy ra từ độ tin cậy 1 -α và k = n - 1.\nKhi đó độ chính xác ε của ước lượng μ được tính theo công thức:\n[formula]\nKhoảng ước lượng của μ có dạng:\n[formula]\n[formula]\nChú ý . Nếu dấu hiệu X nghiên cứu trên tổng thể được coi là đại lượng ngẫu nhiên có phân phối chuẩn với phương sai là σ 2 , thì khi tính độ chính xác ε của ước lượng, ta thay độ lệch mẫu hiệu chỉnh s bằng σ .\nVí dụ1 . Điều tra về số sản phẩm X bán ra hàng ngày tại một cửa hàng trưng bày và giới thiệu sản phẩm của một công ty, người ta thu được kết quả trong bảng sau:",
+  "token_count": 283,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula",
+   "list_item"
+  ],
+  "char_end": 39381,
+  "char_start": 38526,
+  "chunk_id": "c_9d0e0e109aae88e2093d94cd",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 38587,
+    "formula_id": "a981067379e1242612dcf1ffaed2205b8dc892330c973170b49c453a0db63cc3"
+   },
+   {
+    "char_start": 38750,
+    "formula_id": "aac1aaf5ce4d9bd8a7134911b88ee4f166bb11e4f6816c09b089483f1e532c6d"
+   },
+   {
+    "char_start": 39105,
+    "formula_id": "33317b71ecc80047496daae3a6027813ed5155bdc55d2ee597632930ac56f25e"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 76,
+  "oversize_reason": null,
+  "page": 30,
+  "parent_section_id": "s_f86a8696e3a6079cbc075ce3",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.3. Xác định độ tin cậy trong ước lượng",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Từ công thức tìm độ chính xác trong ước lượng tỉ lệ p ta có:\n[formula]\nVới độ chính xác ε và mẫu đã cho, ta tính được t α . Tra bảng phụ lục 2 ta tìm được ϕ (t α ). Từ đó ta tìm được độ tin cậy của ước lượng bằng công thức:\n[formula]\nVí dụ . Để ước lượng tỉ lệ phế phẩm trong các sản phẩm sản xuất tại một xí nghiệp, người ta kiểm tra ngẫu nhiên 400 sản phẩm của xí nghiệp đó thì thấy có 40 phế phẩm.\nHãy ước lượng tỉ lệ phế phẩm của xí nghiệp đó với độ tin cậy 95%?\nNếu muốn phép ước lượng tỉ lệ phế phẩm có độ chính xác là 2% thì độ tin cậy của ước lượng đó phải là bao nhiêu?\n[formula]\nGọi p là tỉ lệ phế phẩm của xí nghiệp. Ta sẽ ước lượng p với độ tin cậy 95%.\nDo độ tin cậy của ước lượng p là 0,95 nên t α = 1,96.\nTheo giả thiết bài toán, ta có mẫu để ước lượng p có kích thước n = 400 và tỉ lệ mẫu là f = 0,1. Do đó độ chính xác của ước lượng p là:",
+  "token_count": 281,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "formula",
+   "text",
+   "list_item"
+  ],
+  "char_end": 40007,
+  "char_start": 39382,
+  "chunk_id": "c_4258d8be9752a02bd50faafd",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 39382,
+    "formula_id": "ea6036b4443ac0d078f146671d8a6b6d5ed586db053f0dc9a9a5568510765bfd"
+   },
+   {
+    "char_start": 39602,
+    "formula_id": "e92f929fe508cb5f35b7ad16bf540e38ca6284fe779559eda55f923690097855"
+   },
+   {
+    "char_start": 39625,
+    "formula_id": "a1b8f7847ef02c34540f5fb2ff25411ec076afc3422f44ebbcc3b0152fa567dc"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 77,
+  "oversize_reason": null,
+  "page": 31,
+  "parent_section_id": "s_f86a8696e3a6079cbc075ce3",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.3. Xác định độ tin cậy trong ước lượng",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "[formula]\nVậy khoảng ước lượng của p là p ∈ (0,0706 ; 0,1294).\nNhư vậy với độ tin cậy 95%, ta có thể dự đoán tỉ lệ phế phẩm của kho hàng là từ 7,06% đến 12,94%.\nDo phép ước lượng tỉ lệ phế phẩm p có độ chính xác 2% nên:\n[formula]\nDo đó ta có:\n[formula]\nNhư vậy, nếu muốn phép ước lượng tỉ lệ phế phẩm có độ chính xác là 2%, thì độ tin cậy của ước lượng đó phải là 81,64%.\n• Xác định độ tin cậy trong ước lượng trung bình\nBài toán . Trên tổng thể, ta quan tâm đến trung bình tổng thể μ . Xét một mẫu có kích thước n và tính được độ lệch mẫu hiệu chỉnh là s. Hãy tìm độ tin cậy của phép ước lượng μ có độ chính xác ε cho trước?",
+  "token_count": 219,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula",
+   "list_item"
+  ],
+  "char_end": 40933,
+  "char_start": 40008,
+  "chunk_id": "c_3b251f87b56200b9452c386f",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 40074,
+    "formula_id": "62c4c141559c4e28f093391ffb1a167fa6925dbfdbc0091f47f44d671b296831"
+   },
+   {
+    "char_start": 40291,
+    "formula_id": "aedc9d278ae2f79e42456536e670b6cc246b622c18d1fea8e45c79adfb49c585"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 79,
+  "oversize_reason": null,
+  "page": 31,
+  "parent_section_id": "s_fb2d399658db547f80202ced",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.3. Xác định độ tin cậy trong ước lượng",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Từ công thức tìm độ chính xác trong ước lượng trung bình μ ta có:\n[formula]\nVới độ chính xác ε và mẫu đã cho, ta tính được t α . Từ đó ta tìm được độ tin cậy của phép ước lượng μ theo một trong hai trường hợp sau:\nNếu n ≥ 30 thì độ tin cậy của phép ước lượng được tính từ công thức:\n[formula]\nNếu n < 30 thì từ t α và từ kích thước mẫu n đã biết ta tìm được α trong bảng phụ lục 5 sao cho t α (n - 1) = t α . Khi đó độ tin cậy của phép ước lượng μ là 1 -α .\nChú ý . Nếu dấu hiệu X nghiên cứu trên tổng thể được coi là đại lượng ngẫu nhiên có phân phối chuẩn với phương sai là σ 2 , thì ta thay độ lệch mẫu hiệu chỉnh s trong công thức trên bằng σ .\nVí dụ1 . Để ước lượng điểm thi môn toán trong kỳ thi tuyển sinh vào một trường đại học, các giám khảo chấm thử 100 bài thi và tính được điểm trung bình là 5 với độ lệch đã điều chỉnh là 2,5 điểm.\nHãy ước lượng điểm trung bình môn toán tại trường đại học đó với độ tin cậy 95%?",
+  "token_count": 275,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 43356,
+  "char_start": 42696,
+  "chunk_id": "c_fcbe6d18fd5682b0d6078038",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 84,
+  "oversize_reason": null,
+  "page": 33,
+  "parent_section_id": "s_0de1d21f7bb4366a53804bc2",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.4. Xác định kích thước mẫu trong ước lượng"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Ta đã biết mối quan hệ giữa mẫu, độ tin cậy và độ chính xác trong ước lượng tỉ lệ tổng thể p được thể hiện trong công thức (1 ) f f t n α ε - = . Mối quan hệ giữa mẫu, độ tin cậy và độ chính xác trong ước lượng trung bình tổng thể μ được thể hiện trong công thức s t n α ε = . Dưới đây ta sẽ xét cách\ntìm kích thước mẫu để có ước lượng p hay μ với độ tin cậy và độ chính xác cho trước.\n• Xác định kích thước mẫu trong ước lượng tỉ lệ\nBài toán . Trên tổng thể, ta quan tâm đến tỉ lệ tổng thể p. Xét một mẫu cho trước có tỉ lệ mẫu là f. Hãy tìm kích thước mẫu (ở đây kích thước mẫu khá lớn) để có phép ước lượng p với độ tin cậy 1 -α và độ chính xác ε cho trước?",
+  "token_count": 193,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 44183,
+  "char_start": 43357,
+  "chunk_id": "c_74ab5c36bb3ee6927d3dc432",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 43483,
+    "formula_id": "db12528e6e41d9e5036b764ae947fd127d6b3e1c428285faba4fdb7a0fbae7e4"
+   },
+   {
+    "char_start": 43553,
+    "formula_id": "aedc9d278ae2f79e42456536e670b6cc246b622c18d1fea8e45c79adfb49c585"
+   },
+   {
+    "char_start": 43901,
+    "formula_id": "33317b71ecc80047496daae3a6027813ed5155bdc55d2ee597632930ac56f25e"
+   },
+   {
+    "char_start": 44024,
+    "formula_id": "db12528e6e41d9e5036b764ae947fd127d6b3e1c428285faba4fdb7a0fbae7e4"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 86,
+  "oversize_reason": null,
+  "page": 33,
+  "parent_section_id": "s_09c223c18433d9e2500dc149",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.4. Xác định kích thước mẫu trong ước lượng",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Nếu gọi N là kích thước mẫu để có phép ước lượng p với độ tin cậy 1 -α và độ chính xác ε .\nKhi đó N được tính theo công thức:\n[formula]\nTrong đó t α được suy ra từ độ tin cậy 1 -α bằng công thức:\n[formula]\nVí dụ . Để ước lượng tỉ lệ phế phẩm trong các sản phẩm sản xuất tại một xí nghiệp, người ta kiểm tra ngẫu nhiên 400 sản phẩm của xí nghiệp đó thì thấy có 40 phế phẩm. Nếu muốn phép ước lượng tỉ lệ phế phẩm có độ tin cậy 95% và độ chính xác 2% thì số sản phẩm đã kiểm tra có thích hợp không? Cần phải kiểm tra thêm bao nhiêu sản phẩm nữa?\n[formula]\nGọi N là kích thước mẫu để có phép ước lượng tỉ lệ phế phẩm với độ tin cậy 95% và độ chính xác 2%. Khi đó ta có:\n[formula]\nTheo giả thiết bài toán, ta có ε = 0,02 và tỉ lệ mẫu của mẫu cho trước là f 40 0,1 400 = = . Do độ tin cậy của phép ước lượng là 0,95 nên t α = 1,96.",
+  "token_count": 279,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 45670,
+  "char_start": 44743,
+  "chunk_id": "c_450c305090bd666c22bab624",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 44869,
+    "formula_id": "6503f6928086d6ee3620cab56a86c9df984ecc1db020707a3494628391a635b6"
+   },
+   {
+    "char_start": 44939,
+    "formula_id": "aedc9d278ae2f79e42456536e670b6cc246b622c18d1fea8e45c79adfb49c585"
+   },
+   {
+    "char_start": 45496,
+    "formula_id": "33317b71ecc80047496daae3a6027813ed5155bdc55d2ee597632930ac56f25e"
+   }
+  ],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 89,
+  "oversize_reason": null,
+  "page": 34,
+  "parent_section_id": "s_54df3b1db2c9723b91c2bf9d",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "2.4. Xác định kích thước mẫu trong ước lượng",
+   "Cách giải"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Nếu gọi N là kích thước mẫu để có phép ước lượng μ với độ tin cậy 1 -α và độ chính xác ε . Khi đó n được tính theo công thức:\n[formula]\nTrong đó t α được suy ra từ độ tin cậy 1 -α bằng công thức:\n[formula]\nChú ý . Nếu dấu hiệu X nghiên cứu trên tổng thể được coi là đại lượng ngẫu nhiên có phân phối chuẩn với phương sai là σ 2 , thì ta thay phương sai mẫu hiệu chỉnh s 2 trong công thức trên bằng σ 2 .\nVí dụ . Trọng lượng (kg) các bao gạo bán tại một cửa hàng lương thực là một đại lượng ngẫu nhiên có phân phối chuẩn với phương sai σ 2 = 0,25. Hãy tìm số bao gạo phải kiểm tra để có phép ước lượng trọng lượng trung bình của các bao gạo tại cửa hàng đó với độ tin cậy 99% và độ chính xác 200g, biết rằng số bao gạo phải kiểm tra không ít hơn 30 bao.\n[formula]\nGọi N là số bao gạo phải kiểm tra để có phép ước lượng trọng lượng trung bình của các bao gạo tại cửa hàng đó với độ tin cậy 99% và độ chính xác 200g. Khi đó ta có:",
+  "token_count": 278,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 48701,
+  "char_start": 47972,
+  "chunk_id": "c_fc232abb621f3c7b7a5e674f",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 95,
+  "oversize_reason": null,
+  "page": 36,
+  "parent_section_id": "s_e0b80ad1475fc64a5775e58c",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.1. Bài toán kiểm định giả thiết thống kê"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "H : X và Y độc lập ; H : X và Y không độc lập\nBước2. Kiểm định giả thiết thống kê\nĐể kiểm định giả thiết thống kê H, ta cần phải xét một mẫu có kích thước n và phải biết mức ý nghĩa α của kiểm định. Mức ý nghĩa α thường là một số khá bé (thường thì α ≤ 0,05) và đó là số cho biết xác suất mắc sai lầm khi ta chấp nhận H nhưng trong thực tế H sai hay bác bỏ H nhưng trong thực tế H đúng.\nVới các số liệu thu được từ mẫu có kích thước n đã cho, ta tìm được một số gọi là tiêu chuẩn kiểm định . Với mức ý nghĩa α cho trước, tùy theo kích thước n của mẫu, tra bảng phụ lục ta tìm được một số gọi là giá trị tới hạn . Tùy theo kết quả so sánh giữa tiêu chuẩn kiểm định với giá trị tới hạn, ta đưa ra quyết định chấp nhận hay bác bỏ H.",
+  "token_count": 205,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text"
+  ],
+  "char_end": 49310,
+  "char_start": 48702,
+  "chunk_id": "c_8ab4ba9d7bec533b12164176",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 3,
+  "image_refs": [],
+  "order_index": 97,
+  "oversize_reason": null,
+  "page": 36,
+  "parent_section_id": "s_e3d27c643b591eafba5f95b4",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.1. Bài toán kiểm định giả thiết thống kê",
+   "Bước3. Kết luận cuối cùng"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Từ quyết định chấp nhận hay bác bỏ giả thiết H, ta suy ra kết luận cuối cùng về nghi ngờ cần phải khẳng định hay kết luận của một vấn đề kinh tế, kỹ thuật, … trong bài toán.\nKhi đưa ra quyết định 'chấp nhận H' thì điều đó không có nghĩa là H đúng mà chỉ có nghĩa là với số liệu của mẫu và với mức ý nghĩa đã chọn thì ta chưa đủ cơ sở hay chưa đủ bằng chứng để bác bỏ H. Do đó trong kết luận cuối cùng của bài toán, ta nên nói là 'có thể nói rằng …', 'có bằng chứng để nói rằng …' hay 'không có cơ sở để nói rằng …'…\nSau đây ta sẽ trình bày cách giải quyết một số bài toán kiểm định giả thiết thống kê cụ thể.",
+  "token_count": 165,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "list_item",
+   "text",
+   "formula"
+  ],
+  "char_end": 49576,
+  "char_start": 49311,
+  "chunk_id": "c_0d2a4ba451f5a14cd0486336",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 49436,
+    "formula_id": "cea01e59ea2d5d205d1a52736e4fc4c0ce2faa6458b00cf8d414a50b3660e0ee"
+   },
+   {
+    "char_start": 49446,
+    "formula_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 99,
+  "oversize_reason": null,
+  "page": 36,
+  "parent_section_id": "s_f6b1b7256bc0655c870a93fc",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.2. Bài toán kiểm định giả thiết về tỉ lệ tổng thể"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "• Kiểm định giả thiết về tỉ lệ tổng thể\nBài toán . Trên tổng thể, ta quan tâm đến tỉ lệ tổng thể p. Ta có giả thiết về p là:\n[formula]\n[formula]\nXét một mẫu có kích thước n (n ≥ 30) và tính được tỉ lệ mẫu là f. Hãy kiểm định giả thiết H với mức ý nghĩa α cho trước?",
+  "token_count": 85,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 58871,
+  "char_start": 58636,
+  "chunk_id": "c_d11f05235c5b7767c12f999e",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 58731,
+    "formula_id": "6bba3ae511e7c4f3d0e36af9c74f8224022b21d74c196ee17c3d3d32f5740270"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 117,
+  "oversize_reason": null,
+  "page": 43,
+  "parent_section_id": "s_f6b72a569747c72e78f9a7f2",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.4. Bài toán kiểm định giả thiết về phương sai tổng thể"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Bài toán . Trên tổng thể, ta quan tâm đến phương sai tổng thể σ 2 . Ta có giả thiết về σ 2 là:\n[formula]\nXét một mẫu có kích thước n và tính được phương sai mẫu hiệu chỉnh là s 2 . Hãy kiểm định giả thiết H với mức ý nghĩa α cho trước?",
+  "token_count": 70,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "text",
+   "formula"
+  ],
+  "char_end": 62430,
+  "char_start": 62112,
+  "chunk_id": "c_252d82c46e41bebc5109a382",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [
+   {
+    "char_start": 62346,
+    "formula_id": "44edde1cb2f8b54d1a0d9a8be001e89d264e4a4bd2c51288211bc89fd02cc29f"
+   }
+  ],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 125,
+  "oversize_reason": null,
+  "page": 45,
+  "parent_section_id": "s_02a1b01249e8ac137b4f7e91",
+  "role": "noi_dung",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.5. Bài toán kiểm định giả thiết về phân phối xác suất"
+  ],
+  "split_index": 0,
+  "table_refs": [],
+  "text": "Bài toán . Trên tổng thể, ta quan tâm đến luật phân phối xác suất của đại lượng ngẫu nhiên X. Ta có giả thiết về luật phân phối xác suất của X là:\nH : X có phân phối A ; H : X không có phân phối A Xét một mẫu có kích thước n như sau:\n[formula]\nHãy sử dụng mẫu trên để kiểm định giả thiết H với mức ý nghĩa α cho trước?",
+  "token_count": 91,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ },
+ {
+  "block_types": [
+   "list_item",
+   "table"
+  ],
+  "char_end": 73690,
+  "char_start": 72911,
+  "chunk_id": "c_57228389309a443ea7ef6f26",
+  "context_prefix": null,
+  "doc_id": "xstk-ch3-1",
+  "formula_refs": [],
+  "heading_level": 2,
+  "image_refs": [],
+  "order_index": 147,
+  "oversize_reason": null,
+  "page": 52,
+  "parent_section_id": "s_1afcab415603df17839950e8",
+  "role": "bai_tap",
+  "section_path": [
+   "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+   "3.1. Xét mẫu hai chiều trong bài tập 3.11."
+  ],
+  "split_index": 0,
+  "table_refs": [
+   {
+    "char_start": 73359,
+    "table_id": "4767fd1a80a6d56c8000ddcb3d8c5a727647841d350e730a6133b2e190f3487a"
+   }
+  ],
+  "text": "Sản lượng hàng ngày của một phân xưởng là đại lượng ngẫu nhiên có phân phối chuẩn. Qua theo dõi sản lượng trong 10 ngày tại phân xưởng đó, ta có kết quả như sau: 23, 27, 26, 21, 28, 25, 30, 26, 23, 26. Hãy ước lượng sản lượng trung bình hàng ngày của phân xưởng đó với độ tin cậy 95%?\nTrọng lượng X(g) các quả trứng tại một trại nuôi gà là đại lượng ngẫu nhiên có phân phối chuẩn. Cân thử 100 quả trứng của trại gà đó ta có kết quả trong bảng sau:\n| X | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| Số quả trứng | 2 | 3 | 15 | 28 | 30 | 8 | 5 | 5 | 4 |\nHãy ước lượng trọng lượng trung bình của các quả trứng tại trại nuôi gà đó với độ tin cậy 99%. Nếu ước lượng đó có độ chính xác 0,35g thì độ tin cậy là bao nhiêu?",
+  "token_count": 303,
+  "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+ }
+]

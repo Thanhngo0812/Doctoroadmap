@@ -15,6 +15,8 @@ _LENH = {
     "phieu-g3": "danhgia.phieu.lenh_g3",
     "phieu-g4": "danhgia.phieu.lenh_g4",
     "b5": "danhgia.xuat.b5.lenh",
+    "baseline": "danhgia.xuat.baseline.lenh",
+    "phat-lai": "danhgia.phat_lai.lenh",
     "g1g2": "danhgia.g1g2.lenh",
 }
 
