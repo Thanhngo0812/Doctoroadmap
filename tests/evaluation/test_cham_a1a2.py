@@ -241,3 +241,66 @@ def test_m3_dong_thieu_trong_du_doan_tinh_la_sai_nhung_van_o_mau_so():
                "lines": {"p0001-l002": {"leaf": "a1"}, "p0001-l003": {"leaf": "a1"}}}   # thiếu dòng bìa
     m3 = tm(a1a2.cham(vang, du_doan, bang, he="chinh", ma_sach=MA), "a1.m3")
     assert (m3["tu"], m3["mau"]) == (kt("LOI NOI DAU") + kt("Noi dung loi noi dau."), kt("Bia sach nhac ly") + kt("LOI NOI DAU") + kt("Noi dung loi noi dau."))
+
+
+# ---------------------------------------------------------------- bổ sung sau nghiệm thu vòng 1: luật khớp tiêu đề
+
+
+def chay_d02_m1(tmp_path, bang, vang, pred_headings):
+    """M1 của chính `cham_d02.py` (tiến trình con) trên một ca nhỏ."""
+    thu_muc = tmp_path / "d02"
+    for ten in ("dong", "cay-muc", "chon-trang-mau"):
+        (thu_muc / ten).mkdir(parents=True, exist_ok=True)
+    (thu_muc / "dong" / f"{MA}.jsonl").write_text("".join(json.dumps(x) + "\n" for x in bang), encoding="utf-8")
+    (thu_muc / "cay-muc" / f"{MA}.jsonl").write_text("".join(json.dumps(x) + "\n" for x in vang), encoding="utf-8")
+    (thu_muc / "chon-trang-mau" / f"{MA}.json").write_text('{"trang": []}', encoding="utf-8")
+    pred = {"headings": pred_headings, "lines": {}, "evaluation_excluded": [], "reading_order": {}, "chunks": []}
+    (tmp_path / "pred.json").write_text(json.dumps(pred), encoding="utf-8")
+    kq = subprocess.run([sys.executable, "-X", "utf8", str(CHAM_D02), "--sach", MA, "--thu-muc", str(thu_muc), "--prediction",
+                         str(tmp_path / "pred.json"), "--out", str(tmp_path / "ra.json")], capture_output=True, text=True,
+                        encoding="utf-8", cwd=CHAM_D02.parent)
+    assert kq.returncode == 0, kq.stdout + kq.stderr
+    m1 = json.loads((tmp_path / "ra.json").read_text(encoding="utf-8"))["M1"]
+    return m1["tp"], m1["fp"], m1["fn"]
+
+
+def tp_fp_fn(rows, thuoc="a1.m1"):
+    r = tm(rows, thuoc)
+    return r["tp"], r["fp"], r["fn"]
+
+
+def bang_tieu_de_vat_trang():
+    return [{"id": "p0001-l009", "trang": 1, "text": "TIEU DE"}, {"id": "p0002-l001", "trang": 2, "text": "VAT TRANG"},
+            {"id": "p0003-l001", "trang": 3, "text": "TIEP"}]
+
+
+def test_khop_tieu_de_chi_dem_dong_chung_tren_mot_trang(tmp_path):
+    bang = bang_tieu_de_vat_trang()
+    # (a) vàng 2 dòng vắt hai trang (1 dòng mỗi trang), hệ phủ cả hai: tối đa 1 dòng chung trên một trang = 1/2, vẫn đạt nửa
+    vang2 = [h("h1", ["p0001-l009", "p0002-l001"], "TIEU DE VAT TRANG", 1, None, "noi_dung")]
+    he2 = [h("a", ["p0001-l009", "p0002-l001"], "TIEU DE VAT TRANG", 1, None, "noi_dung")]
+    rows = a1a2.cham(vang2, {"headings": he2, "evaluation_excluded": []}, bang, he="chinh", ma_sach=MA)
+    assert tp_fp_fn(rows) == (1, 0, 0) == chay_d02_m1(tmp_path / "a", bang, vang2, he2)
+    # (b) vàng 3 dòng trải ba trang, hệ phủ cả ba: mỗi trang chỉ 1/3 nên KHÔNG khớp (tổng 3/3 không được cộng qua trang)
+    vang3 = [h("h1", [b["id"] for b in bang], "TIEU DE VAT TRANG TIEP", 1, None, "noi_dung")]
+    he3 = [h("a", [b["id"] for b in bang], "TIEU DE VAT TRANG TIEP", 1, None, "noi_dung")]
+    rows = a1a2.cham(vang3, {"headings": he3, "evaluation_excluded": []}, bang, he="chinh", ma_sach=MA)
+    assert tp_fp_fn(rows) == (0, 1, 1) == chay_d02_m1(tmp_path / "b", bang, vang3, he3)
+
+
+def test_khop_tieu_de_ghep_mot_mot_cuc_dai_khong_tham_lam(tmp_path):
+    bang = [{"id": f"p0001-l00{i}", "trang": 1, "text": f"dong {i}"} for i in (1, 2, 3)]
+    vang = [h("h1", ["p0001-l001", "p0001-l002"], "A", 1, None, "noi_dung"), h("h2", ["p0001-l003"], "B", 1, None, "noi_dung")]
+    # vàng A khớp được X (2 dòng chung) và Y (1 dòng); vàng B chỉ khớp được X. Tham lam theo thứ tự: A lấy X, B trượt (1 cặp). Cực đại: A-Y, B-X (2 cặp).
+    he = [h("X", ["p0001-l001", "p0001-l002", "p0001-l003"], "X", 1, None, "noi_dung"), h("Y", ["p0001-l001"], "Y", 1, None, "noi_dung")]
+    rows = a1a2.cham(vang, {"headings": he, "evaluation_excluded": []}, bang, he="chinh", ma_sach=MA)
+    assert tp_fp_fn(rows) == (2, 0, 0) == chay_d02_m1(tmp_path, bang, vang, he)
+
+
+def test_complete_entry_sai_khi_khop_cung_cap_nhung_khac_trang_dau():
+    bang = bang_tieu_de_vat_trang()
+    vang = [h("h1", ["p0001-l009", "p0002-l001"], "TIEU DE VAT TRANG", 1, None, "noi_dung")]      # trang đầu của vàng: 1
+    he = [h("a", ["p0002-l001"], "VAT TRANG", 1, None, "noi_dung")]                              # hệ chỉ bắt được dòng ở trang 2: trang đầu 2
+    rows = a1a2.cham(vang, {"headings": he, "evaluation_excluded": []}, bang, he="chinh", ma_sach=MA)
+    assert tp_fp_fn(rows) == (1, 0, 0)                                                            # khớp M1 (1/2 dòng) và cùng cấp
+    assert tp_fp_fn(rows, "a1.complete_entry") == (0, 1, 1)                                       # nhưng trang đầu khác nhau
