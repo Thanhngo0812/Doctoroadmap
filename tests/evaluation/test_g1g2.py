@@ -635,3 +635,31 @@ def test_cli_vang_tu_choi_phieu_sai_va_khong_ghi(tmp_path, sach, dong, nhap):
                "--so-loi", str(tmp_path / "so.json"), "--phieu", str(p), "--ra", str(tmp_path / "out"),
                "--ra-bao-cao", str(tmp_path / "bc.json")])
     assert ma == 1 and not (tmp_path / "out").exists() and not (tmp_path / "bc.json").exists()
+
+
+# ---------------------------------------------------------------- bổ sung sau nghiệm thu vòng 2
+
+
+def test_tieu_de_them_khong_lien_quan_loi_cai_tinh_vao_sua_ngoai_loi_cai(dong, nhap):
+    so = so_thu_cong(nhap)
+    nhap_cai = nhap_cai_thu_cong(nhap, so)
+    bai1 = next(d for d in dong if d["text"] == "Bai 1 Doc cao do cac not sau.")
+    moi = {"trang": bai1["trang"], "tieu_de": bai1["text"], "cap": 2, "vai_tro": "bai_tap", "dong": [bai1["id"]]}
+    # không sửa gì khác: lỗi cài bỏ sót hết, chỉ có đúng một tiêu đề thêm ngoài lỗi cài
+    muc, bc, loi = vang.vang_cuoi(nhap_cai, so, doc_sv(nhap_cai, them=[moi]), dong, MA)
+    assert loi == [] and bc["sua_ngoai_loi_cai"] == 1 and bc["bat"] == 0
+    assert bai1["id"] in [h["dong"][0] for h in muc]
+    # cùng lúc bắt lại tiêu đề bị bỏ (không tính là sửa ngoài lỗi cài) thì vẫn chỉ đếm tiêu đề lạ
+    muc2, bc2, loi2 = vang.vang_cuoi(nhap_cai, so, doc_sv(nhap_cai, them=[moi, *them_a(nhap)]), dong, MA)
+    assert loi2 == [] and bc2["sua_ngoai_loi_cai"] == 1 and bc2["bat"] == 1
+    assert {bai1["id"], nhap[13]["dong"][0]} <= {h["dong"][0] for h in muc2}
+
+
+def test_sheet_meta_an_o_ca_hai_phieu(tmp_path, sach, dong, nhap):
+    manifest, _ = sach
+    p1 = phieu.sinh_phieu(nhap, dong, manifest, "S1", tmp_path / "p1.xlsx")
+    p2 = phieu.sinh_phieu(nhap, dong, manifest, "S2", tmp_path / "p2.xlsx", khoa=[h["dong"][0] for h in nhap[:3]])
+    for p in (p1, p2):
+        wb = openpyxl.load_workbook(p)
+        assert "meta" in wb.sheetnames and wb["meta"].sheet_state == "hidden"
+        assert all(wb[t].sheet_state == "visible" for t in wb.sheetnames if t != "meta")
