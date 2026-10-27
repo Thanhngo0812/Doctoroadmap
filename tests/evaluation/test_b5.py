@@ -552,3 +552,87 @@ def test_chi_goi_py_nhap_doc2roadmap_trong_b5():
 def test_lenh_b5_trong_bang_lenh():
     from danhgia.__main__ import _LENH
     assert _LENH["b5"] == "danhgia.xuat.b5.lenh"
+
+
+# ---------- bổ sung sau nghiệm thu vòng 1 (C4, C9, C11, C12, C13) ----------
+
+def test_json_hop_le_nhung_max_tokens_van_la_luot_that_bai_co_co_cat():  # C4
+    luot, kh = _luot(ht.van_ban_mo_hinh(ht.phan_hoi_a()), ly_do_dung="MAX_TOKENS")
+    assert luot.cat_vi_tran is True and luot.ok is False
+    assert any("cat_vi_tran" in l for l in luot.loi)
+    assert len(kh.cuoc_goi) == 1
+
+
+def test_b5b_day_hoc_va_module_noi_dung_thu_tu_sach():  # C9
+    c1 = _mot_chuong([_kn("Mat Troi", 1, ht.C_MAT_TROI), _kn("Quang pho", 2, ht.C_QUANG_PHO)])
+    c1["lo_trinh"]["module"] = [{"ten": "M1", "khai_niem": ["Mat Troi", "Quang pho"]}]
+    c2 = _mot_chuong([_kn("Sao", 3, ht.C_SAO), _kn("Hang so Hubble", 4, ht.C_HUBBLE)])
+    c2["lo_trinh"]["module"] = [{"ten": "M2", "khai_niem": ["Sao", "Hang so Hubble"]}]
+    hd, _ = _chuyen_b(c1, c2)
+    ten = {k["ma"]: k["ten"] for k in hd["khai_niem"]}
+    assert [ten[m] for m in hd["lo_trinh"]["day_hoc"]] == ["Mat Troi", "Quang pho", "Sao", "Hang so Hubble"]
+    assert [m["ten"] for m in hd["lo_trinh"]["module"]] == ["M1", "M2"]
+    assert [k["vi_tri"] for k in hd["khai_niem"]] == [0, 1, 2, 3]
+
+
+def _qh(nguon, dich, trang=2, cau=ht.C_PHU_THUOC):
+    return {"nguon": nguon, "dich": dich, "trang": trang, "cau_bang_chung": cau}
+
+
+def test_canh_lap_trong_mot_luot_giu_mot_canh():  # C11
+    du_lieu = ht.phan_hoi_a()
+    du_lieu["quan_he"] = [_qh("Mat Troi", "Quang pho"), _qh("mat troi", "Quang pho.")]
+    hd, bao_cao = _chuyen_a(du_lieu)
+    assert len(hd["canh"]) == 1 and bao_cao["canh_lap"] == 1
+
+
+def test_canh_lap_giua_hai_chuong_b5b_giu_mot_canh():  # C11
+    c1 = _mot_chuong([_kn("Mat Troi", 1, ht.C_MAT_TROI), _kn("Quang pho", 2, ht.C_QUANG_PHO)], [_qh("Mat Troi", "Quang pho")])
+    c2 = _mot_chuong([_kn("Sao", 3, ht.C_SAO)], [_qh("Mat Troi", "Quang pho"), _qh("Quang pho", "Mat Troi")])
+    hd, bao_cao = _chuyen_b(c1, c2)
+    assert len(hd["canh"]) == 2 and bao_cao["canh_lap"] == 1  # (Quang pho, Mat Troi) là cạnh ngược, không phải lặp
+    assert kiem(hd) == []
+
+
+def _manifest_nhieu_loai():
+    m = ht.manifest()
+    m["chuong"] = [
+        {"ma": "md", "so": "0", "ten": "Mo dau", "trang_dau": 1, "trang_cuoi": 1, "loai": "mo_dau"},
+        {"ma": "c1", "so": "1", "ten": "Mat Troi", "trang_dau": 2, "trang_cuoi": 3, "loai": "noi_dung"},
+        {"ma": "bt", "so": "bt", "ten": "Bai tap", "trang_dau": 4, "trang_cuoi": 4, "loai": "bai_tap"},
+    ]
+    return m
+
+
+def test_b5b_doc_moi_loai_chuong_cung_pham_vi_voi_b5a(tmp_path):  # C13
+    pdf = tao_pdf(tmp_path / "s.pdf", [ht.TRANG[n].replace("\n", " ") for n in (1, 2, 3, 4)])
+    doc_trang = van_ban.doc_trang_pdf(pdf)
+    m = _manifest_nhieu_loai()
+    chuong = van_ban.chuong(m, doc_trang)
+    assert [c["ma"] for c in chuong] == ["md", "c1", "bt"]
+    cac_trang = [int(n) for c in chuong for n in re.findall(r"\[Trang (\d+)\]", c["text"])]
+    assert cac_trang == [1, 2, 3, 4] == [int(n) for n in re.findall(r"\[Trang (\d+)\]", van_ban.cuon(m, doc_trang))]
+
+
+def test_cli_b5b_goi_mot_lan_moi_chuong_ke_ca_mo_dau_va_bai_tap(tmp_path, monkeypatch):  # C13
+    pdf = tao_pdf(tmp_path / "s.pdf", [ht.TRANG[n].replace("\n", " ") for n in (1, 2, 3, 4)])
+    m = _manifest_nhieu_loai()
+    m["pdf_sha256"] = ht.sha256(pdf)
+    mf = tmp_path / "m.json"
+    mf.write_text(json.dumps(m), encoding="utf-8")
+    rong = _mot_chuong([])
+    kh = _giu_khach(monkeypatch, [goi.PhanHoi(text=ht.van_ban_mo_hinh(rong))])
+    main(["b5", "--manifest", str(mf), "--pdf", str(pdf), "--ra", str(tmp_path / "ra"), "--che-do", "b",
+          "--bien-the", "1", "--allow-spend"])
+    assert len(kh.cuoc_goi) == 3
+    assert "[Trang 1]" in kh.cuoc_goi[0][1] and "[Trang 4]" in kh.cuoc_goi[2][1]
+
+
+def test_chuong_bi_cat_du_json_hop_le_khong_dua_khai_niem_vao_danh_sach_chuong_sau(sach, tmp_path, monkeypatch):  # C12
+    c1 = _mot_chuong([_kn("Mat Troi", 1, ht.C_MAT_TROI)])
+    c2 = _mot_chuong([_kn("Sao", 3, ht.C_SAO)])
+    kh = _giu_khach(monkeypatch, [goi.PhanHoi(text=ht.van_ban_mo_hinh(c1), ly_do_dung="MAX_TOKENS"),
+                                  goi.PhanHoi(text=ht.van_ban_mo_hinh(c2))])
+    assert main(_lenh(sach, tmp_path / "ra", "--che-do", "b", "--bien-the", "1", "--allow-spend")) == 1
+    assert len(kh.cuoc_goi) == 2  # không gọi lại chương bị cắt
+    assert "Các khái niệm đã có" not in kh.cuoc_goi[1][1] and "Mat Troi" not in kh.cuoc_goi[1][1]
