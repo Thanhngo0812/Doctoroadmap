@@ -160,7 +160,8 @@ def test_default_database_services_share_and_close_composition_owned_engine(monk
         def close(self):
             events.append("store.close")
 
-    account_service = object()
+    from types import SimpleNamespace
+    account_service = SimpleNamespace(mailer=None, on_email_verified=None)
     account_engines = []
     monkeypatch.setattr(database, "DatabaseHealth", FakeHealth)
     monkeypatch.setattr(phase_b_store, "PostgresPhaseBStore", FakeStore)

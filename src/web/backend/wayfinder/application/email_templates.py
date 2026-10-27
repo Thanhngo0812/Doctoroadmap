@@ -5,7 +5,7 @@ from typing import Literal
 from urllib.parse import urlsplit
 
 
-EmailKind = Literal["verify_email", "reset_password", "existing_account", "invitation"]
+EmailKind = Literal["verify_email", "reset_password", "existing_account"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -16,6 +16,14 @@ class MailContent:
 
 
 def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
+                         base_url: str, valid_for: str | None = None, logo_url: str | None = None) -> MailContent:
+    if kind not in {"verify_email", "reset_password", "existing_account"}:
+        raise ValueError("Unsupported account email kind")
+    return _render_email(kind, display_name=display_name, action_url=action_url,
+                         base_url=base_url, valid_for=valid_for, logo_url=logo_url)
+
+
+def _render_email(kind: EmailKind | Literal["invitation"], *, display_name: str, action_url: str,
                          base_url: str, valid_for: str | None = None, logo_url: str | None = None,
                          course_title: str | None = None) -> MailContent:
     if kind not in {"verify_email", "reset_password", "existing_account", "invitation"}:
@@ -92,5 +100,5 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
 
 def render_invitation_email(*, course_title: str, action_url: str, base_url: str,
                             valid_days: int = 7, logo_url: str | None = None) -> MailContent:
-    return render_account_email('invitation', display_name='bạn', action_url=action_url, base_url=base_url,
+    return _render_email('invitation', display_name='bạn', action_url=action_url, base_url=base_url,
         valid_for=f'{valid_days} ngày', logo_url=logo_url, course_title=course_title)

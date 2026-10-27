@@ -170,6 +170,11 @@ def test_registration_not_bound_until_matching_email_verified(invited):
     address = uuid4().hex + '@example.vn'
     identity = iid(send(rt, [address]))
     assert sql(rt, 'SELECT invitee_account_id FROM invitation WHERE id=:id', id=identity)[0]['invitee_account_id'] is None
+    wrong = rt.user(False)
+    verify(wrong, rt.mailer.messages[-1])
+    assert wrong.get('/api/v1/me/invitations').json()=={'items':[]}
+    assert accept(wrong,identity).status_code==404
+    assert sql(rt, 'SELECT invitee_account_id FROM invitation WHERE id=:id', id=identity)[0]['invitee_account_id'] is None
     unverified = rt.user(False, address)
     message = rt.mailer.messages[-1]
     assert unverified.get('/api/v1/me/invitations').json() == {'items': []}
@@ -212,7 +217,9 @@ def test_other_user_and_unverified_cannot_respond(invited, action):
 def test_expiry_exact_boundary_and_expired_reinvite(invited):
     rt = invited
     identity = iid(send(rt))
-    rt.clock.advance(7 * 86400)
+    rt.clock.advance(7 * 86400 - 1)
+    assert rt.receiver.get('/api/v1/me/invitations').json()['items'][0]['id']==identity
+    rt.clock.advance(1)
     # Refresh login because the old session reaches the W02 idle boundary at the same instant.
     rt.receiver.post('/api/v1/auth/login', headers={'Origin': ORIGIN}, json={'email': email_from_store(rt, rt.receiver), 'password': PASSWORD})
     response = accept(rt.receiver, identity)
@@ -292,7 +299,7 @@ def test_201st_daily_mail_and_vietnam_day_reset(invited):
     record('daily-limit', blocked)
 
 
-@pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+@pytest.mark.parametrize('race', ['mail', 'capacity', 'link-email', 'same-accept', 'same-invite'])
 def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
     rt = invited
     actor = rt.actor(rt.owner)
@@ -300,9 +307,10 @@ def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
         rt.settings.invite_emails_per_day = 1
     other_course = rt.services.courses.create_course(actor, doc_id='race-'+uuid4().hex,
         title='Khoá thứ hai cùng chủ', graph_version=1, module_count=1) if race=='mail' else rt.course
-    if race == 'capacity':
+    if race in ('capacity','link-email'):
         rt.settings.course_max_members = 2
-    identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+    identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity','link-email', 'same-accept') else []
+    link=rt.service.create_share_link(actor,rt.course.id)['link']['token'] if race=='link-email' else None
     barrier = Barrier(2)
     def work(index):
         engine = create_database_engine(rt.settings.database_url)
@@ -316,13 +324,15 @@ def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
                 return result
             if race == 'mail':
                 service.store.invitation_send_count = delayed_read
-            elif race == 'capacity':
+            elif race in ('capacity','link-email'):
                 service.store.member_count = delayed_read
             barrier.wait(timeout=10)
             try:
                 if race in ('mail', 'same-invite'):
                     course = rt.course if index==0 or race!='mail' else other_course
                     return service.invite_by_email(actor, course.id, [email(rt.receiver)])
+                if race=='link-email' and index==1:
+                    return service.join_by_link(rt.actor(rt.outsider),link)
                 client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
                 return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
             except WebError as error:
@@ -334,14 +344,14 @@ def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
     if race == 'mail':
         assert results.count('rate_limited') == 1 and sum(isinstance(r, dict) for r in results) == 1
         assert len(sql(rt, 'SELECT id FROM audit_event WHERE action=\'invitation_sent\' AND actor_id=:uid', uid=actor.user_id)) == 1
-    elif race == 'capacity':
+    elif race in ('capacity','link-email'):
         assert results.count('course_full') == 1 and sum(isinstance(r, dict) for r in results) == 1
     elif race == 'same-accept':
         assert sorted(r['already_member'] for r in results) == [False, True]
     else:
         assert all(isinstance(r, dict) for r in results)
         assert len(sql(rt, 'SELECT id FROM invitation WHERE course_id=:cid', cid=rt.course.id)) == 1
-    if race in ('capacity', 'same-accept'):
+    if race in ('capacity','link-email', 'same-accept'):
         assert len(sql(rt, 'SELECT account_id FROM membership WHERE course_id=:cid', cid=rt.course.id)) == 2
 
 
@@ -374,6 +384,9 @@ def test_schema_pending_unique_hash_and_head(invited):
     assert set(c['name'] for c in inspect(rt.engine).get_columns('invitation')) == {
         'id','course_id','email_normalized','invitee_account_id','invited_by','token_hash','status','expires_at','created_at','responded_at'}
     identity = iid(send(rt))
+    with pytest.raises(IntegrityError):
+        with rt.engine.begin() as c:
+            c.execute(text('UPDATE invitation SET token_hash=:hash WHERE id=:id'),{'hash':b'short','id':identity})
     with pytest.raises(IntegrityError):
         with rt.engine.begin() as c:
             c.execute(text('INSERT INTO invitation SELECT :newid,course_id,email_normalized,invitee_account_id,invited_by, '
