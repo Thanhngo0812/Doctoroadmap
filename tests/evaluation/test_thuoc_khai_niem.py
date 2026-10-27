@@ -300,3 +300,20 @@ def test_khai_niem_bia_chi_khi_ten_va_moi_ten_khac_deu_vang_mat():
     hd = hd_([nd("a", ten="Zxq vwy", ten_khac=["Cao độ"]),          # tên chính không có, tên khác có trong sách: không bịa
               nd("b", ten="Zxq vwy", ten_khac=["Qwv zzx"])])         # không tên nào có: bịa
     assert tu_mau(khai_niem.truy_nguyen(hd, TRANG), "truy_nguyen.khai_niem_bia", "toan_sach") == (1, 2)
+
+
+def test_cho_giu_cho_cong_thuc_cua_pipeline_khong_lam_cau_neo_tuot():
+    van_ban = {1: "Khi đó độ chính xác ε của ước lượng μ được tính theo công thức: ε = t S/√n. Khoảng ước lượng của μ có dạng: μ − ε < μ < μ + ε."}
+    hd = hd_([nd("a", neo=(1, "Khi đó độ chính xác ε của ước lượng μ được tính theo công thức: [formula] Khoảng ước lượng của μ có dạng: [formula]")),
+              nd("b", neo=(1, "Câu bịa hoàn toàn khác biệt: [formula] không có trong trang một chữ nào cả.")),
+              nd("c", neo=(1, "[formula] [formula]"))])
+    rows = khai_niem.truy_nguyen(hd, van_ban)
+    # a: hai mảnh chữ đều có trong trang; b: bịa; c: chỉ còn chỗ giữ chỗ, không có chữ để khớp nên ngoài mẫu số
+    assert tu_mau(rows, "truy_nguyen.cau_neo_co_that.nghiem", "toan_sach") == (1, 2)
+    assert [c["ma"] for c in khai_niem.ca_truot(hd, van_ban)] == ["b"]
+
+
+def test_khoang_trang_quanh_ky_hieu_toan_khong_lam_cau_neo_tuot():
+    van_ban = {1: "Khoảng số thực (θ1,θ2) được gọi là khoảng ước lượng của θ với độ tin cậy 1−α."}
+    hd = hd_([nd("a", neo=(1, "Khoảng số thực ( θ 1 , θ 2) được gọi là khoảng ước lượng của θ với độ tin cậy 1 -α ."))])
+    assert tu_mau(khai_niem.truy_nguyen(hd, van_ban), "truy_nguyen.cau_neo_co_that.nghiem", "toan_sach") == (1, 1)

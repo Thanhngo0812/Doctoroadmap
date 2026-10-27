@@ -21,6 +21,7 @@ gọi mô hình, không nhập `doc2roadmap`. Văn bản sách vào dưới dạ
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from danhgia.phieu.kiem import do_khop_cau
@@ -139,13 +140,31 @@ def cham_khai_niem(hd, g3, g4, can, van_ban, anh_xa, *, ma_sach=None, nguong_cau
 # ---------------------------------------------------------------- truy nguyên
 
 
+_CHO_GIU_CHO = re.compile(r"\[(?:formula|figure)[^\]]*\]", re.I)   # chỗ giữ chỗ của bộ đọc/pipeline trong câu neo
+
+
+def manh_chu(cau):
+    """Các mảnh chữ của câu sau khi bỏ chỗ giữ chỗ công thức/hình (`[formula]`), vì văn bản trang có ký tự toán thật ở đó."""
+    return [m.strip() for m in _CHO_GIU_CHO.split(cau) if am_tiet(m)]
+
+
+def _khop_manh(manh, van_ban_trang):
+    gon = lambda x: "".join(x.split())  # noqa: E731 — bỏ mọi khoảng trắng: "θ 1 , θ 2" và "θ1,θ2" là một
+    return max(do_khop_cau(manh, van_ban_trang), do_khop_cau(gon(manh), gon(van_ban_trang)))
+
+
 def diem_cau(cau, trang, van_ban):
-    """Độ khớp mờ lớn nhất của `cau` với văn bản trang `trang`, trang đó nối trang liền sau, và trang liền trước nối với nó."""
-    if trang is None:
+    """Độ khớp mờ của `cau` với văn bản trang `trang`, trang đó nối trang liền sau, và trang liền trước nối với nó: lấy biến thể tốt nhất.
+    Câu có chỗ giữ chỗ công thức được tách thành các mảnh chữ, mỗi mảnh khớp riêng, điểm là trung bình theo số âm tiết. Không có mảnh chữ thì 0."""
+    manh = manh_chu(cau)
+    if trang is None or not manh:
         return 0.0
     cu = lambda t: van_ban.get(t, "")  # noqa: E731
-    bien = [cu(trang), f"{cu(trang - 1)} {cu(trang)}", f"{cu(trang)} {cu(trang + 1)}"]
-    return max((do_khop_cau(cau, t) for t in bien if t.strip()), default=0.0)
+    bien = [t for t in (cu(trang), f"{cu(trang - 1)} {cu(trang)}", f"{cu(trang)} {cu(trang + 1)}") if t.strip()]
+    if not bien:
+        return 0.0
+    trong_so = [len(am_tiet(m)) for m in manh]
+    return max(sum(w * _khop_manh(m, t) for w, m in zip(trong_so, manh)) / sum(trong_so) for t in bien)
 
 
 def _cau_co_that(hd, van_ban):
@@ -153,11 +172,11 @@ def _cau_co_that(hd, van_ban):
     ket = []
     for ma, k in _hien_dien(hd).items():
         neo = k["cau_neo"]
-        if neo is not None and am_tiet(neo["cau"]):
+        if neo is not None and manh_chu(neo["cau"]):
             ket.append(("cau_neo", ma, neo["trang"], neo["cau"], diem_cau(neo["cau"], neo["trang"], van_ban)))
     for c in hd["canh"]:
         bc = c["bang_chung"]
-        if not c["bo_qua"] and bc is not None and am_tiet(bc["cau"]):
+        if not c["bo_qua"] and bc is not None and manh_chu(bc["cau"]):
             ket.append(("cau_canh", f"{c['nguon']}>{c['dich']}", bc["trang"], bc["cau"], diem_cau(bc["cau"], bc["trang"], van_ban)))
     return ket
 
