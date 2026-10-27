@@ -136,7 +136,7 @@ def _cap_ung_vien(graph):
     return {"cap": cap, "cua_so_dinh_nghia": None}
 
 
-def _cau_truc(chunks_list, sections, loi):
+def _cau_truc(chunks_list, sections, loi, can_dong=None):
     from danhgia.hop_dong.luoc_do import VAI_TRO_VUNG
     trang_nho_nhat = {}
     for c in chunks_list:
@@ -145,13 +145,19 @@ def _cau_truc(chunks_list, sections, loi):
         la = sorted({m["role"] for m in muc} - set(VAI_TRO_VUNG))
         if la:
             loi.append(f"{nhan}: vai trò {la} ngoài sáu giá trị của hợp đồng; không tự ánh xạ")
-    return {
+    ma_dong = (can_dong or {}).get("ma_dong")
+    ket = {
         "tieu_de": [{"ma": s["section_id"], "chu": s["title"], "cap": s["level"], "cha": s["parent_section_id"],
-                     "trang": trang_nho_nhat.get(s["section_id"]), "ma_dong": None} for s in sections],
+                     "trang": trang_nho_nhat.get(s["section_id"]),
+                     "ma_dong": None if ma_dong is None else list(ma_dong.get(s["section_id"], []))} for s in sections],
         "muc": [{"ma": s["section_id"], "vai_tro": s["role"]} for s in sections],
         "doan_van": [{"ma": c["chunk_id"], "trang": c["page"], "duong_muc": list(c["section_path"]),
                       "vai_tro": c["role"]} for c in chunks_list],
     }
+    if can_dong is not None:   # tuỳ chọn: căn dòng của bảng dòng với mục (DG-13)
+        ket["dong_thuoc_muc"] = dict(can_dong["dong_thuoc_muc"])
+        ket["dong_khong_can"] = list(can_dong["dong_khong_can"])
+    return ket
 
 
 def _khau_tu_stats(manifest):
@@ -207,7 +213,7 @@ def _chi_phi(kho, doc_id, phien_ban, graph, kho_pha_b, loi):
     return {"theo_khau": theo_khau, "tong": tong, "ghi_chu": "; ".join(ghi_chu) if ghi_chu else None}
 
 
-def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None):
+def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None, bang_dong=None):
     """Xuất hợp đồng cho graph `phien_ban` của `doc_id`. `dinh_danh` do người chạy khai: những gì artifact không ghi."""
     kho = Path(kho)
     loi = []
@@ -230,12 +236,18 @@ def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None):
         raise LoiXuat(loi)
     duong_chunks = kho / "chunks" / doc_id / f"v{config['chunks_version']}"
     chunks_list, sections = _doc(duong_chunks / "chunks.json"), _doc(duong_chunks / "sections.json")
+    can_dong = None
+    if bang_dong is not None:   # tuỳ chọn: căn dòng bằng bbox của cây parse mà chunks dùng (DG-13)
+        from danhgia.xuat.can_dong import can_dong as _can_dong
+        manifest_chunks = _doc(duong_chunks / "manifest.json")
+        duong_cay = kho / "parse_tree" / doc_id / f"v{manifest_chunks['parse_version']}" / "tree.json"
+        can_dong = _can_dong(_doc(duong_cay)["nodes"], sections, bang_dong)
     return xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, dinh_danh=dinh_danh, kho=kho,
-                           kho_pha_b=kho_pha_b, loi=loi)
+                           kho_pha_b=kho_pha_b, loi=loi, can_dong=can_dong)
 
 
 def xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, *, dinh_danh, kho=None, kho_pha_b=None,
-                    loi=None, chi_phi=None, nguon_goc_canh=None):
+                    loi=None, chi_phi=None, nguon_goc_canh=None, can_dong=None):
     """Dựng hợp đồng từ graph đã nạp (không đọc kho). Hệ chính đi qua `xuat`; bộ phát lại và baseline đưa graph tự dựng vào đây.
 
     `chi_phi` (tuỳ chọn) thay phần đo của kho: hệ không chạy pipeline không có đo đạc để đọc. `nguon_goc_canh` ép nguồn gốc
@@ -261,7 +273,7 @@ def xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, *
                       "luot_nhieu": dinh_danh.get("luot_nhieu"), "commit": dinh_danh.get("commit"),
                       "hash_cau_hinh": manifest["config_hash"], "mo_hinh": config["model_id"],
                       "transport": dinh_danh.get("transport"), "ngay_chay": dinh_danh.get("ngay_chay")},
-        "cau_truc": _cau_truc(chunks_list, sections, loi),
+        "cau_truc": _cau_truc(chunks_list, sections, loi, can_dong),
         "khai_niem": khai_niem,
         "ban_do_danh_tinh": dict(graph.get("identity_map") or {}),
         "canh": _canh(graph, chunks, loi, nguon_goc_canh),

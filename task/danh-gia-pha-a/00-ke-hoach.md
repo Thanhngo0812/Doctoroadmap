@@ -22,19 +22,19 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | **đã ghép** (34a7920, 27/10); agent soát xong, sửa theo soát |
 | [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | **đã ghép** (6255edfa, 27/10); cổng toàn repo 3205 passed |
 | [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | **đã ghép** (ba784a5, 27/10) |
-| [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | agent B đang cài (27/10) |
+| [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | **đã ghép** (902f5122, 28/10); 14 biến thể; dry-run dev-xstk: chinh khoảng 0,48 USD |
 | [09](09-can-khai-niem.md) | Căn khái niệm: luật tự động, phiếu căn tay mù, nhật ký, phiếu kiểm 20% | agent A | 02, 04 | 01/11 | **đã ghép** (7e3a5a2f, 27/10); k ứng viên 3/1, chưa hiệu chỉnh (chốt ở DG-18) |
-| [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | agent A đang cài (27/10) |
+| [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | **đã ghép** (b3cab7ab, 27/10); ánh xạ trạng thái và ngưỡng truy nguyên còn nháp (chốt ở DG-18) |
 | [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | **đã ghép** (638de205, 27/10); kiểm tái tạo xstk v68, doc-4 v27 khớp; E8 khớp |
 | [12](12-nhap-g1-g2-va-phieu-duyet.md) | Gói nháp G1/G2, lỗi cài, phiếu duyệt | agent A | lược đồ manifest của 01 | 31/10 | **đã ghép** (ac63fae2, 27/10) |
-| [13](13-cham-a1-a2.md) | Chấm A1/A2 | agent A | 04, 12 | 02/11 | chưa làm |
-| [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | chưa làm |
+| [13](13-cham-a1-a2.md) | Chấm A1/A2 | agent A | 04, 12 | 02/11 | agent A đang vòng 2 (vá 3 phép phá, thêm mã dòng ở bộ xuất) (28/10) |
+| [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | agent B đang cài (28/10) |
 | [15](15-quy-loi-theo-khau.md) | Quy lỗi 7 bậc, xếp loại cạnh ngoài vàng | agent B | 10, 13 | 03/11 | chưa làm |
 | [16](16-phieu-g5.md) | Phiếu G5 mù, câu đối chứng, precision hiệu chỉnh, rubric | agent A | 07, 09, 11 | 03/11 | chưa làm |
 | [17](17-bang-hinh-datasheet-allowlist.md) | Bảng, hình, datasheet, cổng allowlist | agent A | 05, 15, 16 | 04/11 | chưa làm |
 | [18](18-giao-thuc-dang-ky-truoc.md) | Giao thức đăng ký trước, mô phỏng công suất, danh sách đóng băng | Claude | 05, 07, 08, 10 | 06/11 | chưa làm |
 | [19](19-tat-a2-tat-loc-a5.md) | *(tuỳ chọn)* Tắt A2, tắt lọc A5 | agent | 08 | — | chỉ làm nếu lịch còn chỗ |
-| [20](20-hoc-lai-mo-hinh-ml.md) | Chọn lại siêu tham số ba mô hình LightGBM (LOBO-16, luật một SE), baseline logistic, cross-encoder pass phụ (Q40) | agent C; Claude chạy phần GPU | — | A, B 30/10; C 31/10 | agent C đang cài (27/10) |
+| [20](20-hoc-lai-mo-hinh-ml.md) | Chọn lại siêu tham số ba mô hình LightGBM (LOBO-16, luật một SE), baseline logistic, cross-encoder pass phụ (Q40) | agent C; Claude chạy phần GPU | — | A, B 30/10; C 31/10 | A, B, C có kết quả (28/10): chọn M1 7 lá, M2 15 lá, M3 7 lá; cross-encoder AP 0,644 < LightGBM 0,660; agent C đang mở rộng C logistic và đóng băng vào sản phẩm |
 
 Các việc chạy song song theo ba làn:
 - **Làn A, phiếu:** 02 → 03 → 12 → 09 → 10 → 16 → 17.
