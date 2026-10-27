@@ -209,7 +209,7 @@ theo các chương đó.
 `khong_khop`, kèm nguồn quyết định (luật nào, hay phán tay) và nhật ký.
 
 **Luật tự động**, chạy theo thứ tự:
-1. Trùng tên chuẩn hoặc tên khác sau chuẩn hoá. Chuẩn hoá gồm NFC, chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu; giữ dấu tiếng Việt.
+1. Trùng tên chuẩn hoặc tên khác sau chuẩn hoá. Chuẩn hoá gồm NFKC (để "χ²" trùng "χ2"; sửa sau gán thử 27/10), chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu; giữ dấu tiếng Việt.
    Khớp theo ranh giới âm tiết, cùng phép biến đổi cho tên và câu, đúng bài học lỗi chữ "y" (vòng 2 pass phụ, mục 8.11).
 2. Câu neo của máy trùng câu định nghĩa vàng: cùng trang, độ giống ký tự sau chuẩn hoá vượt ngưỡng khai trong giao thức.
 3. Ký hiệu không dùng để căn, theo định nghĩa "Ký hiệu" trong `CONTEXT.md`.
@@ -303,6 +303,8 @@ Bảng dưới liệt kê mọi hệ, cách chạy và chi phí:
 | bỏ cạnh pass chính | phát lại A9 → A10 chỉ với cạnh pass phụ | 0 |
 | bỏ cạnh pass phụ | phát lại A9 → A10 chỉ với cạnh pass chính | 0 |
 | tắt A2, tắt lọc A5 | chỉ khi lịch còn chỗ; chạy lại từ khâu tương ứng | có |
+| logistic thay LightGBM | A1: chạy lại bộ đọc nhẹ với mô hình logistic (không LLM), chấm G1; A8 pass phụ: chấm lại cặp ứng viên rồi phát lại A9 → A10, chấm G4 (Q40, DG-20) | 0 |
+| cross-encoder pass phụ | XLM-R chấm lại cặp ứng viên pass phụ trên CPU, rồi phát lại A9 → A10 (Q40, DG-20) | 0 |
 | oracle A8 | kho khái niệm G3 dựng thành canonical (câu neo gắn vào chunk chứa câu định nghĩa), chạy A6 → A10 | có, nhỏ |
 | oracle A10 | cạnh G4 vào thẳng hàm dãy học của A10, trên node của hệ chính | 0 |
 

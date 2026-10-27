@@ -283,3 +283,9 @@ def test_canh_bao_dich_la_khai_niem_chi_nhac(tmp_path, manifest, kho, trang_g4):
 def test_canh_bao_nguon_ngoai_trung_ten_khai_niem_trong_kho(tmp_path, manifest, kho, trang_g4):
     kq = kiem_dong(tmp_path, manifest, kho, trang_g4, {"c10-q003": {"ngoai_ten": "đám đông"}})  # tên khác của Tổng thể
     assert kq.loi == [] and [c.ma_loi for c in kq.canh_bao] == ["ngoai_trung_kho"]
+
+
+def test_nguon_ngoai_va_bang_chung_duoc_ghi_trang_ngoai_chuong_boc(tmp_path, manifest, kho, trang_g4):
+    """Chương c10 = trang 1–3, sách 6 trang: trang 5 nằm ngoài chương bốc nhưng trong sách, hợp lệ (DG-02b)."""
+    kq = kiem_dong(tmp_path, manifest, kho, trang_g4, {"c10-q003": {"ngoai_trang": 5}, "c10-q001": {"bc_trang": 5}})
+    assert not any(l.ma_loi == "trang_ngoai_sach" for l in kq.loi)

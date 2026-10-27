@@ -11,7 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
-from doc2roadmap.application.stage_measurements import record_model_call, record_usage
+from doc2roadmap.application.stage_measurements import measure_embedding_wait, record_model_call, record_usage
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 
@@ -77,8 +77,9 @@ class GeminiEmbedding:
                 raise ValueError(f"task_type embedding không hỗ trợ: {item.task_type}")
 
         vectors: list[list[float]] = []
-        for start in range(0, len(requests), self._batch_size):
-            vectors.extend(self._embed_batch(requests[start : start + self._batch_size]))
+        with measure_embedding_wait():  # telemetry: một chỗ đo, retry và chờ lùi nằm bên trong nên không cộng hai lần
+            for start in range(0, len(requests), self._batch_size):
+                vectors.extend(self._embed_batch(requests[start : start + self._batch_size]))
         return vectors
 
     def _embed_batch(self, requests: list[EmbeddingRequest]) -> list[list[float]]:

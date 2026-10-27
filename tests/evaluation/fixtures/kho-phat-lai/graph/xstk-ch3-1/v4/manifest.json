@@ -1,0 +1,53 @@
+{
+  "artifact_type": "graph",
+  "config": {
+    "algorithm_id": "a10-concept-labels-v3",
+    "canonical_has_anchors": true,
+    "canonical_version": 1,
+    "chunks_version": 1,
+    "generation": {
+      "max_output_tokens": 512,
+      "temperature": 0.0
+    },
+    "label_rule": "document-family-two-distinct-numbers-v1",
+    "model_id": "ghi-san",
+    "pricing_source": {
+      "checked_on": "2026-09-18",
+      "model_id": "gemini-3.1-flash-lite",
+      "tier": "Gemini Developer API paid standard",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    "pricing_usd_per_million": {
+      "input": 0.25,
+      "output": 1.5
+    },
+    "prompt_hash": "c182072f3bd9f337661dc73b9480bc18927b9e26ee1ccc05aaaa17d261827de5",
+    "upstream_chain": "gop",
+    "upstream_config_hash": "fd732a891e987fa3396de849bef660ec662cda82a7b28e4a8478d0c9426f3902",
+    "upstream_version": 3
+  },
+  "config_hash": "df4df1507d29c69fd48d96a84eff23c233ff4d5814269c92d8fbfcaccb76f931",
+  "created_at": "2026-10-27T06:22:00.452981+00:00",
+  "doc_id": "xstk-ch3-1",
+  "llm_transport": "unknown",
+  "source_hash": "91c890ad23931b63b48cca1c6d1560307c60be03372f02b087fc444cb40313f1",
+  "stage": "validated",
+  "stats": {
+    "display_name_warnings": 0,
+    "display_named": 0,
+    "embedding_input_tokens": 0,
+    "embedding_model_calls": 0,
+    "generic_excluded": 0,
+    "input_tokens": 0,
+    "label_families": [],
+    "measurement_history_complete": true,
+    "model_calls": 0,
+    "numbered_candidates": 0,
+    "output_tokens": 0,
+    "runtime_seconds": 0.05497729999933654,
+    "token_usage_complete": true,
+    "usage_responses": 0
+  },
+  "upstream_version": 3,
+  "version": 4
+}

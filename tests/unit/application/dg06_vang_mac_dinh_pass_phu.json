@@ -1,0 +1,477 @@
+{
+ "llm": {
+  "checkpoint_id": "secondary-bd63131aad3804e463102ad09c26a49bded844c0b9e338a1f7f96a2ca7a3d054",
+  "config_hash": "bd63131aad3804e463102ad09c26a49bded844c0b9e338a1f7f96a2ca7a3d054",
+  "edges": [
+   {
+    "chunk_ids": [
+     "c1"
+    ],
+    "confidence": 0.9,
+    "edge_type": "requires",
+    "evidence_hard": false,
+    "evidence_kind": "noi_ro",
+    "explicit_evidence": true,
+    "operation_index": 0,
+    "order_relation": "cùng chunk",
+    "reason": "explicit",
+    "session_id": "secondary_ab",
+    "source": "a",
+    "target": "b"
+   },
+   {
+    "chunk_ids": [
+     "c1"
+    ],
+    "confidence": 0.9,
+    "edge_type": "requires",
+    "evidence_hard": false,
+    "evidence_kind": "noi_ro",
+    "explicit_evidence": true,
+    "operation_index": 0,
+    "order_relation": "cùng chunk",
+    "reason": "explicit",
+    "session_id": "secondary_ac",
+    "source": "a",
+    "target": "c"
+   },
+   {
+    "chunk_ids": [
+     "c1"
+    ],
+    "confidence": 0.9,
+    "edge_type": "requires",
+    "evidence_hard": false,
+    "evidence_kind": "noi_ro",
+    "explicit_evidence": true,
+    "operation_index": 0,
+    "order_relation": "cùng chunk",
+    "reason": "explicit",
+    "session_id": "secondary_bc",
+    "source": "b",
+    "target": "c"
+   }
+  ],
+  "log": [
+   {
+    "edge_count": 1,
+    "pair_id": "ab",
+    "status": "created"
+   },
+   {
+    "edge_count": 1,
+    "pair_id": "ac",
+    "status": "created"
+   },
+   {
+    "edge_count": 1,
+    "pair_id": "bc",
+    "status": "created"
+   }
+  ],
+  "prompts": [
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "a",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "A",
+       "name": "A",
+       "node_id": "a",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "B",
+       "name": "B",
+       "node_id": "b",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "ab",
+     "presentation_order": [
+      "a",
+      "b"
+     ],
+     "provenance_order": {
+      "a": 0,
+      "b": 0
+     },
+     "right": "b",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_ab_left"
+   },
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "b",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "B",
+       "name": "B",
+       "node_id": "b",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "A",
+       "name": "A",
+       "node_id": "a",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "ab",
+     "presentation_order": [
+      "b",
+      "a"
+     ],
+     "provenance_order": {
+      "a": 0,
+      "b": 0
+     },
+     "right": "a",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_ab_right"
+   },
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "a",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "A",
+       "name": "A",
+       "node_id": "a",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "C",
+       "name": "C",
+       "node_id": "c",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "ac",
+     "presentation_order": [
+      "a",
+      "c"
+     ],
+     "provenance_order": {
+      "a": 0,
+      "c": 0
+     },
+     "right": "c",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_ac_left"
+   },
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "c",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "C",
+       "name": "C",
+       "node_id": "c",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "A",
+       "name": "A",
+       "node_id": "a",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "ac",
+     "presentation_order": [
+      "c",
+      "a"
+     ],
+     "provenance_order": {
+      "a": 0,
+      "c": 0
+     },
+     "right": "a",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_ac_right"
+   },
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "b",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "B",
+       "name": "B",
+       "node_id": "b",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "C",
+       "name": "C",
+       "node_id": "c",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "bc",
+     "presentation_order": [
+      "b",
+      "c"
+     ],
+     "provenance_order": {
+      "b": 0,
+      "c": 0
+     },
+     "right": "c",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_bc_left"
+   },
+   {
+    "dossier": {
+     "channel_weights": {
+      "dense": 0.0,
+      "exact": 0.0
+     },
+     "evidence_chunks": [
+      {
+       "chunk_id": "c1",
+       "text": "A needs B"
+      }
+     ],
+     "indirect_path": null,
+     "left": "c",
+     "nodes": [
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "C",
+       "name": "C",
+       "node_id": "c",
+       "teaching_status": null
+      },
+      {
+       "defining_chunk_ids": [
+        "c1"
+       ],
+       "definition_window": "",
+       "description": "B",
+       "name": "B",
+       "node_id": "b",
+       "teaching_status": null
+      }
+     ],
+     "pair_id": "bc",
+     "presentation_order": [
+      "c",
+      "b"
+     ],
+     "provenance_order": {
+      "b": 0,
+      "c": 0
+     },
+     "right": "b",
+     "source_details": {
+      "citation": [
+       "c1"
+      ]
+     },
+     "sources": [
+      "citation"
+     ]
+    },
+    "session_id": "secondary_bc_right"
+   }
+  ]
+ },
+ "ml": {
+  "config_hash": "17d09d69fed9a06ba1e033bf18ece4e6d61f745c8abe0b12d524966d7b9c3a12",
+  "edges": [
+   {
+    "chunk_ids": [
+     "c1"
+    ],
+    "confidence": 0.9,
+    "edge_type": "requires",
+    "evidence_hard": false,
+    "evidence_kind": "trong_dinh_nghia",
+    "explicit_evidence": true,
+    "operation_index": 0,
+    "order_relation": "cùng chunk",
+    "prerequisite_kind": "can_de_hieu",
+    "quote": "Beta là một Alpha.",
+    "reason": "pass phụ không LLM: điểm 0.800; căn cứ trong_dinh_nghia",
+    "session_id": "secondary_ab",
+    "source": "a",
+    "target": "b"
+   }
+  ],
+  "log": [
+   {
+    "edge_count": 1,
+    "pair_id": "ab",
+    "quote": "Beta là một Alpha.",
+    "score": 0.8,
+    "score_left_to_right": 0.8,
+    "score_right_to_left": null,
+    "source": "a",
+    "status": "created",
+    "target": "b",
+    "threshold": 0.8
+   }
+  ],
+  "stats": {
+   "below_threshold_count": 0,
+   "completed_secondary_pair_count": 1,
+   "evidence_hard_count": 0,
+   "evidence_soft_count": 1,
+   "expected_positive_count": 1,
+   "no_evidence_count": 0,
+   "pruned_secondary_pair_count": 0,
+   "secondary_calls": 0,
+   "secondary_candidate_count": 1,
+   "secondary_edge_count": 1,
+   "secondary_input_tokens": 0,
+   "secondary_output_tokens": 0,
+   "secondary_pair_count": 1,
+   "threshold": 0.8,
+   "threshold_final_reassembled": false,
+   "threshold_history": [
+    0.8
+   ],
+   "threshold_iterations": 1,
+   "threshold_oscillation": false,
+   "threshold_stop_reason": "fixed_point"
+  }
+ }
+}

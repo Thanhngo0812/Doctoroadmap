@@ -86,7 +86,7 @@ def test_round_trip_sinh_dien_doc_lai_ra_dung_du_lieu(tmp_path, manifest, trang_
     kq = kiem_phieu(hai_dong(tmp_path, manifest), manifest, trang_text)
     assert kq.loi == [] and kq.canh_bao == []
     assert kq.du_lieu == {
-        "schema": "danh-gia-g3-1", "ma_sach": "dev-test", "nguoi_gan": "T1-a", "phien_ban_huong_dan": "g3-1",
+        "schema": "danh-gia-g3-1", "ma_sach": "dev-test", "nguoi_gan": "T1-a", "phien_ban_huong_dan": "g3-2",
         "khai_niem": [
             khai_niem("c10-001", "c10", "Quy luật số lớn", "day_o_day", 1, CAU_1, ["luật số lớn", "LLN"], True, "chắc"),
             khai_niem("c10-002", "c10", "Xác suất có điều kiện", "day_qua_vi_du", 2, CAU_2),
@@ -261,3 +261,48 @@ def test_so_trang_chap_nhan_int_float_nguyen_va_chuoi_so_tu_choi_con_lai():
 def test_trang_go_thanh_chuoi_so_van_hop_le(tmp_path, manifest, trang_text):
     kq = kiem_voi(tmp_path, manifest, trang_text, {"c10-001": {"trang": "1"}})
     assert kq.loi == [] and kq.du_lieu["khai_niem"][0]["dinh_nghia"]["trang"] == 1
+
+
+# --- luật trang theo trạng thái (DG-02b): chương c10 = trang 1–3, sách 6 trang ---
+
+def loi_trang(tmp_path, manifest, trang_text, trang_thai, trang):
+    kq = kiem_voi(tmp_path, manifest, trang_text, {"c10-002": {"trang_thai": trang_thai, "trang": trang}})
+    return sorted(l.ma_loi for l in kq.loi if l.dong == "c10-002")
+
+
+@pytest.mark.parametrize("trang_thai", ["day_o_day", "day_qua_vi_du"])
+@pytest.mark.parametrize("trang, mong", [(2, []), (5, ["trang_ngoai_chuong"]), (9, ["trang_ngoai_chuong"])])
+def test_trang_thai_day_trang_phai_trong_chuong(tmp_path, manifest, trang_text, trang_thai, trang, mong):
+    assert loi_trang(tmp_path, manifest, trang_text, trang_thai, trang) == mong
+
+
+@pytest.mark.parametrize("trang_thai", ["chi_nhac", "kien_thuc_nen"])
+@pytest.mark.parametrize("trang, mong", [(None, []), (2, []), (5, []), (6, []), (9, ["trang_ngoai_sach"]), (0, ["trang_ngoai_sach"])])
+def test_chi_nhac_va_kien_thuc_nen_trang_de_trong_hoac_trong_sach(tmp_path, manifest, trang_text, trang_thai, trang, mong):
+    assert loi_trang(tmp_path, manifest, trang_text, trang_thai, trang) == mong
+
+
+def test_trang_ngoai_chuong_cua_chi_nhac_duoc_ghi_vao_du_lieu(tmp_path, manifest, trang_text):
+    kq = kiem_voi(tmp_path, manifest, trang_text, {"c10-002": {"trang_thai": "chi_nhac", "trang": 5, "cau": None}})
+    assert kq.loi == [] and kq.du_lieu["khai_niem"][1]["dinh_nghia"]["trang"] == 5
+
+
+def test_canh_bao_cau_ap_cho_trang_ngoai_chuong(tmp_path, manifest, trang_text):
+    dung = {"c10-002": {"trang_thai": "chi_nhac", "trang": 5, "cau": "Kỳ vọng của biến ngẫu nhiên là giá trị trung bình có trọng số."}}
+    sai = {"c10-002": {"trang_thai": "chi_nhac", "trang": 5, "cau": CAU_2}}
+    bao = lambda kq: [(l.ma_loi, l.dong) for l in kq.canh_bao]  # noqa: E731
+    assert bao(kiem_voi(tmp_path, manifest, trang_text, dung)) == []
+    assert ("cau_khong_khop", "c10-002") in bao(kiem_voi(tmp_path, manifest, trang_text, sai))
+
+
+def test_kiem_du_lieu_excel_cot_trang_cho_phep_ca_sach(tmp_path, manifest):
+    wb = openpyxl.load_workbook(sinh(tmp_path, manifest, so_dong=5))
+    dv = {str(r.sqref): r for r in wb["c10"].data_validations.dataValidation}["E2:E6"]
+    assert (dv.type, dv.formula1, dv.formula2) == ("whole", "1", str(manifest["so_trang"]))
+    assert "chi_nhac" in dv.error and "chương" in dv.error  # thông báo nói rõ luật
+
+
+def test_phien_ban_huong_dan_g3_2(tmp_path, manifest):
+    assert g3.PHIEN_BAN_HUONG_DAN == "g3-2" and g3.SCHEMA == "danh-gia-g3-1"
+    ws = openpyxl.load_workbook(sinh(tmp_path, manifest))["meta"]
+    assert "g3-2" in [c.value for hang in ws.iter_rows() for c in hang]

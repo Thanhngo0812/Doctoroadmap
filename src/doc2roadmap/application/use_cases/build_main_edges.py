@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import random
 from collections import Counter, defaultdict
 
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
@@ -26,7 +27,9 @@ from doc2roadmap.domain.prerequisites import (
 
 class BuildMainEdges:
     def __init__(self, store, model, *, single_session_limit=20, concurrency=4, generation=None,
-                 definition_before=4, definition_after=2, parallel_sessions=True):
+                 definition_before=4, definition_after=2, parallel_sessions=True, context_shuffle_seed=None):
+        if context_shuffle_seed is not None and (type(context_shuffle_seed) not in {int, str}):
+            raise ValueError("seed xáo ngữ cảnh phải là số nguyên, chuỗi hoặc None")
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
         self.store = store
@@ -36,6 +39,8 @@ class BuildMainEdges:
         self.parallel_sessions = parallel_sessions
         self.definition_before = definition_before
         self.definition_after = definition_after
+        # Công tắc đánh giá (DG-06): None = không xáo, lời nhắc/khoá cache/hash cấu hình y hệt trước khi có công tắc.
+        self.context_shuffle_seed = context_shuffle_seed
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
 
     def _provenance(self, doc_id, latest):
@@ -95,6 +100,11 @@ class BuildMainEdges:
             for edge in previous_in_chapter
             if edge.get("source") in allowed or edge.get("target") in allowed
         ]
+        mentioned_concepts = [self._concept(node_by_id[node_id]) for node_id in mentioned]
+        seed = getattr(self, "context_shuffle_seed", None)
+        if seed is not None:
+            # Cùng cách với cờ --xao của scripts/gop-khau/thu_pass_chinh.py (19j): chỉ đổi thứ tự khối "nhắc ở nơi khác".
+            random.Random(f"{seed}:{session['session_id']}").shuffle(mentioned_concepts)
         return {
             "session_id": session["session_id"],
             "route": session["route"],
@@ -108,7 +118,7 @@ class BuildMainEdges:
                                                                          before=getattr(self, "definition_before", 4),
                                                                          after=getattr(self, "definition_after", 2))}
                                  for node_id in session["target_node_ids"]],
-            "mentioned_elsewhere": [self._concept(node_by_id[node_id]) for node_id in mentioned],
+            "mentioned_elsewhere": mentioned_concepts,
             "previous_edges_in_chapter": previous,
             "previous_edges_omitted_count": len(previous_in_chapter) - len(previous),
             "proposed_relations": [
@@ -189,6 +199,8 @@ class BuildMainEdges:
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
             "pricing_source": PRICING_SOURCE,
         }
+        if getattr(self, "context_shuffle_seed", None) is not None:  # chỉ khi bật: tắt thì hash cấu hình giữ nguyên từng bit
+            base_config["context_shuffle_seed"] = self.context_shuffle_seed
         base_config_hash = digest(base_config)
         source_hash = digest(mentions.payload)
         cached = self.store.find_graph(doc_id, source_hash, base_config_hash)
