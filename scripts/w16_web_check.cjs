@@ -34,13 +34,12 @@ async function main() {
     await context.exposeBinding('__w16RecordJson', (_, row) => {
       const receipt = { ...row, stage, path: new URL(row.url).pathname, via: 'fetch-json-clone' };
       audit.http.push(receipt);
-      if (row.readErrorName) {
-        assert.equal(row.readErrorName, 'AbortError');
-        assert.equal(row.signalAborted, true);
-      } else {
-        try { JSON.parse(row.body); inspectPayload(row.url, row.body); }
-        catch (error) { audit.privacyFailures.push({ path: receipt.path, message: error.message }); throw error; }
-      }
+      try {
+        if (row.readErrorName) {
+          assert.equal(row.readErrorName, 'AbortError');
+          assert.equal(row.signalAborted, true);
+        } else { JSON.parse(row.body); inspectPayload(row.url, row.body); }
+      } catch (error) { audit.privacyFailures.push({ path: receipt.path, message: error.message }); throw error; }
     });
     const streams = new Map();
     await context.exposeBinding('__w16RecordStream', (_, row) => {
