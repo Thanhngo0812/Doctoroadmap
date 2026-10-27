@@ -8,6 +8,7 @@ from pathlib import Path
 
 SCHEMA = "danh-gia-luot-1"
 TEN_TEP = "ban-ghi-luot.json"
+_SO_LAN_THU_DOI_TEN = 8
 # trường bắt buộc và kiểu; `seed` và `k` có thể là null (biến thể không dùng)
 TRUONG = {"schema": str, "ma_luot": str, "bien_the": str, "ma_sach": str, "doc_id": str, "sha256_pdf": str, "commit": str,
           "hash_cau_hinh": str, "mo_hinh": str, "transport": str, "seed": (int, type(None)), "k": (int, type(None)),
@@ -77,4 +78,12 @@ def ghi(thu_muc, ban_ghi) -> None:
     duong = Path(thu_muc) / TEN_TEP
     tam = duong.with_suffix(".tmp")
     tam.write_text(json.dumps(ban_ghi, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    tam.replace(duong)
+    # Windows báo WinError 5 khi trình quét còn giữ tệp vừa ghi; thử lại một lúc rồi mới chịu lỗi.
+    for lan in range(_SO_LAN_THU_DOI_TEN):
+        try:
+            tam.replace(duong)
+            return
+        except PermissionError:
+            if lan == _SO_LAN_THU_DOI_TEN - 1:
+                raise
+            time.sleep(0.1 * (lan + 1))
