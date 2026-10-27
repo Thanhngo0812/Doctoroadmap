@@ -35,6 +35,10 @@ def test_vang_khong_nhap_doc2roadmap():
     _cam("vang")
 
 
+def test_can_khong_nhap_doc2roadmap():
+    _cam("can")
+
+
 def test_phieu_khong_nhap_doc2roadmap():
     _cam("phieu")
 
