@@ -149,7 +149,8 @@ def test_ma_tran_nham_lan_va_f1_sau_vai_tro():
 G3_KN = [
     {"ma": "G-1", "chuong": "c1", "ten": "Cao do", "dinh_nghia": {"trang": 2, "cau": "Cao do la do cao thap."}},
     {"ma": "G-2", "chuong": "c1", "ten": "Truong do", "dinh_nghia": {"trang": 3, "cau": "Truong do la do dai."}},
-    {"ma": "G-3", "chuong": "c1", "ten": "Cuong do", "dinh_nghia": {"trang": None, "cau": ""}},          # không có câu: không đếm
+    {"ma": "G-3", "chuong": "c1", "ten": "Cuong do", "dinh_nghia": {"trang": 2, "cau": ""}},             # có trang nhưng không có câu: không đếm
+    {"ma": "G-5", "chuong": "c1", "ten": "Nhip", "dinh_nghia": {"trang": None, "cau": "Nhip la su lap lai."}},  # có câu nhưng không có trang: không đếm
     {"ma": "G-4", "chuong": "c1", "ten": "Bai", "dinh_nghia": {"trang": 3, "cau": "Bai 1 hay lam bai."}},
 ]
 
@@ -230,3 +231,13 @@ def test_macro_f1_bo_vai_tro_khong_co_muc_vang_khoi_trung_binh_khong_tinh_thanh_
     rows = [dong.f1("chinh", MA, "cuon", "a2.f1_vai_tro.noi_dung", 1, 0, 0), dong.f1("chinh", MA, "cuon", "a2.f1_vai_tro.mo_dau", 0, 0, 0)]
     kq = a1a2.macro_f1_vai_tro(rows)
     assert kq["gia_tri"] == 1.0 and (kq["so_vai_tro_co_so"], kq["so_vai_tro"]) == (1, 2)
+
+
+def test_m3_dong_thieu_trong_du_doan_tinh_la_sai_nhung_van_o_mau_so():
+    bang = [{"id": "p0001-l001", "trang": 1, "text": "Bia sach nhac ly"},        # trước tiêu đề đầu: lá vàng là None
+            {"id": "p0001-l002", "trang": 1, "text": "LOI NOI DAU"}, {"id": "p0001-l003", "trang": 1, "text": "Noi dung loi noi dau."}]
+    vang = [h("h1", ["p0001-l002"], "LOI NOI DAU", 1, None, "mo_dau")]
+    du_doan = {"headings": [h("a1", ["p0001-l002"], "LOI NOI DAU", 1, None, "mo_dau")], "evaluation_excluded": [],
+               "lines": {"p0001-l002": {"leaf": "a1"}, "p0001-l003": {"leaf": "a1"}}}   # thiếu dòng bìa
+    m3 = tm(a1a2.cham(vang, du_doan, bang, he="chinh", ma_sach=MA), "a1.m3")
+    assert (m3["tu"], m3["mau"]) == (kt("LOI NOI DAU") + kt("Noi dung loi noi dau."), kt("Bia sach nhac ly") + kt("LOI NOI DAU") + kt("Noi dung loi noi dau."))
