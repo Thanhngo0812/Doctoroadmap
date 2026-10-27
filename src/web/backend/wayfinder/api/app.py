@@ -21,6 +21,7 @@ from wayfinder.api.assistant import assistant_router, assistant_library_router
 from wayfinder.api.sharing import sharing_router
 from wayfinder.api.token_privacy import install_share_link_log_filter
 from wayfinder.api.builds import build_router
+from wayfinder.api.admin import admin_router
 from wayfinder.application.accounts import AuthError
 from wayfinder.api.errors import ERROR_STATUS, ErrorCode, WebError
 from wayfinder.composition import WebServices
@@ -67,6 +68,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     app.include_router(sharing_router())
     install_share_link_log_filter()
     app.include_router(build_router())
+    app.include_router(admin_router())
 
     @app.exception_handler(AuthError)
     async def account_error(_: Request, exc: AuthError) -> JSONResponse:
@@ -158,6 +160,8 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
                            or "/share-links" in request.url.path
                            or "/invitations" in request.url.path
                            or request.url.path in {"/dang-nhap", "/dang-ky"})
+        if request.url.path.startswith('/api/v1/admin/'):
+            response.headers['cache-control'] = 'no-store'
         if recovery_page or recovery_api or sharing_privacy:
             response.headers["referrer-policy"] = "no-referrer"
             response.headers["cache-control"] = "no-store"
