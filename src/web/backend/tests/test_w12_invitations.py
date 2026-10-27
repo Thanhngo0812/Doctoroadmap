@@ -478,6 +478,23 @@ def test_invitation_dto_filters_private_fields_and_body_cannot_select_recipient(
     assert sql(rt,'SELECT status FROM invitation WHERE id=:id',id=identity)==[{'status':'pending'}]
 
 
+def test_error_privacy_headers_cover_validation_auth_and_csrf(invited):
+    rt=invited
+    cases=[
+        rt.owner.post(f'/api/v1/courses/{rt.course.id}/invitations',headers=headers(rt.owner),json={'emails':[]}),
+        send(rt,client=rt.outsider),
+        rt.outsider.get(f'/api/v1/courses/{rt.course.id}/invitations'),
+        rt.outsider.delete(f'/api/v1/courses/{rt.course.id}/invitations/{uuid4()}',headers=headers(rt.outsider)),
+        accept(rt.receiver,str(uuid4())),
+        rt.receiver.post(f'/api/v1/invitations/{uuid4()}/decline',headers=headers(rt.receiver)),
+        rt.owner.post(f'/api/v1/courses/{rt.course.id}/invitations',json={'emails':['a@example.vn']}),
+    ]
+    assert [response.status_code for response in cases]==[422,404,404,404,404,404,403]
+    for response in cases:
+        assert response.headers.get('cache-control')=='no-store'
+        assert response.headers.get('referrer-policy')=='no-referrer'
+
+
 def test_pg_rollback_on_membership_write_failure(invited,monkeypatch):
     rt=invited
     identity=iid(send(rt))
@@ -489,6 +506,19 @@ def test_pg_rollback_on_membership_write_failure(invited,monkeypatch):
     assert sql(rt,'SELECT status FROM invitation WHERE id=:id',id=identity)==[{'status':'pending'}]
     assert len(sql(rt,'SELECT * FROM membership WHERE course_id=:cid',cid=rt.course.id))==1
     assert not sql(rt,"SELECT id FROM audit_event WHERE target_id=:id AND action='invitation_accepted'",id=identity)
+
+
+def test_console_mailer_never_logs_invitation_token(caplog):
+    import logging
+    from wayfinder.application.email_templates import render_invitation_email
+    from wayfinder.infrastructure.mail import ConsoleMailer
+    token='SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED'
+    content=render_invitation_email(course_title='Khóa kiểm thử',
+        action_url=ORIGIN+'/dang-ky#invitation='+token,base_url=ORIGIN)
+    caplog.set_level(logging.INFO,logger='wayfinder.infrastructure.mail')
+    ConsoleMailer().send('synthetic@example.vn',content.subject,content.text,html_body=content.html)
+    assert token not in caplog.text
+    assert '[redacted]' in caplog.text
 
 
 def record(name, response):
