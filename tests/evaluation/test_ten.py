@@ -10,6 +10,14 @@ def test_chuan_hoa_nfc_chu_thuong_khoang_trang_dau_cau():
     assert chuan_hoa("P(A|B)") == "p(a|b)"  # dấu câu bên trong giữ nguyên
 
 
+def test_chi_so_tren_duoi_va_ky_tu_tuong_thich_ve_dang_thuong():
+    # Gán thử xstk 27/10: hai người ghi "Phân phối χ²" và "Phân phối χ2"; NFC để hai tên lệch nhau.
+    assert chuan_hoa("Phân phối χ²") == chuan_hoa("Phân phối χ2") == "phân phối χ2"
+    assert am_tiet("x₁ và x₂") == am_tiet("x1 và x2")
+    assert chuan_hoa("µ") == chuan_hoa("μ")  # dấu micro và chữ mu Hy Lạp
+    assert chuan_hoa("ﬁ") == "fi"  # chữ ghép từ phông PDF
+
+
 def test_giu_dau_tieng_viet():
     assert chuan_hoa("hàm") != chuan_hoa("ham")
     assert am_tiet("Hàm số") != am_tiet("Ham so")
