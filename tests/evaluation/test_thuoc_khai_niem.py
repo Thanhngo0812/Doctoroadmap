@@ -317,3 +317,10 @@ def test_khoang_trang_quanh_ky_hieu_toan_khong_lam_cau_neo_tuot():
     van_ban = {1: "Khoảng số thực (θ1,θ2) được gọi là khoảng ước lượng của θ với độ tin cậy 1−α."}
     hd = hd_([nd("a", neo=(1, "Khoảng số thực ( θ 1 , θ 2) được gọi là khoảng ước lượng của θ với độ tin cậy 1 -α ."))])
     assert tu_mau(khai_niem.truy_nguyen(hd, van_ban), "truy_nguyen.cau_neo_co_that.nghiem", "toan_sach") == (1, 1)
+
+
+def test_khoang_trang_giua_ky_hieu_va_chi_so_khop_tron_o_ngưỡng_rat_cao():
+    van_ban = {1: "Ước lượng θ1 và θ2 của mẫu cho trước."}
+    hd = hd_([nd("a", neo=(1, "Ước lượng θ 1 và θ 2 của mẫu cho trước."))])
+    rows = khai_niem.truy_nguyen(hd, van_ban, nguong={"nghiem": 0.999, "noi": 0.5})
+    assert tu_mau(rows, "truy_nguyen.cau_neo_co_that.nghiem", "toan_sach") == (1, 1)
