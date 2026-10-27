@@ -147,7 +147,7 @@ def main():
             controlPath='/api/v1/__test/w16/control', cachedNode=cached_node, coldNode=cold_node, quizId=cached_quiz['attempt_id'])
         with audit.connect() as c:
             summary['migrationHead'] = c.scalar(text('SELECT version_num FROM alembic_version'))
-        assert summary['migrationHead'] == 'w11_0007'
+        assert summary['migrationHead'] == 'w12_0008'
         save('runtime.json', summary)
         listener = socket.socket(); listener.bind(('127.0.0.1', 8026)); listener.listen(128); listener.setblocking(False)
         server = uvicorn.Server(uvicorn.Config(app, log_config=None, access_log=False, log_level='warning', timeout_graceful_shutdown=5))
