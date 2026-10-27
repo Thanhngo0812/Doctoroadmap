@@ -23,14 +23,20 @@ def hash_cau_hinh(thanh_phan: dict) -> str:
     return hashlib.sha256(json.dumps(thanh_phan, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
 
 
+def thanh_phan(*, bien_the, doc_id, sha256_pdf, commit, mo_hinh, transport, seed, k, luot_nhieu, cau_hinh, tu_luot, ten_buoc):
+    """Mọi thứ làm đổi kết quả của lượt; hash cấu hình là băm của đúng dict này. Test đổi từng trường để chứng minh hash đổi theo."""
+    return {"bien_the": bien_the, "doc_id": doc_id, "sha256_pdf": sha256_pdf, "commit": commit, "mo_hinh": mo_hinh,
+            "transport": transport, "seed": seed, "k": k, "luot_nhieu": luot_nhieu, "cau_hinh": cau_hinh,
+            "tu_luot": tu_luot, "buoc": list(ten_buoc)}
+
+
 def moi(*, ma_luot, bien_the, ma_sach, doc_id, sha256_pdf, commit, mo_hinh, transport, seed, k, luot_nhieu, ngay, cau_hinh,
         tu_luot, ten_buoc):
     """Bản ghi mới: mọi bước ở trạng thái `cho`. Hash cấu hình gồm mọi thứ làm đổi kết quả (kể cả commit và hash của lượt nguồn)."""
-    thanh_phan = {"bien_the": bien_the, "doc_id": doc_id, "sha256_pdf": sha256_pdf, "commit": commit, "mo_hinh": mo_hinh,
-                  "transport": transport, "seed": seed, "k": k, "luot_nhieu": luot_nhieu, "cau_hinh": cau_hinh,
-                  "tu_luot": tu_luot, "buoc": list(ten_buoc)}
+    tp = thanh_phan(bien_the=bien_the, doc_id=doc_id, sha256_pdf=sha256_pdf, commit=commit, mo_hinh=mo_hinh, transport=transport,
+                    seed=seed, k=k, luot_nhieu=luot_nhieu, cau_hinh=cau_hinh, tu_luot=tu_luot, ten_buoc=ten_buoc)
     return {"schema": SCHEMA, "ma_luot": ma_luot, "bien_the": bien_the, "ma_sach": ma_sach, "doc_id": doc_id,
-            "sha256_pdf": sha256_pdf, "commit": commit, "hash_cau_hinh": hash_cau_hinh(thanh_phan), "mo_hinh": mo_hinh,
+            "sha256_pdf": sha256_pdf, "commit": commit, "hash_cau_hinh": hash_cau_hinh(tp), "mo_hinh": mo_hinh,
             "transport": transport, "seed": seed, "k": k, "luot_nhieu": luot_nhieu, "ngay": ngay, "cau_hinh": cau_hinh,
             "tu_luot": tu_luot,
             "buoc": [{"ten": ten, "trang_thai": "cho", "bat_dau": None, "ket_thuc": None, "giay": None, "ghi_chu": None}

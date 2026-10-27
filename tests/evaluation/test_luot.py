@@ -131,7 +131,7 @@ def test_moi_lenh_pipeline_dung_kho_rieng_cua_luot(chinh, gia, tmp_path):
     assert gia.lenh and all(Path(e["DOC2ROADMAP_ARTIFACT_DIR"]).resolve() == Path(kho) for _, e in gia.lenh)
     assert all(e["DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"] == "" and e["DOC2ROADMAP_SECONDARY_MODE"] == "ml" for _, e in gia.lenh)
     assert [a[0] for a, _ in gia.lenh] == ["ingest", "label-roles", "a3", "a4", "roadmap"]
-    assert "--a1" not in gia.lenh[0][0] and gia.lenh[3][0][gia.lenh[3][0].index("--gold") + 1].endswith("a4-vang.json")
+    assert "--a1" not in gia.lenh[0][0] and Path(gia.lenh[3][0][gia.lenh[3][0].index("--gold") + 1]).resolve() == (chinh / "vang-a4.json").resolve()
     assert not (tmp_path / "artifacts" / "graph").exists()  # kho chung không bị đụng
 
 
@@ -509,3 +509,47 @@ def test_chep_thuong_nguon_chep_tung_tep_that(tmp_path):
     assert thu_muc.chep_thuong_nguon(nguon, dich, ["graph/D/v1/graph.json"]) == 1
     f = dich / "graph" / "D" / "v1" / "graph.json"
     assert f.is_file() and not thu_muc.la_lien_ket(f) and f.read_text(encoding="utf-8") == "{}"
+
+
+# ---------- hash cấu hình gồm mọi thứ làm đổi kết quả (H2) ----------
+
+def test_chay_tiep_voi_seed_khac_bi_tu_choi(sach, gia, chinh, tmp_path, capsys):
+    ra = tmp_path / "xao"
+    a = lenh(sach, ra, "xao-k", "--tu-luot", str(chinh), "--k", "1", "--seed", "10")
+    gia.hong_o = "roadmap"
+    assert main(a) == 1
+    truoc, so_lenh = bam(ra), len(gia.lenh)
+    b = list(a)
+    b[b.index("--seed") + 1] = "11"
+    assert main(b) == 2
+    assert "hash cấu hình" in capsys.readouterr().err
+    assert bam(ra) == truoc and len(gia.lenh) == so_lenh
+    assert main(a) == 0  # đúng seed cũ thì chạy tiếp được
+    assert ban_ghi.da_xong(ban_ghi.doc(ra / "xao-1")) and ban_ghi.doc(ra / "xao-1")["seed"] == 10
+
+
+THAM_SO_HASH = dict(bien_the="chinh", doc_id="D", sha256_pdf="a" * 64, commit="c" * 40, mo_hinh="gemini-3.1-flash-lite",
+                    transport="vertex", seed=1, k=5, luot_nhieu=0, cau_hinh={"env": {"x": "1"}}, tu_luot=None, ten_buoc=["ingest", "a3"])
+DOI = dict(bien_the="xao-k", doc_id="E", sha256_pdf="b" * 64, commit="d" * 40, mo_hinh="gemini-3.1-pro", transport="developer_api",
+           seed=2, k=4, luot_nhieu=1, cau_hinh={"env": {"x": "2"}}, tu_luot="h" * 64, ten_buoc=["ingest"])
+
+
+def test_moi_truong_trong_thanh_phan_hash_deu_lam_doi_hash():
+    goc = ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(**THAM_SO_HASH))
+    assert set(THAM_SO_HASH) == set(DOI)
+    for truong, gia_tri in DOI.items():
+        doi = ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(**{**THAM_SO_HASH, truong: gia_tri}))
+        assert doi != goc, f"đổi {truong} mà hash cấu hình không đổi"
+
+
+def test_hash_cua_ban_ghi_moi_dung_thanh_phan_day_du():
+    moi = ban_ghi.moi(ma_luot="m", ma_sach="S", ngay="2026-11-01", **THAM_SO_HASH)
+    assert moi["hash_cau_hinh"] == ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(**THAM_SO_HASH))
+    doi = ban_ghi.moi(ma_luot="m", ma_sach="S", ngay="2026-11-01", **{**THAM_SO_HASH, "seed": 2})
+    assert doi["hash_cau_hinh"] != moi["hash_cau_hinh"]
+
+
+def test_vang_a4_duoc_chep_vao_luot_va_ghi_sha256(chinh, sach):
+    chep = chinh / "vang-a4.json"
+    assert chep.is_file() and chep.read_bytes() == sach["a4"].read_bytes()
+    assert ban_ghi.doc(chinh)["ket_qua"]["vang_a4_sha256"] == hashlib.sha256(sach["a4"].read_bytes()).hexdigest()

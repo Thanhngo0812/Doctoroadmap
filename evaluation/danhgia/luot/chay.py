@@ -185,10 +185,14 @@ class Luot:
         self._cli(["a3", "--doc-id", self.nc.doc_id])
 
     def _b_a4(self):
-        if self.nc.vang_a4 is None:
+        nc = self.nc
+        if nc.vang_a4 is None:
             raise LoiBuoc("A4 cần --vang-a4 (bộ vàng A4 đã gán mù, tài liệu mới không nằm trong đó)")
-        self._cli(["a4", "--doc-id", self.nc.doc_id, "--gold", str(self.nc.vang_a4), "--no-gold-for-doc", "--language", "vi",
-                   "--allow-spend"])
+        ban_chep = self.thu_muc / "vang-a4.json"  # chép vào lượt: pipeline đọc bản chép, không đọc tệp ở kho chung
+        if not ban_chep.exists():
+            ban_chep.write_bytes(Path(nc.vang_a4).read_bytes())
+        self.ban["ket_qua"]["vang_a4_sha256"] = _sha256(ban_chep)
+        self._cli(["a4", "--doc-id", nc.doc_id, "--gold", str(ban_chep), "--no-gold-for-doc", "--language", "vi", "--allow-spend"])
 
     def _b_roadmap(self):
         self._cli(["roadmap", "--doc-id", self.nc.doc_id, "--allow-spend"])
