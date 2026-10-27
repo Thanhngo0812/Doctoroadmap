@@ -1,7 +1,7 @@
 """DG-20 phần C: học cross-encoder `intfloat/multilingual-e5-base` cho pass phụ (M3), 4 phần theo cuốn, chạy trên máy GPU trong `~/e6/venv`. 0 USD.
 
 Dùng lại nguyên bộ mã hoá và vòng học của E6 (`e6_cross_encoder.py`, phải nằm cùng thư mục): đoạn A "# Y # @ X @ : <định nghĩa X>", đoạn B là các câu của cửa sổ Y
-có đánh dấu, độ dài 256, đóng băng embedding từ, bf16 autocast, AdamW 3e-5, warmup 6%, lô 16 x tích luỹ 2, 3 epoch, 5 nhãn D-01 (điểm cạnh cứng = p[can_de_hieu]).
+có đánh dấu, độ dài 256, đóng băng embedding từ, bf16 autocast, AdamW 3e-5, warmup 6%, lô 8 x tích luỹ 4 (lô hiệu dụng 32; lô 16 tràn bộ nhớ card 3,68 GiB; chạy kèm PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True), 3 epoch, 5 nhãn D-01 (điểm cạnh cứng = p[can_de_hieu]).
 Khác E6:
 - chỉ D-01, KHÔNG đọc tài liệu phát triển (thư mục dữ liệu chỉ cần `d01.jsonl`);
 - chia 4 phần theo `chia-4-phan.json` (4 cuốn mỗi phần, seed 20261027) thay vì cân số dòng, để LightGBM và logistic chấm trên đúng 4 phần này;
@@ -36,8 +36,8 @@ def main():
     ap.add_argument("--mo-hinh", default="intfloat/multilingual-e5-base")
     ap.add_argument("--do-dai", type=int, default=256)
     ap.add_argument("--toi-da-a", type=int, default=64)
-    ap.add_argument("--lo", type=int, default=16)
-    ap.add_argument("--tich-luy", type=int, default=2)
+    ap.add_argument("--lo", type=int, default=8)
+    ap.add_argument("--tich-luy", type=int, default=4)
     ap.add_argument("--lr", type=float, default=3e-5)
     ap.add_argument("--epoch", type=int, default=3)
     ap.add_argument("--warmup", type=float, default=0.06)
