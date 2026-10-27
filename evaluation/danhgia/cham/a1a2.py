@@ -160,7 +160,9 @@ def cham(vang, du_doan, bang_dong, *, he, ma_sach, chuong=None, trang_mau=None, 
         than = {x for x, r in vai_tro_dong.items() if r in THAN_BAI}
     else:
         than = set(theo_id) - loai
-    for x in than:
+    for x in sorted(than):
+        if x not in co_la:
+            cong(nhom(x), "a1.m3_dong_thieu_trong_du_doan", gia_tri=1)   # tính sai ở M3 và đếm riêng, không bỏ lặng lẽ
         la = la_he.get(x) if x in co_la else None
         thuc = None if la is None else khop.get(la, "<unmatched>")
         cong(nhom(x), "a1.m3", tu=_ky_tu(theo_id[x]["text"]) * (x in co_la and thuc == la_vang[x]), mau=_ky_tu(theo_id[x]["text"]))
@@ -200,7 +202,8 @@ def cham(vang, du_doan, bang_dong, *, he, ma_sach, chuong=None, trang_mau=None, 
         cong(n, "a2.loi_co_hai", tu=hv != "noi_dung", mau=1)
     # ------------------------------------------------ đổ ra dòng đủ mọi thước, mọi nhóm (số 0 vẫn có dòng)
     ky = {"a1.m1": "f1", "a1.complete_entry": "f1", "a1.m2": "ti_le", "a1.m3": "ti_le", "a2.recall_noi_dung_muc": "ti_le",
-          "a2.recall_noi_dung_ky_tu": "ti_le", "a2.loi_co_hai": "ti_le", "a2.khong_dinh_vi_cau": "dem"}
+          "a2.recall_noi_dung_ky_tu": "ti_le", "a2.loi_co_hai": "ti_le", "a2.khong_dinh_vi_cau": "dem",
+          "a1.m3_dong_thieu_trong_du_doan": "dem"}
     ky.update({f"a2.f1_vai_tro.{v}": "f1" for v in VAI_TRO})
     ky.update({f"a2.nham.{a}.{b}": "dem" for a in VAI_TRO for b in (*VAI_TRO, "khong_co", "khong_khop")})
     rows = []
@@ -230,11 +233,18 @@ def du_doan_tu_hop_dong(hd, bang_dong):
     if ct is None:
         raise ValueError("hợp đồng không có khối cau_truc")
     vai_tro = {m["ma"]: m["vai_tro"] for m in ct["muc"]}
+    if ct["tieu_de"] and all(t["ma_dong"] is not None for t in ct["tieu_de"]) and "dong_thuoc_muc" in ct:
+        # hợp đồng đã căn dòng ở seam xuất: dùng thẳng mã dòng và lá của từng dòng; dòng không căn được không có trong `lines` (tính sai ở M3, đếm riêng)
+        tieu_de = [{"id": t["ma"], "dong": list(t["ma_dong"]), "cap": t["cap"], "cha": t["cha"], "text": t["chu"],
+                    "vai_tro": vai_tro.get(t["ma"])} for t in ct["tieu_de"] if t["cap"] != 0]      # cấp 0 là gốc tài liệu, không phải tiêu đề
+        return {"headings": tieu_de, "khong_dinh_vi": [t["id"] for t in tieu_de if not t["dong"]],
+                "lines": {x: {"leaf": la} for x, la in ct["dong_thuoc_muc"].items()},
+                "dong_khong_can": list(ct.get("dong_khong_can", [])), "evaluation_excluded": []}
     theo_trang = {}
     for d in bang_dong:
         theo_trang.setdefault(d["trang"], []).append(d)
     tieu_de, khong = [], []
-    for t in ct["tieu_de"]:
+    for t in (t for t in ct["tieu_de"] if t["cap"] != 0):
         ma_dong = []
         for trang in (t["trang"], None if t["trang"] is None else t["trang"] - 1):
             if trang is not None:
