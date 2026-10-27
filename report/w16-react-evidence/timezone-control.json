@@ -1,0 +1,11 @@
+{
+  "source": "012abea28a32272a91aaccfa54823037652af28a",
+  "environment": {
+    "TZ": "America/Los_Angeles"
+  },
+  "command": "scripts/w16_capture.py timezone-la-control npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 src/Usage.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/timezone-la-control.xml",
+  "nativeExit": 0,
+  "tests": 9,
+  "expectedDisplayTimezone": "Asia/Ho_Chi_Minh",
+  "note": "Control verifies UI formatting when host timezone differs; not another backend gate."
+}

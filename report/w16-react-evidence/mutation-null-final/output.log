@@ -1,0 +1,643 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx -t keeps null build quota --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/mutation-null-final/junit.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend
+
+ ❯ src/Usage.test.tsx (9 tests | 1 failed | 8 skipped) 1094ms
+   ↓ shows the API ratio 0.35 and honest state Còn nhiều
+   ↓ shows the API ratio 0.85 and honest state Gần hết
+   ↓ shows the API ratio 1 and honest state Đã hết
+   × keeps null build quota unlimited and never calls it zero remaining 1091ms
+   ↓ offers retry after a usage failure without inventing a zero ratio
+   ↓ ignores a stale usage result after route change and loads the new route independently
+   ↓ does not show late private usage after logout
+   ↓ keeps a persistent learner limit near document creation while saved content and quiz remain accessible
+   ↓ refreshes the banner from HTTP after the current assistant turn changes usage
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Usage.test.tsx > keeps null build quota unlimited and never calls it zero remaining
+TestingLibraryElementError: Unable to find an element with the text: Không giới hạn. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33maria-current[39m=[32m"page"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"usage-page"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"usage-back"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [0m← Khoá học của tôi[0m
+          [36m</a>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"usage-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mMức dùng[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTheo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"usage-overview"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"usage-today-title"[39m
+              [33mclass[39m=[32m"usage-today"[39m
+              [33mdata-level[39m=[32m"Còn nhiều"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"usage-ring"[39m
+                [33mstyle[39m=[32m"--usage-ratio: 0.1;"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mviewBox[39m=[32m"0 0 120 120"[39m
+                [36m>[39m
+                  [36m<circle[39m
+                    [33mclass[39m=[32m"usage-ring-track"[39m
+                    [33mcx[39m=[32m"60"[39m
+                    [33mcy[39m=[32m"60"[39m
+                    [33mr[39m=[32m"52"[39m
+                  [36m/>[39m
+                  [36m<circle[39m
+                    [33mclass[39m=[32m"usage-ring-value"[39m
+                    [33mcx[39m=[32m"60"[39m
+                    [33mcy[39m=[32m"60"[39m
+                    [33mpathLength[39m=[32m"1"[39m
+                    [33mr[39m=[32m"52"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<span>[39m
+                  [0m10[0m
+                  [36m<small>[39m
+                    [0m%[0m
+                  [36m</small>[39m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"usage-today-copy"[39m
+              [36m>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"usage-state"[39m
+                [36m>[39m
+                  [0mCòn nhiều[0m
+                [36m</p>[39m
+                [36m<h2[39m
+                  [33mid[39m=[32m"usage-today-title"[39m
+                [36m>[39m
+                  [0mHôm nay đã dùng [0m
+                  [0m10[0m
+                  [0m%[0m
+                [36m</h2>[39m
+                [36m<progress[39m
+                  [33maria-label[39m=[32m"Hạn mức học hôm nay"[39m
+                  [33mclass[39m=[32m"sr-only"[39m
+                  [33mmax[39m=[32m"1"[39m
+                  [33mvalue[39m=[32m"0.1"[39m
+                [36m/>[39m
+                [36m<p>[39m
+                  [0mHạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.[0m
+                [36m</p>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"usage-reset"[39m
+                [36m>[39m
+                  [0mĐặt lại lúc [0m
+                  [36m<time[39m
+                    [33mdatetime[39m=[32m"2026-10-26T17:00:00Z"[39m
+                  [36m>[39m
+                    [0m00:00 27/10/2026[0m
+                  [36m</time>[39m
+                  [36m<small>[39m
+                    [0mGiờ Việt Nam[0m
+                  [36m</small>[39m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"usage-builds-title"[39m
+              [33mclass[39m=[32m"usage-builds"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"usage-builds-title"[39m
+              [36m>[39m
+                [0mDựng lộ trình tháng này[0m
+              [36m</h2>[39m
+              [36m<strong[39m
+                [33mclass[39m=[32m"usage-build-number"[39m
+              [36m>[39m
+                [0m1[0m
+                [36m<small>[39m
+                  [0m / [0m
+                [36m</small>[39m
+              [36m</strong>[39m
+              [36m<p>[39m
+                [0mCòn [0m
+                [0m0[0m
+                [0m lượt dựng[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"usage-reset"[39m
+              [36m>[39m
+                [0mĐặt lại lúc [0m
+                [36m<time[39m
+                  [33mdatetime[39m=[32m"2026-10-31T17:00:00Z"[39m
+                [36m>[39m
+                  [0m00:00 01/11/2026[0m
+                [36m</time>[39m
+                [36m<small>[39m
+                  [0mGiờ Việt Nam[0m
+                [36m</small>[39m
+              [36m</p>[39m
+            [36m</section>[39m
+          [36m</div>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"usage-continue-title"[39m
+            [33mclass[39m=[32m"usage-continue"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"usage-continue-title"[39m
+            [36m>[39m
+              [0mLuôn có thể học tiếp[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mKể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/khoa-hoc"[39m
+            [36m>[39m
+              [0mVề khoá học[0m
+            [36m</a>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33maria-current[39m=[32m"page"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"usage-page"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"usage-back"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [0m← Khoá học của tôi[0m
+          [36m</a>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"usage-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mMức dùng[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTheo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"usage-overview"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"usage-today-title"[39m
+              [33mclass[39m=[32m"usage-today"[39m
+              [33mdata-level[39m=[32m"Còn nhiều"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"usage-ring"[39m
+                [33mstyle[39m=[32m"--usage-ratio: 0.1;"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mviewBox[39m=[32m"0 0 120 120"[39m
+                [36m>[39m
+                  [36m<circle[39m
+                    [33mclass[39m=[32m"usage-ring-track"[39m
+                    [33mcx[39m=[32m"60"[39m
+                    [33mcy[39m=[32m"60"[39m
+                    [33mr[39m=[32m"52"[39m
+                  [36m/>[39m
+                  [36m<circle[39m
+                    [33mclass[39m=[32m"usage-ring-value"[39m
+                    [33mcx[39m=[32m"60"[39m
+                    [33mcy[39m=[32m"60"[39m
+                    [33mpathLength[39m=[32m"1"[39m
+                    [33mr[39m=[32m"52"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [36m<span>[39m
+                  [0m10[0m
+                  [36m<small>[39m
+                    [0m%[0m
+                  [36m</small>[39m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"usage-today-copy"[39m
+              [36m>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"usage-state"[39m
+                [36m>[39m
+                  [0mCòn nhiều[0m
+                [36m</p>[39m
+                [36m<h2[39m
+                  [33mid[39m=[32m"usage-today-title"[39m
+                [36m>[39m
+                  [0mHôm nay đã dùng [0m
+                  [0m10[0m
+                  [0m%[0m
+                [36m</h2>[39m
+                [36m<progress[39m
+                  [33maria-label[39m=[32m"Hạn mức học hôm nay"[39m
+                  [33mclass[39m=[32m"sr-only"[39m
+                  [33mmax[39m=[32m"1"[39m
+                  [33mvalue[39m=[32m"0.1"[39m
+                [36m/>[39m
+                [36m<p>[39m
+                  [0mHạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.[0m
+                [36m</p>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"usage-reset"[39m
+                [36m>[39m
+                  [0mĐặt lại lúc [0m
+                  [36m<time[39m
+                    [33mdatetime[39m=[32m"2026-10-26T17:00:00Z"[39m
+                  [36m>[39m
+                    [0m00:00 27/10/2026[0m
+                  [36m</time>[39m
+                  [36m<small>[39m
+                    [0mGiờ Việt Nam[0m
+                  [36m</small>[39m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"usage-builds-title"[39m
+              [33mclass[39m=[32m"usage-builds"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"usage-builds-title"[39m
+              [36m>[39m
+                [0mDựng lộ trình tháng này[0m
+              [36m</h2>[39m
+              [36m<strong[39m
+                [33mclass[39m=[32m"usage-build-number"[39m
+              [36m>[39m
+                [0m1[0m
+                [36m<small>[39m
+                  [0m / [0m
+                [36m</small>[39m
+              [36m</strong>[39m
+              [36m<p>[39m
+                [0mCòn [0m
+                [0m0[0m
+                [0m lượt dựng[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"usage-reset"[39m
+              [36m>[39m
+                [0mĐặt lại lúc [0m
+                [36m<time[39m
+                  [33mdatetime[39m=[32m"2026-10-31T17:00:00Z"[39m
+                [36m>[39m
+                  [0m00:00 01/11/2026[0m
+                [36m</time>[39m
+                [36m<small>[39m
+                  [0mGiờ Việt Nam[0m
+                [36m</small>[39m
+              [36m</p>[39m
+            [36m</section>[39m
+          [36m</div>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"usage-continue-title"[39m
+            [33mclass[39m=[32m"usage-continue"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"usage-continue-title"[39m
+            [36m>[39m
+              [0mLuôn có thể học tiếp[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mKể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/khoa-hoc"[39m
+            [36m>[39m
+              [0mVề khoá học[0m
+            [36m</a>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Usage.test.tsx:46:23
+     44| it('keeps null build quota unlimited and never calls it zero remaining…
+     45|   value = usage(.1, null); page();
+     46|   expect(await screen.findByText('Không giới hạn', { exact: true })).t…
+       |                       ^
+     47|   expect(screen.getByText('Đã dựng 1 lần trong tháng này')).toBeVisibl…
+     48|   expect(document.body.textContent).not.toMatch(/Còn 0 lượt|NaN|Infini…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  22:29:08
+   Duration  5.32s (import 31%, environment 27%, tests 22%, setup 12%, transform 8%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/mutation-null-final/junit.xml

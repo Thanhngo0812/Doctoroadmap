@@ -1,0 +1,154 @@
+{
+  "build": {
+    "id": "77950838-7448-4f1e-917a-38619f69bc7d",
+    "doc_id": "u-caf341d9c3b02bf63539",
+    "upload_id": "36e550fd-730d-4031-a3e3-553b5c91d36a",
+    "requested_by": "7373a4e7-20de-4e65-b859-433a0f800d9e",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "pipeline_version": "web-real:012abea28a32272a91aaccfa54823037652af28a:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "w15-trace-accounting",
+    "lease_id": "58e7f93c-8087-4ef4-882f-bc39edcf6718",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": null,
+    "error_message": null,
+    "retryable": false,
+    "spent_usd": "0.003000",
+    "model_calls": 3,
+    "input_tokens": 300,
+    "output_tokens": 60,
+    "usage_complete": true,
+    "elapsed_seconds": 0.12977349999982835,
+    "graph_version": 8,
+    "module_count": 1
+  },
+  "totals": {
+    "usd": "0.003000",
+    "input": 300,
+    "output": 60
+  },
+  "traces": [
+    {
+      "id": 37,
+      "created_at": "2026-10-26 16:04:05.793165+00:00",
+      "purpose": "module_title",
+      "model_id": null,
+      "doc_id": "u-caf341d9c3b02bf63539",
+      "context_hash": null,
+      "learner_id": null,
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": null,
+      "replayed": null,
+      "extra": {
+        "doc_id": "u-caf341d9c3b02bf63539",
+        "purpose": "module_title",
+        "cost_usd": 0.001,
+        "counted_in": "build",
+        "created_at": "2026-10-26T16:04:05.793165+00:00",
+        "input_tokens": 100,
+        "output_tokens": 20
+      }
+    },
+    {
+      "id": 39,
+      "created_at": "2026-10-26 16:04:05.825184+00:00",
+      "purpose": "embedding",
+      "model_id": null,
+      "doc_id": "u-caf341d9c3b02bf63539",
+      "context_hash": null,
+      "learner_id": null,
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": null,
+      "replayed": null,
+      "extra": {
+        "doc_id": "u-caf341d9c3b02bf63539",
+        "purpose": "embedding",
+        "cost_usd": 0.001,
+        "counted_in": "build",
+        "created_at": "2026-10-26T16:04:05.825184+00:00",
+        "input_tokens": 100,
+        "output_tokens": 20
+      }
+    }
+  ],
+  "receipt": {
+    "error": null,
+    "doc_id": "u-caf341d9c3b02bf63539",
+    "status": "succeeded",
+    "spent_usd": 0.003,
+    "model_calls": 3,
+    "input_tokens": 300,
+    "step_details": {
+      "graph": {
+        "web_timing": {
+          "wall_seconds": 0.016051799999331706,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "graph_version": 8
+      },
+      "concepts": {
+        "a3": {
+          "a3_prime": true
+        },
+        "canonical": {},
+        "web_timing": {
+          "wall_seconds": 0.01428810000015801,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "label_roles": {
+          "reused": false
+        }
+      },
+      "doc_reading": {
+        "page_count": 1,
+        "web_timing": {
+          "wall_seconds": 0.00973489999978483,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "alphabetic_chars": 820,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.36585365853658536,
+        "average_alphabetic_chars_per_page": 820.0
+      },
+      "learning_prep": {
+        "web_timing": {
+          "wall_seconds": 0.014200000000528235,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      }
+    },
+    "graph_version": 8,
+    "output_tokens": 60,
+    "usage_complete": true,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph",
+      "learning_prep"
+    ],
+    "elapsed_seconds": 0.12977349999982835,
+    "pipeline_version": "web-real:012abea28a32272a91aaccfa54823037652af28a:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255"
+  },
+  "provider_calls": 0,
+  "synthetic_usage": true
+}

@@ -1,0 +1,173 @@
+{
+  "source": "012abea28a32272a91aaccfa54823037652af28a",
+  "mainBase": "788b600eedc44a161b6ed4c59e88bd59226aa86f",
+  "configurations": [
+    {
+      "width": 390,
+      "theme": "light",
+      "reduced": false
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "reduced": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "reduced": false
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "reduced": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "reduced": false
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "reduced": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "reduced": false
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "reduced": true
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "reduced": false
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "reduced": true
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "reduced": false
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "reduced": true
+    }
+  ],
+  "screens": 66,
+  "axeRuns": 66,
+  "axeViolations": 0,
+  "manualContrastCount": 92,
+  "minManualContrast": 5.844797723334521,
+  "http": 225,
+  "pageErrors": [],
+  "console": {
+    "http401": 2,
+    "axe_font_csp": 66,
+    "axe_inline_csp": 66,
+    "network_error": 1
+  },
+  "pendingRejections": [],
+  "privacyFailures": [],
+  "streams": [
+    {
+      "path": "/api/v1/courses/37108072-decb-48bc-abd3-2d896c5d228b/concepts/node_9f23f5df7eb27a4bc46857c8/lecture/stream",
+      "bytes": 11880,
+      "complete": true
+    },
+    {
+      "path": "/api/v1/courses/37108072-decb-48bc-abd3-2d896c5d228b/quizzes",
+      "bytes": 2461,
+      "complete": true
+    }
+  ],
+  "cache": {
+    "cachedLectureReady": true,
+    "coldFailure": "tran_he_thong",
+    "bankQuizUsable": true,
+    "before": {
+      "ledgerRows": 50,
+      "lectureCalls": 1,
+      "generatorCalls": 1,
+      "documentCalls": 4,
+      "assistantCalls": 0
+    },
+    "after": {
+      "ledgerRows": 50,
+      "lectureCalls": 1,
+      "generatorCalls": 1,
+      "documentCalls": 4,
+      "assistantCalls": 0
+    }
+  },
+  "limitedChat": {
+    "reachedCore": true,
+    "status": "daily_limit",
+    "replayedSameIntent": true,
+    "modelCallsUnchanged": true
+  },
+  "temporaryDatabaseRemoved": true,
+  "serverStopped": true,
+  "externalCostUsd": 0,
+  "independentSql": {
+    "records": [
+      {
+        "kind": "documents",
+        "owner": "1af01a72-0448-4d60-ab28-f7a90a4655e8",
+        "count": 4
+      },
+      {
+        "kind": "quiz_attempt",
+        "owner": "1af01a72-0448-4d60-ab28-f7a90a4655e8",
+        "count": 2
+      }
+    ],
+    "submissions": [],
+    "usage": [
+      {
+        "purpose": "document_validation",
+        "rows": 4,
+        "usd": 0
+      },
+      {
+        "purpose": "assistant",
+        "rows": 37,
+        "usd": 27.4
+      },
+      {
+        "purpose": "lecture_validation",
+        "rows": 1,
+        "usd": 0
+      },
+      {
+        "purpose": "quiz_verify",
+        "rows": 1,
+        "usd": 0.000115
+      },
+      {
+        "purpose": "document",
+        "rows": 4,
+        "usd": 0
+      },
+      {
+        "purpose": "lecture",
+        "rows": 2,
+        "usd": 5.000145
+      },
+      {
+        "purpose": "quiz_gen",
+        "rows": 1,
+        "usd": 0.000115
+      }
+    ]
+  }
+}

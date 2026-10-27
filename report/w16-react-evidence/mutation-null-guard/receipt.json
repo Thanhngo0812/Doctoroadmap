@@ -1,0 +1,22 @@
+{
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "src/Usage.test.tsx",
+    "-t",
+    "keeps null build quota",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=../../../report/w16-react-evidence/mutation-null-guard/junit.xml"
+  ],
+  "sourceCommit": "5da43a4226cdc0e88e4313ba5dea87ff2fb65894",
+  "sourceSha256": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489",
+  "mutatedSha256": "ac9558cc95579731aa50c3e650ba314562f6da23f73587f8b392658a25f0bc66",
+  "restoredSha256": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489",
+  "nativeExitCode": 1
+}

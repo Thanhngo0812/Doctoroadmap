@@ -7,6 +7,7 @@ import { RoadmapPage } from './Roadmap';
 import { JoinPage, MembersPage } from './Sharing';
 import { BuildPage, UploadPage } from './Builds';
 import { QuizPage, DocumentPage } from './ContentPages';
+import { UsagePage } from './Usage';
 
 type Theme = 'light' | 'dark';
 
@@ -53,7 +54,7 @@ function Header({ theme, onToggleTheme, demo = false }: { theme: Theme; onToggle
         </nav>
         <div className="header-actions">
           {demo && <span className="demo-pill"><span className="pixel-dot" /> Bản minh hoạ</span>}
-          {auth.status === 'authenticated' ? <details className="account-menu"><summary>{auth.account?.display_name}<span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details> : <Link className="header-auth-link" to="/dang-nhap">Đăng nhập</Link>}
+          {auth.status === 'authenticated' ? <details className="account-menu"><summary>{auth.account?.display_name}<span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><Link to="/muc-dung">Mức dùng</Link><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details> : <Link className="header-auth-link" to="/dang-nhap">Đăng nhập</Link>}
           <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>
             <span aria-hidden="true">{theme === 'light' ? '◐' : '◑'}</span>
           </button>
@@ -363,6 +364,7 @@ export default function App() {
     <Route path="/demo" element={<DemoPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/muc-dung" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><UsagePage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />

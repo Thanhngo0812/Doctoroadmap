@@ -1,0 +1,50 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx src/Assistant.test.tsx src/Assistant.final-usage-race.test.tsx src/Content.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/focused-green4.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend
+
+ ✓ src/Usage.test.tsx (8 tests) 1146ms
+ ✓ src/Assistant.test.tsx (18 tests) 7620ms
+   ✓ streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn 1048ms
+   ✓ retains received text after a disconnect and retries with the same intent ID and focus 513ms
+   ✓ does not send a focus from the roadmap and shows a ratio rather than invented daily turns 443ms
+   ✓ restores a pending intent after remount and reconciles the saved result without sending a new turn 674ms
+   ✓ renames sessions and requires explicit confirmation before deleting history 856ms
+   ✓ opens a persisted artifact only from a structured event, independently of model prose 512ms
+   ✓ blocks sending while a new session is being created and then sends into that session 462ms
+   ✓ clears displayed history when the next request is denied: not_found 441ms
+   ✓ clears displayed history when the next request is denied: unauthenticated 477ms
+   ✓ keeps a completed new turn when an older history request arrives afterwards 410ms
+   ✓ keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID 500ms
+   ✓ shows the current question in conversation metadata before the next history reload 390ms
+   ✓ keeps a document hourly-limit notice after the final answer and in saved history 412ms
+stdout | src/Content.test.tsx > R7 ignores a late submission result after browser history opens another attempt
+R7_OBSERVED {"activeRoute":"/khoa-hoc/c/quiz/qa_2","heading":"Quiz ôn tập","secondQuestionVisible":true}
+
+ ✓ src/Content.test.tsx (15 tests) 3928ms
+   ✓ offers the quiz and document actions on the real roadmap 312ms
+   ✓ uses core groups independently of origin on the real module page 585ms
+   ✓ validates six modules locally, sends no request, and allows a corrected document scope 692ms
+   ✓ ignores old success submit callbacks while a new attempt is pending 424ms
+   ✓ ignores old network submit callbacks while a new attempt is pending 341ms
+stdout | src/Assistant.final-usage-race.test.tsx > review: a question submitted after final is sent while the usage refresh remains pending
+REVIEW_OBSERVATION {"usageCalls":2,"postedQuestions":[{"question":"First question","client_turn_id":"18c78e6a-b9e5-4de8-bdf5-0d7055b71a5e"},{"question":"Second question must not disappear","client_turn_id":"e9da0814-9f7c-4d61-8737-4ad07f505b98"}],"draftAfterSubmit":""}
+
+ ✓ src/Assistant.final-usage-race.test.tsx (5 tests) 3373ms
+   ✓ review: a question submitted after final is sent while the usage refresh remains pending 1200ms
+   ✓ an old usage success and finally cannot unlock or replace the next streaming turn 535ms
+   ✓ an old usage network error and finally cannot unlock or replace the next streaming turn 496ms
+   ✓ accepts the next question before old EOF and ignores a late old stream error 647ms
+   ✓ a late old usage result cannot overwrite newer usage after both answers finish 492ms
+
+ Test Files  4 passed (4)
+      Tests  46 passed (46)
+   Start at  22:10:44
+   Duration  25.33s (tests 65%, import 15%, environment 14%, setup 4%, transform 1%)
+
+    Isolate  4 workers spawned · ~1.06s startup each (spawn + environment, per file)
+             at least ~3.17s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/focused-green4.xml
