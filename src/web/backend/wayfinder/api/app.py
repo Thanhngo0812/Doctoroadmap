@@ -156,6 +156,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
         sharing_privacy = (request.url.path.startswith("/join/")
                            or request.url.path.startswith("/api/v1/join/")
                            or "/share-links" in request.url.path
+                           or "/invitations" in request.url.path
                            or request.url.path in {"/dang-nhap", "/dang-ky"})
         if recovery_page or recovery_api or sharing_privacy:
             response.headers["referrer-policy"] = "no-referrer"

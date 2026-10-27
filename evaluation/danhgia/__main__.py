@@ -14,6 +14,8 @@ from pathlib import Path
 _LENH = {
     "phieu-g3": "danhgia.phieu.lenh_g3",
     "phieu-g4": "danhgia.phieu.lenh_g4",
+    "can-khai-niem": "danhgia.can.lenh",
+    "thuoc-khai-niem": "danhgia.cham.lenh_khai_niem",
     "b5": "danhgia.xuat.b5.lenh",
     "baseline": "danhgia.xuat.baseline.lenh",
     "phat-lai": "danhgia.phat_lai.lenh",

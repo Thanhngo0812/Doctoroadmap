@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.524" timestamp="2026-10-27T11:54:49.502242+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_direct_binding_does_not_attach_unverified_or_mismatched_account" time="4.366"><failure message="AssertionError: assert [{'invitee_ac...423a10dac0')}] == [{'invitee_account_id': None}]&#10;  &#10;  At index 0 diff: {'invitee_account_id': UUID('18eb1e5e-8a85-4f14-87c5-e8423a10dac0')} != {'invitee_account_id': None}&#10;  Use -v to get more diff">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001BC4B4C...unction invited.&lt;locals&gt;.actor at 0x000001BC44E22DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000001BC6B15EB40&gt;)
+
+    def test_direct_binding_does_not_attach_unverified_or_mismatched_account(invited):
+        rt=invited
+        client=rt.user(False)
+        address=email(client)
+        identity=iid(send(rt,[address]))
+        for actor in (rt.actor(client),rt.actor(rt.outsider)):
+            rt.service.attach_verified_invitations(SimpleNamespace(id=actor.user_id))
+&gt;       assert sql(rt,'SELECT invitee_account_id FROM invitation WHERE id=:id',id=identity)==[{'invitee_account_id':None}]
+E       AssertionError: assert [{'invitee_ac...423a10dac0')}] == [{'invitee_account_id': None}]
+E
+E         At index 0 diff: {'invitee_account_id': UUID('18eb1e5e-8a85-4f14-87c5-e8423a10dac0')} != {'invitee_account_id': None}
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w12_invitations.py:194: AssertionError</failure></testcase></testsuite></testsuites>

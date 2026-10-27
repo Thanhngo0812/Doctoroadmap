@@ -1,0 +1,77 @@
+{
+  "source": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+  "configurations": 12,
+  "screens": 66,
+  "axeRuns": 66,
+  "axeViolations": 0,
+  "manualContrastSamples": 92,
+  "minManualContrast": 5.844797723334521,
+  "overflow": 0,
+  "shortTargets": 0,
+  "jsonResponses": 220,
+  "incompleteJson": 0,
+  "streams": [
+    {
+      "path": "/api/v1/courses/215ce03d-0887-47e2-b970-7750e1cb1f6d/concepts/node_9f23f5df7eb27a4bc46857c8/lecture/stream",
+      "complete": true,
+      "terminalSeen": false,
+      "bodyBytes": 13389,
+      "frames": []
+    },
+    {
+      "path": "/api/v1/courses/215ce03d-0887-47e2-b970-7750e1cb1f6d/quizzes",
+      "complete": false,
+      "terminalSeen": false,
+      "bodyBytes": 1253,
+      "frames": []
+    }
+  ],
+  "pageErrors": 0,
+  "privacyFailures": 0,
+  "pendingRejections": 0,
+  "console": {
+    "total": 135,
+    "http401": 2,
+    "csp": 132,
+    "errFailed": 1
+  },
+  "cacheGuard": {
+    "cachedLectureReady": true,
+    "coldFailure": "tran_he_thong",
+    "bankQuizUsable": true,
+    "before": {
+      "ledgerRows": 50,
+      "lectureCalls": 1,
+      "generatorCalls": 1,
+      "documentCalls": 4,
+      "assistantCalls": 0
+    },
+    "after": {
+      "ledgerRows": 50,
+      "lectureCalls": 1,
+      "generatorCalls": 1,
+      "documentCalls": 4,
+      "assistantCalls": 0
+    }
+  },
+  "limitedChat": {
+    "reachedCore": true,
+    "status": "daily_limit",
+    "replayedSameIntent": true,
+    "modelCallsUnchanged": true
+  },
+  "designFindings": [
+    {
+      "level": "WARN",
+      "id": "panel-void",
+      "width": 1280,
+      "message": "1 card(s) hold a blank band inside: 48px in \"Hôm nay đã dùng 100%\".",
+      "fix": "A card stretches to its neighbour only when it has content to fill. Keep a legend or a note directly under its chart (only an action or a total may sit at a stretched card's foot), let a short card keep its own height (align-items: start), and let a filtered block shrink to its rows."
+    }
+  ],
+  "externalSpendUsd": 0,
+  "reusedAfterMainReceive": {
+    "candidate": "8a3c262fa09962493256604f72e0882447bc803c",
+    "frontendAndBrowserHarnessDiff": ""
+  }
+}

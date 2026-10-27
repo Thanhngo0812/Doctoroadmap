@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ApiError, apiJson } from './api';
 import { useAuth } from './Auth';
+import { notifyUsageChanged } from './usage-api';
 import { createChat, sessionsPath, streamChat, turnsPath, type Answer, type ChatArtifact, type ChatSession, type ChatTurn, type GraphCards, type Intent, type Usage } from './assistant-api';
 
 export type LiveTurn = { intent: Intent; text: string; status: string; artifacts: ChatArtifact[]; cards?: GraphCards;
@@ -28,6 +29,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
     setError(problem(cause));
   }, [clearSession]);
   useEffect(() => {
+    setUsage(null);
     if (!open || !uid) return;
     const c = new AbortController(); setLoading(true); setError(null);
     const filter = all ? 'all' : moduleId ? `module:${moduleId}` : 'roadmap_page';
@@ -102,7 +104,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
         } else if (row.event === 'failure') throw new ApiError('assistant_failed', row.failure?.message ?? 'Không nhận được câu trả lời');
       });
       const amount = await apiJson<Usage>('/api/v1/me/usage', { signal: controller.signal });
-      if (!controller.signal.aborted && active.current === request) setUsage(amount);
+      if (!controller.signal.aborted && active.current === request) { setUsage(amount); notifyUsageChanged(); }
     } catch (cause) {
       if (!controller.signal.aborted && active.current === request && !request.terminal) {
         if (cause instanceof ApiError && ['not_found', 'unauthenticated'].includes(cause.code)) invalidate(cause);

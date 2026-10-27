@@ -1,5 +1,40 @@
 # WayFinder — chạy backend và frontend
 
+## Mở bản W-16 React — mức dùng
+
+Worktree: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-react, nhánh work/w16-usage-react. Bản này kế thừa W-10 và backend usage-1 đã nghiệm thu; không dùng service đang chạy từ một worktree cũ để kiểm API W-16.
+
+**PowerShell 1 — PostgreSQL và backend:**
+
+~~~powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-react
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+~~~
+
+**PowerShell 2 — frontend:**
+
+~~~powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-react
+npm.cmd --prefix src/web/frontend ci --no-audit --no-fund
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+~~~
+
+Mở **http://127.0.0.1:5173/muc-dung**, hoặc menu tài khoản → **Mức dùng**. Trang hiển thị tỷ lệ hôm nay và giờ đặt lại theo Việt Nam; quota tháng tắt sẽ ghi **Không giới hạn**. Dải hết hạn xuất hiện ở chat/thư viện; nội dung đã có và ngân hàng quiz vẫn do server kiểm, không cần worker để xem mức dùng. Không seed hoặc bật quota demo để thử trên DB phát triển.
+
+Dừng từng terminal bằng Ctrl+C. Muốn xem bản build ở cổng 8000: chạy npm.cmd --prefix src/web/frontend run build trong đúng worktree, đổi WAYFINDER_PUBLIC_BASE_URL về http://127.0.0.1:8000 rồi mở lại backend. Harness tự động trong scripts/w16_web_runtime.py dùng DB UUID riêng, fake model/Mailer/media và ledger tổng hợp; không dùng nó làm dữ liệu thật.
+
+
+
 ## Mở bản W-10 — quiz, tài liệu và thư viện
 
 Worktree: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents, nhánh work/w10-quiz-documents. Bản này kế thừa W-09 đã nghiệm thu; không dùng service đang chạy từ một worktree cũ để kiểm API W-10.

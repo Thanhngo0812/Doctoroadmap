@@ -1,0 +1,23 @@
+"""Commit only the invitation milestone source, preserving all generated/unrelated reports."""
+from pathlib import Path
+import subprocess
+
+root=Path(__file__).resolve().parents[1]
+git=lambda *args:subprocess.check_output(['git',*args],cwd=root).decode().strip()
+assert git('branch','--show-current')=='work/w12-email-invitations-backend'
+assert git('-C',str(root.parents[1]),'branch','--show-current')=='main'
+assert not git('diff','--cached','--name-only')
+paths=['src/web/backend/wayfinder/'+p for p in ('application/sharing.py','application/accounts.py',
+    'application/email_templates.py','composition.py','domain/sharing.py','api/sharing.py',
+    'infrastructure/sharing_store.py','infrastructure/sharing_schema.py','migrations/versions/w12_0008_invitations.py')]
+paths+=['src/web/backend/tests/'+p for p in ('test_w12_invitations.py','test_w11_sharing.py','test_builds_w14.py')]
+if git('diff','--name-only','--','src/web/openapi.json'):
+    paths.append('src/web/openapi.json')
+assert not git('diff','--name-only','--','src/doc2roadmap','src/web/frontend',
+    'src/web/backend/wayfinder/api/app.py','src/web/backend/wayfinder/infrastructure/learning_usage.py')
+subprocess.run(['git','add','--',*paths],cwd=root,check=True,capture_output=True)
+assert set(git('diff','--cached','--name-only').splitlines())==set(paths)
+subprocess.run(['git','diff','--cached','--check'],cwd=root,check=True)
+subprocess.run(['git','commit','-m','feat(w12): add verified email invitations with transactional limits and membership',
+    '--',*paths],cwd=root,check=True)
+print(git('rev-parse','HEAD'))

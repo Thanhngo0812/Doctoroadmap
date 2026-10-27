@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.472" timestamp="2026-10-27T11:55:34.537636+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_schema_pending_unique_hash_and_head" time="4.243"><failure message="Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000293368D...unction invited.&lt;locals&gt;.actor at 0x0000029330242DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002935656EE10&gt;)
+
+    def test_schema_pending_unique_hash_and_head(invited):
+        rt = invited
+        assert sql(rt, 'SELECT version_num FROM alembic_version') == [{'version_num': 'w12_0008'}]
+        assert set(c['name'] for c in inspect(rt.engine).get_columns('invitation')) == {
+            'id','course_id','email_normalized','invitee_account_id','invited_by','token_hash','status','expires_at','created_at','responded_at'}
+        identity = iid(send(rt))
+&gt;       with pytest.raises(IntegrityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;
+
+src\web\backend\tests\test_w12_invitations.py:377: Failed</failure></testcase></testsuite></testsuites>

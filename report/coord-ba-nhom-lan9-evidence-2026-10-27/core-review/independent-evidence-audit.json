@@ -1,0 +1,83 @@
+{
+  "reviewed_head": "f5cd20609913ac2c99b6ccb905a365275d8c13a1",
+  "source_identity_files": 17,
+  "source_bad": [],
+  "manifest_files": 383,
+  "manifest_bad": [],
+  "author_mutants": [
+    {
+      "name": "foreign-recipient",
+      "assertions": 2,
+      "setup_errors": 0
+    },
+    {
+      "name": "unverified-recipient",
+      "assertions": 2,
+      "setup_errors": 0
+    },
+    {
+      "name": "expired-equality",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "daily-owner-lock",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "course-seat-lock",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "replay-rejected",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "verify-hook-skipped",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "bind-unverified",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "dto-bypassed",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "respond-not-atomic",
+      "assertions": 1,
+      "setup_errors": 0
+    },
+    {
+      "name": "pending-unique-removed",
+      "assertions": 1,
+      "setup_errors": 0
+    }
+  ],
+  "author_sources_restored_reported": true,
+  "gates": {
+    "full-03": {
+      "failure": 0,
+      "error": 0,
+      "skipped": 2,
+      "total": 3141,
+      "passed": 3139
+    },
+    "react-01": {
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "total": 219,
+      "passed": 219
+    }
+  },
+  "copied_source_files": 280,
+  "scratch_source_bad": []
+}

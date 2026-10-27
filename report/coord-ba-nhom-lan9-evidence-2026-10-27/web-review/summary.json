@@ -1,0 +1,71 @@
+{
+  "review": "R9 React W-16 independent review",
+  "verdict": "approve",
+  "deliveryCommit": "6ee153864522eb1510e3ec88dc5e9c52e1cfe2ca",
+  "testedAuthorCommit": "012abea28a32272a91aaccfa54823037652af28a",
+  "mainPin": "e52bf4f245e9e6c0454ee83760ea4bf8ad55adff",
+  "integrationCandidateReportedByRoot": "2d36ed7b",
+  "Critical": [],
+  "Required": [],
+  "Optional": [],
+  "offlineReact": {
+    "baselineAuthorCases": 48,
+    "independentFocusCases": 2,
+    "independentEventCases": 1,
+    "baselineFailures": 0,
+    "baselineSetupErrors": 0,
+    "mutantsCaught": 5,
+    "restoredCases": 12,
+    "restoredFailures": 0,
+    "sourceRestored": true,
+    "eventProbe": "only current usage callback emits one payload-free refresh event; old callback cannot emit again",
+    "eventMutantFailure": "expected length 1, received length 2"
+  },
+  "provenance": {
+    "copiedSourceFiles": 57,
+    "copiedSourceMismatches": 0,
+    "authorEvidenceFiles": 299,
+    "authorEvidenceMismatches": 0,
+    "gateSourceFilesPerRun": 783,
+    "gateRunsAudited": 4,
+    "sourceMismatches": 0,
+    "windowsCrlfCheckoutFiles": 764,
+    "productChangesBetweenAuthorTestAndDelivery": 0,
+    "auditNativeExitCode": 0
+  },
+  "authorGatesAudited": {
+    "python": { "passed": 2824, "skipped": 1, "xfail": 1, "nativeExitCode": 0 },
+    "react": { "passed": 229, "nativeExitCode": 0 },
+    "build": { "nativeExitCode": 0 },
+    "browser": { "nativeExitCode": 0, "screens": 66, "axeViolations": 0 }
+  },
+  "wholeW16Recommendation": "accept after root integration PG/browser gates pass on final candidate",
+  "reviewerPgRun": false,
+  "reviewerNetworkTest": false,
+  "productFilesModified": false,
+  "externalCostUsd": 0,
+  "evidence": [
+    "review.md",
+    "reviewer-final-audit.json",
+    "reviewer-final-audit.exit.json",
+    "reviewer-final-audit.log",
+    "mutation-results.json",
+    "focus-mutation-proof.json",
+    "events-mutation-proof.json",
+    "usage-baseline.xml",
+    "focus-baseline.xml",
+    "events-baseline.xml",
+    "events-stale-mutant.xml",
+    "events-restored.xml"
+  ],
+  "qaJsonReview": {
+    "report": "qa-json-review.md",
+    "summary": "qa-json-summary.json",
+    "approvedCommit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+    "verdict": "approve",
+    "closedRequired": "QA-R9-JSON-1",
+    "redNativeExitCode": 1,
+    "greenNativeExitCode": 0,
+    "rootIntegrationGatesRequiredAtApprovedSha": true
+  }
+}

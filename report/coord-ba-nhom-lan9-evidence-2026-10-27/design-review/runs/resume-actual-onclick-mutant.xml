@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.608" timestamp="2026-10-27T13:39:12.094412+07:00" hostname="ADMIN"><testcase classname="tests.unit.presentation.test_tokens_and_wcag" name="test_w10_library_filters_by_group_independent_of_origin" time="0.314"><failure message="AssertionError: Expected here group ['Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước', 'Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất'], got []&#10;assert [] == ['Đề cương ôn...nút nhĩ thất']&#10;  &#10;  Right contains 2 more items, first extra item: 'Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước'&#10;  Use -v to get more diff">def test_w10_library_filters_by_group_independent_of_origin():
+        """Verify D-R6-01 &amp; D-R7-02: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin.
+        Executes actual JavaScript from the preview HTML via Node.js VM to verify behavioral correctness.
+        """
+        import subprocess
+        import json
+        from pathlib import Path
+
+        w10_html_path = Path("design/preview/w10_quiz_screens.html")
+        assert w10_html_path.exists(), "w10_quiz_screens.html must exist"
+
+        vm_script_path = Path("scripts/test_w10_library_filter_vm.cjs")
+        assert vm_script_path.exists(), "test_w10_library_filter_vm.cjs must exist"
+
+        # Execute actual filter JS extracted from preview HTML via Node VM
+        proc = subprocess.run(
+            ["node", str(vm_script_path), str(w10_html_path), "normal"],
+            capture_output=True,
+            encoding="utf-8",
+            check=True
+        )
+        res = json.loads(proc.stdout)
+
+        expected_here = [
+            "Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước",
+            "Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất"
+        ]
+        expected_elsewhere = [
+            "Tóm tắt công thức huyết động &amp; Bảng so sánh nhánh mạch vành",
+            "Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương"
+        ]
+
+&gt;       assert res["visibleHere"] == expected_here, f"Expected here group {expected_here}, got {res['visibleHere']}"
+E       AssertionError: Expected here group ['Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước', 'Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất'], got []
+E       assert [] == ['Đề cương ôn...nút nhĩ thất']
+E
+E         Right contains 2 more items, first extra item: 'Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước'
+E         Use -v to get more diff
+
+tests\unit\presentation\test_tokens_and_wcag.py:1087: AssertionError</failure></testcase></testsuite></testsuites>

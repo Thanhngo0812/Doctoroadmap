@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.927" timestamp="2026-10-27T11:53:10.708297+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_expiry_exact_boundary_and_expired_reinvite" time="4.623"><failure message="assert (200 == 410)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002916E3A...unction invited.&lt;locals&gt;.actor at 0x0000029167D72DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002910E0F6540&gt;)
+
+    def test_expiry_exact_boundary_and_expired_reinvite(invited):
+        rt = invited
+        identity = iid(send(rt))
+        rt.clock.advance(7 * 86400)
+        # Refresh login because the old session reaches the W02 idle boundary at the same instant.
+        rt.receiver.post('/api/v1/auth/login', headers={'Origin': ORIGIN}, json={'email': email_from_store(rt, rt.receiver), 'password': PASSWORD})
+        response = accept(rt.receiver, identity)
+&gt;       assert response.status_code == 410 and response.json()['error']['code'] == 'link_invalid'
+E       assert (200 == 410)
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:219: AssertionError</failure></testcase></testsuite></testsuites>

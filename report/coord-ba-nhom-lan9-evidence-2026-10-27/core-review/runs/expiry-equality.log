@@ -1,0 +1,26 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_expiry_exact_boundary_denies_without_membership _____________
+
+rt = namespace(service=<wayfinder.application.sharing.SharingService object at 0x0000020710E731A0>, port=<test_independent_...verified=True, status='active'), outsider=Actor(user_id='outsider', role='user', email_verified=True, status='active'))
+
+    def test_expiry_exact_boundary_denies_without_membership(rt):
+        identity=issue(rt);rt.clock.instant=rt.port.rows[identity].expires_at
+>       denied(lambda:rt.service.accept_invitation(rt.receiver,identity),'link_invalid')
+
+tests\test_independent_w12.py:110:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fn = <function test_expiry_exact_boundary_denies_without_membership.<locals>.<lambda> at 0x0000020710EE0040>
+code = 'link_invalid'
+
+    def denied(fn,code):
+>       with pytest.raises(WebError) as e:fn()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+
+tests\test_independent_w12.py:72: Failed
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r9-core-review-20261027\runs\expiry-equality.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_independent_w12.py::test_expiry_exact_boundary_denies_without_membership
+1 failed in 3.29s

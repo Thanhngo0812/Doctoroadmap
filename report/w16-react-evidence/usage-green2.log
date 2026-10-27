@@ -1,0 +1,180 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx src/Assistant.test.tsx src/Assistant.final-usage-race.test.tsx src/Content.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/usage-green2.xml
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90mC:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend[39m
+
+ [32m✓[39m src/Assistant.test.tsx [2m([22m[2m18 tests[22m[2m)[22m[33m 8368[2mms[22m[39m
+   [33m[2m✓[22m[39m streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn[33m 1290[2mms[22m[39m
+   [33m[2m✓[22m[39m retains received text after a disconnect and retries with the same intent ID and focus[33m 551[2mms[22m[39m
+   [33m[2m✓[22m[39m does not send a focus from the roadmap and shows a ratio rather than invented daily turns[33m 431[2mms[22m[39m
+   [33m[2m✓[22m[39m restores a pending intent after remount and reconciles the saved result without sending a new turn[33m 756[2mms[22m[39m
+   [33m[2m✓[22m[39m renames sessions and requires explicit confirmation before deleting history[33m 914[2mms[22m[39m
+   [33m[2m✓[22m[39m opens a persisted artifact only from a structured event, independently of model prose[33m 539[2mms[22m[39m
+   [33m[2m✓[22m[39m blocks sending while a new session is being created and then sends into that session[33m 495[2mms[22m[39m
+   [33m[2m✓[22m[39m clears displayed history when the next request is denied: not_found[33m 494[2mms[22m[39m
+   [33m[2m✓[22m[39m clears displayed history when the next request is denied: unauthenticated[33m 481[2mms[22m[39m
+   [33m[2m✓[22m[39m keeps a completed new turn when an older history request arrives afterwards[33m 491[2mms[22m[39m
+   [33m[2m✓[22m[39m keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID[33m 487[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the current question in conversation metadata before the next history reload[33m 413[2mms[22m[39m
+   [33m[2m✓[22m[39m keeps a document hourly-limit notice after the final answer and in saved history[33m 467[2mms[22m[39m
+[90mstdout[2m | src/Content.test.tsx[2m > [22m[2mR7 ignores a late submission result after browser history opens another attempt
+[22m[39mR7_OBSERVED {"activeRoute":"/khoa-hoc/c/quiz/qa_2","heading":"Quiz ôn tập","secondQuestionVisible":true}
+
+ [32m✓[39m src/Content.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 5010[2mms[22m[39m
+   [33m[2m✓[22m[39m offers the quiz and document actions on the real roadmap[33m 458[2mms[22m[39m
+   [33m[2m✓[22m[39m uses core groups independently of origin on the real module page[33m 541[2mms[22m[39m
+   [33m[2m✓[22m[39m keeps a selection made while quiz items stream and submits the actual shuffled option ID[33m 394[2mms[22m[39m
+   [33m[2m✓[22m[39m validates six modules locally, sends no request, and allows a corrected document scope[33m 862[2mms[22m[39m
+   [33m[2m✓[22m[39m R7 ignores a late submission result after browser history opens another attempt[33m 316[2mms[22m[39m
+   [33m[2m✓[22m[39m ignores old success submit callbacks while a new attempt is pending[33m 494[2mms[22m[39m
+   [33m[2m✓[22m[39m ignores old network submit callbacks while a new attempt is pending[33m 371[2mms[22m[39m
+   [33m[2m✓[22m[39m ignores old unauthenticated submit callbacks while a new attempt is pending[33m 358[2mms[22m[39m
+   [33m[2m✓[22m[39m ignores old not_found submit callbacks while a new attempt is pending[33m 418[2mms[22m[39m
+[90mstdout[2m | src/Assistant.final-usage-race.test.tsx[2m > [22m[2mreview: a question submitted after final is sent while the usage refresh remains pending
+[22m[39mREVIEW_OBSERVATION {"usageCalls":2,"postedQuestions":[{"question":"First question","client_turn_id":"3a733cc6-3ce9-4738-9f9e-0f9de943b533"},{"question":"Second question must not disappear","client_turn_id":"d7084b03-0e2e-4052-b0a4-ff46765d3191"}],"draftAfterSubmit":""}
+
+ [32m✓[39m src/Assistant.final-usage-race.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 4298[2mms[22m[39m
+   [33m[2m✓[22m[39m review: a question submitted after final is sent while the usage refresh remains pending[33m 1694[2mms[22m[39m
+   [33m[2m✓[22m[39m an old usage success and finally cannot unlock or replace the next streaming turn[33m 569[2mms[22m[39m
+   [33m[2m✓[22m[39m an old usage network error and finally cannot unlock or replace the next streaming turn[33m 597[2mms[22m[39m
+   [33m[2m✓[22m[39m accepts the next question before old EOF and ignores a late old stream error[33m 886[2mms[22m[39m
+   [33m[2m✓[22m[39m a late old usage result cannot overwrite newer usage after both answers finish[33m 549[2mms[22m[39m
+[90mstderr[2m | src/Usage.test.tsx[2m > [22m[2mignores a stale usage result after route change and loads the new route independently
+[22m[39mAn error occurred in the <RoadmapModules> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+[90mstderr[2m | src/Usage.test.tsx[2m > [22m[2mkeeps a persistent learner limit near document creation while saved content and quiz remain accessible
+[22m[39mAn error occurred in the <RoadmapModules> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ [31m❯[39m src/Usage.test.tsx [2m([22m[2m8 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 3167[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the API ratio 0.35 and honest state Còn nhiều[33m 331[2mms[22m[39m
+   [32m✓[39m shows the API ratio 0.85 and honest state Gần hết[32m 91[2mms[22m[39m
+   [32m✓[39m shows the API ratio 1 and honest state Đã hết[32m 60[2mms[22m[39m
+   [32m✓[39m keeps null build quota unlimited and never calls it zero remaining[32m 50[2mms[22m[39m
+   [32m✓[39m offers retry after a usage failure without inventing a zero ratio[32m 122[2mms[22m[39m
+[31m   [31m×[31m ignores a stale usage result after route change and loads the new route independently[39m[33m 1167[2mms[22m[39m
+   [32m✓[39m does not show late private usage after logout[32m 238[2mms[22m[39m
+[31m   [31m×[31m keeps a persistent learner limit near document creation while saved content and quiz remain accessible[39m[33m 1105[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/Usage.test.tsx[2m > [22mignores a stale usage result after route change and loads the new route independently
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Tài liệu đã lưu. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/Usage.test.tsx:[2m60:23[22m[39m
+    [90m 58|[39m   const user = userEvent.setup(); delay = true; page(); await waitFor(…
+    [90m 59|[39m   delay = false; value = usage(.85); await user.click(screen.getByRole…
+    [90m 60|[39m   expect(await screen.findByText('Tài liệu đã lưu')).toBeVisible();
+    [90m   |[39m                       [31m^[39m
+    [90m 61|[39m   await act(async () => { old(json(usage(1))); });
+    [90m 62|[39m   await user.click(screen.getByRole('button', { name: 'Đi mức dùng' })…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/Usage.test.tsx[2m > [22mkeeps a persistent learner limit near document creation while saved content and quiz remain accessible
+[31m[1mTestingLibraryElementError[22m: Unable to find role="region" and name "Tài liệu & Quiz"
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div />[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/Usage.test.tsx:[2m73:32[22m[39m
+    [90m 71|[39m it('keeps a persistent learner limit near document creation while save…
+    [90m 72|[39m   value = usage(1, null, true); const user = userEvent.setup(); page()…
+    [90m 73|[39m   const library = await screen.findByRole('region', { name: 'Tài liệu …
+    [90m   |[39m                                [31m^[39m
+    [90m 74|[39m   expect(await within(library).findByText(/Đã dùng hết hạn mức hôm nay…
+    [90m 75|[39m   expect(within(library).getByText(/00:00.*27\/10\/2026/)).toBeVisible…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Unhandled Errors [49m[22m[31m⎯⎯⎯⎯⎯⎯[39m
+[31m[1m
+Vitest caught 2 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.[22m[39m
+
+[31m⎯⎯⎯⎯⎯[39m[1m[41m Uncaught Exception [49m[22m[31m⎯⎯⎯⎯⎯[39m
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'map')[39m
+[36m [2m❯[22m src/Roadmap.tsx:[2m95:53[22m[39m
+    [90m 93|[39m       const panelId = `roadmap-module-${module.module_id}`;
+    [90m 94|[39m       const description = typeof module.description === 'string'
+    [90m 95|[39m         ? [module.description] : module.description.map(part => part.t…
+    [90m   |[39m                                                     [31m^[39m
+    [90m 96|[39m       return <li className="roadmap-module" key={module.module_id}>
+    [90m 97|[39m         <section className="roadmap-module__section">
+[90m [2m❯[22m RoadmapModules src/Roadmap.tsx:[2m90:22[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:[2m28571:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:[2m8030:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:[2m10569:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/react-dom/cjs/react-dom-client.development.js:[2m12205:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:[2m1048:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:[2m19176:22[22m[39m
+[90m [2m❯[22m workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:[2m19004:41[22m[39m
+
+[31mThis error originated in "[1msrc/Usage.test.tsx[22m" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.[39m
+[31mThe last test to run before this error was "[1mignores a stale usage result after route change and loads the new route independently[22m". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.[39m
+
+[31m⎯⎯⎯⎯⎯[39m[1m[41m Uncaught Exception [49m[22m[31m⎯⎯⎯⎯⎯[39m
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'map')[39m
+[36m [2m❯[22m src/Roadmap.tsx:[2m95:53[22m[39m
+    [90m 93|[39m       const panelId = `roadmap-module-${module.module_id}`;
+    [90m 94|[39m       const description = typeof module.description === 'string'
+    [90m 95|[39m         ? [module.description] : module.description.map(part => part.t…
+    [90m   |[39m                                                     [31m^[39m
+    [90m 96|[39m       return <li className="roadmap-module" key={module.module_id}>
+    [90m 97|[39m         <section className="roadmap-module__section">
+[90m [2m❯[22m RoadmapModules src/Roadmap.tsx:[2m90:22[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:[2m28571:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:[2m8030:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:[2m10569:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/react-dom/cjs/react-dom-client.development.js:[2m12205:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:[2m1048:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:[2m19176:22[22m[39m
+[90m [2m❯[22m workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:[2m19004:41[22m[39m
+
+[31mThis error originated in "[1msrc/Usage.test.tsx[22m" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.[39m
+[31mThe last test to run before this error was "[1mkeeps a persistent learner limit near document creation while saved content and quiz remain accessible[22m". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.[39m
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m44 passed[39m[22m[90m (46)[39m
+[2m     Errors [22m [1m[31m2 errors[39m[22m
+[2m   Start at [22m 22:07:33
+[2m   Duration [22m 32.94s[2m (tests 66%, environment 16%, import 13%, setup 4%, transform 2%)[22m
+
+[2m    Isolate [22m [33m4 workers spawned[39m[2m · ~1.51s startup each (spawn + environment, per file)[22m
+[2m            [22m [2mat least ~4.53s faster with [22m[33misolate: false[39m[2m — reuses workers across files instead of one per file[22m
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/usage-green2.xml

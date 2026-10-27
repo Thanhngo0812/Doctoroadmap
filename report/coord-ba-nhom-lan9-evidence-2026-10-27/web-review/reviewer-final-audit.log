@@ -1,0 +1,165 @@
+{
+  "delivery": "6ee153864522eb1510e3ec88dc5e9c52e1cfe2ca",
+  "tested": "012abea28a32272a91aaccfa54823037652af28a",
+  "mainPin": "e52bf4f245e9e6c0454ee83760ea4bf8ad55adff",
+  "productChangesAfterTest": [],
+  "copiedSource": {
+    "files": 57,
+    "bad": []
+  },
+  "authorEvidence": {
+    "files": 299,
+    "bad": []
+  },
+  "gates": [
+    {
+      "name": "gate-python-repeat",
+      "commit": "012abea28a32272a91aaccfa54823037652af28a",
+      "native": 0,
+      "files": 783,
+      "crlfCheckouts": 764,
+      "bad": []
+    },
+    {
+      "name": "gate-react-final",
+      "commit": "012abea28a32272a91aaccfa54823037652af28a",
+      "native": 0,
+      "files": 783,
+      "crlfCheckouts": 764,
+      "bad": []
+    },
+    {
+      "name": "gate-build-final",
+      "commit": "012abea28a32272a91aaccfa54823037652af28a",
+      "native": 0,
+      "files": 783,
+      "crlfCheckouts": 764,
+      "bad": []
+    },
+    {
+      "name": "browser-final-run",
+      "commit": "012abea28a32272a91aaccfa54823037652af28a",
+      "native": 0,
+      "files": 783,
+      "crlfCheckouts": 764,
+      "bad": []
+    }
+  ],
+  "tests": {
+    "usage-baseline": {
+      "native": 0,
+      "cases": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "usage-restored": {
+      "native": 0,
+      "cases": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focus-baseline": {
+      "native": 0,
+      "cases": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focus-abort-mutant": {
+      "native": 1,
+      "cases": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focus-restored": {
+      "native": 0,
+      "cases": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "max-null": {
+      "native": 1,
+      "cases": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 8
+    },
+    "limited-blocks-cache": {
+      "native": 1,
+      "cases": 19,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 18
+    },
+    "timezone-local": {
+      "native": 1,
+      "cases": 9,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 6
+    },
+    "events-baseline": {
+      "native": 0,
+      "cases": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "events-stale-mutant": {
+      "native": 1,
+      "cases": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "events-restored": {
+      "native": 0,
+      "cases": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "mutations": [
+    {
+      "label": "max-null",
+      "code": 1,
+      "before": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489",
+      "mutant": "56db79878b0ea4fd9df78ac249b056c96f8271c2d7c09d9f20fc9ec3032dd508",
+      "restored": true
+    },
+    {
+      "label": "limited-blocks-cache",
+      "code": 1,
+      "before": "95ca9d4c809c95523174cb8fca11adbaaa835f3caebe9de7fccbc09ac7a27807",
+      "mutant": "ecbddb151ea9bc668220f05fb3699d22d181625eb4924f6fc5b693cc06cabb39",
+      "restored": true
+    },
+    {
+      "label": "timezone-local",
+      "code": 1,
+      "before": "f362b3e77d8d6f3be2c62956241e648ccf3655f8b4602ccef818e8ccc5c81a63",
+      "mutant": "aada84a677491a7974d5255b5ca54deb2968979f98c4f966eeda5cda669174ea",
+      "restored": true
+    }
+  ],
+  "focusMutation": {
+    "mutantCode": 1,
+    "sourceSha256": "e61a1d61040779ddb98dfdac433b2e72c23f1e8e744726b7b50086e348b8c4d9",
+    "mutatedSha256": "066f0c2945f9a59de5f7ced117ed83a1ee7e271e651de36d5f6fcb83403fbcf2",
+    "restoredSha256": "e61a1d61040779ddb98dfdac433b2e72c23f1e8e744726b7b50086e348b8c4d9"
+  },
+  "eventMutation": {
+    "mutantCode": 1,
+    "sourceSha256": "b31014bdbaf09551d2c755085b32ba278cfd1f3097a8e6a53cbbd047f4ad1abb",
+    "mutatedSha256": "a68b65b1dfce312b054dbad31adc25e4303f3795347f2c2aa8116540fda7ffb4",
+    "restoredSha256": "b31014bdbaf09551d2c755085b32ba278cfd1f3097a8e6a53cbbd047f4ad1abb",
+    "independentProbeSha256": "d3ada334e1ff3c5c31d0529823df492a47134831dc7ba84fe40347a8d406bb04",
+    "helperProvenance": "Copied author HTTP/SSE conversation fixture only; added event-count/payload assertions independently."
+  },
+  "externalCostUsd": 0
+}
