@@ -1,0 +1,32 @@
+"""Capture native commands, source hashes and isolated zero-spend W12 outputs."""
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+from time import monotonic
+
+root = Path(__file__).resolve().parents[1]
+label, *command = sys.argv[1:]
+out = root / 'report/w12-evidence/runs'
+out.mkdir(parents=True, exist_ok=True)
+assert not (out / (label + '.log')).exists()
+names = ['src/web/backend/wayfinder/' + p for p in (
+    'application/sharing.py', 'infrastructure/sharing_store.py', 'infrastructure/sharing_schema.py',
+    'domain/sharing.py', 'api/sharing.py', 'application/accounts.py', 'composition.py',
+    'application/email_templates.py','api/app.py','infrastructure/mail.py')]
+names += ['src/web/backend/tests/test_w12_invitations.py', 'src/web/openapi.json']
+names += [p.relative_to(root).as_posix() for p in (root/'src/web/backend/wayfinder/migrations/versions').glob('w12*')]
+hashes = {p: sha256((root / p).read_bytes()).hexdigest() for p in names}
+head = subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+start = monotonic()
+result = subprocess.run(command,cwd=root,capture_output=True,encoding='utf-8',errors='replace',
+    env={**os.environ,'W12_EVIDENCE_RUN':label,'W15_EVIDENCE_RUN':'w12-'+label,'W25_EVIDENCE_RUN':'w12-'+label})
+(out/(label+'.log')).write_bytes((result.stdout+result.stderr).encode())
+record = dict(commit=head,cwd=str(root),command=command,exit_code=result.returncode,
+              seconds=round(monotonic()-start,2),source_sha256=hashes)
+(out/(label+'-exit.json')).write_bytes((json.dumps(record,indent=2)+'\n').encode())
+print(json.dumps({k:v for k,v in record.items() if k!='source_sha256'},indent=2))
+print((result.stdout+result.stderr)[-1600:])
+raise SystemExit(result.returncode)

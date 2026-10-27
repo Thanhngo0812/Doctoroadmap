@@ -1,0 +1,54 @@
+{
+  "source": "Independent SQL connection, synthetic accounts, zero external mail/provider calls",
+  "course_id": "eee2b524-30c0-40ab-b766-846607643fad",
+  "invitations": [
+    {
+      "id": "8ac73f7a-3cd6-45e4-955d-52b11e86254a",
+      "email_normalized": "d3658308cfd74419b3374f211a6ff345@example.vn",
+      "invitee_account_id": "77f499d9-8a26-4da9-a94b-4fbcada7850e",
+      "status": "pending",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": null
+    },
+    {
+      "id": "e863f859-8f7e-41e1-b695-3bc72a6f0463",
+      "email_normalized": "395bbc8035cc41f3b2811a104f6abd17@example.vn",
+      "invitee_account_id": "568f0f4b-260e-4fea-ae89-83b38a9d6e63",
+      "status": "accepted",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "membership": [
+    {
+      "account_id": "eee90011-3830-40fb-8d84-331704489f86",
+      "role": "owner",
+      "via": "owner"
+    },
+    {
+      "account_id": "568f0f4b-260e-4fea-ae89-83b38a9d6e63",
+      "role": "learner",
+      "via": "email"
+    }
+  ],
+  "audit": [
+    {
+      "action": "invitation_sent",
+      "actor_id": "eee90011-3830-40fb-8d84-331704489f86",
+      "target_id": "e863f859-8f7e-41e1-b695-3bc72a6f0463",
+      "meta": {}
+    },
+    {
+      "action": "invitation_sent",
+      "actor_id": "eee90011-3830-40fb-8d84-331704489f86",
+      "target_id": "8ac73f7a-3cd6-45e4-955d-52b11e86254a",
+      "meta": {}
+    },
+    {
+      "action": "invitation_accepted",
+      "actor_id": "568f0f4b-260e-4fea-ae89-83b38a9d6e63",
+      "target_id": "e863f859-8f7e-41e1-b695-3bc72a6f0463",
+      "meta": {}
+    }
+  ]
+}

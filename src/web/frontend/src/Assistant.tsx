@@ -5,6 +5,7 @@ import SourceViewer from './SourceViewer';
 import { useAssistant } from './useAssistant';
 import { useAssistantWidth } from './useAssistantWidth';
 import type { ChatSession } from './assistant-api';
+import { UsageLimits } from './Usage';
 import './assistant.css';
 
 const conversationTitle = (row: ChatSession) => row.title === 'Phiên học mới' && !row.turn_count ? 'Cuộc trò chuyện mới' : row.title;
@@ -67,7 +68,6 @@ export function AssistantDock({ courseId, moduleId, focusNodeId, sourcePageCount
     const question = draft.trim(); setDraft(''); await chat.send(question);
   };
   const amount = chat.usage?.learner_today;
-  const reset = amount?.resets_at ? new Date(amount.resets_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' }) : '';
   const content = <>
     <header className="learning-chat-heading"><div><h2 id={`learning-chat-title-${courseId}`}>Trợ lý học tập</h2><p>{current?.scope.kind === 'roadmap' ? 'Cả lộ trình'
       : current?.scope.module_id_at_creation && current.scope.module_id_at_creation !== moduleId ? 'Cuộc trò chuyện ở module khác'
@@ -113,7 +113,8 @@ export function AssistantDock({ courseId, moduleId, focusNodeId, sourcePageCount
       <button type="button" onClick={() => { setAction(null); more.current?.focus(); }}>Giữ cuộc trò chuyện</button>
     </div>}
     {amount && <div className={`learning-chat-usage${amount.limited ? ' is-limited' : ''}`}>
-      <p>{amount.limited ? `Đã dùng hết hạn mức hôm nay. Đặt lại lúc ${reset}.` : `Đã dùng ${Math.round(amount.used_ratio * 100)}% hạn mức hôm nay`}</p>
+      {!amount.limited && <p>Đã dùng {Math.round(amount.used_ratio * 100)}% hạn mức hôm nay</p>}
+      <UsageLimits usage={chat.usage} />
       <progress aria-label="Hạn mức học hôm nay" value={amount.used_ratio} max={1} />
     </div>}
     {chat.error && <div className="learning-chat-error"><p role="alert">{chat.error}</p><button type="button" onClick={chat.refresh}>Cập nhật trò chuyện</button></div>}
@@ -138,11 +139,11 @@ export function AssistantDock({ courseId, moduleId, focusNodeId, sourcePageCount
     <form className="learning-chat-compose" onSubmit={event => void submit(event)}>
       <label className="sr-only" htmlFor={`learning-chat-question-${courseId}`}>Câu hỏi</label>
       <textarea ref={field} id={`learning-chat-question-${courseId}`} value={draft} maxLength={4000} rows={3} placeholder="Hỏi về bài đang học…"
-        onChange={event => setDraft(event.target.value)} disabled={Boolean(chat.live?.busy) || sessionBusy || amount?.limited}
+        onChange={event => setDraft(event.target.value)} disabled={Boolean(chat.live?.busy) || sessionBusy}
         onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void submit(event); } }} />
       <div><small>Enter để gửi · Shift+Enter xuống dòng</small>
         {chat.live?.busy ? <button type="button" onClick={chat.stop}>Dừng nhận chữ</button>
-          : <button className="button button-primary" type="submit" disabled={!draft.trim() || sessionBusy || amount?.limited}>Gửi câu hỏi</button>}
+          : <button className="button button-primary" type="submit" disabled={!draft.trim() || sessionBusy}>Gửi câu hỏi</button>}
       </div>
     </form>
   </>;

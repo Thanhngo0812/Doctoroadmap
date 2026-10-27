@@ -23,6 +23,10 @@ function testHtml(htmlPath, variant) {
         });
       }
     </script>`);
+  } else if (variant === 'mutant-wiring-origin') {
+    // Mutant: change onclick markup to pass old origin parameters button/assistant instead of here/elsewhere
+    html = html.replace("filterLibrary('here', this)", "filterLibrary('button', this)");
+    html = html.replace("filterLibrary('elsewhere', this)", "filterLibrary('assistant', this)");
   }
 
   const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/i);
@@ -47,11 +51,23 @@ function testHtml(htmlPath, variant) {
     });
   }
 
-  const tabs = {
-    'all': { id: 'tab-lib-all', classList: { list: new Set(['active']), add(c) { this.list.add(c); }, remove(c) { this.list.delete(c); } } },
-    'here': { id: 'tab-lib-here', classList: { list: new Set(), add(c) { this.list.add(c); }, remove(c) { this.list.delete(c); } } },
-    'elsewhere': { id: 'tab-lib-elsewhere', classList: { list: new Set(), add(c) { this.list.add(c); }, remove(c) { this.list.delete(c); } } }
-  };
+  // Parse actual tab onclick expressions from markup
+  const tabRegex = /<button[^>]*class="[^"]*filter-tab[^"]*"[^>]*id="([^"]+)"[^>]*onclick="([^"]+)"[^>]*>/g;
+  const tabs = {};
+  let tm;
+  while ((tm = tabRegex.exec(html)) !== null) {
+    const tabId = tm[1];
+    const onclickCode = tm[2];
+    tabs[tabId] = {
+      id: tabId,
+      onclickCode: onclickCode,
+      classList: {
+        list: new Set(tabId === 'tab-lib-all' ? ['active'] : []),
+        add(c) { this.list.add(c); },
+        remove(c) { this.list.delete(c); }
+      }
+    };
+  }
 
   // Checkbox inputs for updateScopeCount
   const checkboxes = Array.from({ length: 8 }, (_, i) => ({
@@ -90,30 +106,36 @@ function testHtml(htmlPath, variant) {
   vm.createContext(sandbox);
   vm.runInContext(scriptCode, sandbox);
 
-  // 1. Test Filter Behavior
-  sandbox.filterLibrary('here', tabs['here']);
+  // Helper to execute tab's actual onclick handler from markup
+  function clickTab(tabId) {
+    const tabObj = tabs[tabId];
+    if (!tabObj) throw new Error('Tab not found: ' + tabId);
+    // Replace 'this' with the tab object in sandbox context
+    const handler = new Function('tab', `with(this) { (function() { ${tabObj.onclickCode.replace(/\bthis\b/g, 'tab')} }).call(tab); }`);
+    handler.call(sandbox, tabObj);
+  }
+
+  // 1. Test Filter Behavior via actual markup handlers
+  clickTab('tab-lib-here');
   const visibleHere = cards.filter(c => c.style.display !== 'none').map(c => c.title);
 
-  sandbox.filterLibrary('elsewhere', tabs['elsewhere']);
+  clickTab('tab-lib-elsewhere');
   const visibleElsewhere = cards.filter(c => c.style.display !== 'none').map(c => c.title);
 
-  sandbox.filterLibrary('all', tabs['all']);
+  clickTab('tab-lib-all');
   const visibleAll = cards.filter(c => c.style.display !== 'none').map(c => c.title);
 
   // 2. Test Scope Boundary Behavior: 5 -> 6 -> 5
-  // Set 5 checkboxes checked
   checkboxes.forEach((c, idx) => { c.checked = idx < 5; });
   sandbox.updateScopeCount();
   const at5_disabled = btnCreate.attributes['disabled'] === 'true';
   const at5_warning = warning.style.display === 'block';
 
-  // Set 6 checkboxes checked
   checkboxes.forEach((c, idx) => { c.checked = idx < 6; });
   sandbox.updateScopeCount();
   const at6_disabled = btnCreate.attributes['disabled'] === 'true';
   const at6_warning = warning.style.display === 'block';
 
-  // Return to 5 checkboxes checked
   checkboxes.forEach((c, idx) => { c.checked = idx < 5; });
   sandbox.updateScopeCount();
   const back5_disabled = btnCreate.attributes['disabled'] === 'true';

@@ -1,0 +1,143 @@
+{
+  "source": "012abea28a32272a91aaccfa54823037652af28a",
+  "readOnlyReview": "luna_media, source/product review w10_review",
+  "files": [
+    {
+      "path": "scripts/w16_web_check.cjs",
+      "sha256": "7bfd29a47367f007a40e9f31f66e57edeaf04d11bfeedc303d5e120a8c161f5b"
+    },
+    {
+      "path": "scripts/w16_web_runtime.py",
+      "sha256": "1a0b0fc131c99ba377c615c0a7daf22a616658d54e515db6c6310111520b9a82"
+    },
+    {
+      "path": "src/web/frontend/src/Usage.tsx",
+      "sha256": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489"
+    },
+    {
+      "path": "src/web/frontend/src/usage.css",
+      "sha256": "065fb591f1289141cf054767fdf3552ae35f2a5020ac4ff1d56ec9803069b095"
+    },
+    {
+      "path": "src/web/frontend/src/useUsage.ts",
+      "sha256": "e61a1d61040779ddb98dfdac433b2e72c23f1e8e744726b7b50086e348b8c4d9"
+    },
+    {
+      "path": "src/web/frontend/src/usage-api.ts",
+      "sha256": "f362b3e77d8d6f3be2c62956241e648ccf3655f8b4602ccef818e8ccc5c81a63"
+    },
+    {
+      "path": "design/tokens/tokens.css",
+      "sha256": "d1efab8bae8f72344bb9e4b29697bc150b53bf098543e4b96e50b7357761b590"
+    },
+    {
+      "path": "design/preview/w09_chat_screens.html",
+      "sha256": "9435b06f8e8cbdf67f13f4323cdbaca0d73062db7d8dac9327864416e8441f17"
+    },
+    {
+      "path": "design/preview/w10_quiz_screens.html",
+      "sha256": "f2dea29c39708a24cf72e4617731e8d7dea588d4d2d6fc2aa75c4087d89ca989"
+    }
+  ],
+  "screensReviewed": [
+    {
+      "path": "browser-final/usage-35-390-light.png",
+      "sha256": "893a6c19361136157d515fc2e0374e2c1a0af4181a4746985e6c965c994bd97c"
+    },
+    {
+      "path": "browser-final/usage-85-768-dark.png",
+      "sha256": "35da10dff9bf12c2a61bc6fb3c0377d77d1e4056d381ebe64b8083afcf3dc6e8"
+    },
+    {
+      "path": "browser-final/chat-limit-390-dark-reduced.png",
+      "sha256": "75366e793984a74656dc66198e22ddb9a32a96ed6af73a6b518cff88c265ee56"
+    },
+    {
+      "path": "browser-final/usage-35-1280-light.png",
+      "sha256": "838519ab88696256c71dee6ea8d9b8bc0c378dc74553eab0cb2ed36b602759db"
+    },
+    {
+      "path": "browser-final/usage-100-1280-light.png",
+      "sha256": "2ef4d97e8a26c217f7c6d83304bb8755ecdff1596253cf06a9fb7e0ac1504795"
+    },
+    {
+      "path": "browser-final/document-limit-1280-light.png",
+      "sha256": "3f67a63be3a5c64d297f96ae347a4d3971bdcc36558e2222e68842cde0b5d413"
+    }
+  ],
+  "notes": [
+    "Không có Required bố cục trong các ảnh đã mở.",
+    "Ảnh 35%/390/sáng thường thiếu back link so với các ảnh cùng cỡ/trạng thái khác; ghi nhận lệch vị trí cuộn/capture, không tuyên bố đã sửa sản phẩm.",
+    "Taste WARN panel-void 48px ở hàng 100%/1280 do hai khối canh hàng; được giữ rõ, không xoá cảnh báo.",
+    "Reduced-motion chỉ được chứng minh computed transitionDuration của usage-ring-value trong 18 trạng thái reduced, không dùng ảnh làm bằng chứng animation."
+  ],
+  "audit": {
+    "configurations": [
+      {
+        "width": 390,
+        "theme": "light",
+        "reduced": false
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "reduced": true
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "reduced": false
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "reduced": true
+      },
+      {
+        "width": 768,
+        "theme": "light",
+        "reduced": false
+      },
+      {
+        "width": 768,
+        "theme": "light",
+        "reduced": true
+      },
+      {
+        "width": 768,
+        "theme": "dark",
+        "reduced": false
+      },
+      {
+        "width": 768,
+        "theme": "dark",
+        "reduced": true
+      },
+      {
+        "width": 1280,
+        "theme": "light",
+        "reduced": false
+      },
+      {
+        "width": 1280,
+        "theme": "light",
+        "reduced": true
+      },
+      {
+        "width": 1280,
+        "theme": "dark",
+        "reduced": false
+      },
+      {
+        "width": 1280,
+        "theme": "dark",
+        "reduced": true
+      }
+    ],
+    "axeRuns": 66,
+    "axeViolations": 0,
+    "reducedScreens": 36,
+    "temporaryDatabaseRemoved": true,
+    "serverThreadStopped": true
+  }
+}

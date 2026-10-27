@@ -1,0 +1,237 @@
+{
+  "candidate": "8a3c262fa09962493256604f72e0882447bc803c",
+  "main_received": "95827530da45194c353fd0bebffe6bbcb74b03ce",
+  "current_main": "95827530da45194c353fd0bebffe6bbcb74b03ce",
+  "gates": {
+    "full-final": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/coord-r9-full-final",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-tools-20261027\\runs\\full-final.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-acceptance-20261027",
+        "commit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+        "native_exit_code": 0,
+        "elapsed_seconds": 900.89
+      },
+      "tests": 3195,
+      "passed": 3193,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "message": {
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          }
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "message": {
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        }
+      ]
+    },
+    "react-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "test",
+          "--",
+          "--pool=threads",
+          "--maxWorkers=1",
+          "--reporter=default",
+          "--reporter=junit",
+          "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r9-tools-20261027/runs/react-final.xml"
+        ],
+        "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r9-acceptance-20261027",
+        "commit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+        "native_exit_code": 0,
+        "elapsed_seconds": 199.91
+      },
+      "tests": 229,
+      "passed": 229,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    },
+    "build-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "run",
+          "build"
+        ],
+        "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r9-acceptance-20261027",
+        "commit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+        "native_exit_code": 0,
+        "elapsed_seconds": 5.81
+      }
+    },
+    "browser-final": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w16_web_runtime.py"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-acceptance-20261027",
+        "commit": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+        "native_exit_code": 0,
+        "elapsed_seconds": 209.34
+      }
+    },
+    "full-rebased": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/coord-r9-full-rebased",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-tools-20261027\\runs\\full-rebased.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-acceptance-20261027",
+        "commit": "8a3c262fa09962493256604f72e0882447bc803c",
+        "native_exit_code": 0,
+        "elapsed_seconds": 1414.44
+      },
+      "tests": 3411,
+      "passed": 3407,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+          "message": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+          "message": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "message": {
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          }
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "message": {
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        }
+      ]
+    },
+    "react-rebased": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "test",
+          "--",
+          "--pool=threads",
+          "--maxWorkers=1",
+          "--reporter=default",
+          "--reporter=junit",
+          "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-tools-20261027\\runs\\react-rebased.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-acceptance-20261027",
+        "commit": "8a3c262fa09962493256604f72e0882447bc803c",
+        "native_exit_code": 0,
+        "elapsed_seconds": 345.16
+      },
+      "tests": 229,
+      "passed": 229,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    },
+    "build-rebased": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r9-acceptance-20261027",
+        "commit": "8a3c262fa09962493256604f72e0882447bc803c",
+        "native_exit_code": 0,
+        "elapsed_seconds": 10.56
+      }
+    }
+  },
+  "browser_reused_source": "b0d7677b5a62aa5d88507862293476f7f1f41a4e",
+  "browser_reuse_web_tree_identical": true,
+  "browser_final_database_absent": true,
+  "interrupted_uuid_retained": true,
+  "interrupted_uuid": "wayfinder_w16_ea97feb131fd4688b60ae0a216f91c6e",
+  "browser_port_closed": true,
+  "protected_files": [
+    {
+      "path": "report/ke-hoach-danh-gia-pha-a-2026-10-26.md",
+      "before": "8614186e8ff0874a90fa23ff418bf1ee10d166a339f8c411e813fee21e34e1f5",
+      "now": "8614186e8ff0874a90fa23ff418bf1ee10d166a339f8c411e813fee21e34e1f5"
+    },
+    {
+      "path": "report/ket-qua-v3-05b-09b-11b-vertex-2026-09-28.md",
+      "before": "6282fd1b3a0fe36bb9af798bf5e8f7840288dbbae577ef1217d93338dae0408d",
+      "now": "6282fd1b3a0fe36bb9af798bf5e8f7840288dbbae577ef1217d93338dae0408d"
+    },
+    {
+      "path": "scripts/thu-vertex/chi_thu_credit.py",
+      "before": "3251435d1ce2bba853f2b05d6ce6bf2319bb749ec6d71cee832bdc9bb779bf24",
+      "now": "3251435d1ce2bba853f2b05d6ce6bf2319bb749ec6d71cee832bdc9bb779bf24"
+    },
+    {
+      "path": "scripts/thu-vertex/goi_thu_vertex.py",
+      "before": "a0ad941a13d1af58d4380aee4fc96e7da5a460a9c21a07b402730832de185894",
+      "now": "a0ad941a13d1af58d4380aee4fc96e7da5a460a9c21a07b402730832de185894"
+    },
+    {
+      "path": "scripts/thu-vertex/so_embedding.py",
+      "before": "9567ff6f9ab96a0dff7ac4ad8d91ef22a2627e7262a969d03d33c39e7338172b",
+      "now": "9567ff6f9ab96a0dff7ac4ad8d91ef22a2627e7262a969d03d33c39e7338172b"
+    },
+    {
+      "path": "task/sau-a10/19-dac-ta-bo-cau-hoi-thu.md",
+      "before": "028597e25ee3be12dd8dc0bd172cc15e8a7df1708889d329fb75a220b6493d05",
+      "now": "028597e25ee3be12dd8dc0bd172cc15e8a7df1708889d329fb75a220b6493d05"
+    },
+    {
+      "path": "task/v3-lo-trinh-doc-duoc/19-goi-mo-hinh-qua-vertex.md",
+      "before": "51d3030ba10ee1eabe15715f849b55b0062b6adb80af8489c467f80eb084d399",
+      "now": "51d3030ba10ee1eabe15715f849b55b0062b6adb80af8489c467f80eb084d399"
+    },
+    {
+      "path": "uv.lock",
+      "before": "df8e14355c5ba72ab0a553fc8df5fa63f4379247b5c71e6531bb66b280cbb8a2",
+      "now": "df8e14355c5ba72ab0a553fc8df5fa63f4379247b5c71e6531bb66b280cbb8a2"
+    }
+  ],
+  "new_external_spend_usd": 0,
+  "provider_note": "Scripted providers, FakeMailer and local media; ledger dollar figures are synthetic."
+}

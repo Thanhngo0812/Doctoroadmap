@@ -1,0 +1,65 @@
+{
+  "source": "Independent SQL connection, synthetic accounts, zero external mail/provider calls",
+  "course_id": "b28d7668-a0bc-4f99-8953-029a666f525f",
+  "invitations": [
+    {
+      "id": "86f1e442-d9f4-4d0e-9d88-38ae6924b466",
+      "email_normalized": "57be0c7166724ff7b0d5ed5a8b03fea2@example.vn",
+      "invitee_account_id": "82519e2d-c43e-4ea0-8470-0da4508df256",
+      "status": "accepted",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    },
+    {
+      "id": "ee46a514-cc02-4f7b-8107-04016f8fcc6d",
+      "email_normalized": "4000f48c10cf4fa58e76af8bd92b386a@example.vn",
+      "invitee_account_id": "ae81a4d8-a994-4dfc-ad0f-dd0e4e9e0016",
+      "status": "accepted",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "membership": [
+    {
+      "account_id": "9cfeba76-792a-4e3f-a773-1655f60be99a",
+      "role": "owner",
+      "via": "owner"
+    },
+    {
+      "account_id": "82519e2d-c43e-4ea0-8470-0da4508df256",
+      "role": "learner",
+      "via": "email"
+    },
+    {
+      "account_id": "ae81a4d8-a994-4dfc-ad0f-dd0e4e9e0016",
+      "role": "learner",
+      "via": "email"
+    }
+  ],
+  "audit": [
+    {
+      "action": "invitation_sent",
+      "actor_id": "9cfeba76-792a-4e3f-a773-1655f60be99a",
+      "target_id": "ee46a514-cc02-4f7b-8107-04016f8fcc6d",
+      "meta": {}
+    },
+    {
+      "action": "invitation_sent",
+      "actor_id": "9cfeba76-792a-4e3f-a773-1655f60be99a",
+      "target_id": "86f1e442-d9f4-4d0e-9d88-38ae6924b466",
+      "meta": {}
+    },
+    {
+      "action": "invitation_accepted",
+      "actor_id": "82519e2d-c43e-4ea0-8470-0da4508df256",
+      "target_id": "86f1e442-d9f4-4d0e-9d88-38ae6924b466",
+      "meta": {}
+    },
+    {
+      "action": "invitation_accepted",
+      "actor_id": "ae81a4d8-a994-4dfc-ad0f-dd0e4e9e0016",
+      "target_id": "ee46a514-cc02-4f7b-8107-04016f8fcc6d",
+      "meta": {}
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "label": "usage-green1",
+  "pid": 6428,
+  "args": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "src/Usage.test.tsx",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=../../../report/w16-react-evidence/usage-green1.xml"
+  ],
+  "status": "complete",
+  "source": "5da43a4226cdc0e88e4313ba5dea87ff2fb65894",
+  "native": 1
+}

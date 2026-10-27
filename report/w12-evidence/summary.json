@@ -1,0 +1,109 @@
+{
+  "source_commit": "bea0f9b59a6925cd779da2f5be60204bf78def08",
+  "integration_fix_commit": "ad7b9fe9d5207321bce8410a698a16456f288d92",
+  "initial_source_commit": "f2c662d9374f327a73134733df935cdc31920764",
+  "head_tested": "c6a6ae5de7206633770582b318ffa14d0c5f85c2",
+  "main_received": "c958b89af8980e3bd7f29dc3f227cb1d1e45d0f1",
+  "main_observed_at_handoff": "a3a20b73ae2d1bdb1108b1b77fe9a00fb2f5c165",
+  "owner_approved_pinned_handoff": true,
+  "owner_decision": "Cho bàn giao W-12 trên HEAD đã pin; điều phối đồng bộ main và chạy cổng trước ghép (đề xuất)",
+  "coordinator_must_receive_latest_main_and_run_gates_before_merge": true,
+  "migration": {
+    "head": "w12_0008",
+    "down_revision": "w11_0007",
+    "new_migrations": 1
+  },
+  "gates": {
+    "full-03": {
+      "commit": "c6a6ae5de7206633770582b318ffa14d0c5f85c2",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w12-email-invitations-backend",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w12-full-03",
+        "--junitxml=report/w12-evidence/runs/full-03.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 1128.78,
+      "passed": 3139,
+      "skipped_or_xfailed": [
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "classname": "tests.unit.application.test_phase_b_sa55_runner",
+          "reason": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "classname": "src.web.backend.tests.test_media_store",
+          "reason": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+        }
+      ]
+    },
+    "react-01": {
+      "commit": "c6a6ae5de7206633770582b318ffa14d0c5f85c2",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w12-email-invitations-backend",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-email-invitations-backend/report/w12-evidence/runs/react-01.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 160.11,
+      "passed": 219,
+      "skipped_or_xfailed": []
+    },
+    "build-01": {
+      "commit": "c6a6ae5de7206633770582b318ffa14d0c5f85c2",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w12-email-invitations-backend",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "seconds": 6.89
+    }
+  },
+  "baseline_red": {
+    "failed": 17,
+    "setup_errors": 0
+  },
+  "focused_passed": 24,
+  "integration_regression_passed": 81,
+  "w12_cases": 27,
+  "privacy_regression_passed": 71,
+  "mail_privacy_regression_passed": 54,
+  "prior_regression_passed": 105,
+  "mutants_caught": 11,
+  "sources_restored": true,
+  "external_calls": 0,
+  "actual_provider_spend_usd": 0,
+  "mail_delivery_is_fake": true,
+  "real_email_delivery_verified": false,
+  "token_fragment_owner_approved": true,
+  "openapi": {
+    "previous_operations": 54,
+    "new_operations": 6,
+    "total": 60,
+    "generated_after_merge": true
+  },
+  "core_changed": false,
+  "frontend_changed": false,
+  "transport_changed": false,
+  "ledger_changed": false,
+  "backend_milestone_ready_for_review": true,
+  "w12_complete": false,
+  "merged_main": false
+}

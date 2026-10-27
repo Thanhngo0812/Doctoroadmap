@@ -234,7 +234,7 @@ Chỉ số chính dùng mức nghiêm.
 | A2 | recall `noi_dung` | tỉ lệ mục, và tỉ lệ ký tự, mà G2 gán `noi_dung` được hệ cũng gán `noi_dung` | macro-F1 sáu vai trò; ma trận nhầm lẫn; **lỗi có hại**: tỉ lệ khái niệm G3 có câu định nghĩa nằm trong mục hệ gán khác `noi_dung` |
 | A3 | độ phủ khái niệm | tỉ lệ khái niệm G3 trạng thái dạy ở đây hoặc qua ví dụ có node máy căn `khop` | độ chính xác theo G5(a); khái niệm bịa |
 | A4 | tỉ lệ tách, tỉ lệ gộp nhầm | tách: khái niệm vàng căn `khop` với ≥ 2 node trong dãy học; gộp nhầm: node căn `khop` với ≥ 2 khái niệm vàng | P/R kiểu B-cubed trên khái niệm căn được |
-| A5 | câu neo đúng | node căn `khop` có câu neo trùng câu định nghĩa vàng (đúng câu); cùng chunk thì tính ở mức nới | trạng thái dạy: độ chính xác trên phần không `uncertain` và độ phủ; ma trận nhầm lẫn (ánh xạ sáu giá trị máy sang bốn giá trị vàng ghi trong giao thức) |
+| A5 | câu neo đúng | node căn `khop` có câu neo trùng câu định nghĩa vàng (đúng câu); thước phụ "cùng trang" thay cho "cùng chunk", vì vàng không mang khoảng chunk (DG-10) | trạng thái dạy: độ chính xác trên phần không `uncertain` và độ phủ; ma trận nhầm lẫn (ánh xạ sáu giá trị máy sang bốn giá trị vàng ghi trong giao thức) |
 | A6/A7 | trần ứng viên | tỉ lệ cạnh G4 (hai đầu căn được) có cặp nằm trong tập cặp pass phụ đã xét, hoặc nguồn nằm trong cửa sổ định nghĩa của đích | — |
 | A8 | F1 quan hệ | P/R/F1 cạnh trực tiếp, sau khi ánh xạ cạnh máy qua bảng căn; phạm vi: cạnh G4 "văn bản thể hiện" có đích trong chương bốc; cạnh máy có đích căn vào đích vàng trong phạm vi | P/R bao đóng; precision hiệu chỉnh theo G5(b); máy so với **từng** sinh viên; pass phụ: PR-AUC trên phân phối cặp ứng viên thật |
 | A9/A10 | Q6 | (cạnh vàng bị đặt ngược, hoặc có đầu không có trong dãy học) / tổng cạnh vàng trong phạm vi | Q7, Q7b; số chu trình (phải 0), số thành phần liên thông; τ so mục lục (chẩn đoán); rubric và so sánh cặp G5(c) |
@@ -304,7 +304,7 @@ Bảng dưới liệt kê mọi hệ, cách chạy và chi phí:
 | bỏ cạnh pass phụ | phát lại A9 → A10 chỉ với cạnh pass chính | 0 |
 | tắt A2, tắt lọc A5 | chỉ khi lịch còn chỗ; chạy lại từ khâu tương ứng | có |
 | logistic thay LightGBM | A1: chạy lại bộ đọc nhẹ với mô hình logistic (không LLM), chấm G1; A8 pass phụ: chấm lại cặp ứng viên rồi phát lại A9 → A10, chấm G4 (Q40, DG-20) | 0 |
-| cross-encoder pass phụ | XLM-R chấm lại cặp ứng viên pass phụ trên CPU, rồi phát lại A9 → A10 (Q40, DG-20) | 0 |
+| cross-encoder pass phụ | multilingual-e5-base chấm lại cặp ứng viên pass phụ trên CPU, rồi phát lại A9 → A10 (Q40, DG-20) | 0 |
 | oracle A8 | kho khái niệm G3 dựng thành canonical (câu neo gắn vào chunk chứa câu định nghĩa), chạy A6 → A10 | có, nhỏ |
 | oracle A10 | cạnh G4 vào thẳng hàm dãy học của A10, trên node của hệ chính | 0 |
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.931" timestamp="2026-10-27T11:55:18.698051+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pg_rollback_on_audit_failure[accept]" time="4.428"><failure message="AssertionError: assert [{'course_id'.../UTC')), ...}] == [{'course_id'.../UTC')), ...}]&#10;  &#10;  At index 0 diff: {'id': UUID('3d12dce9-4722-46b8-9496-4e3b666f3655'), 'course_id': UUID('107ad800-2aed-4d63-9af0-7df07b1aec18'), 'email_normalized': '4254776fc81e4ea68f1393599c99200d@example.vn', 'invitee_account_id': UUID('3123ed45-ceea-4cfd-bf9f-a50ccf8c162a'), 'invited_by': UUID('0a1854b6-d2b1-4e9a-a4cd-181310664001'), 'token_hash': b'R\x8f\xcd\xe3\x03\xac\xd0v\xbaMG\xa9_\xad\x18\x06\xf3(\xb1\xa2?d\xba\xeb\x84\xcd\xc8\xcet\x1e&amp;\x1a', 'status': 'accepted', 'expires_at': datetime.datetime(2026, 1, 8, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'created_at': datetim...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001B12F49...unction invited.&lt;locals&gt;.actor at 0x000001B128E12DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000001B14F1365D0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B12F447920&gt;
+operation = 'accept'
+
+    @pytest.mark.parametrize('operation', ['invite', 'accept', 'decline', 'cancel'])
+    def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
+        rt = invited
+        identity = iid(send(rt)) if operation != 'invite' else None
+        before = sql(rt, 'SELECT * FROM invitation WHERE course_id=:cid', cid=rt.course.id) if identity else []
+        mail_count = len(rt.mailer.messages)
+        def fail(_):
+            raise RuntimeError('synthetic audit write failure')
+        monkeypatch.setattr(rt.service.store, 'append_audit', fail)
+        with pytest.raises(RuntimeError, match='synthetic audit write failure'):
+            if operation == 'invite':
+                rt.service.invite_by_email(rt.actor(rt.owner), rt.course.id, [email(rt.receiver)])
+            elif operation == 'accept':
+                rt.service.accept_invitation(rt.actor(rt.receiver), identity)
+            elif operation == 'decline':
+                rt.service.decline_invitation(rt.actor(rt.receiver), identity)
+            else:
+                rt.service.cancel_invitation(rt.actor(rt.owner), rt.course.id, identity)
+&gt;       assert sql(rt, 'SELECT * FROM invitation WHERE course_id=:cid', cid=rt.course.id) == before
+E       AssertionError: assert [{'course_id'.../UTC')), ...}] == [{'course_id'.../UTC')), ...}]
+E
+E         At index 0 diff: {'id': UUID('3d12dce9-4722-46b8-9496-4e3b666f3655'), 'course_id': UUID('107ad800-2aed-4d63-9af0-7df07b1aec18'), 'email_normalized': '4254776fc81e4ea68f1393599c99200d@example.vn', 'invitee_account_id': UUID('3123ed45-ceea-4cfd-bf9f-a50ccf8c162a'), 'invited_by': UUID('0a1854b6-d2b1-4e9a-a4cd-181310664001'), 'token_hash': b'R\x8f\xcd\xe3\x03\xac\xd0v\xbaMG\xa9_\xad\x18\x06\xf3(\xb1\xa2?d\xba\xeb\x84\xcd\xc8\xcet\x1e&amp;\x1a', 'status': 'accepted', 'expires_at': datetime.datetime(2026, 1, 8, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'created_at': datetim...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+src\web\backend\tests\test_w12_invitations.py:366: AssertionError</failure></testcase></testsuite></testsuites>

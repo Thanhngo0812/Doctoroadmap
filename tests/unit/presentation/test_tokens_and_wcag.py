@@ -1096,8 +1096,11 @@ def test_w10_library_filters_by_group_independent_of_origin():
 
 
 def test_falsifiable_library_origin_group_conflation_fails():
-    """Falsifiable test: prove that executing the inverted comparison or old origin filter
-    against actual crossed fixtures FAILS observable title assertions in the VM runtime.
+    """Falsifiable test (D-R7-02 & D-R8-02): prove that:
+    1. Inverted condition (cardGroup !== group),
+    2. Old origin filter conflating origin with group, and
+    3. Markup wiring mutants (changing tab onclick parameters from here/elsewhere to button/assistant)
+    all FAIL observable title assertions when executed against actual crossed fixtures in the VM runtime.
     """
     import subprocess
     import json
@@ -1140,6 +1143,20 @@ def test_falsifiable_library_origin_group_conflation_fails():
         assert res_old["visibleHere"] == expected_here, "Old origin filter must NOT match expected here group"
     with pytest.raises(AssertionError):
         assert res_old["visibleElsewhere"] == expected_elsewhere, "Old origin filter must NOT match expected elsewhere group"
+
+    # 3. Mutant (D-R8-02): Wiring mutant in markup onclick handler
+    proc_wiring = subprocess.run(
+        ["node", str(vm_script_path), str(w10_html_path), "mutant-wiring-origin"],
+        capture_output=True,
+        encoding="utf-8",
+        check=True
+    )
+    res_wiring = json.loads(proc_wiring.stdout)
+    with pytest.raises(AssertionError):
+        assert res_wiring["visibleHere"] == expected_here, "Wiring mutant (button/assistant) must NOT match expected here group"
+    with pytest.raises(AssertionError):
+        assert res_wiring["visibleElsewhere"] == expected_elsewhere, "Wiring mutant (button/assistant) must NOT match expected elsewhere group"
+
 
 
 

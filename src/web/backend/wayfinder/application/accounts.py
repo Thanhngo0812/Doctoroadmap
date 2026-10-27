@@ -8,7 +8,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from datetime import datetime, timedelta
 from math import ceil
-from typing import Literal
+from typing import Callable, Literal
 from uuid import uuid4
 
 from doc2roadmap.application.ports.phase_b import ClockPort
@@ -86,6 +86,14 @@ _EMAIL_RE = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+\Z")
 logger = logging.getLogger(__name__)
 
 
+def normalize_email(email: str) -> str:
+    normalized = email.strip().lower() if isinstance(email, str) else ""
+    if len(normalized) > 254 or not _EMAIL_RE.fullmatch(normalized):
+        raise AuthError("validation", "Địa chỉ email không hợp lệ.", fields=[
+            {"loc": "email", "message": "Địa chỉ email không hợp lệ."}])
+    return normalized
+
+
 class AccountService:
     def __init__(self, store: AuthStore, hasher: PasswordHasher, clock: ClockPort, policy: AuthPolicy,
                  common_passwords: frozenset[str], *, mailer: Mailer | None = None) -> None:
@@ -95,6 +103,7 @@ class AccountService:
         self.policy = policy
         self.common_passwords = frozenset(password.casefold() for password in common_passwords)
         self.mailer = mailer
+        self.on_email_verified: Callable[[Account], None] | None = None
 
     def register(self, email: str, password: str, display_name: str, *, ip: str | None,
                  user_agent: str | None) -> RegistrationResult:
@@ -157,6 +166,8 @@ class AccountService:
         if pending is not None:
             raise pending
         assert verified is not None
+        if self.on_email_verified is not None:
+            self.on_email_verified(verified)
         return verified
 
     def resend_verification(self, account_id: str, *, ip: str | None = None) -> str:
@@ -404,8 +415,10 @@ class AccountService:
         original = email.strip() if isinstance(email, str) else ""
         normalized = original.lower()
         errors: list[dict[str, str]] = []
-        if len(normalized) > 254 or not _EMAIL_RE.fullmatch(normalized):
-            errors.append({"loc": "email", "message": "Địa chỉ email không hợp lệ."})
+        try:
+            normalized = normalize_email(email)
+        except AuthError as exc:
+            errors.extend(exc.fields or [])
         try:
             self._validate_password(password)
         except AuthError as exc:

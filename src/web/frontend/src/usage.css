@@ -1,0 +1,42 @@
+.usage-page { max-width: 1040px; margin: 0 auto; padding-block: var(--space-6) var(--space-10); }
+.usage-back { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-primary); }
+.usage-heading { margin-block: var(--space-6) var(--space-8); }
+.usage-heading h1 { font-size: var(--text-h1); line-height: var(--line-h1); margin: 0 0 var(--space-2); }
+.usage-heading p, .usage-today-copy > p, .usage-builds > p, .usage-continue p { color: var(--color-text-muted); }
+.usage-heading p { margin: 0; }
+.usage-overview { display: grid; grid-template-columns: 1.7fr 1fr; border-block: 1px solid var(--color-border); }
+.usage-today { display: flex; align-items: center; gap: var(--space-6); padding: var(--space-8) var(--space-6) var(--space-8) 0; }
+.usage-ring { position: relative; width: 148px; height: 148px; flex: 0 0 148px; }
+.usage-ring svg { display: block; width: 100%; transform: rotate(-90deg); fill: none; stroke-width: 7px; }
+.usage-ring-track { stroke: var(--color-border); }
+.usage-ring-value { stroke: var(--color-primary); stroke-dasharray: var(--usage-ratio) 1; stroke-linecap: round; transition: stroke-dasharray var(--motion-base) var(--motion-ease); }
+.usage-ring > span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.usage-ring small { font-size: var(--text-body); margin-left: 2px; }
+.usage-today h2, .usage-builds h2, .usage-continue h2 { margin: 0 0 var(--space-3); font-size: var(--text-h3); line-height: var(--line-h3); }
+.usage-today-copy > .usage-state { color: var(--color-primary); font-weight: 600; margin: 0 0 var(--space-2); }
+.usage-today[data-level='Gần hết'] .usage-state, .usage-today[data-level='Đã hết'] .usage-state { color: var(--color-text); }
+.usage-reset { font-size: var(--text-small); line-height: var(--line-small); margin-top: var(--space-5); }
+.usage-reset time { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.usage-reset small { display: block; font-size: inherit; margin-top: var(--space-1); }
+.usage-builds { border-left: 1px solid var(--color-border); padding: var(--space-8) 0 var(--space-8) var(--space-6); }
+.usage-build-number { display: block; font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.4; margin-top: var(--space-5); }
+.usage-build-number small { font-size: var(--text-body); color: var(--color-text-muted); font-weight: 400; }
+.usage-limit { padding: var(--space-3) var(--space-4); background: var(--color-accent-tint); border-left: 3px solid var(--color-accent); font-size: var(--text-small); line-height: var(--line-small); overflow-wrap: anywhere; }
+.usage-limit strong, .usage-limit span { display: block; }
+.usage-limit span { margin-top: var(--space-1); }
+.usage-page > .usage-limit { margin-top: var(--space-6); }
+.usage-continue { max-width: 720px; margin-top: var(--space-8); }
+.usage-continue .button { margin-top: var(--space-2); }
+.content-library > .usage-limit { margin-block: var(--space-3); }
+.content-dialog .usage-limit { margin-bottom: var(--space-4); }
+.learning-chat-usage .usage-limit { margin: var(--space-2) calc(-1 * var(--space-4)) calc(-1 * var(--space-2)); }
+@media (max-width: 767px) {
+  .usage-overview { grid-template-columns: 1fr; }
+  .usage-today { flex-direction: column; align-items: flex-start; padding: var(--space-6) 0; }
+  .usage-ring { width: 124px; height: 124px; flex-basis: 124px; }
+  .usage-builds { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-6) 0; }
+  .usage-heading { margin-block: var(--space-4) var(--space-6); }
+}
+@media (prefers-reduced-motion: reduce) { .usage-ring-value { transition: none; } }
+
+.usage-today progress { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -1,0 +1,63 @@
+F...                                                                     [100%]
+================================== FAILURES ===================================
+__________ test_two_runtimes_race_on_last_mail_or_course_seat[mail] ___________
+
+invited = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C5D6D4...unction invited.<locals>.actor at 0x000001C5F693F740>, app=<fastapi.applications.FastAPI object at 0x000001C5F662EF00>)
+race = 'mail'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        other_course = rt.services.courses.create_course(actor, doc_id='race-'+uuid4().hex,
+            title='Khoá thứ hai cùng chủ', graph_version=1, module_count=1) if race=='mail' else rt.course
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+        identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+        barrier = Barrier(2)
+        def work(index):
+            engine = create_database_engine(rt.settings.database_url)
+            try:
+                service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                # Enlarge the real read→write race window; correct locks serialize these reads.
+                original = service.store.invitation_send_count if race=='mail' else service.store.member_count
+                def delayed_read(*args):
+                    result = original(*args)
+                    sleep(0.15)
+                    return result
+                if race == 'mail':
+                    service.store.invitation_send_count = delayed_read
+                elif race == 'capacity':
+                    service.store.member_count = delayed_read
+                barrier.wait(timeout=10)
+                try:
+                    if race in ('mail', 'same-invite'):
+                        course = rt.course if index==0 or race!='mail' else other_course
+                        return service.invite_by_email(actor, course.id, [email(rt.receiver)])
+                    client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
+                    return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
+                except WebError as error:
+                    return error.code
+            finally:
+                engine.dispose()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(work, range(2)))
+        if race == 'mail':
+>           assert results.count('rate_limited') == 1 and sum(isinstance(r, dict) for r in results) == 1
+E           AssertionError: assert (0 == 1)
+E            +  where 0 = <built-in method count of list object at 0x000001C5F68C55C0>('rate_limited')
+E            +    where <built-in method count of list object at 0x000001C5F68C55C0> = [{'items': [{'course_id': '0ccc004e-f46a-4480-8513-b5770e12665b', 'course_title': 'Khoá <An & Bình>', 'created_at': '2...i cùng chủ', 'created_at': '2026-01-01T00:00:00+00:00', 'email': '586781c58a25445aa10db0ca66d86a11@example.vn', ...}]}].count
+
+src\web\backend\tests\test_w12_invitations.py:335: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w12-email-invitations-backend\report\w12-evidence\mutations\attempt2\daily-owner-lock.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w12_invitations.py::test_two_runtimes_race_on_last_mail_or_course_seat[mail]
+1 failed, 3 passed, 20 deselected, 1 warning in 15.98s

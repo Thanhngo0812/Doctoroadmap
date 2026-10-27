@@ -287,7 +287,7 @@ khai trước, chạy trên 16 cuốn của tập huấn luyện:
   16 cuốn, các cấu hình gần nhau thường chênh dưới mức nhiễu, nên chọn mô hình đơn giản hơn để ít học thuộc tập huấn luyện [23].
 
 Mô hình được chọn rồi đóng băng trước khi chạy tập thử; số trên 16 cuốn chỉ là bằng chứng chọn mô hình, số báo cáo vẫn lấy trên 8 giáo trình thử.
-Cùng quy trình áp cho hồi quy logistic, để trả lời "vì sao LightGBM". Riêng bước phụ A8 được so thêm với một cross-encoder (XLM-R [25]) đọc thẳng câu
+Cùng quy trình áp cho hồi quy logistic, để trả lời "vì sao LightGBM". Riêng bước phụ A8 được so thêm với một cross-encoder (multilingual-e5 [25]) đọc thẳng câu
 văn; vì học mô hình này cần GPU, nó được chấm trên 4 phần chia theo cuốn, và LightGBM cùng logistic được chấm lại trên đúng 4 phần đó.
 
 [CHÈN HÌNH 5 – Biểu đồ đường: trục ngang là số lá (7 → 255, thang log), trục dọc là AP trung bình trên 16 cuốn, mỗi mô hình một đường, có thanh
@@ -549,5 +549,5 @@ Available: https://aclanthology.org/C00-2137
 [24] G. Ke *et al.*, "LightGBM: A highly efficient gradient boosting decision tree," in *Proc. NeurIPS*, 2017. [Online]. Available:
 https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree
 
-[25] A. Conneau *et al.*, "Unsupervised cross-lingual representation learning at scale," in *Proc. ACL*, 2020. [Online]. Available:
-https://aclanthology.org/2020.acl-main.747
+[25] L. Wang *et al.*, "Multilingual E5 text embeddings: A technical report," arXiv:2402.05672, 2024. [Online]. Available:
+https://arxiv.org/abs/2402.05672

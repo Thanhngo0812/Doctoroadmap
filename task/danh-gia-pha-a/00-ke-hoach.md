@@ -22,10 +22,10 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | **đã ghép** (34a7920, 27/10); agent soát xong, sửa theo soát |
 | [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | **đã ghép** (6255edfa, 27/10); cổng toàn repo 3205 passed |
 | [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | **đã ghép** (ba784a5, 27/10) |
-| [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | chưa làm |
-| [09](09-can-khai-niem.md) | Căn khái niệm: luật tự động, phiếu căn tay mù, nhật ký, phiếu kiểm 20% | agent A | 02, 04 | 01/11 | agent A đang cài (27/10) |
-| [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | chưa làm |
-| [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | agent B đang cài (27/10) |
+| [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | agent B đang cài (27/10) |
+| [09](09-can-khai-niem.md) | Căn khái niệm: luật tự động, phiếu căn tay mù, nhật ký, phiếu kiểm 20% | agent A | 02, 04 | 01/11 | **đã ghép** (7e3a5a2f, 27/10); k ứng viên 3/1, chưa hiệu chỉnh (chốt ở DG-18) |
+| [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | agent A đang cài (27/10) |
+| [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | **đã ghép** (638de205, 27/10); kiểm tái tạo xstk v68, doc-4 v27 khớp; E8 khớp |
 | [12](12-nhap-g1-g2-va-phieu-duyet.md) | Gói nháp G1/G2, lỗi cài, phiếu duyệt | agent A | lược đồ manifest của 01 | 31/10 | **đã ghép** (ac63fae2, 27/10) |
 | [13](13-cham-a1-a2.md) | Chấm A1/A2 | agent A | 04, 12 | 02/11 | chưa làm |
 | [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | chưa làm |

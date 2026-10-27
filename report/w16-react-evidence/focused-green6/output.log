@@ -1,0 +1,53 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx src/Assistant.test.tsx src/Assistant.final-usage-race.test.tsx src/Content.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/focused-green6.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend
+
+ ✓ src/Usage.test.tsx (9 tests) 1128ms
+ ✓ src/Assistant.test.tsx (18 tests) 8342ms
+   ✓ streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn 1120ms
+   ✓ retains received text after a disconnect and retries with the same intent ID and focus 546ms
+   ✓ does not send a focus from the roadmap and shows a ratio rather than invented daily turns 376ms
+   ✓ restores a pending intent after remount and reconciles the saved result without sending a new turn 753ms
+   ✓ renames sessions and requires explicit confirmation before deleting history 835ms
+   ✓ opens a persisted artifact only from a structured event, independently of model prose 635ms
+   ✓ blocks sending while a new session is being created and then sends into that session 614ms
+   ✓ clears displayed history when the next request is denied: not_found 490ms
+   ✓ clears displayed history when the next request is denied: unauthenticated 517ms
+   ✓ keeps a completed new turn when an older history request arrives afterwards 461ms
+   ✓ keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID 471ms
+   ✓ shows the current question in conversation metadata before the next history reload 474ms
+   ✓ keeps a document hourly-limit notice after the final answer and in saved history 459ms
+stdout | src/Content.test.tsx > R7 ignores a late submission result after browser history opens another attempt
+R7_OBSERVED {"activeRoute":"/khoa-hoc/c/quiz/qa_2","heading":"Quiz ôn tập","secondQuestionVisible":true}
+
+ ✓ src/Content.test.tsx (15 tests) 4285ms
+   ✓ offers the quiz and document actions on the real roadmap 343ms
+   ✓ uses core groups independently of origin on the real module page 542ms
+   ✓ keeps a selection made while quiz items stream and submits the actual shuffled option ID 389ms
+   ✓ validates six modules locally, sends no request, and allows a corrected document scope 732ms
+   ✓ ignores old success submit callbacks while a new attempt is pending 413ms
+   ✓ ignores old network submit callbacks while a new attempt is pending 355ms
+   ✓ ignores old unauthenticated submit callbacks while a new attempt is pending 337ms
+   ✓ ignores old not_found submit callbacks while a new attempt is pending 347ms
+stdout | src/Assistant.final-usage-race.test.tsx > review: a question submitted after final is sent while the usage refresh remains pending
+REVIEW_OBSERVATION {"usageCalls":2,"postedQuestions":[{"question":"First question","client_turn_id":"8f84867d-5504-4f51-bf64-1caa7b899319"},{"question":"Second question must not disappear","client_turn_id":"971b95ce-a0a2-4249-86a3-1cdc0068bcac"}],"draftAfterSubmit":""}
+
+ ✓ src/Assistant.final-usage-race.test.tsx (5 tests) 3502ms
+   ✓ review: a question submitted after final is sent while the usage refresh remains pending 1343ms
+   ✓ an old usage success and finally cannot unlock or replace the next streaming turn 485ms
+   ✓ an old usage network error and finally cannot unlock or replace the next streaming turn 496ms
+   ✓ accepts the next question before old EOF and ignores a late old stream error 678ms
+   ✓ a late old usage result cannot overwrite newer usage after both answers finish 498ms
+
+ Test Files  4 passed (4)
+      Tests  47 passed (47)
+   Start at  22:21:45
+   Duration  26.81s (tests 66%, environment 15%, import 12%, setup 6%, transform 1%)
+
+    Isolate  4 workers spawned · ~1.15s startup each (spawn + environment, per file)
+             at least ~3.44s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/focused-green6.xml

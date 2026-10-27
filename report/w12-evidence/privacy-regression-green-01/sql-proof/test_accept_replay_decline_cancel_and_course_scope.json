@@ -1,0 +1,80 @@
+{
+  "source": "Independent SQL connection, synthetic accounts, zero external mail/provider calls",
+  "course_id": "f76cf1da-4e6c-4f5f-b5e9-323cf3909dfb",
+  "invitations": [
+    {
+      "id": "5da55834-72a8-49cf-b2d0-1db26b03c47a",
+      "email_normalized": "8e0fd50a2e2d456fb6717189e4e12489@example.vn",
+      "invitee_account_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "status": "accepted",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    },
+    {
+      "id": "b7f70767-31ed-418e-8015-4ea3a6f23a50",
+      "email_normalized": "8e0fd50a2e2d456fb6717189e4e12489@example.vn",
+      "invitee_account_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "status": "declined",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    },
+    {
+      "id": "7f264e9d-db4c-4be8-b4b0-f0b7392c66ec",
+      "email_normalized": "8e0fd50a2e2d456fb6717189e4e12489@example.vn",
+      "invitee_account_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "status": "cancelled",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "membership": [
+    {
+      "account_id": "23d8d28b-6c65-460e-835a-9bf852975c8e",
+      "role": "owner",
+      "via": "owner"
+    },
+    {
+      "account_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "role": "learner",
+      "via": "email"
+    }
+  ],
+  "audit": [
+    {
+      "action": "invitation_sent",
+      "actor_id": "23d8d28b-6c65-460e-835a-9bf852975c8e",
+      "target_id": "5da55834-72a8-49cf-b2d0-1db26b03c47a",
+      "meta": {}
+    },
+    {
+      "action": "invitation_accepted",
+      "actor_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "target_id": "5da55834-72a8-49cf-b2d0-1db26b03c47a",
+      "meta": {}
+    },
+    {
+      "action": "invitation_sent",
+      "actor_id": "23d8d28b-6c65-460e-835a-9bf852975c8e",
+      "target_id": "b7f70767-31ed-418e-8015-4ea3a6f23a50",
+      "meta": {}
+    },
+    {
+      "action": "invitation_declined",
+      "actor_id": "bbf81659-fb39-45d6-82ad-0d82e9cde1a0",
+      "target_id": "b7f70767-31ed-418e-8015-4ea3a6f23a50",
+      "meta": {}
+    },
+    {
+      "action": "invitation_sent",
+      "actor_id": "23d8d28b-6c65-460e-835a-9bf852975c8e",
+      "target_id": "7f264e9d-db4c-4be8-b4b0-f0b7392c66ec",
+      "meta": {}
+    },
+    {
+      "action": "invitation_cancelled",
+      "actor_id": "23d8d28b-6c65-460e-835a-9bf852975c8e",
+      "target_id": "7f264e9d-db4c-4be8-b4b0-f0b7392c66ec",
+      "meta": {}
+    }
+  ]
+}

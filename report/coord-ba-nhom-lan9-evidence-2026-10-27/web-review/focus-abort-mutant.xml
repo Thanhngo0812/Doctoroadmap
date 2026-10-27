@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="2" errors="0" time="1.2670307">
+    <testsuite name="src/Usage.independent.test.tsx" timestamp="2026-10-27T06:13:44.966Z" hostname="ADMIN" tests="2" failures="2" errors="0" skipped="0" time="1.2670307">
+        <testcase classname="src/Usage.independent.test.tsx" name="independent: a late old focus-request cannot overwrite the newer same-route usage snapshot" time="0.7798519">
+            <failure message="Unable to find an element with the text: Hôm nay đã dùng 85%. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Đã hết&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  100
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Đã hết
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  100
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                  3
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                2
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;usage-limit&quot;
+            role=&quot;status&quot;
+          &gt;
+            &lt;strong&gt;
+              Đã dùng hết hạn mức hôm nay.
+            &lt;/strong&gt;
+            &lt;span&gt;
+              Đặt lại lúc
+              00:00 27/10/2026
+               (giờ Việt Nam). Nội dung đã có vẫn dùng được.
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Hôm nay đã dùng 85%. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Đã hết&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  100
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Đã hết
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  100
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                  3
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                2
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;usage-limit&quot;
+            role=&quot;status&quot;
+          &gt;
+            &lt;strong&gt;
+              Đã dùng hết hạn mức hôm nay.
+            &lt;/strong&gt;
+            &lt;span&gt;
+              Đặt lại lúc
+              00:00 27/10/2026
+               (giờ Việt Nam). Nội dung đã có vẫn dùng được.
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Usage.independent.test.tsx:39:17
+            </failure>
+        </testcase>
+        <testcase classname="src/Usage.independent.test.tsx" name="independent: a late old 401 cannot log out the account after the replacement usage succeeds" time="0.4825726">
+            <failure message="Unable to find an accessible element with the role &quot;heading&quot; and name &quot;Mức dùng&quot;
+
+Here are the accessible roles:
+
+  button:
+
+  Name &quot;Đi khoá&quot;:
+  &lt;button /&gt;
+
+  Name &quot;Đi mức dùng&quot;:
+  &lt;button /&gt;
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Hiện mật khẩu&quot;:
+  &lt;button
+    aria-label=&quot;Hiện mật khẩu&quot;
+    aria-pressed=&quot;false&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng nhập&quot;:
+  &lt;button
+    class=&quot;button button-primary button-large auth-submit&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;site-header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  link:
+
+  Name &quot;WayFinder, về trang chủ&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về trang chủ&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/&quot;
+  /&gt;
+
+  Name &quot;Tạo tài khoản&quot;:
+  &lt;a
+    class=&quot;auth-switch&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+  /&gt;
+
+  Name &quot;Tạo tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+  /&gt;
+
+  Name &quot;Quên mật khẩu?&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/quen-mat-khau&quot;
+  /&gt;
+
+  Name &quot;Thử lộ trình mẫu trước&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/demo&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;auth-layout page-frame&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Đăng nhập WayFinder&quot;:
+  &lt;section
+    aria-labelledby=&quot;auth-title&quot;
+    class=&quot;auth-card&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Đăng nhập WayFinder&quot;:
+  &lt;h1
+    id=&quot;auth-title&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-intro&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-alternate&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-alternate&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-demo-note&quot;
+  /&gt;
+
+  --------------------------------------------------
+  textbox:
+
+  Name &quot;Email&quot;:
+  &lt;input
+    aria-invalid=&quot;false&quot;
+    autocomplete=&quot;email&quot;
+    id=&quot;email&quot;
+    maxlength=&quot;254&quot;
+    name=&quot;email&quot;
+    required=&quot;&quot;
+    type=&quot;email&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            &lt;svg
+              aria-hidden=&quot;true&quot;
+              fill=&quot;none&quot;
+              height=&quot;20&quot;
+              stroke=&quot;currentColor&quot;
+              stroke-width=&quot;1.5&quot;
+              viewBox=&quot;0 0 24 24&quot;
+              width=&quot;20&quot;
+            &gt;
+              &lt;circle
+                cx=&quot;12&quot;
+                cy=&quot;12&quot;
+                r=&quot;8&quot;
+              /&gt;
+              &lt;path
+                d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                fill=&quot;currentColor&quot;
+                stroke=&quot;none&quot;
+              /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+          &gt;
+            Tạo tài khoản
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;auth-title&quot;
+        class=&quot;auth-card&quot;
+      &gt;
+        &lt;span
+          class=&quot;section-kicker&quot;
+        &gt;
+          MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+        &lt;/span&gt;
+        &lt;h1
+          id=&quot;auth-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đăng nhập WayFinder
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro&quot;
+        &gt;
+          Tiếp tục hành trình học tập của bạn.
+        &lt;/p&gt;
+        &lt;div
+          class=&quot;auth-feedback-slot &quot;
+        &gt;
+          &lt;div
+            class=&quot;auth-feedback-clip&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;form
+          novalidate=&quot;&quot;
+        &gt;
+          &lt;div
+            class=&quot;auth-field&quot;
+          &gt;
+            &lt;label
+              for=&quot;email&quot;
+            &gt;
+              Email
+            &lt;/label&gt;
+            &lt;input
+              aria-invalid=&quot;false&quot;
+              autocomplete=&quot;email&quot;
+              id=&quot;email&quot;
+              maxlength=&quot;254&quot;
+              name=&quot;email&quot;
+              required=&quot;&quot;
+              type=&quot;email&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;auth-field&quot;
+          &gt;
+            &lt;label
+              for=&quot;password&quot;
+            &gt;
+              Mật khẩu
+            &lt;/label&gt;
+            &lt;span
+              class=&quot;password-control &quot;
+            &gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;current-password&quot;
+                id=&quot;password&quot;
+                maxlength=&quot;128&quot;
+                minlength=&quot;8&quot;
+                name=&quot;password&quot;
+                required=&quot;&quot;
+                type=&quot;password&quot;
+                value=&quot;&quot;
+              /&gt;
+              &lt;button
+                aria-label=&quot;Hiện mật khẩu&quot;
+                aria-pressed=&quot;false&quot;
+                type=&quot;button&quot;
+              &gt;
+                Hiện
+              &lt;/button&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;button
+            class=&quot;button button-primary button-large auth-submit&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Đăng nhập
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          Chưa có tài khoản?
+
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+          &gt;
+            Tạo tài khoản
+          &lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Quên mật khẩu?
+          &lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-demo-note&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/demo&quot;
+          &gt;
+            Thử lộ trình mẫu trước
+            &lt;span
+              aria-hidden=&quot;true&quot;
+            &gt;
+              ↗
+            &lt;/span&gt;
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;heading&quot; and name &quot;Mức dùng&quot;
+
+Here are the accessible roles:
+
+  button:
+
+  Name &quot;Đi khoá&quot;:
+  &lt;button /&gt;
+
+  Name &quot;Đi mức dùng&quot;:
+  &lt;button /&gt;
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Hiện mật khẩu&quot;:
+  &lt;button
+    aria-label=&quot;Hiện mật khẩu&quot;
+    aria-pressed=&quot;false&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng nhập&quot;:
+  &lt;button
+    class=&quot;button button-primary button-large auth-submit&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;site-header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  link:
+
+  Name &quot;WayFinder, về trang chủ&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về trang chủ&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/&quot;
+  /&gt;
+
+  Name &quot;Tạo tài khoản&quot;:
+  &lt;a
+    class=&quot;auth-switch&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+  /&gt;
+
+  Name &quot;Tạo tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+  /&gt;
+
+  Name &quot;Quên mật khẩu?&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/quen-mat-khau&quot;
+  /&gt;
+
+  Name &quot;Thử lộ trình mẫu trước&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/demo&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;auth-layout page-frame&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Đăng nhập WayFinder&quot;:
+  &lt;section
+    aria-labelledby=&quot;auth-title&quot;
+    class=&quot;auth-card&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Đăng nhập WayFinder&quot;:
+  &lt;h1
+    id=&quot;auth-title&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-intro&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-alternate&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-alternate&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;auth-demo-note&quot;
+  /&gt;
+
+  --------------------------------------------------
+  textbox:
+
+  Name &quot;Email&quot;:
+  &lt;input
+    aria-invalid=&quot;false&quot;
+    autocomplete=&quot;email&quot;
+    id=&quot;email&quot;
+    maxlength=&quot;254&quot;
+    name=&quot;email&quot;
+    required=&quot;&quot;
+    type=&quot;email&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            &lt;svg
+              aria-hidden=&quot;true&quot;
+              fill=&quot;none&quot;
+              height=&quot;20&quot;
+              stroke=&quot;currentColor&quot;
+              stroke-width=&quot;1.5&quot;
+              viewBox=&quot;0 0 24 24&quot;
+              width=&quot;20&quot;
+            &gt;
+              &lt;circle
+                cx=&quot;12&quot;
+                cy=&quot;12&quot;
+                r=&quot;8&quot;
+              /&gt;
+              &lt;path
+                d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                fill=&quot;currentColor&quot;
+                stroke=&quot;none&quot;
+              /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+          &gt;
+            Tạo tài khoản
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;auth-title&quot;
+        class=&quot;auth-card&quot;
+      &gt;
+        &lt;span
+          class=&quot;section-kicker&quot;
+        &gt;
+          MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+        &lt;/span&gt;
+        &lt;h1
+          id=&quot;auth-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đăng nhập WayFinder
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro&quot;
+        &gt;
+          Tiếp tục hành trình học tập của bạn.
+        &lt;/p&gt;
+        &lt;div
+          class=&quot;auth-feedback-slot &quot;
+        &gt;
+          &lt;div
+            class=&quot;auth-feedback-clip&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;form
+          novalidate=&quot;&quot;
+        &gt;
+          &lt;div
+            class=&quot;auth-field&quot;
+          &gt;
+            &lt;label
+              for=&quot;email&quot;
+            &gt;
+              Email
+            &lt;/label&gt;
+            &lt;input
+              aria-invalid=&quot;false&quot;
+              autocomplete=&quot;email&quot;
+              id=&quot;email&quot;
+              maxlength=&quot;254&quot;
+              name=&quot;email&quot;
+              required=&quot;&quot;
+              type=&quot;email&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;auth-field&quot;
+          &gt;
+            &lt;label
+              for=&quot;password&quot;
+            &gt;
+              Mật khẩu
+            &lt;/label&gt;
+            &lt;span
+              class=&quot;password-control &quot;
+            &gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;current-password&quot;
+                id=&quot;password&quot;
+                maxlength=&quot;128&quot;
+                minlength=&quot;8&quot;
+                name=&quot;password&quot;
+                required=&quot;&quot;
+                type=&quot;password&quot;
+                value=&quot;&quot;
+              /&gt;
+              &lt;button
+                aria-label=&quot;Hiện mật khẩu&quot;
+                aria-pressed=&quot;false&quot;
+                type=&quot;button&quot;
+              &gt;
+                Hiện
+              &lt;/button&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;button
+            class=&quot;button button-primary button-large auth-submit&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Đăng nhập
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          Chưa có tài khoản?
+
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-ky?next=%2Fmuc-dung&quot;
+          &gt;
+            Tạo tài khoản
+          &lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Quên mật khẩu?
+          &lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-demo-note&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/demo&quot;
+          &gt;
+            Thử lộ trình mẫu trước
+            &lt;span
+              aria-hidden=&quot;true&quot;
+            &gt;
+              ↗
+            &lt;/span&gt;
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../w16-usage-react/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Usage.independent.test.tsx:48:17
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
