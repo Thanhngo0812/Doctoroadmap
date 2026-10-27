@@ -1,0 +1,154 @@
+"""Freeze W12 native evidence, actual public JSON/HTML and independently queried SQL proofs."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+from dotenv import dotenv_values
+
+root=Path(__file__).resolve().parents[1]
+out=root/'report/w12-evidence'
+git=lambda *args:subprocess.check_output(['git',*args],cwd=root).decode().strip()
+head=git('rev-parse','HEAD')
+assert head=='c6a6ae5de7206633770582b318ffa14d0c5f85c2'
+main='c958b89af8980e3bd7f29dc3f227cb1d1e45d0f1'
+main_observed=git('rev-parse','main')
+assert not git('diff','--name-only','--','src')
+subprocess.run(['git','merge-base','--is-ancestor',main,'HEAD'],cwd=root,check=True)
+assert not (out/'manifest.json').exists()
+def write(path,value):
+    path.write_bytes((json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode())
+gates={}
+full_label,react_label,build_label=sys.argv[1:] or ('full-01','react-01','build-01')
+for label in (full_label,react_label,build_label):
+    meta=json.loads((out/'runs'/(label+'-exit.json')).read_text())
+    assert meta['commit']==head and meta['exit_code']==0,(label,'wrong tested head or native')
+    for name,digest in meta['source_sha256'].items():
+        assert sha256((root/name).read_bytes()).hexdigest()==digest,name
+    record={k:v for k,v in meta.items() if k!='source_sha256'}
+    xml=out/'runs'/(label+'.xml')
+    if xml.exists():
+        tree=ET.parse(xml)
+        assert not tree.findall('.//failure') and not tree.findall('.//error')
+        tests=tree.findall('.//testcase')
+        skips=[dict(name=t.get('name'),classname=t.get('classname'),reason=t.find('skipped').get('message'))
+               for t in tests if t.find('skipped') is not None]
+        record.update(passed=len(tests)-len(skips),skipped_or_xfailed=skips)
+    gates[label]=record
+mutations=json.loads((out/'mutations/attempt2/summary.json').read_text())
+assert mutations['sources_restored'] and len(mutations['results'])==11
+for name,digest in mutations['original_sha256'].items():
+    assert sha256((root/name).read_bytes()).hexdigest()==digest,name
+public=out/'public';public.mkdir(exist_ok=True)
+for name in ('created','owner-list','my-invitations','accepted','accepted-replay','declined','cancelled',
+             'expired','daily-limit','invitation-audit'):
+    shutil.copyfile(out/full_label/(name+'.json'),public/(name+'.json'))
+shutil.copyfile(out/full_label/'invitation-email.html',public/'invitation-email.html')
+write(public/'metadata.json',dict(source_commit=head,backend='actual PostgreSQL composition/cookie HTTP',
+    data='Synthetic users/clock/course, fake Mailer/model/media, zero real delivery/provider spend',
+    invitation_token='Only token in exported HTML replaced with INVITATION_TOKEN_OMITTED; never a grant',
+    links='Owner-approved /dang-ky#invitation=<token>; verified matching email and explicit accept still required',
+    sql=full_label+'/sql-proof/*.json: independent SQL connections, no password/token/hash columns',
+    account_ids='Examples come from separate isolated tests; do not combine IDs across examples',
+    frontend='Backend milestone only; registration fragment and invitation UI remain with web'))
+status=subprocess.check_output(['git','status','--short','--untracked-files=all'],cwd=root).decode()
+write(out/'retained-test-exports.json',dict(note='Original generated test exports retained unchanged outside W12 commit',
+    paths=[line for line in status.splitlines() if not line[3:].startswith(('report/w12-','report/w12/'))]))
+helpers=[]
+for name in ('w12_capture.py','w12_inputs.py','w12_openapi.py','w12_mutations.py','w12_source_commit.py','w12_finish.py'):
+    path=root/'tmp'/name
+    target=out/(name.removeprefix('w12_')+'.txt')
+    shutil.copyfile(path,target)
+    helpers.append(dict(source=path.relative_to(root).as_posix(),source_sha256=sha256(path.read_bytes()).hexdigest(),stored=target.name))
+write(out/'provenance.json',dict(files=helpers,note='Raw originals retained in ignored tmp; committed copies UTF8/LF, trailing physical whitespace trimmed; secrets/tokens if found replaced explicitly'))
+changed=git('diff','--name-only',main,'HEAD').splitlines()
+assert all(name.startswith('src/web/backend/') or name=='src/web/openapi.json' for name in changed)
+assert [name for name in changed if '/migrations/versions/' in name]==[
+    'src/web/backend/wayfinder/migrations/versions/w12_0008_invitations.py']
+source_identity={name:dict(worktree_sha256=sha256((root/name).read_bytes()).hexdigest(),
+    commit_blob_sha256=sha256(subprocess.check_output(['git','show',head+':'+name],cwd=root)).hexdigest())
+    for name in changed}
+write(out/'source-identity.json',dict(head_tested=head,main_received=main,changed_files=source_identity,
+    note='Worktree bytes used by tests and Git blob bytes both hashed; line endings can differ on Windows'))
+summary=dict(source_commit='bea0f9b59a6925cd779da2f5be60204bf78def08',integration_fix_commit='ad7b9fe9d5207321bce8410a698a16456f288d92',initial_source_commit='f2c662d9374f327a73134733df935cdc31920764',head_tested=head,main_received=main,
+    main_observed_at_handoff=main_observed,owner_approved_pinned_handoff=True,
+    owner_decision='Cho bàn giao W-12 trên HEAD đã pin; điều phối đồng bộ main và chạy cổng trước ghép (đề xuất)',
+    coordinator_must_receive_latest_main_and_run_gates_before_merge=True,
+    migration=dict(head='w12_0008',down_revision='w11_0007',new_migrations=1),
+    gates=gates,baseline_red=dict(failed=17,setup_errors=0),focused_passed=24,integration_regression_passed=81,
+    w12_cases=27,privacy_regression_passed=71,mail_privacy_regression_passed=54,prior_regression_passed=105,
+    mutants_caught=11,sources_restored=True,external_calls=0,actual_provider_spend_usd=0,
+    mail_delivery_is_fake=True,real_email_delivery_verified=False,token_fragment_owner_approved=True,
+    openapi=dict(previous_operations=54,new_operations=6,total=60,generated_after_merge=True),
+    core_changed=False,frontend_changed=False,transport_changed=False,ledger_changed=False,
+    backend_milestone_ready_for_review=True,w12_complete=False,merged_main=False)
+write(out/'summary.json',summary)
+report=root/'report/w12-email-invitations-backend-2026-10-27.md'
+full,react,build=(gates[k] for k in (full_label,react_label,build_label))
+with report.open('a',encoding='utf-8',newline='\n') as stream:
+    stream.write('\n\n## Kết quả cuối và bàn giao\n\n'
+        f'Commit mã ban đầu `f2c662d9374f327a73134733df935cdc31920764`, sửa tích hợp `ad7b9fe9d5207321bce8410a698a16456f288d92`, '
+        f'sửa privacy `bea0f9b59a6925cd779da2f5be60204bf78def08`, '
+        f'đỉnh đã nhận main và chạy cổng **`{head}`**, '
+        f'main nhận `{main}`; main quan sát lúc bàn giao `{main_observed}` (ngoài nền pin, điều phối nhận/cổng trước ghép theo quyết định chủ dự án). '
+        f'PG toàn repo: **{full["passed"]} pass**, {len(full["skipped_or_xfailed"])} skip/xfail có sẵn; '
+        f'React **{react["passed"]} pass**; build native **{build["exit_code"]}**. '
+        'Các cổng chạy tuần tự, không có thay source/HEAD giữa cổng; native/lệnh/cwd/source SHA/JUnit trong `w12-evidence/runs/`.\n\n'
+        '**11/11 mutant bị bắt bằng assertion**, 0 setup error trong lượt được tính, nguồn phục hồi nguyên byte. '
+        'Tự review correctness/readability/architecture/security/performance: không còn phát hiện chặn; '
+        'mốc vẫn chờ điều phối soát độc lập.\n\n'
+        '[JSON/HTML metadata cho web và thiết kế](w12-evidence/public/metadata.json), '
+        '[mẫu thư HTML đã che token](w12-evidence/public/invitation-email.html), '
+        '[summary](w12-evidence/summary.json), [manifest SHA](w12-evidence/manifest.json). '
+        f'SQL độc lập có trong từng lượt, đặc biệt `{full_label}/sql-proof/`; không xuất password/token/hash.\n\n'
+        'Tổng chi **0 USD**. Mailer/model/media đều giả; không tuyên bố đã giao email thật. '
+        'Bản evidence commit dùng UTF8/LF, bỏ khoảng trắng/tab cuối dòng vật lý; raw gốc giữ ở '
+        '`tmp/w12-raw-evidence/`, manifest có cả raw_sha256 và sha256 bản commit. '
+        'Nếu dữ liệu cấu hình bí mật/token fixture bị in trong traceback thì chỉ bản commit được che với marker rõ ràng; '
+        'không thay số test/native/source SHA hoặc thuộc tính tên/đếm/trạng thái JUnit; nội dung message có thể che bí mật.\n\n'
+        '**Backend W-12 sẵn sàng soát; toàn W-12 còn UI/tích hợp của web và thiết kế soát mẫu thư.** '
+        'Chưa ghép/push main. Giữ nguyên output test ngoài W-12, không đưa chúng vào commit.\n')
+
+values=dotenv_values(root.parents[1]/'src/web/.env')
+secrets=[value for key,value in values.items() if value and len(value)>=8 and
+         any(part in key.lower() for part in ('password','secret','token','api_key'))]
+raw=root/'tmp/w12-raw-evidence';entries=[];redactions=[]
+paths=[report,*sorted(p for p in out.rglob('*') if p.is_file())]
+for path in paths:
+    before=path.read_bytes()
+    relative=path.relative_to(root)
+    backup=raw/relative
+    backup.parent.mkdir(parents=True,exist_ok=True)
+    assert not backup.exists()
+    backup.write_bytes(before)
+    value=before.decode('utf-8-sig').replace('\r\n','\n')
+    for secret in secrets:
+        if secret in value:
+            redactions.append(dict(path=relative.as_posix(),kind='configured secret',occurrences=value.count(secret)))
+            value=value.replace(secret,'CONFIG_SECRET_OMITTED')
+    # A traceback may contain only ephemeral synthetic email token values; do not publish those either.
+    value,n=re.subn(r'(#(?:invitation|token)=)[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])',r'\1FIXTURE_TOKEN_OMITTED',value)
+    if n:redactions.append(dict(path=relative.as_posix(),kind='synthetic URL fragment token',occurrences=n))
+    normalized='\n'.join(line.rstrip(' \t') for line in value.split('\n')).encode()
+    if path.suffix=='.xml':
+        before_nodes=list(ET.fromstring(before).iter());after_nodes=list(ET.fromstring(normalized).iter())
+        assert len(before_nodes)==len(after_nodes)
+        for original,current in zip(before_nodes,after_nodes):
+            assert original.tag==current.tag
+            omit={'message'} if original.tag in {'failure','error','skipped'} else set()
+            assert {k:v for k,v in original.attrib.items() if k not in omit}=={k:v for k,v in current.attrib.items() if k not in omit}
+    assert not any(secret.encode() in normalized for secret in secrets)
+    path.write_bytes(normalized)
+    if path!=report:
+        entries.append(dict(path=path.relative_to(out).as_posix(),raw_sha256=sha256(before).hexdigest(),
+                            sha256=sha256(normalized).hexdigest(),bytes=len(normalized)))
+write(out/'redactions.json',dict(items=redactions,unredacted_originals_retained_in_ignored_tmp=True))
+redacted=out/'redactions.json';data=redacted.read_bytes()
+entries.append(dict(path=redacted.name,raw_sha256=sha256(data).hexdigest(),sha256=sha256(data).hexdigest(),bytes=len(data)))
+write(out/'manifest.json',dict(files=entries))
+print(json.dumps(dict(head_tested=head,gates={k:dict(passed=v.get('passed'),exit_code=v['exit_code']) for k,v in gates.items()},
+    evidence_files=len(entries),redaction_items=len(redactions),w12_complete=False),indent=2))

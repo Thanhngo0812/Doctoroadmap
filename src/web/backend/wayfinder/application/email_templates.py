@@ -19,6 +19,15 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
                          base_url: str, valid_for: str | None = None, logo_url: str | None = None) -> MailContent:
     if kind not in {"verify_email", "reset_password", "existing_account"}:
         raise ValueError("Unsupported account email kind")
+    return _render_email(kind, display_name=display_name, action_url=action_url,
+                         base_url=base_url, valid_for=valid_for, logo_url=logo_url)
+
+
+def _render_email(kind: EmailKind | Literal["invitation"], *, display_name: str, action_url: str,
+                         base_url: str, valid_for: str | None = None, logo_url: str | None = None,
+                         course_title: str | None = None) -> MailContent:
+    if kind not in {"verify_email", "reset_password", "existing_account", "invitation"}:
+        raise ValueError("Unsupported account email kind")
     base = base_url.rstrip("/")
     base_parts = urlsplit(base)
     action_parts = urlsplit(action_url) if kind != "existing_account" else base_parts
@@ -43,6 +52,15 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
         button = "Đặt mật khẩu mới"
         valid_for = valid_for or "60 phút"
         text = f"{greeting}\n\n{message}\n\nMở liên kết này để đặt lại mật khẩu: {action_url}\n\nLiên kết có hiệu lực trong {valid_for}. Nếu bạn không yêu cầu, hãy bỏ qua thư này."
+    elif kind == "invitation":
+        subject = "Lời mời tham gia khoá học WayFinder"
+        heading = "Bạn được mời vào khoá học"
+        message = (f'Bạn được mời tham gia khoá “{course_title}”. Đăng ký hoặc đăng nhập và xác minh đúng email nhận thư, '
+                   'sau đó mở Lời mời trong ứng dụng để chấp nhận hoặc từ chối. '
+                   'Khi tham gia, chủ khoá thấy tên hiển thị, ngày tham gia, lần học gần nhất và tiến độ theo module; '
+                   'không thấy chat, tài liệu hoặc câu trả lời quiz của bạn.')
+        button = "Mở WayFinder"
+        text = f"{greeting}\n\n{message}\n\n{action_url}\n\nLời mời có hiệu lực trong {valid_for}. Nếu không muốn tham gia, hãy bỏ qua thư này."
     elif kind == "existing_account":
         subject = "Tài khoản WayFinder đã tồn tại"
         heading = "Bạn đã có tài khoản WayFinder"
@@ -78,3 +96,9 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
 </body>
 </html>"""
     return MailContent(subject, text, html)
+
+
+def render_invitation_email(*, course_title: str, action_url: str, base_url: str,
+                            valid_days: int = 7, logo_url: str | None = None) -> MailContent:
+    return _render_email('invitation', display_name='bạn', action_url=action_url, base_url=base_url,
+        valid_for=f'{valid_days} ngày', logo_url=logo_url, course_title=course_title)

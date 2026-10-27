@@ -1,5 +1,6 @@
 """Development console and authenticated SMTP mailers."""
 import logging
+import re
 import smtplib
 import ssl
 from email.message import EmailMessage
@@ -8,6 +9,7 @@ from email.headerregistry import Address
 
 DEFAULT_SMTP_TIMEOUT = 10.0
 logger = logging.getLogger(__name__)
+_INVITATION_TOKEN = re.compile(r"(#invitation=)[A-Za-z0-9_-]+")
 
 
 class MailDeliveryError(RuntimeError):
@@ -16,6 +18,8 @@ class MailDeliveryError(RuntimeError):
 
 class ConsoleMailer:
     def send(self, to: str, subject: str, body: str, *, html_body: str | None = None) -> None:
+        body = _INVITATION_TOKEN.sub(r"\1[redacted]", body)
+        html_body = _INVITATION_TOKEN.sub(r"\1[redacted]", html_body) if html_body is not None else None
         logger.info("Email to=%s subject=%s\n%s%s", to, subject, body,
                     f"\n{html_body}" if html_body is not None else "")
 

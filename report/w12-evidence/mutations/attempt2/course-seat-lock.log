@@ -1,0 +1,66 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_two_runtimes_race_on_last_mail_or_course_seat[capacity] _________
+
+invited = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001889EFE...unction invited.<locals>.actor at 0x00000188989B2DE0>, app=<fastapi.applications.FastAPI object at 0x00000188BEC7EC60>)
+race = 'capacity'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        other_course = rt.services.courses.create_course(actor, doc_id='race-'+uuid4().hex,
+            title='Khoá thứ hai cùng chủ', graph_version=1, module_count=1) if race=='mail' else rt.course
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+        identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+        barrier = Barrier(2)
+        def work(index):
+            engine = create_database_engine(rt.settings.database_url)
+            try:
+                service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                # Enlarge the real read→write race window; correct locks serialize these reads.
+                original = service.store.invitation_send_count if race=='mail' else service.store.member_count
+                def delayed_read(*args):
+                    result = original(*args)
+                    sleep(0.15)
+                    return result
+                if race == 'mail':
+                    service.store.invitation_send_count = delayed_read
+                elif race == 'capacity':
+                    service.store.member_count = delayed_read
+                barrier.wait(timeout=10)
+                try:
+                    if race in ('mail', 'same-invite'):
+                        course = rt.course if index==0 or race!='mail' else other_course
+                        return service.invite_by_email(actor, course.id, [email(rt.receiver)])
+                    client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
+                    return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
+                except WebError as error:
+                    return error.code
+            finally:
+                engine.dispose()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(work, range(2)))
+        if race == 'mail':
+            assert results.count('rate_limited') == 1 and sum(isinstance(r, dict) for r in results) == 1
+            assert len(sql(rt, 'SELECT id FROM audit_event WHERE action=\'invitation_sent\' AND actor_id=:uid', uid=actor.user_id)) == 1
+        elif race == 'capacity':
+>           assert results.count('course_full') == 1 and sum(isinstance(r, dict) for r in results) == 1
+E           AssertionError: assert (0 == 1)
+E            +  where 0 = <built-in method count of list object at 0x00000188BEAB8980>('course_full')
+E            +    where <built-in method count of list object at 0x00000188BEAB8980> = [{'already_member': False, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:0...lse, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:00', 'role': 'learner'}].count
+
+src\web\backend\tests\test_w12_invitations.py:338: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w12-email-invitations-backend\report\w12-evidence\mutations\attempt2\course-seat-lock.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w12_invitations.py::test_two_runtimes_race_on_last_mail_or_course_seat[capacity]
+1 failed, 23 deselected, 1 warning in 20.45s

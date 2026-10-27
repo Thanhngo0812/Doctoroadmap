@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="20.456" timestamp="2026-10-27T11:53:49.069754+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_two_runtimes_race_on_last_mail_or_course_seat[capacity]" time="10.570"><failure message="AssertionError: assert (0 == 1)&#10; +  where 0 = &lt;built-in method count of list object at 0x00000188BEAB8980&gt;('course_full')&#10; +    where &lt;built-in method count of list object at 0x00000188BEAB8980&gt; = [{'already_member': False, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:0...lse, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:00', 'role': 'learner'}].count">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001889EFE...unction invited.&lt;locals&gt;.actor at 0x00000188989B2DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x00000188BEC7EC60&gt;)
+race = 'capacity'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        other_course = rt.services.courses.create_course(actor, doc_id='race-'+uuid4().hex,
+            title='Khoá thứ hai cùng chủ', graph_version=1, module_count=1) if race=='mail' else rt.course
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+        identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+        barrier = Barrier(2)
+        def work(index):
+            engine = create_database_engine(rt.settings.database_url)
+            try:
+                service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                # Enlarge the real read→write race window; correct locks serialize these reads.
+                original = service.store.invitation_send_count if race=='mail' else service.store.member_count
+                def delayed_read(*args):
+                    result = original(*args)
+                    sleep(0.15)
+                    return result
+                if race == 'mail':
+                    service.store.invitation_send_count = delayed_read
+                elif race == 'capacity':
+                    service.store.member_count = delayed_read
+                barrier.wait(timeout=10)
+                try:
+                    if race in ('mail', 'same-invite'):
+                        course = rt.course if index==0 or race!='mail' else other_course
+                        return service.invite_by_email(actor, course.id, [email(rt.receiver)])
+                    client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
+                    return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
+                except WebError as error:
+                    return error.code
+            finally:
+                engine.dispose()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(work, range(2)))
+        if race == 'mail':
+            assert results.count('rate_limited') == 1 and sum(isinstance(r, dict) for r in results) == 1
+            assert len(sql(rt, 'SELECT id FROM audit_event WHERE action=\'invitation_sent\' AND actor_id=:uid', uid=actor.user_id)) == 1
+        elif race == 'capacity':
+&gt;           assert results.count('course_full') == 1 and sum(isinstance(r, dict) for r in results) == 1
+E           AssertionError: assert (0 == 1)
+E            +  where 0 = &lt;built-in method count of list object at 0x00000188BEAB8980&gt;('course_full')
+E            +    where &lt;built-in method count of list object at 0x00000188BEAB8980&gt; = [{'already_member': False, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:0...lse, 'course_id': 'b28d7668-a0bc-4f99-8953-029a666f525f', 'joined_at': '2026-01-01T00:00:00+00:00', 'role': 'learner'}].count
+
+src\web\backend\tests\test_w12_invitations.py:338: AssertionError</failure></testcase></testsuite></testsuites>

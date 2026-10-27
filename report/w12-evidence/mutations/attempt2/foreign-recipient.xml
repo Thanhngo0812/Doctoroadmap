@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="10.187" timestamp="2026-10-27T11:52:36.731530+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_other_user_and_unverified_cannot_respond[accept]" time="4.176"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001D2A3F0...unction invited.&lt;locals&gt;.actor at 0x000001D2A3F2E3E0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000001D2C380DF40&gt;)
+action = 'accept'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+        identity = iid(send(rt, [email(unverified)]))
+        for client, code in ((rt.outsider, 'not_found'), (unverified, 'email_unverified')):
+            response = client.post(f'/api/v1/invitations/{identity}/{action}', headers=headers(client))
+&gt;           assert response.status_code == (404 if code=='not_found' else 403)
+E           assert 200 == 404
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:205: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_other_user_and_unverified_cannot_respond[decline]" time="1.774"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001D2C3CC...unction invited.&lt;locals&gt;.actor at 0x000001D2C3EB0860&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000001D2C3D75D00&gt;)
+action = 'decline'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+        identity = iid(send(rt, [email(unverified)]))
+        for client, code in ((rt.outsider, 'not_found'), (unverified, 'email_unverified')):
+            response = client.post(f'/api/v1/invitations/{identity}/{action}', headers=headers(client))
+&gt;           assert response.status_code == (404 if code=='not_found' else 403)
+E           assert 200 == 404
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:205: AssertionError</failure></testcase></testsuite></testsuites>

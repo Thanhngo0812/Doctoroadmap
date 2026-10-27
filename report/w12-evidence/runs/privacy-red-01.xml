@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.543" timestamp="2026-10-27T12:30:00.828148+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_error_privacy_headers_cover_validation_auth_and_csrf" time="7.547"><failure message="assert None == 'no-store'&#10; +  where None = get('cache-control')&#10; +    where get = Headers({'content-length': '235', 'content-type': 'application/json', 'content-security-policy': &quot;default-src 'self'; ...nt-src 'self' https://fonts.gstatic.com data:&quot;, 'x-content-type-options': 'nosniff', 'referrer-policy': 'same-origin'}).get&#10; +      where Headers({'content-length': '235', 'content-type': 'application/json', 'content-security-policy': &quot;default-src 'self'; ...nt-src 'self' https://fonts.gstatic.com data:&quot;, 'x-content-type-options': 'nosniff', 'referrer-policy': 'same-origin'}) = &lt;Response [422 Unprocessable Entity]&gt;.headers">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002D2215E...unction invited.&lt;locals&gt;.actor at 0x000002D22160E2A0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002D240EA6AE0&gt;)
+
+    def test_error_privacy_headers_cover_validation_auth_and_csrf(invited):
+        rt=invited
+        cases=[
+            rt.owner.post(f'/api/v1/courses/{rt.course.id}/invitations',headers=headers(rt.owner),json={'emails':[]}),
+            send(rt,client=rt.outsider),
+            rt.outsider.get(f'/api/v1/courses/{rt.course.id}/invitations'),
+            rt.outsider.delete(f'/api/v1/courses/{rt.course.id}/invitations/{uuid4()}',headers=headers(rt.outsider)),
+            accept(rt.receiver,str(uuid4())),
+            rt.receiver.post(f'/api/v1/invitations/{uuid4()}/decline',headers=headers(rt.receiver)),
+            rt.owner.post(f'/api/v1/courses/{rt.course.id}/invitations',json={'emails':['a@example.vn']}),
+        ]
+        assert [response.status_code for response in cases]==[422,404,404,404,404,404,403]
+        for response in cases:
+&gt;           assert response.headers.get('cache-control')=='no-store'
+E           assert None == 'no-store'
+E            +  where None = get('cache-control')
+E            +    where get = Headers({'content-length': '235', 'content-type': 'application/json', 'content-security-policy': "default-src 'self'; ...nt-src 'self' https://fonts.gstatic.com data:", 'x-content-type-options': 'nosniff', 'referrer-policy': 'same-origin'}).get
+E            +      where Headers({'content-length': '235', 'content-type': 'application/json', 'content-security-policy': "default-src 'self'; ...nt-src 'self' https://fonts.gstatic.com data:", 'x-content-type-options': 'nosniff', 'referrer-policy': 'same-origin'}) = &lt;Response [422 Unprocessable Entity]&gt;.headers
+
+src\web\backend\tests\test_w12_invitations.py:494: AssertionError</failure></testcase></testsuite></testsuites>

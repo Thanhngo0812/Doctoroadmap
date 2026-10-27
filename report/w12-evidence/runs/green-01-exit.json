@@ -1,0 +1,29 @@
+{
+  "commit": "788b600eedc44a161b6ed4c59e88bd59226aa86f",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w12-email-invitations-backend",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_w12_invitations.py",
+    "--basetemp=tmp/w12-green-01",
+    "--junitxml=report/w12-evidence/runs/green-01.xml"
+  ],
+  "exit_code": 1,
+  "seconds": 55.58,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/sharing.py": "f77fd6ba26d26402544b6356dbe11f558836f0413083b22b400e0ec7d2c47377",
+    "src/web/backend/wayfinder/infrastructure/sharing_store.py": "7e464e4962309f666b4526a47022928b8fdbf03f7a738237b29f6fc2d5dc4604",
+    "src/web/backend/wayfinder/infrastructure/sharing_schema.py": "62f6d04d6ffe0cf923f45ce8225c00fbc3812a7711dbfa222a2e8a8f833d463c",
+    "src/web/backend/wayfinder/domain/sharing.py": "952f78eb4277a5ea4724f09b058ad62e6c2563accef0bca5a2af255826708e83",
+    "src/web/backend/wayfinder/api/sharing.py": "d4dffe1d1551001f15a002c66c5e0ee96a330ec4775ff6aa7c7cf10f38520a9a",
+    "src/web/backend/wayfinder/application/accounts.py": "8cfb54fb93ab7ec34aecc0ff46ae62eba332de9e3a13edf56376dc45c410be0e",
+    "src/web/backend/wayfinder/composition.py": "ab12513a6864620d52e68401f83bb0003b21a1991ff2824749d9b38d80fabe5b",
+    "src/web/backend/wayfinder/application/email_templates.py": "29c7d394f26508a90b64f828bf234171bc4f25bd8a9c7987bf5687a4af320654",
+    "src/web/backend/tests/test_w12_invitations.py": "ca744726f769b064d71015c3272566b06240815ad46bbcb6839a1402db188bb9",
+    "src/web/openapi.json": "a119ca03178cb6d00827d37dbffe0e16e69a766d5f9c1a3576775ecf8876c7ab",
+    "src/web/backend/wayfinder/migrations/versions/w12_0008_invitations.py": "a2ebfe680318ad8fe078cd91d2c283d30cf7ff67fa6a6e1febc5715d72075f6f"
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="9.232" timestamp="2026-10-27T11:54:19.308939+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_accept_replay_decline_cancel_and_course_scope" time="4.553"><failure message="assert 200 == 410&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code&#10; +  and   410 = &lt;Response [410 Gone]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002805B6D...unction invited.&lt;locals&gt;.actor at 0x000002807B64F6A0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002807B37A390&gt;)
+
+    def test_accept_replay_decline_cancel_and_course_scope(invited):
+        rt = invited
+        identity = iid(send(rt))
+        first, again = accept(rt.receiver, identity), accept(rt.receiver, identity)
+&gt;       assert first.status_code == again.status_code == 200
+E       assert 200 == 410
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+E        +  and   410 = &lt;Response [410 Gone]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:238: AssertionError</failure></testcase></testsuite></testsuites>
