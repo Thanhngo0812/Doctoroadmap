@@ -60,3 +60,13 @@ def chia_dong(so_dong, ti_le_de_ra, *, seed):
     chi_so = _xao_mot_phan(range(so_dong), so_dong, Lcg(seed))
     n = int(round(so_dong * ti_le_de_ra))
     return sorted(chi_so[:n]), sorted(chi_so[n:])
+
+
+def chia_k_phan(cuon, so_phan, *, seed):
+    """Chia các cuốn thành `so_phan` phần cùng số cuốn, tất định theo seed (phần C: 16 cuốn → 4 phần × 4 cuốn). Trả [[cuốn]] mỗi phần đã sắp theo mã."""
+    tat_ca = sorted(cuon)
+    if not tat_ca or len(tat_ca) % so_phan:
+        raise ValueError(f"{len(tat_ca)} cuốn không chia đều thành {so_phan} phần")
+    xao = _xao_mot_phan(tat_ca, len(tat_ca), Lcg(_seed_cua(seed, "chia-k-phan")))
+    co = len(tat_ca) // so_phan
+    return [sorted(xao[i * co:(i + 1) * co]) for i in range(so_phan)]

@@ -4,7 +4,7 @@ import statistics
 
 import pytest
 
-from danhgia.hoc_lai.chia import chia_dong, chon_dung_som, lobo, vong_ngoai
+from danhgia.hoc_lai.chia import chia_dong, chia_k_phan, chon_dung_som, lobo, vong_ngoai
 from danhgia.hoc_lai.chon import chon_ap_cao_nhat, chon_mot_se
 from danhgia.hoc_lai.so_sanh import hieu_theo_cuon, so_sanh_cap
 
@@ -167,3 +167,21 @@ def test_hoc_lai_la_phan_thuan_khong_nhap_thu_vien_hoc_may():
             ten = [x.name for x in nut.names] if isinstance(nut, ast.Import) else [nut.module or ""] if isinstance(nut, ast.ImportFrom) and nut.level == 0 else []
             for t in ten:
                 assert t.split(".")[0] not in {"lightgbm", "sklearn", "numpy", "pandas", "doc2roadmap"}, f"{duong.name}: {t}"
+
+
+def test_chia_4_phan_moi_cuon_dung_mot_phan_va_tat_dinh():
+    phan = chia_k_phan(CUON, 4, seed=20261027)
+    assert [len(p) for p in phan] == [4, 4, 4, 4]
+    assert sorted(c for p in phan for c in p) == sorted(CUON)  # đủ 16 cuốn, không cuốn nào hai lần
+    assert phan == chia_k_phan(list(reversed(CUON)), 4, seed=20261027)
+    assert phan != chia_k_phan(CUON, 4, seed=1)
+    with pytest.raises(ValueError):
+        chia_k_phan(CUON[:15], 4, seed=1)
+
+
+GOLD_4_PHAN = [["d01-02", "d01-11", "d01-15", "d01-16"], ["d01-01", "d01-07", "d01-12", "d01-13"],
+               ["d01-04", "d01-08", "d01-09", "d01-14"], ["d01-03", "d01-05", "d01-06", "d01-10"]]
+
+
+def test_chia_4_phan_gia_tri_co_dinh():
+    assert chia_k_phan(CUON, 4, seed=20261027) == GOLD_4_PHAN
