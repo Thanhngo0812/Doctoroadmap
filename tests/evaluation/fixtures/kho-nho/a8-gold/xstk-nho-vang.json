@@ -1,0 +1,616 @@
+{
+ "annotator": "A1+A2 (hội ý)",
+ "canonical_version": 7,
+ "chapter": {
+  "label": "10-13",
+  "ordinals": [
+   10,
+   11,
+   12,
+   13
+  ],
+  "section_ids": [
+   "s_8ccdf9c4babdd6e7dbe66cdd",
+   "s_60383131e3027f182eefef5d",
+   "s_6262030d485cf28268780894",
+   "s_0de1d21f7bb4366a53804bc2"
+  ],
+  "titles": [
+   "2.1. Các khái niệm cơ bản",
+   "2.2. Khoảng ước lượng của các số đặc trưng tổng thể • Khoảng ước lượng của tỉ lệ tổng thể",
+   "2.3. Xác định độ tin cậy trong ước lượng",
+   "2.4. Xác định kích thước mẫu trong ước lượng"
+  ]
+ },
+ "concept_hash": "b2bf64de01157010f54012d7ea36ef4d7cca5b0b8af5a95f22053cdfbf95e452",
+ "doc_id": "xstk-ch3-1",
+ "edges": [
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C10] 2.1 — tr. 22",
+   "note": "Khoảng (a,b) tìm được trong ước lượng khoảng được gọi là khoảng tin cậy",
+   "prerequisite": "node_a27f3f16112be98f7a97eed0",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_10e5edc0b849d05aea3c1c8a"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_4b26dac951dbebc05b236d75",
+   "source": "both",
+   "strength": null,
+   "target": "node_289d52828ccb5e470368da04"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.3–2.4, PDF 30,33–34 / sách 116,119–120",
+   "note": "Ở nhánh trung bình, §2.4 nhắc lại trực tiếp ε = tαs/√n làm cơ sở tìm N. Khi đọc chuỗi quan hệ, chỉ theo nhánh cỡ mẫu lớn đang xét; không tự kéo điều kiện Student của nhánh mẫu nhỏ vào bài tìm N.",
+   "prerequisite": "node_81f39025502ecc86a24e62aa",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_289d52828ccb5e470368da04"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.3, PDF 30 / sách 116",
+   "note": "Trong nhánh tỉ lệ, đảo biểu thức ε để tính tα = ε√[n/(f(1 − f))], sau đó suy ra độ tin cậy. Cần hiểu quan hệ giữa sai số, cỡ mẫu và tỉ lệ mẫu trước.",
+   "prerequisite": "node_7c03c9e66fad3517c947c7f4",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_31046fa9c656b31efbcd6e76"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.3, PDF 31 / sách 117",
+   "note": "Trong nhánh trung bình, đảo ε = tαs/√n thành tα = ε√n/s rồi tra phân phối phù hợp. Đây là phụ thuộc trực tiếp vào công thức độ chính xác.",
+   "prerequisite": "node_81f39025502ecc86a24e62aa",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_31046fa9c656b31efbcd6e76"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_4831e291764eba0f6bdea5fb",
+   "source": "both",
+   "strength": null,
+   "target": "node_3ee0544b3750a2a153b2da2b"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_65322abf0341cd5352062f08",
+   "source": "both",
+   "strength": null,
+   "target": "node_3ee0544b3750a2a153b2da2b"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.3, PDF 30 / sách 116",
+   "note": "Độ tin cậy là đầu vào được cho trước của bài toán thuận. Không nối hai chiều với bài toán tìm độ tin cậy chỉ vì chúng là hai bài toán ngược nhau.",
+   "prerequisite": "node_875d058be532606fba805480",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_417a624e3e6235eb2bce031b"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_c322985c7764c9d5f76af1a8",
+   "source": "both",
+   "strength": null,
+   "target": "node_417a624e3e6235eb2bce031b"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 23 / sách 109",
+   "note": "Hệ số tα được xác định từ độ tin cậy 1 − α rồi mới dùng để tính ε. Hàm φ và giá trị phân vị chưa có node riêng, đã ghi cờ thiếu.",
+   "prerequisite": "node_875d058be532606fba805480",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_4b26dac951dbebc05b236d75"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 23 / sách 109",
+   "note": "Cỡ mẫu n xuất hiện dưới căn bậc hai trong công thức ε. Phạm vi của cạnh này là công thức độ chính xác được nêu ở trang 23.",
+   "prerequisite": "node_b8e7e2901a20c366ba469ff3",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_4b26dac951dbebc05b236d75"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 23 / sách 109",
+   "note": "Ở lần giới thiệu đầu tiên, ε = tα√[f(1 − f)/n]. Tỉ lệ mẫu f là đầu vào trực tiếp để tính độ chính xác trong nhánh tỉ lệ.",
+   "prerequisite": "node_f4c1df0e465791113379afa8",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_4b26dac951dbebc05b236d75"
+  },
+  {
+   "evidence_kind": "mach_trinh_bay",
+   "location": "[C13] 2.4 — tr. 33",
+   "note": "Mục 2.4 giải chi tiết bài toán đã nêu ở mục 2.3",
+   "prerequisite": "node_289d52828ccb5e470368da04",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_640b15475ba321937643b70f"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C13] 2.4 — tr. 33",
+   "note": "Sách xét việc xác định n cho bài toán ước lượng tỉ lệ",
+   "prerequisite": "node_a97019be3cf4279f80db63c5",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_640b15475ba321937643b70f"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_85a5d82f46e4c4f16f717d28",
+   "source": "both",
+   "strength": null,
+   "target": "node_65322abf0341cd5352062f08"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C1] 1.1 — tr. 1",
+   "note": "G dùng để ước lượng tham số của tổng thể",
+   "prerequisite": "node_e8b892de5a99510cea619c70",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_65322abf0341cd5352062f08"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_10e5edc0b849d05aea3c1c8a",
+   "source": "both",
+   "strength": null,
+   "target": "node_679b01f9988ac5ba4e38c881"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C12] Cách giải — tr. 30",
+   "note": "Là khái niệm độ chính xác áp riêng cho bài toán tỉ lệ",
+   "prerequisite": "node_4b26dac951dbebc05b236d75",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_7c03c9e66fad3517c947c7f4"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C12] Cách giải — tr. 31",
+   "note": "Hệ số t trong công thức tra từ bảng phân phối chuẩn",
+   "prerequisite": "node_ee1432c7ed853229550d7af4",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_7c03c9e66fad3517c947c7f4"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_37abad5b43e9379d908ef05c",
+   "source": "both",
+   "strength": null,
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_794aad6894ceec003abdb405",
+   "source": "both",
+   "strength": null,
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 25 / sách 111",
+   "note": "Cần mức 1 − α để xác định hệ số tα trước khi tính ε. Ký hiệu tα trong sách có thể chỉ hệ số chuẩn hoặc Student tùy trường hợp.",
+   "prerequisite": "node_875d058be532606fba805480",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 25 / sách 111",
+   "note": "n quyết định hệ số 1/√n và nhánh lựa chọn phân phối. Khi dùng Student, số bậc tự do là n − 1.",
+   "prerequisite": "node_b8e7e2901a20c366ba469ff3",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.2, PDF 25 / sách 111",
+   "note": "Điều kiện tổng thể chuẩn được nêu trực tiếp ở nhánh mẫu nhỏ và phần chú ý về σ. Cần nhận diện điều kiện này để chọn công thức phù hợp.",
+   "prerequisite": "node_ee1432c7ed853229550d7af4",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 25 / sách 111",
+   "note": "Bắt buộc trong nhánh đã biết phương sai tổng thể: xác định σ = √σ² để thay s trong công thức ε. Xem cờ về cách chọn chuẩn/Student trong ví dụ.",
+   "prerequisite": "node_ef310ac6c9fd3cf0f88f0ff7",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_81f39025502ecc86a24e62aa"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C10] 2.1 — tr. 22",
+   "note": "Độ tin cậy = 1 - alpha, định nghĩa ngay sau xác suất mắc sai lầm",
+   "prerequisite": "node_679b01f9988ac5ba4e38c881",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_875d058be532606fba805480"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 29 / sách 115",
+   "note": "Từ 1 − α suy ra hai mức đuôi α/2 và 1 − α/2 để tra phân vị χ².",
+   "prerequisite": "node_875d058be532606fba805480",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_9b22f90c77a373718022c347",
+   "source": "both",
+   "strength": null,
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_c322985c7764c9d5f76af1a8",
+   "source": "both",
+   "strength": null,
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 29 / sách 115",
+   "note": "Việc biết hay chưa biết μ quyết định nhánh công thức. Nếu biết μ, cần tính tổng các bình phương độ lệch quanh μ.",
+   "prerequisite": "node_d7010cbbe2c11f4ccbe9aef8",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_ee06624be9ca8b0c76c59ce6",
+   "source": "both",
+   "strength": null,
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.2, PDF 29 / sách 115",
+   "note": "Bắt buộc trong ví dụ tổng thể chuẩn được giải bằng χ². Phần phát biểu bài toán chung chưa nhắc lại điều kiện chuẩn, nên phạm vi áp dụng cần được rà soát.",
+   "prerequisite": "node_ee1432c7ed853229550d7af4",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_ef310ac6c9fd3cf0f88f0ff7",
+   "source": "both",
+   "strength": null,
+   "target": "node_900a3a7319d8c296f585aa76"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_85a5d82f46e4c4f16f717d28",
+   "source": "both",
+   "strength": null,
+   "target": "node_915e8c915e5ce0c9b01b6aba"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 22 / sách 108",
+   "note": "Cỡ mẫu n nằm ở mẫu số của công thức F. Cần hiểu n là số phần tử được khảo sát.",
+   "prerequisite": "node_b8e7e2901a20c366ba469ff3",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_915e8c915e5ce0c9b01b6aba"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C3] 1.3 — tr. 3",
+   "note": "Là dạng trên mẫu tổng quát của tỉ lệ mẫu f = m/n",
+   "prerequisite": "node_f4c1df0e465791113379afa8",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_915e8c915e5ce0c9b01b6aba"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 22 / sách 108",
+   "note": "Phương pháp chọn trực tiếp G = G(X₁,…,Xₙ,θ) của mẫu tổng quát để xây dựng khoảng. Cạnh dựa trên đầu vào của công thức; không dựa riêng vào thứ tự trình bày.",
+   "prerequisite": "node_85a5d82f46e4c4f16f717d28",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_a27f3f16112be98f7a97eed0"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C10] 2.1 — tr. 21",
+   "note": "Tìm khoảng chứa tham số chưa biết của tổng thể",
+   "prerequisite": "node_e8b892de5a99510cea619c70",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_a27f3f16112be98f7a97eed0"
+  },
+  {
+   "evidence_kind": "mach_trinh_bay",
+   "location": "§2.3, PDF 30 / sách 116",
+   "note": "Trong phạm vi ước lượng khoảng ở §2.3, công thức sai số của ước lượng p là cơ sở giải bài toán tìm độ tin cậy. Chỉ áp dụng cạnh cho ngữ cảnh này; không suy rộng sang mọi phương pháp ước lượng tỉ lệ, chẳng hạn ước lượng điểm. Tên ngắn có thể trùng phạm vi node tên dài, đã ghi cờ.",
+   "prerequisite": "node_7c03c9e66fad3517c947c7f4",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_a97019be3cf4279f80db63c5"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C12] Cách giải — tr. 30",
+   "note": "Hàm ước lượng của tỉ lệ tổng thể chính là tỉ lệ mẫu tổng quát",
+   "prerequisite": "node_915e8c915e5ce0c9b01b6aba",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_a97019be3cf4279f80db63c5"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.3–2.4, PDF 30,33 / sách 116,119",
+   "note": "Giữ nhãn ngắn Ước lượng tỉ lệ đúng danh mục: đối tượng cần suy ra là p. Không gán cạnh với tên dài chỉ để biểu diễn quan hệ đồng nghĩa.",
+   "prerequisite": "node_d4e2187366811bc6b6c2b7f3",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_a97019be3cf4279f80db63c5"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 23 / sách 109",
+   "note": "Công thức hai cận là f − ε và f + ε. Độ chính xác ε quyết định nửa độ rộng khoảng. Các đầu vào f, n và độ tin cậy đã được nối qua ε nên không lặp cạnh bắc cầu.",
+   "prerequisite": "node_4b26dac951dbebc05b236d75",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_aacc13b158e3e91a2e7d5101"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_c322985c7764c9d5f76af1a8",
+   "source": "both",
+   "strength": null,
+   "target": "node_aacc13b158e3e91a2e7d5101"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_d4e2187366811bc6b6c2b7f3",
+   "source": "both",
+   "strength": null,
+   "target": "node_aacc13b158e3e91a2e7d5101"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C13] Cách giải — tr. 34",
+   "note": "Là trường hợp riêng của bài toán xác định kích thước mẫu",
+   "prerequisite": "node_640b15475ba321937643b70f",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_afcc4a7e59dc73f43c63d7fe"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "§2.4, PDF 34 / sách 120",
+   "note": "Trong nhánh chưa biết σ², công thức N dùng s² của mẫu thăm dò. Đây là phương sai mẫu hiệu chỉnh, không phải s hoặc phương sai chưa hiệu chỉnh.",
+   "prerequisite": "node_ee06624be9ca8b0c76c59ce6",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_afcc4a7e59dc73f43c63d7fe"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C13] 2.4 — tr. 33",
+   "note": "Ngữ cảnh là bài toán ước lượng trung bình tổng thể",
+   "prerequisite": "node_fbdd6aa5f46bc0f53a203e23",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_afcc4a7e59dc73f43c63d7fe"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C12] Cách giải — tr. 30",
+   "note": "Là khái niệm độ tin cậy đặt trong ngữ cảnh một bài toán ước lượng cụ thể",
+   "prerequisite": "node_875d058be532606fba805480",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_b386a1876614401fc3047d33"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C12] Cách giải — tr. 31",
+   "note": "Từ hệ số t tra ngược bảng phân phối chuẩn để ra độ tin cậy",
+   "prerequisite": "node_ee1432c7ed853229550d7af4",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_b386a1876614401fc3047d33"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 23 / sách 109",
+   "note": "Khoảng số (θ₁,θ₂) là kết quả tính hai đầu mút ngẫu nhiên G₁,G₂ trên dữ liệu quan sát. Vì vậy phải hiểu khoảng tin cậy ngẫu nhiên trước.",
+   "prerequisite": "node_10e5edc0b849d05aea3c1c8a",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_c322985c7764c9d5f76af1a8"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 23 / sách 109",
+   "note": "Hai đầu mút θ₁ = G₁(x₁,…,xₙ), θ₂ = G₂(x₁,…,xₙ) được tính từ mẫu cụ thể. Không coi Khoảng tin cậy và Khoảng ước lượng là hai tên hoàn toàn đồng nghĩa trong đoạn này.",
+   "prerequisite": "node_4831e291764eba0f6bdea5fb",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_c322985c7764c9d5f76af1a8"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 22 / sách 108",
+   "note": "S² được xây dựng từ X₁,…,Xₙ. Đây là đại lượng ngẫu nhiên của mẫu tổng quát, khác với giá trị s² tính từ một mẫu cụ thể.",
+   "prerequisite": "node_85a5d82f46e4c4f16f717d28",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_ee06624be9ca8b0c76c59ce6"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "[C3] 1.3 — tr. 3",
+   "note": "S'^2 được định nghĩa trực tiếp từ S^2 qua hệ số n/(n-1)",
+   "prerequisite": "node_9b75b903880420b2bae1f452",
+   "source": "A2",
+   "strength": "strong",
+   "target": "node_ee06624be9ca8b0c76c59ce6"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_b8e7e2901a20c366ba469ff3",
+   "source": "both",
+   "strength": null,
+   "target": "node_ee06624be9ca8b0c76c59ce6"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.1, PDF 22 / sách 108",
+   "note": "Trong S² = Σ(Xᵢ − X̄)²/(n − 1), X̄ là tâm để tính độ lệch. Cần phân biệt trung bình mẫu ngẫu nhiên X̄ với giá trị quan sát x̄.",
+   "prerequisite": "node_c6f1bed70d8706836bd0cda5",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_ee06624be9ca8b0c76c59ce6"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_65322abf0341cd5352062f08",
+   "source": "both",
+   "strength": null,
+   "target": "node_f1da37cf45444c61ab8685e2"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C10] 2.1 — tr. 22",
+   "note": "Ví dụ minh hoạ thứ hai: tỉ lệ mẫu tổng quát là ước lượng không chệch của tỉ lệ tổng thể",
+   "prerequisite": "node_915e8c915e5ce0c9b01b6aba",
+   "source": "A2",
+   "strength": "weak",
+   "target": "node_f1da37cf45444c61ab8685e2"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "[C10] 2.1 — tr. 22",
+   "note": "Ví dụ minh hoạ: trung bình mẫu là ước lượng không chệch của trung bình tổng thể",
+   "prerequisite": "node_c6f1bed70d8706836bd0cda5",
+   "source": "A2",
+   "strength": "weak",
+   "target": "node_f1da37cf45444c61ab8685e2"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_81f39025502ecc86a24e62aa",
+   "source": "both",
+   "strength": null,
+   "target": "node_fbdd6aa5f46bc0f53a203e23"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "§2.2, PDF 25 / sách 111",
+   "note": "Phải hiểu ý nghĩa khoảng ước lượng để diễn giải (x̄ − ε, x̄ + ε) là kết quả của thủ tục ước lượng μ.",
+   "prerequisite": "node_c322985c7764c9d5f76af1a8",
+   "source": "A1",
+   "strength": "strong",
+   "target": "node_fbdd6aa5f46bc0f53a203e23"
+  },
+  {
+   "evidence_kind": "noi_ro",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_c6f1bed70d8706836bd0cda5",
+   "source": "both",
+   "strength": null,
+   "target": "node_fbdd6aa5f46bc0f53a203e23"
+  },
+  {
+   "evidence_kind": "trong_dinh_nghia",
+   "location": "",
+   "note": "",
+   "prerequisite": "node_d7010cbbe2c11f4ccbe9aef8",
+   "source": "both",
+   "strength": null,
+   "target": "node_fbdd6aa5f46bc0f53a203e23"
+  }
+ ],
+ "errors": [],
+ "targets": [
+  "node_ee06624be9ca8b0c76c59ce6",
+  "node_3ee0544b3750a2a153b2da2b",
+  "node_65322abf0341cd5352062f08",
+  "node_a27f3f16112be98f7a97eed0",
+  "node_915e8c915e5ce0c9b01b6aba",
+  "node_f1da37cf45444c61ab8685e2",
+  "node_10e5edc0b849d05aea3c1c8a",
+  "node_679b01f9988ac5ba4e38c881",
+  "node_875d058be532606fba805480",
+  "node_c322985c7764c9d5f76af1a8",
+  "node_aacc13b158e3e91a2e7d5101",
+  "node_4b26dac951dbebc05b236d75",
+  "node_794aad6894ceec003abdb405",
+  "node_81f39025502ecc86a24e62aa",
+  "node_fbdd6aa5f46bc0f53a203e23",
+  "node_900a3a7319d8c296f585aa76",
+  "node_9b22f90c77a373718022c347",
+  "node_289d52828ccb5e470368da04",
+  "node_31046fa9c656b31efbcd6e76",
+  "node_417a624e3e6235eb2bce031b",
+  "node_a97019be3cf4279f80db63c5",
+  "node_7c03c9e66fad3517c947c7f4",
+  "node_b386a1876614401fc3047d33",
+  "node_ee1432c7ed853229550d7af4",
+  "node_afcc4a7e59dc73f43c63d7fe",
+  "node_640b15475ba321937643b70f"
+ ]
+}
