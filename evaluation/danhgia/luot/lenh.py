@@ -33,6 +33,7 @@ def them_lenh(parser):
     parser.add_argument("--g3")
     parser.add_argument("--g4")
     parser.add_argument("--can")
+    parser.add_argument("--ly-do-chu", help="lý do xác nhận cảnh báo chất lượng chữ (--allow-text-quality-reason của pipeline), nếu sách có trang bị cảnh báo")
     parser.add_argument("--transport", default="vertex")
     parser.add_argument("--commit")
     parser.add_argument("--ngay")
@@ -55,7 +56,7 @@ def _ngu_canh(args, thu_muc, **them):
     return NguCanh(thu_muc=Path(thu_muc), manifest=json.loads(Path(args.manifest).read_text(encoding="utf-8")),
                    manifest_path=args.manifest, pdf=Path(args.pdf), bien_the=args.bien_the, transport=args.transport,
                    commit=args.commit or _commit(), tu_luot=chon(args.tu_luot), vang_a4=chon(args.vang_a4), g3=chon(args.g3),
-                   g4=chon(args.g4), can=chon(args.can), bien_the_b5=args.bien_the_b5, allow_spend=args.allow_spend,
+                   g4=chon(args.g4), can=chon(args.can), bien_the_b5=args.bien_the_b5, ly_do_chu=args.ly_do_chu, allow_spend=args.allow_spend,
                    dry_run=args.dry_run, kho_chung=tuple(args.kho_chung), **({"ngay": args.ngay} if args.ngay else {}), **them)
 
 

@@ -54,6 +54,7 @@ class NguCanh:
     g4: Path | None = None
     can: Path | None = None
     bien_the_b5: int = 1
+    ly_do_chu: str | None = None
     allow_spend: bool = False
     dry_run: bool = False
     kho_chung: tuple = ()
@@ -124,7 +125,7 @@ class Luot:
         env = {k: v for k, v in self.moi_truong().items() if k != "DOC2ROADMAP_ARTIFACT_DIR"} if nc.bien_the not in (
             *PHAT_LAI, *BASELINE, *B5) else {}
         vang = {t: _sha256(p) for t, p in (("g3", nc.g3), ("g4", nc.g4), ("can", nc.can), ("a4", nc.vang_a4)) if p}
-        return {"env": env, "a1": "docling" if nc.bien_the == "docling" else "nhe", "bien_the_b5": nc.bien_the_b5 if nc.bien_the in B5 else None,
+        return {"env": env, "ly_do_chu": nc.ly_do_chu, "a1": "docling" if nc.bien_the == "docling" else "nhe", "bien_the_b5": nc.bien_the_b5 if nc.bien_the in B5 else None,
                 "vang": vang}
 
     # ---------- bản ghi ----------
@@ -163,6 +164,8 @@ class Luot:
 
     # ---------- bước ----------
     def _cli(self, argv):
+        if self.nc.ly_do_chu and argv[0] in ("ingest", "label-roles", "a3", "roadmap"):
+            argv = [*argv, "--allow-text-quality-reason", self.nc.ly_do_chu]
         env = self.moi_truong()
         ma, ra = self.chay_cli(argv, env)
         (self.thu_muc / "log").mkdir(exist_ok=True)

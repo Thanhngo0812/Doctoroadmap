@@ -135,6 +135,16 @@ def test_moi_lenh_pipeline_dung_kho_rieng_cua_luot(chinh, gia, tmp_path):
     assert not (tmp_path / "artifacts" / "graph").exists()  # kho chung không bị đụng
 
 
+def test_ly_do_chat_luong_chu_duoc_chuyen_cho_cac_lenh_nhan_no(sach, gia, tmp_path):
+    assert main(lenh(sach, tmp_path / "luot", "chinh", "--ly-do-chu", "trang 3 ma VNI da biet")) == 0
+    for argv, _ in gia.lenh:
+        co = "--allow-text-quality-reason" in argv
+        assert co == (argv[0] in ("ingest", "label-roles", "a3", "roadmap")), argv
+        if co:
+            assert argv[argv.index("--allow-text-quality-reason") + 1] == "trang 3 ma VNI da biet"
+    assert ban_ghi.doc(tmp_path / "luot")["cau_hinh"]["ly_do_chu"] == "trang 3 ma VNI da biet"
+
+
 def test_kho_pha_b_rieng_duoc_dua_vao_hop_dong(sach, gia, tmp_path):
     gia.so_dong_pha_b = 3
     a = tmp_path / "a"
