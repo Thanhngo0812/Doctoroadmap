@@ -1,4 +1,4 @@
-"""Seam chấm và hợp đồng không nhập mã pipeline; chỉ seam xuất (và lớp đối chiếu) được nhập `doc2roadmap`."""
+"""Seam chấm, hợp đồng và phiếu không nhập mã pipeline; chỉ seam xuất (và lớp đối chiếu) được nhập `doc2roadmap`."""
 import ast
 from pathlib import Path
 
@@ -31,8 +31,19 @@ def test_hop_dong_khong_nhap_doc2roadmap():
     _cam("hop_dong")
 
 
-def test_vang_cu_khong_nhap_doc2roadmap():
+def test_vang_khong_nhap_doc2roadmap():
     _cam("vang")
+
+
+def test_phieu_khong_nhap_doc2roadmap():
+    _cam("phieu")
+
+
+def test_seam_phieu_co_mo_dun_cua_ve_dg02():
+    # chặn kiểm vô nghĩa: phải thực sự quét được mã của seam phiếu
+    ten_tep = {p.name for p in (GOC / "phieu").rglob("*.py")} | {p.name for p in (GOC / "vang").rglob("*.py")}
+    assert {"g3.py", "kiem.py", "can.py", "bat_dong.py", "trang.py"} <= ten_tep
+    assert (GOC / "ten.py").is_file()
 
 
 def test_chi_xuat_va_doi_chieu_duoc_nhap_pipeline():
