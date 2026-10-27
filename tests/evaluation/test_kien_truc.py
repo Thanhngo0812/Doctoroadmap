@@ -35,6 +35,10 @@ def test_vang_khong_nhap_doc2roadmap():
     _cam("vang")
 
 
+def test_can_khong_nhap_doc2roadmap():
+    _cam("can")
+
+
 def test_phieu_khong_nhap_doc2roadmap():
     _cam("phieu")
 
@@ -47,7 +51,7 @@ def test_seam_phieu_co_mo_dun_cua_ve_dg02():
 
 
 def test_chi_xuat_va_doi_chieu_duoc_nhap_pipeline():
-    cho_phep = {"xuat", "doi_chieu.py"}
+    cho_phep = {"xuat", "doi_chieu.py", "phat_lai"}
     for duong in GOC.rglob("*.py"):
         tuong_doi = duong.relative_to(GOC).parts
         if tuong_doi[0] in cho_phep:

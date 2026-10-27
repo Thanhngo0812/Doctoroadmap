@@ -1,8 +1,10 @@
 # W-17 — Quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký
 
+**Phân công lần 9, 2026-10-27: mở mốc backend W-17.1, toàn W-17 vẫn mở.** W-14/W-16 đã đạt. Lõi nhận list_users/update_user + GET/PATCH admin/users và GET admin/audit, tái dùng account/session/audit/policy; web làm React ở lượt sau. Kiểm quyền/không lộ dữ liệu học, disable hủy mọi phiên, admin cuối/cạnh tranh, rollback audit. Không tạo migration rỗng, không bật trần demo/Cloudinary thật. Phần bản dựng/khoá mẫu rồi chi/log validation là các mốc sau, chưa hoàn tất; xem [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 3 (admin không đọc chat), 8 (`spend_summary`), 9, 10 (nhật ký); spec thiết kế, khu quản
 trị.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-14, W-16 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm backend theo mốc; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-14, W-16 · **Trạng thái:** ready-for-agent
 
 ## Vì sao
 

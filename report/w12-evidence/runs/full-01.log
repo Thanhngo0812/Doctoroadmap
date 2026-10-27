@@ -1,0 +1,388 @@
+........................................................................ [  2%]
+........................................................................ [  4%]
+........................................................................ [  7%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 16%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+..............x......................................................... [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 49%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 87%]
+...........F.................FF.....F................................... [ 89%]
+.................F................s..................................... [ 92%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+........................................................................ [ 99%]
+...................                                                      [100%]
+================================== FAILURES ===================================
+___ test_default_database_services_share_and_close_composition_owned_engine ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B23668C8F0>
+
+    def test_default_database_services_share_and_close_composition_owned_engine(monkeypatch) -> None:
+        from wayfinder.infrastructure import database, phase_b_store
+
+        events = []
+        engine = object()
+
+        class FakeHealth:
+            def __init__(self, url):
+                assert url == "postgresql+psycopg://test/db"
+                self.engine = engine
+
+            def __call__(self):
+                return "ok"
+
+            def close(self):
+                events.append("health.close")
+
+        class FakeStore:
+            def __init__(self, received_engine, **kwargs):
+                assert received_engine is engine
+                assert kwargs["lock_pool_size"] == WebSettings(_env_file=None).phase_b_lock_pool_size
+                events.append("store.create")
+
+            def close(self):
+                events.append("store.close")
+
+        account_service = object()
+        account_engines = []
+        monkeypatch.setattr(database, "DatabaseHealth", FakeHealth)
+        monkeypatch.setattr(phase_b_store, "PostgresPhaseBStore", FakeStore)
+        monkeypatch.setattr(
+            "wayfinder.composition.compose_account_service",
+            lambda _settings, received_engine: account_engines.append(received_engine) or account_service,
+        )
+
+>       services = _compose(WebSettings(_env_file=None, database_url="postgresql+psycopg://test/db"))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_composition.py:172:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\tests\test_composition.py:112: in _compose
+    return compose_services(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+settings = WebSettings(version='0.1.0', database_url='postgresql+psycopg://test/db', test_database_url='postgresql+psycopg://wayf...artifacts'), cloudinary_url=None, cloudinary_folder='wayfinder/dev', signed_url_ttl_seconds=300, page_image_width=1400)
+
+    def compose_services(
+        settings: WebSettings,
+        *,
+        health_check: Callable[[], HealthStatus] | None = None,
+        close: Callable[[], None] | None = None,
+        core_settings: Settings | None = None,
+        auth_validator: Callable[[str, str], None] = validate_vertex_auth,
+        model_factory: Callable[..., object] = GeminiToolModel,
+        embedding_factory: Callable[..., object] = GeminiEmbedding,
+        phase_b_store: PhaseBStore | None = None,
+        graph_loader: Callable | None = None,
+        clock=None,
+        build_media=None,
+    ) -> WebServices:
+        core = core_settings or Settings(artifact_dir=settings.artifact_root)
+        if core.llm_transport != "vertex":
+            raise ValueError("WayFinder web requires DOC2ROADMAP_LLM_TRANSPORT=vertex")
+        if not core.vertex_project:
+            raise ValueError("missing DOC2ROADMAP_VERTEX_PROJECT")
+        if not core.vertex_location:
+            raise ValueError("missing DOC2ROADMAP_VERTEX_LOCATION")
+
+        auth_validator(core.vertex_project, core.vertex_location)
+        from doc2roadmap.infrastructure.google_auth import VertexCredentials
+        credentials = VertexCredentials(core.vertex_project, core.vertex_location)
+        if auth_validator is validate_vertex_auth:
+            def warm_credentials():
+                try:
+                    credentials.headers()
+                except Exception as error:
+                    logging.getLogger(__name__).warning('Vertex warm-up failed: %s', type(error).__name__)
+            Thread(target=warm_credentials, name='web-vertex-warmup', daemon=True).start()
+        database_engine = None
+        if health_check is None:
+            if settings.database_url is None:
+                raise ValueError("missing WAYFINDER_DATABASE_URL")
+            from wayfinder.infrastructure.database import DatabaseHealth
+            database_health = DatabaseHealth(settings.database_url)
+            database_engine = database_health.engine
+            health_check = database_health
+            close = database_health.close
+        api_key = core.gemini_api_key.get_secret_value() if core.gemini_api_key else None
+        limits = BSettings()
+        model = model_factory(api_key, limits.model_id, transport="vertex",
+                              vertex_project=core.vertex_project, vertex_location=core.vertex_location,
+                              timeout_seconds=core.gemini_timeout_seconds, vertex_credentials=credentials,
+                              temperature=limits.lecture_temperature, max_output_tokens=limits.lecture_max_output_tokens)
+        embedding = embedding_factory(api_key, model=core.embedding_model_id,
+                                      output_dimensionality=core.embedding_dimensions,
+                                      timeout=core.gemini_timeout_seconds, max_retries=core.gemini_max_retries,
+                                      transport="vertex", vertex_project=core.vertex_project,
+                                      vertex_location=core.vertex_location, vertex_credentials=credentials)
+        models, model_lock = {'lecture': model}, RLock()
+        def model_for(purpose):
+            with model_lock:
+                if purpose not in models:
+                    outputs = {'assistant': limits.assistant_max_output_tokens, 'document': limits.document_max_output_tokens,
+                        'quiz_gen': limits.quiz_generation_max_output_tokens, 'quiz_verify': limits.quiz_verifier_max_output_tokens}
+                    temperatures = {'assistant': limits.assistant_temperature, 'document': limits.document_temperature}
+                    models[purpose] = model_factory(api_key, limits.model_id, transport='vertex',
+                        vertex_project=core.vertex_project, vertex_location=core.vertex_location,
+                        vertex_credentials=credentials, timeout_seconds=core.gemini_timeout_seconds,
+                        temperature=temperatures.get(purpose, 0.0), max_output_tokens=outputs[purpose])
+                return models[purpose]
+        created_engine = None
+        database_engine = database_engine or getattr(health_check, "engine", None)
+        if database_engine is None and settings.database_url is not None:
+            from wayfinder.infrastructure.database import create_database_engine
+            created_engine = create_database_engine(settings.database_url)
+            database_engine = created_engine
+        created_store = None
+        if phase_b_store is None and database_engine is not None:
+            from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+            created_store = PostgresPhaseBStore(database_engine,
+                lock_pool_size=settings.phase_b_lock_pool_size,
+                lock_timeout_seconds=BSettings().lecture_click_timeout_seconds)
+            phase_b_store = created_store
+        accounts = compose_account_service(settings, database_engine) if database_engine is not None else None
+        courses = learning = sharing = None
+        if database_engine is not None:
+            courses, learning = compose_course_services(settings, database_engine, phase_b_store,
+                model=model, embedding=embedding, graph_loader=graph_loader, clock=clock, media=build_media, model_for=model_for)
+            sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock,
+>                                             mailer=accounts.mailer)
+                                                     ^^^^^^^^^^^^^^^
+E           AttributeError: 'object' object has no attribute 'mailer'
+
+src\web\backend\wayfinder\composition.py:124: AttributeError
+__ test_every_cid_route_hides_private_course_from_outsiders_including_admin ___
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_985e46f0c5b44acb82211...4acb82211ba2bcada0cc), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x000001B209F302C0>, loaded=[])
+
+    def test_every_cid_route_hides_private_course_from_outsiders_including_admin(courses):
+        for role in ("user", "admin"):
+            _, client, headers = courses.user(role)
+>           assert len(assert_private_course_routes_protected(courses.app, client, headers, courses.course.id)) >= 4
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_courses_w06.py:121:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+app = <fastapi.applications.FastAPI object at 0x000001B20A14DD00>
+client = <starlette.testclient.TestClient object at 0x000001B2096CFCE0>
+headers = {'Origin': 'http://testserver', 'X-CSRF-Token': 'cjPB1PhL9f7TDJ7xSEOer4-1zJgocqqLydzTWnblNqQ'}
+cid = '1bd232f4-afb5-4d9a-99c2-81ba06cc14de'
+
+    def assert_private_course_routes_protected(app, client, headers, cid):
+        seen = set()
+        for route in routes_with_cid(app):
+            path = route.path.replace("{cid}", cid)
+            import re
+            path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
+            for method in route.methods - {"HEAD", "OPTIONS"}:
+                body = ({} if method == "POST" and route.path.endswith("/share-links")
+                        else {"learned": True} if method == "PUT" and "{node_id}" in route.path
+                        else {"title": "Attack", "owner": "someone-else"}
+                        if method not in {"GET", "DELETE"} else None)
+                response = client.request(method, path, headers=headers,
+                                          json=body)
+>               assert response.status_code == 404, (method, path, response.text)
+E               AssertionError: ('POST', '/api/v1/courses/1bd232f4-afb5-4d9a-99c2-81ba06cc14de/invitations', '{"error":{"code":"validation","message":...nputs are not permitted"},{"loc":"body.owner","type":"extra_forbidden","message":"Extra inputs are not permitted"}]}}')
+E               assert 422 == 404
+E                +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+src\web\backend\tests\test_courses_w06.py:111: AssertionError
+_____________ test_route_inventory_catches_a_new_unguarded_route ______________
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_985e46f0c5b44acb82211...4acb82211ba2bcada0cc), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x000001B208B84230>, loaded=[])
+
+    def test_route_inventory_catches_a_new_unguarded_route(courses):
+        @courses.app.get("/api/v1/courses/{cid}/unguarded-probe")
+        def unguarded(cid: str, actor=Depends(get_actor)):
+            return {"leaked": cid}
+
+        _, client, headers = courses.user()
+        with pytest.raises(AssertionError, match="unguarded-probe"):
+>           assert_private_course_routes_protected(courses.app, client, headers, courses.course.id)
+
+src\web\backend\tests\test_courses_w06.py:132:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+app = <fastapi.applications.FastAPI object at 0x000001B2366ADF10>
+client = <starlette.testclient.TestClient object at 0x000001B236007980>
+headers = {'Origin': 'http://testserver', 'X-CSRF-Token': '_91r6MIvopnB3L1sn3r05E7wZQ4VBv-ap1M8Xm5IGgA'}
+cid = 'd0da92bf-1603-4fe0-bca1-f4fdad6f8c30'
+
+    def assert_private_course_routes_protected(app, client, headers, cid):
+        seen = set()
+        for route in routes_with_cid(app):
+            path = route.path.replace("{cid}", cid)
+            import re
+            path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
+            for method in route.methods - {"HEAD", "OPTIONS"}:
+                body = ({} if method == "POST" and route.path.endswith("/share-links")
+                        else {"learned": True} if method == "PUT" and "{node_id}" in route.path
+                        else {"title": "Attack", "owner": "someone-else"}
+                        if method not in {"GET", "DELETE"} else None)
+                response = client.request(method, path, headers=headers,
+                                          json=body)
+>               assert response.status_code == 404, (method, path, response.text)
+E               AssertionError: ('POST', '/api/v1/courses/d0da92bf-1603-4fe0-bca1-f4fdad6f8c30/invitations', '{"error":{"code":"validation","message":...nputs are not permitted"},{"loc":"body.owner","type":"extra_forbidden","message":"Extra inputs are not permitted"}]}}')
+E               assert 422 == 404
+E                +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+src\web\backend\tests\test_courses_w06.py:111: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_985e46f0c5b44acb82211...4acb82211ba2bcada0cc), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x000001B208B84230>, loaded=[])
+
+    def test_route_inventory_catches_a_new_unguarded_route(courses):
+        @courses.app.get("/api/v1/courses/{cid}/unguarded-probe")
+        def unguarded(cid: str, actor=Depends(get_actor)):
+            return {"leaked": cid}
+
+        _, client, headers = courses.user()
+>       with pytest.raises(AssertionError, match="unguarded-probe"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'unguarded-probe'
+E        Input: '(\'POST\', \'/api/v1/courses/d0da92bf-1603-4fe0-bca1-f4fdad6f8c30/invitations\', \'{"error":{"code":"validation","message":...nputs are not permitted"},{"loc":"body.owner","type":"extra_forbidden","message":"Extra inputs are not permitted"}]}}\')\nassert 422 == 404\n +  where 422 = <Response [422 Unprocessable Entity]>.status_code'
+
+src\web\backend\tests\test_courses_w06.py:131: AssertionError
+_ test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection _
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_985e46f0c5b44acb82211...bcada0cc), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x000001B23AA5D160>, loaded=[('doc-1', 8)])
+
+    def test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection(courses):
+        actor, client, headers = courses.user()
+        client.post(f"/api/v1/courses/{courses.sample.id}/join-sample", headers=headers, json={})
+
+        # Acceptance-only route for the gateway's bound learner context; no session
+        # endpoint is published by W-06 (the HTTP session flow belongs to W-09).
+        @courses.app.post("/api/v1/courses/{cid}/binding-probe")
+        def binding_probe(cid: str, payload: dict, actor=Depends(get_actor)):
+            learner = courses.gateway.learner(actor, cid, **payload)
+            session = learner.sessions.create_session(learner.owner, learner.doc_id, {"kind": "roadmap"})
+            learner.progress.set_progress(learner.owner, learner.doc_id, "a", True)
+            token = learner.spend_guard.reserve("assistant", .02, learner.owner)
+            learner.spend_guard.store.append_usage({"purpose": "assistant", "learner_id": learner.owner,
+                                                  "doc_id": learner.doc_id, "cost_usd": .01})
+            return {"session_id": session["session_id"], "reservation": token}
+
+        response = client.post(f"/api/v1/courses/{courses.sample.id}/binding-probe", headers=headers,
+                               json={"owner": courses.owner.user_id, "doc_id": "other-book", "graph_version": 999})
+        assert response.status_code == 200, response.text
+        from wayfinder.infrastructure.database import create_database_engine
+        independent = create_database_engine(courses.engine.url)
+        try:
+            with independent.connect() as connection:
+                session = connection.execute(text("SELECT owner,doc_id,value FROM phase_b_record WHERE kind='session' AND record_id=:id"),
+                                             {"id": response.json()["session_id"]}).one()
+                assert session.owner == actor.user_id and session.doc_id == "doc-1"
+                assert session.value["owner"] == actor.user_id
+                assert connection.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='progress' AND owner=:uid"),
+                                         {"uid": actor.user_id}) == 1
+                reserved = connection.scalar(text("SELECT value FROM phase_b_record WHERE kind='spend_reservation' AND record_id=:id"),
+                                             {"id": response.json()["reservation"]})
+                assert reserved is not None, "spend guard wrote to a different store"
+                assert reserved["learner_id"] == actor.user_id and reserved["cost_usd"] == .02
+                assert connection.scalar(text("SELECT extra FROM usage_ledger WHERE learner_id=:uid"),
+                                         {"uid": actor.user_id})["cost_usd"] == .01
+        finally:
+            independent.dispose()
+        # The very same route inventory must include the probe as well.
+        outsider, outsider_client, outsider_headers = courses.user()
+>       assert_private_course_routes_protected(courses.app, outsider_client, outsider_headers, courses.course.id)
+
+src\web\backend\tests\test_courses_w06.py:250:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+app = <fastapi.applications.FastAPI object at 0x000001B23A9E3320>
+client = <starlette.testclient.TestClient object at 0x000001B237ED36E0>
+headers = {'Origin': 'http://testserver', 'X-CSRF-Token': 'YoYbZA8sEGohvsPmdlZM6k--LaZN5Nn25fyLHLZMD1E'}
+cid = '185c1c2f-3902-4ba3-b93a-ad7c9045ae22'
+
+    def assert_private_course_routes_protected(app, client, headers, cid):
+        seen = set()
+        for route in routes_with_cid(app):
+            path = route.path.replace("{cid}", cid)
+            import re
+            path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
+            for method in route.methods - {"HEAD", "OPTIONS"}:
+                body = ({} if method == "POST" and route.path.endswith("/share-links")
+                        else {"learned": True} if method == "PUT" and "{node_id}" in route.path
+                        else {"title": "Attack", "owner": "someone-else"}
+                        if method not in {"GET", "DELETE"} else None)
+                response = client.request(method, path, headers=headers,
+                                          json=body)
+>               assert response.status_code == 404, (method, path, response.text)
+E               AssertionError: ('POST', '/api/v1/courses/185c1c2f-3902-4ba3-b93a-ad7c9045ae22/invitations', '{"error":{"code":"validation","message":...nputs are not permitted"},{"loc":"body.owner","type":"extra_forbidden","message":"Extra inputs are not permitted"}]}}')
+E               assert 422 == 404
+E                +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+src\web\backend\tests\test_courses_w06.py:111: AssertionError
+______________ test_account_email_templates_reject_unknown_kind _______________
+
+    def test_account_email_templates_reject_unknown_kind():
+        from wayfinder.application.email_templates import render_account_email
+
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+src\web\backend\tests\test_mailer.py:89: Failed
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-pypdfium2]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-pypdfium2]
+tests/integration/test_ingest_real.py::test_real_ingest_reuses_parse_and_keeps_unchanged_chunk_ids
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\docling\models\stages\ocr\rapid_ocr_model.py:430: DeprecationWarning: deprecated
+    if self.options.rec_font_path is not None:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w12-email-invitations-backend\report\w12-evidence\runs\full-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_composition.py::test_default_database_services_share_and_close_composition_owned_engine
+FAILED src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin
+FAILED src/web/backend/tests/test_courses_w06.py::test_route_inventory_catches_a_new_unguarded_route
+FAILED src/web/backend/tests/test_courses_w06.py::test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+FAILED src/web/backend/tests/test_mailer.py::test_account_email_templates_reject_unknown_kind
+5 failed, 3036 passed, 1 skipped, 1 xfailed, 8 warnings in 1376.32s (0:22:56)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

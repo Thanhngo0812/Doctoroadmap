@@ -1,0 +1,730 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/usage-green1.xml
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90mC:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend[39m
+
+ [31m❯[39m src/Usage.test.tsx [2m([22m[2m8 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 3416[2mms[22m[39m
+   [33m[2m✓[22m[39m shows the API ratio 0.35 and honest state Còn nhiều[33m 379[2mms[22m[39m
+   [32m✓[39m shows the API ratio 0.85 and honest state Gần hết[32m 153[2mms[22m[39m
+   [32m✓[39m shows the API ratio 1 and honest state Đã hết[32m 118[2mms[22m[39m
+   [32m✓[39m keeps null build quota unlimited and never calls it zero remaining[32m 77[2mms[22m[39m
+   [32m✓[39m offers retry after a usage failure without inventing a zero ratio[32m 219[2mms[22m[39m
+[31m   [31m×[31m ignores a stale usage result after route change and loads the new route independently[39m[33m 1193[2mms[22m[39m
+   [32m✓[39m does not show late private usage after logout[32m 202[2mms[22m[39m
+[31m   [31m×[31m keeps a persistent learner limit near document creation while saved content and quiz remain accessible[39m[33m 1073[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/Usage.test.tsx[2m > [22mignores a stale usage result after route change and loads the new route independently
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Tài liệu đã lưu. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc"[39m
+        [36m>[39m
+          [0mKhoá học của tôi[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-error"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mChưa mở được lộ trình[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mKhông thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-secondary"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mThử lại[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc"[39m
+        [36m>[39m
+          [0mKhoá học của tôi[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-error"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mChưa mở được lộ trình[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mKhông thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-secondary"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mThử lại[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/Usage.test.tsx:[2m59:23[22m[39m
+    [90m 57|[39m   const user = userEvent.setup(); delay = true; page(); await waitFor(…
+    [90m 58|[39m   delay = false; value = usage(.85); await user.click(screen.getByRole…
+    [90m 59|[39m   expect(await screen.findByText('Tài liệu đã lưu')).toBeVisible();
+    [90m   |[39m                       [31m^[39m
+    [90m 60|[39m   await act(async () => { old(json(usage(1))); });
+    [90m 61|[39m   await user.click(screen.getByRole('button', { name: 'Đi mức dùng' })…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/Usage.test.tsx[2m > [22mkeeps a persistent learner limit near document creation while saved content and quiz remain accessible
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="region" and name "Tài liệu & Quiz"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc"[39m
+        [36m>[39m
+          [0mKhoá học của tôi[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-error"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mChưa mở được lộ trình[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mKhông thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-secondary"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mThử lại[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mĐi khoá[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mĐi mức dùng[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc"[39m
+        [36m>[39m
+          [0mKhoá học của tôi[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-error"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mChưa mở được lộ trình[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mKhông thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.[0m
+          [36m</p>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-secondary"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mThử lại[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/Usage.test.tsx:[2m72:32[22m[39m
+    [90m 70|[39m it('keeps a persistent learner limit near document creation while save…
+    [90m 71|[39m   value = usage(1, null, true); const user = userEvent.setup(); page()…
+    [90m 72|[39m   const library = await screen.findByRole('region', { name: 'Tài liệu …
+    [90m   |[39m                                [31m^[39m
+    [90m 73|[39m   expect(await within(library).findByText(/Đã dùng hết hạn mức hôm nay…
+    [90m 74|[39m   expect(within(library).getByText(/00:00.*27\/10\/2026/)).toBeVisible…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 22:06:45
+[2m   Duration [22m 9.86s[2m (tests 36%, environment 28%, import 16%, transform 13%, setup 7%)[22m
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/usage-green1.xml

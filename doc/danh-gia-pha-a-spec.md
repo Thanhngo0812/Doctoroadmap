@@ -303,6 +303,8 @@ Bảng dưới liệt kê mọi hệ, cách chạy và chi phí:
 | bỏ cạnh pass chính | phát lại A9 → A10 chỉ với cạnh pass phụ | 0 |
 | bỏ cạnh pass phụ | phát lại A9 → A10 chỉ với cạnh pass chính | 0 |
 | tắt A2, tắt lọc A5 | chỉ khi lịch còn chỗ; chạy lại từ khâu tương ứng | có |
+| logistic thay LightGBM | A1: chạy lại bộ đọc nhẹ với mô hình logistic (không LLM), chấm G1; A8 pass phụ: chấm lại cặp ứng viên rồi phát lại A9 → A10, chấm G4 (Q40, DG-20) | 0 |
+| cross-encoder pass phụ | multilingual-e5-base chấm lại cặp ứng viên pass phụ trên CPU, rồi phát lại A9 → A10 (Q40, DG-20) | 0 |
 | oracle A8 | kho khái niệm G3 dựng thành canonical (câu neo gắn vào chunk chứa câu định nghĩa), chạy A6 → A10 | có, nhỏ |
 | oracle A10 | cạnh G4 vào thẳng hàm dãy học của A10, trên node của hệ chính | 0 |
 

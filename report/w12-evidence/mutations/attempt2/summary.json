@@ -1,0 +1,243 @@
+{
+  "results": [
+    {
+      "name": "foreign-recipient",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "other_user",
+        "--basetemp=tmp/w12-mutant-foreign-recipient",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\foreign-recipient.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 2,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "78fb40751267167e083787294cdab2f4d8aca0e165d99eee6af0cebfcafbd8e9"
+      }
+    },
+    {
+      "name": "unverified-recipient",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "other_user",
+        "--basetemp=tmp/w12-mutant-unverified-recipient",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\unverified-recipient.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 2,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "ad5584ae67b9feb769e3b3f7ad3bc76f3304a37d511c5a55f4ee008fb7d3990e"
+      }
+    },
+    {
+      "name": "expired-equality",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "expiry_exact",
+        "--basetemp=tmp/w12-mutant-expired-equality",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\expired-equality.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "8625a5b439e23bf449b022316e414b33a532c59627494932e47ce7afae50e4d9"
+      }
+    },
+    {
+      "name": "daily-owner-lock",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "two_runtimes and mail",
+        "--basetemp=tmp/w12-mutant-daily-owner-lock",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\daily-owner-lock.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "118cea84d78931cc624b9cd7cf6391aabf6c22b118b3d771b522c3902dbf6ea6"
+      }
+    },
+    {
+      "name": "course-seat-lock",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "two_runtimes and capacity",
+        "--basetemp=tmp/w12-mutant-course-seat-lock",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\course-seat-lock.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "3f1d5d3945aff085d10554c7271feee03c91f6647f5455174bd06c704b46ddb3"
+      }
+    },
+    {
+      "name": "replay-rejected",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "accept_replay",
+        "--basetemp=tmp/w12-mutant-replay-rejected",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\replay-rejected.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "68c68ac8080d669f47c79f4f0f69388c45e04e262a37e9df35505b407dff2e74"
+      }
+    },
+    {
+      "name": "verify-hook-skipped",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "registration_not_bound",
+        "--basetemp=tmp/w12-mutant-verify-hook-skipped",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\verify-hook-skipped.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/composition.py": "2a0fea5fcabcef99443dfcedab2c94c1821f4419f7cfcb3790cddc4f358e3ba8"
+      }
+    },
+    {
+      "name": "bind-unverified",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "direct_binding",
+        "--basetemp=tmp/w12-mutant-bind-unverified",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\bind-unverified.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/infrastructure/sharing_store.py": "d47534e82f90f0563f5c7ca5df12396b272507308f06ff41b55986325efef0f5"
+      }
+    },
+    {
+      "name": "dto-bypassed",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "dto_filters",
+        "--basetemp=tmp/w12-mutant-dto-bypassed",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\dto-bypassed.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/api/sharing.py": "a0ec9763b6fdc3f211538822c6f46c0e9b62c70b2458012846e7861c3397d6a5"
+      }
+    },
+    {
+      "name": "respond-not-atomic",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "rollback_on_audit_failure and accept",
+        "--basetemp=tmp/w12-mutant-respond-not-atomic",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\respond-not-atomic.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/sharing.py": "93eebe51883b81f5d2bad10774e847271033aefb398b209f22840d73ba5d9e68"
+      }
+    },
+    {
+      "name": "pending-unique-removed",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w12_invitations.py",
+        "-k",
+        "schema_pending_unique",
+        "--basetemp=tmp/w12-mutant-pending-unique-removed",
+        "--junitxml=report\\w12-evidence\\mutations\\attempt2\\pending-unique-removed.xml"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/migrations/versions/w12_0008_invitations.py": "623261ff67f7bb56f29d16cfd449f5d7c0b2b850d697e40f7f8db54b15902724"
+      }
+    }
+  ],
+  "sources_restored": true,
+  "original_sha256": {
+    "src/web/backend/wayfinder/application/sharing.py": "3c7f6e9c9a601bd0d9e005f4a7d976f24cb37de81eb3c151f6a8c8c706ab8162",
+    "src/web/backend/wayfinder/composition.py": "ab12513a6864620d52e68401f83bb0003b21a1991ff2824749d9b38d80fabe5b",
+    "src/web/backend/wayfinder/infrastructure/sharing_store.py": "7620f73e064b5f6fda6e4bf33c5b2dc09dc8674182eef665e94a75cda5ad1d8a",
+    "src/web/backend/wayfinder/api/sharing.py": "03147f1dc3221968196261275488578535c0e21902dea68684d3a81aaaf92ff9",
+    "src/web/backend/wayfinder/migrations/versions/w12_0008_invitations.py": "a2ebfe680318ad8fe078cd91d2c283d30cf7ff67fa6a6e1febc5715d72075f6f"
+  }
+}

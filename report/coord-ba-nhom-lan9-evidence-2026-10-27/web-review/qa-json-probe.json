@@ -1,0 +1,201 @@
+{
+  "commit": "605d13d25019ed0293963aac6a272f29393209a6",
+  "sourceSha256": "014fe570f3592a049d03a96e2c5ad80ccd34e9b5b1cd72c35706e1f8d36d7497",
+  "extraction": "Actual inspectPayload, __w16RecordJson binding and fetch wrapper; fake fetch body only; application catches rejection as React does.",
+  "cases": [
+    {
+      "label": "safe JSON",
+      "finalAccepted": true,
+      "appCaught": [],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": "{\"title\":\"safe\"}",
+          "complete": true,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [],
+      "pendingRejections": []
+    },
+    {
+      "label": "private JSON",
+      "finalAccepted": false,
+      "appCaught": [
+        {
+          "name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'AssertionError'\n- 'AbortError'\n"
+        }
+      ],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": "{\"validation\":\"private\"}",
+          "complete": true,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        },
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": null,
+          "complete": false,
+          "readErrorName": "AssertionError",
+          "signalAborted": false,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [
+        {
+          "path": "/api/v1/courses/c/documents/d",
+          "message": "\"validation\""
+        }
+      ],
+      "pendingRejections": []
+    },
+    {
+      "label": "malformed JSON",
+      "finalAccepted": false,
+      "appCaught": [
+        {
+          "name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'SyntaxError'\n- 'AbortError'\n"
+        }
+      ],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": "{broken",
+          "complete": true,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        },
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": null,
+          "complete": false,
+          "readErrorName": "SyntaxError",
+          "signalAborted": false,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [
+        {
+          "path": "/api/v1/courses/c/documents/d",
+          "message": "Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+        }
+      ],
+      "pendingRejections": []
+    },
+    {
+      "label": "expected AbortError",
+      "finalAccepted": true,
+      "appCaught": [
+        {
+          "name": "AbortError",
+          "message": "Synthetic body read failure"
+        }
+      ],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": null,
+          "complete": false,
+          "readErrorName": "AbortError",
+          "signalAborted": true,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [],
+      "pendingRejections": []
+    },
+    {
+      "label": "unexpected AbortError",
+      "finalAccepted": true,
+      "appCaught": [
+        {
+          "name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        }
+      ],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": null,
+          "complete": false,
+          "readErrorName": "AbortError",
+          "signalAborted": false,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [],
+      "pendingRejections": []
+    },
+    {
+      "label": "unexpected TypeError",
+      "finalAccepted": true,
+      "appCaught": [
+        {
+          "name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'TypeError'\n- 'AbortError'\n"
+        }
+      ],
+      "http": [
+        {
+          "url": "http://qa.invalid/api/v1/courses/c/documents/d",
+          "method": "GET",
+          "status": 200,
+          "type": "application/json",
+          "body": null,
+          "complete": false,
+          "readErrorName": "TypeError",
+          "signalAborted": false,
+          "stage": "probe",
+          "path": "/api/v1/courses/c/documents/d",
+          "via": "fetch-json-clone"
+        }
+      ],
+      "privacyFailures": [],
+      "pendingRejections": []
+    }
+  ],
+  "previousReadFailure": {
+    "pendingRejections": [
+      "TypeError: Synthetic body read failure"
+    ]
+  },
+  "unexpectedErrorsAcceptedByFinalAudit": true,
+  "externalCostUsd": 0
+}

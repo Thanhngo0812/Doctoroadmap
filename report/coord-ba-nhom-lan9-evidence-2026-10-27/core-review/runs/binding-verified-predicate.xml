@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.255" timestamp="2026-10-27T13:38:31.430230+07:00" hostname="ADMIN"><testcase classname="tests.test_independent_w12" name="test_actual_repository_binding_sql_requires_active_verified_matching_pending_unexpired" time="0.763"><failure message="AssertionError: assert 1 == 0&#10; +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x00000195D727CE60&gt;)&#10; +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x00000195D727F470&gt;.scalar&#10; +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x00000195D727CE60&gt; = text('SELECT count(*) FROM invitation WHERE invitee_account_id IS NOT NULL')">def test_actual_repository_binding_sql_requires_active_verified_matching_pending_unexpired():
+        engine=create_engine('sqlite://')
+        now=datetime(2026,10,27)
+        with engine.begin() as c:
+            c.execute(text('CREATE TABLE account(id TEXT,email_normalized TEXT,email_verified_at TEXT,status TEXT)'))
+            c.execute(text('CREATE TABLE invitation(id TEXT,email_normalized TEXT,invitee_account_id TEXT,status TEXT,expires_at TIMESTAMP)'))
+            c.execute(text('INSERT INTO account VALUES(:id,:email,:verified,:status)'),[
+                {'id':'verified','email':'match@example.vn','verified':'yes','status':'active'},
+                {'id':'unverified','email':'match@example.vn','verified':None,'status':'active'},
+                {'id':'disabled','email':'match@example.vn','verified':'yes','status':'disabled'},
+                {'id':'wrong','email':'other@example.vn','verified':'yes','status':'active'}])
+            c.execute(text('INSERT INTO invitation VALUES(:id,:email,NULL,:status,:expires)'),[
+                {'id':'valid','email':'match@example.vn','status':'pending','expires':now+timedelta(seconds=1)},
+                {'id':'expired','email':'match@example.vn','status':'pending','expires':now},
+                {'id':'cancelled','email':'match@example.vn','status':'cancelled','expires':now+timedelta(days=1)}])
+        store=PostgresSharingStore(engine)
+        for account in ['unverified','disabled','wrong']:
+            store.bind_verified_invitations(SimpleNamespace(id=account),now)
+&gt;       with engine.connect() as c:assert c.scalar(text('SELECT count(*) FROM invitation WHERE invitee_account_id IS NOT NULL'))==0
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert 1 == 0
+E        +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x00000195D727CE60&gt;)
+E        +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x00000195D727F470&gt;.scalar
+E        +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x00000195D727CE60&gt; = text('SELECT count(*) FROM invitation WHERE invitee_account_id IS NOT NULL')
+
+tests\test_independent_w12.py:168: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="47" failures="0" errors="0" time="28.8187758">
+    <testsuite name="src/Assistant.final-usage-race.test.tsx" timestamp="2026-10-26T15:17:23.820Z" hostname="ADMIN" tests="5" failures="0" errors="0" skipped="0" time="4.4099899">
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="review: a question submitted after final is sent while the usage refresh remains pending" time="1.6109401">
+            <system-out>
+REVIEW_OBSERVATION {&quot;usageCalls&quot;:2,&quot;postedQuestions&quot;:[{&quot;question&quot;:&quot;First question&quot;,&quot;client_turn_id&quot;:&quot;f10912fd-6814-48ea-a9ca-703c8fbb1fb2&quot;},{&quot;question&quot;:&quot;Second question must not disappear&quot;,&quot;client_turn_id&quot;:&quot;1919b6c6-dfda-417d-8f29-106d47f8cdef&quot;}],&quot;draftAfterSubmit&quot;:&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage success and finally cannot unlock or replace the next streaming turn" time="0.7068636">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage network error and finally cannot unlock or replace the next streaming turn" time="0.7537589">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="accepts the next question before old EOF and ignores a late old stream error" time="0.8089912">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="a late old usage result cannot overwrite newer usage after both answers finish" time="0.5178541">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-26T15:17:23.825Z" hostname="ADMIN" tests="18" failures="0" errors="0" skipped="0" time="14.5108409">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.6112116">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.7916304">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.704498">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="1.4463614">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="1.5264032">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.8776913">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.8999342">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: not_found" time="1.1325928">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: unauthenticated" time="1.040866">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a completed new turn when an older history request arrives afterwards" time="0.8722544">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID" time="0.8808621">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="separates starting a conversation from options for the currently selected conversation" time="0.4533222">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="distinguishes conversations with identical titles by their update date and time" time="0.1494034">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="resizes by keyboard within reading-safe bounds and restores the chosen width after remount" time="0.3718161">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clamps a saved width to the viewport without losing the preference on a larger screen" time="0.1113352">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps the phone conversation full-screen without the desktop resize handle" time="0.1681534">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="shows the current question in conversation metadata before the next history reload" time="0.7190192">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a document hourly-limit notice after the final answer and in saved history" time="0.7485489">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-26T15:17:23.831Z" hostname="ADMIN" tests="15" failures="0" errors="0" skipped="0" time="8.6027684">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.625395">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.8308697">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.6228876">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="1.7861954">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.1797627">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.1726218">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.1327659">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0.1545044">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps keyboard focus on the current option when streaming becomes a saved quiz" time="0.2342506">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="R7 ignores a late submission result after browser history opens another attempt" time="0.8291601">
+            <system-out>
+R7_OBSERVED {&quot;activeRoute&quot;:&quot;/khoa-hoc/c/quiz/qa_2&quot;,&quot;heading&quot;:&quot;Quiz ôn tập&quot;,&quot;secondQuestionVisible&quot;:true}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old success submit callbacks while a new attempt is pending" time="0.9135566">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old network submit callbacks while a new attempt is pending" time="0.7313504">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old unauthenticated submit callbacks while a new attempt is pending" time="0.492571">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old not_found submit callbacks while a new attempt is pending" time="0.567661">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores a previous course submit even when the new course has the same attempt ID" time="0.3239188">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Usage.test.tsx" timestamp="2026-10-26T15:17:23.836Z" hostname="ADMIN" tests="9" failures="0" errors="0" skipped="0" time="1.2951766">
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.35 and honest state Còn nhiều" time="0.2788486">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.85 and honest state Gần hết" time="0.0890321">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 1 and honest state Đã hết" time="0.0815533">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps null build quota unlimited and never calls it zero remaining" time="0.0448349">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="offers retry after a usage failure without inventing a zero ratio" time="0.1490969">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="ignores a stale usage result after route change and loads the new route independently" time="0.253539">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="does not show late private usage after logout" time="0.1767628">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps a persistent learner limit near document creation while saved content and quiz remain accessible" time="0.1242322">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="refreshes the banner from HTTP after the current assistant turn changes usage" time="0.0936483">
+        </testcase>
+    </testsuite>
+</testsuites>

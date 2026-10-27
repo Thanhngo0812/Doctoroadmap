@@ -1,0 +1,40 @@
+{
+  "review": "independent-design-R9-resume",
+  "date": "2026-10-27",
+  "candidate_commit": "bda1366b8d033ce0dcf4660651959293c178f7c8",
+  "main_source_pin": "e52bf4f245e9e6c0454ee83760ea4bf8ad55adff",
+  "guard_verdict": "accept D-R8-02",
+  "w23_verdict": "incomplete; retain open work item and correct report",
+  "critical": [],
+  "required_code_findings": [],
+  "required_document_findings": [
+    {
+      "id": "D-R9-01",
+      "path": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 45,
+      "summary": "HTML source anchors are not paired captures; withdraw unmeasured match/approval claims. Concrete line54 counterexample: React has two library tabs, report says three. Keep W23 open."
+    },
+    {
+      "id": "D-R9-02",
+      "path": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 50,
+      "summary": "W10 historical capture source is 1fc0f553bec808241388b722fa2c10a1c6ead33d, not aaf68eb. Frontend/browser harness diff between those sources is empty; document reuse separately."
+    }
+  ],
+  "optional": [
+    {
+      "path": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 72,
+      "summary": "Label 70% warning threshold as a design choice; task/spec does not fix this boundary. Do not turn later React80% into a new mandatory policy."
+    }
+  ],
+  "baseline": { "passed": 64, "failures": 0, "errors": 0, "native_exit_code": 0 },
+  "actual_onclick_mutation": { "tests": 1, "failures": 1, "errors": 0, "native_exit_code": 1, "assertion": "observable visibleHere title list differs" },
+  "restored": { "passed": 64, "failures": 0, "errors": 0, "native_exit_code": 0, "html_sha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf", "worker_unchanged": true },
+  "references": { "png": 10, "webm": 3, "all_exist": true, "root_worker_bytes_identical": true, "all_referenced_html_anchors_exist": true, "png_visually_inspected": 10, "video_inspection": "partial sampled frames; exact action intervals not certified" },
+  "evidence": [ "review.md", "resume-verification.json", "evidence-inspection.json", "video-probe.json", "runs/resume-baseline.xml", "runs/resume-actual-onclick-mutant.xml", "runs/resume-restored.xml" ],
+  "product_or_worker_edits": false,
+  "postgres_runs": 0,
+  "external_spend_usd": 0,
+  "cloud_figma_required": false
+}

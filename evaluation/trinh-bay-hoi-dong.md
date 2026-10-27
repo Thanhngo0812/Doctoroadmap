@@ -249,6 +249,8 @@ Bảng 7. Các hệ được so
 | | bỏ các quan hệ do bước suy luận chính của A8 đề xuất; hoặc bỏ các quan hệ do bước phụ đề xuất | "Mỗi bước của A8 đóng góp bao nhiêu?" |
 | | tắt luật R17 | "Luật giữ thứ tự sách giúp hay hại?" |
 | | tắt gán vai trò vùng A2; tắt lọc trạng thái dạy A5 (nếu lịch còn chỗ) | "Hai bước lọc này có cần không?" |
+| | ba mô hình học máy (nhận tiêu đề và nối dòng ở A1, bước phụ ở A8) thay bằng hồi quy logistic, cùng đặc trưng | "Vì sao chọn LightGBM mà không dùng mô hình tuyến tính đơn giản hơn?" |
+| | bước phụ của A8 dùng cross-encoder (mô hình mã hoá đọc thẳng câu văn) thay LightGBM trên đặc trưng | "Đọc câu văn có hơn đặc trưng cấu trúc không, và tốn thêm bao nhiêu thời gian?" |
 | Thay khâu bằng đáp án đúng (oracle) | A8 nhận khái niệm vàng thay vì khái niệm máy trích | "Lỗi ở A8 hay ở các khâu trước?" |
 | | A10 nhận quan hệ vàng thay vì quan hệ máy suy ra | "Cách xếp lộ trình có tốt không, khi quan hệ đúng hoàn toàn?" |
 
@@ -273,6 +275,23 @@ Hai baseline quan trọng nhất là B1 và B5, vì chúng là hai cách "đơn 
 - **Biết trước trên tập phát triển.** B5 chạy trên tập phát triển trước khi hệ đóng băng. Nếu B5 tốt hơn, nhóm cải tiến hệ theo hướng kết
   hợp: giữ khả năng truy về câu trong sách, nhưng cho mô hình nhìn ngữ cảnh rộng hơn như B5. Bản được đánh giá trên tập thử là bản sau cải
   tiến.
+
+**Ba mô hình học máy được chọn thế nào.** Pha A có ba mô hình LightGBM [24] nhỏ: nhận dòng tiêu đề và nối tiêu đề nhiều dòng ở A1, và bước phụ của
+A8. Siêu tham số chính của LightGBM là số lá của mỗi cây (`num_leaves`), tức độ phức tạp của mô hình. Nhóm không chọn tay mà theo một quy trình
+khai trước, chạy trên 16 cuốn của tập huấn luyện:
+- **Để ra từng cuốn (LOBO-16):** mỗi lần học trên 15 cuốn, chấm trên cuốn thứ 16, lặp cho đủ 16 cuốn. Như vậy điểm đo được là điểm trên một cuốn
+  mà mô hình chưa từng thấy, giống tình huống sản phẩm gặp một giáo trình mới.
+- **Dừng sớm không nhìn cuốn đang chấm:** trong 15 cuốn học, 3 cuốn dành để quyết định khi nào dừng thêm cây (tối đa 5000 cây).
+- **Lưới số lá** {7, 15, 31, 63, 127, 255}, chấm bằng AP trung bình trên 16 cuốn.
+- **Luật một sai số chuẩn:** trong các cấu hình có điểm không kém cấu hình tốt nhất quá một sai số chuẩn, chọn cấu hình **đơn giản nhất**. Với
+  16 cuốn, các cấu hình gần nhau thường chênh dưới mức nhiễu, nên chọn mô hình đơn giản hơn để ít học thuộc tập huấn luyện [23].
+
+Mô hình được chọn rồi đóng băng trước khi chạy tập thử; số trên 16 cuốn chỉ là bằng chứng chọn mô hình, số báo cáo vẫn lấy trên 8 giáo trình thử.
+Cùng quy trình áp cho hồi quy logistic, để trả lời "vì sao LightGBM". Riêng bước phụ A8 được so thêm với một cross-encoder (multilingual-e5 [25]) đọc thẳng câu
+văn; vì học mô hình này cần GPU, nó được chấm trên 4 phần chia theo cuốn, và LightGBM cùng logistic được chấm lại trên đúng 4 phần đó.
+
+[CHÈN HÌNH 5 – Biểu đồ đường: trục ngang là số lá (7 → 255, thang log), trục dọc là AP trung bình trên 16 cuốn, mỗi mô hình một đường, có thanh
+sai số chuẩn; đường ngang mảnh đánh dấu "tốt nhất − 1 SE"; điểm được chọn tô đậm.]
 
 Số của thí nghiệm oracle được báo trong một cột riêng, không đặt ngang số của hệ thật. Khi một khâu được cho đáp án đúng, bài toán của các
 khâu sau dễ đi hẳn, nên hai con số không cùng điều kiện [15].
@@ -523,3 +542,12 @@ https://aclanthology.org/2021.naacl-main.51
 
 [22] A. Yeh, "More accurate tests for the statistical significance of result differences," in *Proc. COLING*, 2000. [Online].
 Available: https://aclanthology.org/C00-2137
+
+[23] T. Hastie, R. Tibshirani, and J. Friedman, *The Elements of Statistical Learning*, 2nd ed. New York, NY, USA: Springer, 2009, sec. 7.10.
+[Online]. Available: https://hastie.su.domains/ElemStatLearn/
+
+[24] G. Ke *et al.*, "LightGBM: A highly efficient gradient boosting decision tree," in *Proc. NeurIPS*, 2017. [Online]. Available:
+https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree
+
+[25] L. Wang *et al.*, "Multilingual E5 text embeddings: A technical report," arXiv:2402.05672, 2024. [Online]. Available:
+https://arxiv.org/abs/2402.05672

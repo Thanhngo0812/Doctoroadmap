@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________ test_unverified_actor_and_db_account_cannot_accept ______________
+
+rt = namespace(service=<wayfinder.application.sharing.SharingService object at 0x000002BFEF8B8710>, port=<test_independent_...verified=True, status='active'), outsider=Actor(user_id='outsider', role='user', email_verified=True, status='active'))
+
+    def test_unverified_actor_and_db_account_cannot_accept(rt):
+        identity=issue(rt)
+        actor=replace(rt.receiver,email_verified=False)
+>       denied(lambda:rt.service.accept_invitation(actor,identity),'email_unverified')
+
+tests\test_independent_w12.py:97:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fn = <function test_unverified_actor_and_db_account_cannot_accept.<locals>.<lambda> at 0x000002BFEF920040>
+code = 'email_unverified'
+
+    def denied(fn,code):
+>       with pytest.raises(WebError) as e:fn()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+
+tests\test_independent_w12.py:72: Failed
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r9-core-review-20261027\runs\verified-guard.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_independent_w12.py::test_unverified_actor_and_db_account_cannot_accept
+1 failed in 4.19s

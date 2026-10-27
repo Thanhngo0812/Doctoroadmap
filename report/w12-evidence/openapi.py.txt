@@ -1,0 +1,25 @@
+"""Generate from the combined current application; preserve all existing route operations."""
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend')]
+from wayfinder.api.app import create_app
+from wayfinder.api.openapi import write_openapi
+from wayfinder.composition import WebServices
+from wayfinder.settings import WebSettings
+
+old=json.loads(subprocess.check_output(['git','show','main:src/web/openapi.json'],cwd=root))
+app=create_app(WebSettings(_env_file=None,frontend_dist='C:/missing-wayfinder-dist'),WebServices(health_check=lambda:'ok'))
+current=app.openapi()
+routes=lambda s:{(path,method) for path,methods in s['paths'].items() for method in methods}
+assert routes(old)<=routes(current)
+assert routes(current)-routes(old)=={
+    ('/api/v1/courses/{cid}/invitations','post'),('/api/v1/courses/{cid}/invitations','get'),
+    ('/api/v1/courses/{cid}/invitations/{iid}','delete'),('/api/v1/me/invitations','get'),
+    ('/api/v1/invitations/{iid}/accept','post'),('/api/v1/invitations/{iid}/decline','post')}
+write_openapi(app,root/'src/web/openapi.json')
+print(json.dumps(dict(previous_operations=len(routes(old)),current_operations=len(routes(current)),
+    preserved_all_previous_routes=True,new_operations=6)))

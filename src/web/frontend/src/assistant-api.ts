@@ -11,7 +11,7 @@ export type Answer = { contract_version: 'answer-3'; answer_id: string; session_
   answer_md: string; sources: LectureSource[]; graph_cards: GraphCards; artifacts: ChatArtifact[]; focus_node_id: string | null;
   warnings: string[]; failure: { reason_code: string; message: string; retryable: boolean } | null };
 export type ChatTurn = { turn_id: string; client_turn_id: string; question: string; created_at: string; answer: Answer };
-export type Usage = { learner_today: { used_ratio: number; limited: boolean; resets_at: string } };
+export type { Usage } from './usage-api';
 export type Intent = { sessionId: string; client_turn_id: string; question: string; focus_node_id?: string };
 export type ChatEvent = { event: 'delta' | 'progress' | 'tool_call' | 'artifact' | 'graph_card' | 'final' | 'failure';
   text?: string; name?: string; artifact?: ChatArtifact; graph_cards?: GraphCards; answer?: Answer;

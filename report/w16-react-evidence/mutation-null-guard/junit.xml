@@ -1,0 +1,1241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="1" errors="0" time="1.0677514">
+    <testsuite name="src/Usage.test.tsx" timestamp="2026-10-26T15:21:06.570Z" hostname="ADMIN" tests="9" failures="1" errors="0" skipped="8" time="1.0677514">
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.35 and honest state Còn nhiều" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.85 and honest state Gần hết" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 1 and honest state Đã hết" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps null build quota unlimited and never calls it zero remaining" time="1.065475">
+            <failure message="Unable to find an element with the text: Không giới hạn. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Còn nhiều&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 0.1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  10
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Còn nhiều
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  10
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;0.1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                0
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Còn nhiều&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 0.1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  10
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Còn nhiều
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  10
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;0.1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                0
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Không giới hạn. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Còn nhiều&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 0.1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  10
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Còn nhiều
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  10
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;0.1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                0
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Đi khoá
+    &lt;/button&gt;
+    &lt;button&gt;
+      Đi mức dùng
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;usage-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;usage-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;usage-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Mức dùng
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Theo dõi hạn mức của bạn, tiếp tục học theo nhịp của mình.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;usage-overview&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;usage-today-title&quot;
+              class=&quot;usage-today&quot;
+              data-level=&quot;Còn nhiều&quot;
+            &gt;
+              &lt;div
+                class=&quot;usage-ring&quot;
+                style=&quot;--usage-ratio: 0.1;&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 120 120&quot;
+                &gt;
+                  &lt;circle
+                    class=&quot;usage-ring-track&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                  &lt;circle
+                    class=&quot;usage-ring-value&quot;
+                    cx=&quot;60&quot;
+                    cy=&quot;60&quot;
+                    pathLength=&quot;1&quot;
+                    r=&quot;52&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  10
+                  &lt;small&gt;
+                    %
+                  &lt;/small&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div
+                class=&quot;usage-today-copy&quot;
+              &gt;
+                &lt;p
+                  class=&quot;usage-state&quot;
+                &gt;
+                  Còn nhiều
+                &lt;/p&gt;
+                &lt;h2
+                  id=&quot;usage-today-title&quot;
+                &gt;
+                  Hôm nay đã dùng
+                  10
+                  %
+                &lt;/h2&gt;
+                &lt;progress
+                  aria-label=&quot;Hạn mức học hôm nay&quot;
+                  class=&quot;sr-only&quot;
+                  max=&quot;1&quot;
+                  value=&quot;0.1&quot;
+                /&gt;
+                &lt;p&gt;
+                  Hạn mức dùng chung cho trợ lý và tài liệu của bạn trong mọi khoá học.
+                &lt;/p&gt;
+                &lt;p
+                  class=&quot;usage-reset&quot;
+                &gt;
+                  Đặt lại lúc
+                  &lt;time
+                    datetime=&quot;2026-10-26T17:00:00Z&quot;
+                  &gt;
+                    00:00 27/10/2026
+                  &lt;/time&gt;
+                  &lt;small&gt;
+                    Giờ Việt Nam
+                  &lt;/small&gt;
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;usage-builds-title&quot;
+              class=&quot;usage-builds&quot;
+            &gt;
+              &lt;h2
+                id=&quot;usage-builds-title&quot;
+              &gt;
+                Dựng lộ trình tháng này
+              &lt;/h2&gt;
+              &lt;strong
+                class=&quot;usage-build-number&quot;
+              &gt;
+                1
+                &lt;small&gt;
+                   /
+                &lt;/small&gt;
+              &lt;/strong&gt;
+              &lt;p&gt;
+                Còn
+                0
+                 lượt dựng
+              &lt;/p&gt;
+              &lt;p
+                class=&quot;usage-reset&quot;
+              &gt;
+                Đặt lại lúc
+                &lt;time
+                  datetime=&quot;2026-10-31T17:00:00Z&quot;
+                &gt;
+                  00:00 01/11/2026
+                &lt;/time&gt;
+                &lt;small&gt;
+                  Giờ Việt Nam
+                &lt;/small&gt;
+              &lt;/p&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+          &lt;section
+            aria-labelledby=&quot;usage-continue-title&quot;
+            class=&quot;usage-continue&quot;
+          &gt;
+            &lt;h2
+              id=&quot;usage-continue-title&quot;
+            &gt;
+              Luôn có thể học tiếp
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Kể cả khi hết hạn mức, bạn vẫn đọc bài giảng đã có, làm quiz có sẵn và xem tài liệu trong thư viện. Hạn mức này tách riêng với tần suất gửi yêu cầu.
+            &lt;/p&gt;
+            &lt;a
+              class=&quot;button button-secondary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              Về khoá học
+            &lt;/a&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Usage.test.tsx:46:23
+            </failure>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="offers retry after a usage failure without inventing a zero ratio" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="ignores a stale usage result after route change and loads the new route independently" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="does not show late private usage after logout" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps a persistent learner limit near document creation while saved content and quiz remain accessible" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="refreshes the banner from HTTP after the current assistant turn changes usage" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>
