@@ -233,10 +233,12 @@ def build_learning_graph(*, allow_spend=False):
         from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
         from doc2roadmap.infrastructure.secondary_tokenizer import VietnameseWordTokenizer
 
-        secondary = BuildSecondaryMLEdges(store, LightGBMSecondaryScorer(), VietnameseWordTokenizer())
+        secondary = BuildSecondaryMLEdges(store, LightGBMSecondaryScorer(), VietnameseWordTokenizer(),
+                                          target_filter=settings.secondary_target_filter)
     else:
         secondary = BuildSecondaryEdges(store, model, concurrency=roadmap_concurrency,
-                                         window_pairs=settings.secondary_window_pairs, generation=generation)
+                                         window_pairs=settings.secondary_window_pairs, generation=generation,
+                                         target_filter=settings.secondary_target_filter)
     module_titles = NameModulesB(store, model_for(512), concurrency=roadmap_concurrency,
         phase_b_store=JsonPhaseBStore(settings.artifact_dir / 'phase_b' / 'live.json'), allow_spend=True)
     module_titles.execute = measure_stage(module_titles.execute)
@@ -265,6 +267,7 @@ def build_learning_graph(*, allow_spend=False):
             parallel_sessions=settings.roadmap_main_parallel,
             definition_before=settings.a8_definition_before,
             definition_after=settings.a8_definition_after,
+            context_shuffle_seed=settings.main_context_shuffle_seed,
             concurrency=roadmap_concurrency,
             generation=generation,
         ),

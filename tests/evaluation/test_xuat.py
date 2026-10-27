@@ -190,5 +190,16 @@ def test_so_do_thoi_gian_theo_stage_duoc_dua_vao_chi_phi(kho):
     hd = xuat(kho, DOC, PHIEN_BAN, dinh_danh=DINH_DANH)
     khau = hd["chi_phi"]["theo_khau"][f"graph_v{PHIEN_BAN}_stages"]
     assert khau["giay_chay"] == 12.5 and khau["so_loi_goi_embedding"] == 2
-    assert khau["giay_cho_embedding"] is None  # bộ đếm giây chờ embedding chưa có (vé DG-06), nên null chứ không phải 0
+    assert khau["giay_cho_embedding"] is None  # artifact cũ chưa có bộ đếm giây chờ embedding: null chứ không phải 0
     assert "thời gian" not in (hd["chi_phi"]["ghi_chu"] or "")
+
+
+def test_giay_cho_embedding_doc_tu_stats_embedding_seconds(kho):
+    duong = kho / "graph" / DOC / f"v{PHIEN_BAN}" / "manifest.json"
+    manifest = doc(duong)
+    manifest["stats"] = {"runtime_seconds": 12.5, "embedding_seconds": 4.25, "embedding_model_calls": 2}
+    ghi(duong, manifest)
+    hd = xuat(kho, DOC, PHIEN_BAN, dinh_danh=DINH_DANH)
+    khau = hd["chi_phi"]["theo_khau"][f"graph_v{PHIEN_BAN}_stages"]
+    assert khau["giay_cho_embedding"] == 4.25
+    assert hd["chi_phi"]["tong"]["giay_cho_embedding"] == 4.25
