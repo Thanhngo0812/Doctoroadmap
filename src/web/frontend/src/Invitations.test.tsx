@@ -83,5 +83,5 @@ it.each(['owner','recipient'])('a failed invitation list for %s does not claim t
  vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/invitations')&&(!init?.method||init.method==='GET')&&rejectRead?Promise.resolve(json({error:{code:'internal_error'}},500)):original(input,init)));
  const user=userEvent.setup();if(view==='owner'){render(share());await user.click(screen.getByRole('tab',{name:'Mời qua email'}));}else app();
  expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi phía máy chủ');expect(screen.queryByText(view==='owner'?'Chưa có lời mời đang chờ.':'Bạn chưa có lời mời đang chờ.')).not.toBeInTheDocument();
- rejectRead=false;await user.click(screen.getByRole('button',{name:view==='owner'?'Tải lại':'Tải lại lời mời',exact:true}));expect(await screen.findByText(view==='owner'?item.email:item.course_title)).toBeVisible();
+ rejectRead=false;await user.click(screen.getByRole('button',{name:view==='owner'?'Tải lại':'Tải lại lời mời'}));expect(await screen.findByText(view==='owner'?item.email:item.course_title)).toBeVisible();
 });
