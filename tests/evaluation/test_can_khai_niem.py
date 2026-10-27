@@ -532,3 +532,46 @@ def test_hai_tham_so_k_doc_lap():
     nut_ += [nut(f"chinh:b{n}", "Sai số " + " ".join(["thêm"] * n), 5, None) for n in range(1, 6)]
     tt = tt_k([da_can, chua_can], nut_, k_ung_vien=4, k_ung_vien_da_can=2)
     assert len(ten_trong_phieu(tt, "A")) == 2 and len(ten_trong_phieu(tt, "B")) == 4
+
+
+# ---------------------------------------------------------------- bổ sung sau nghiệm thu: thứ tự dòng phiếu, luật áp cho mọi hệ
+
+
+def vang_nhieu_cap():
+    g = [vang(f"g{i}", f"Khái niệm k{i}", 3, None) for i in range(6)]
+    n = []
+    for i in range(6):                                                    # mỗi vàng có một node gần ở hệ chinh và một ở hệ b1
+        n.append(nut(f"chinh:{i}", f"Khái niệm k{i} mở rộng", 3, None))
+        n.append(nut(f"b1:{i}", f"Khái niệm k{i} mở rộng hơn", 3, None))
+    return g, n
+
+
+def thu_tu_dong(seed):
+    g, n = vang_nhieu_cap()
+    tt = mu.chuan_bi(g, n, ma_sach=MA, seed=seed, nguong_cau=0.9)
+    return [(p["vang"], p["nut"]["id_goc"][0].split(":")[0]) for p in tt["phieu"]], tt
+
+
+def test_thu_tu_dong_phieu_duoc_xao_theo_seed_khong_lo_thu_tu_he():
+    chi_so = lambda ds: [int(v[1:]) for v, _ in ds]  # noqa: E731
+    thu_tu = {}
+    for seed in range(1, 9):
+        ds, tt = thu_tu_dong(seed)
+        assert len(ds) == 12 and {he for _, he in ds} == {"chinh", "b1"}       # đủ nhiều cặp, đủ hai hệ
+        assert chi_so(ds) != sorted(chi_so(ds)), seed                            # không còn theo thứ tự vàng gốc
+        thu_tu[seed] = tuple(ds)
+        # với mỗi vàng, hệ đứng trước không luôn là cùng một hệ
+    assert len(set(thu_tu.values())) >= 6                                         # đổi seed thì đổi thứ tự
+    dau = {tuple(next(he for v, he in ds if v == f"g{i}") for i in range(6)) for ds in thu_tu.values()}
+    assert len(dau) > 1                                                           # hệ đứng trước trong cùng vàng thay đổi theo seed
+
+
+def test_luat_ap_cho_moi_he_khi_node_giong_het_da_khu_trung():
+    for g, n in ((vang("G", "Cao độ", 3, None), [nut("chinh:a", "cao độ", 3, None), nut("b1:z", "Cao độ.", 3, None)]),
+                 (vang("G", "Gì đó", 4, CAU_TRUONG_DO), [nut("chinh:a", "Tên lạ", 4, CAU_TRUONG_DO), nut("b1:z", "tên  lạ", 4, CAU_TRUONG_DO)])):
+        tt = mu.chuan_bi([g], n, ma_sach=MA, seed=1, nguong_cau=0.9)
+        assert tt["phieu"] == []
+        can, nhat_ky = mu.bang_can(tt, {})
+        luat_ = {h["nguon_quyet_dinh"] for h in can["hang"]}
+        assert sorted(h["may"] for h in can["hang"]) == ["b1:z", "chinh:a"] and len(luat_) == 1 and luat_ <= {"luat_ten", "luat_cau_neo"}
+        assert sorted(e["may"] for e in nhat_ky if e["buoc"] in ("luat_ten", "luat_cau_neo")) == ["b1:z", "chinh:a"]
