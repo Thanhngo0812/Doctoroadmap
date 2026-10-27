@@ -15,6 +15,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 from danhgia.can import luat
 from danhgia.phieu.g3 import sheet_huong_dan
+from danhgia.ten import chuan_hoa
 from danhgia.thong_ke.lcg import Lcg
 
 SCHEMA_CAN = "danh-gia-can-1"
@@ -57,27 +58,27 @@ def _sinh_ma(tien_to, so_luong, cam):
 
 
 def _khoa_hien_thi(n):
-    return (n["ten"], tuple(n["ten_khac"]), n["trang"], n["cau"])
+    """Hai node (của hai hệ) cùng tên chuẩn hoá, tên khác, câu neo chuẩn hoá và trang chỉ hiện một dòng phán."""
+    return (chuan_hoa(n["ten"]), tuple(sorted(chuan_hoa(t) for t in n["ten_khac"])), n["trang"], chuan_hoa(n["cau"]))
 
 
 def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, nguong_gan=luat.NGUONG_GAN_MAC_DINH,
-             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH, chi_vang_chua_can=False):
+             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH, k_ung_vien=luat.K_UNG_VIEN_MAC_DINH):
     he = {n["id"].split(":")[0] for n in nut}
     cam = {h.lower() for h in he}
     nhom = {}
     for n in nut:
-        nhom.setdefault(_khoa_hien_thi(n), []).append(n["id"])
-    duy_nhat = [{"id": f"u{i}", "ten": k[0], "ten_khac": list(k[1]), "trang": k[2], "cau": k[3], "id_goc": sorted(ids)}
-                for i, (k, ids) in enumerate(nhom.items())]
+        nhom.setdefault(_khoa_hien_thi(n), []).append(n)
+    duy_nhat = [{"id": f"u{i}", "ten": ds[0]["ten"], "ten_khac": list(ds[0]["ten_khac"]), "trang": ds[0]["trang"],
+                 "cau": ds[0]["cau"], "id_goc": sorted(n["id"] for n in ds)} for i, ds in enumerate(nhom.values())]
     theo_u = {u["id"]: u for u in duy_nhat}
-    ket = luat.can_tu_dong(vang, duy_nhat, nguong_cau=nguong_cau, nguong_gan=nguong_gan, nguong_jaccard=nguong_jaccard)
+    ket = luat.can_tu_dong(vang, duy_nhat, nguong_cau=nguong_cau, nguong_gan=nguong_gan, nguong_jaccard=nguong_jaccard, k_ung_vien=k_ung_vien)
     tu_dong = []
     for h in ket["hang"]:
         for id_goc in theo_u[h["may"]]["id_goc"]:
             tu_dong.append({**h, "may": id_goc})
     theo_vang = {v["khoa"]: v for v in vang}
-    da_can = {h["vang"] for h in ket["hang"]}
-    cap = [(u["vang"], u["node"]) for u in ket["ung_vien"] if not (chi_vang_chua_can and u["vang"] in da_can)]
+    cap = [(u["vang"], u["node"]) for u in ket["ung_vien"]]
     rng = Lcg(seed)
     thu_tu = [cap[i] for i in _xao(len(cap), rng)]
     ma_phan = _sinh_ma("c", len(thu_tu), cam)
@@ -92,7 +93,7 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
     vang_can = {h["vang"] for h in tu_dong}
     return {"schema": SCHEMA_CHUAN_BI, "ma_sach": ma_sach, "seed": seed,
             "nguong": {"cau": nguong_cau, "gan": nguong_gan, "jaccard": nguong_jaccard},
-            "chi_vang_chua_can": chi_vang_chua_can,
+            "k_ung_vien": k_ung_vien,
             "vang": theo_vang, "tu_dong": tu_dong, "khong_ung_vien": ket["khong_ung_vien"], "phieu": phieu,
             "ma_node": {ma_nut[u]: theo_u[u]["id_goc"] for u in nut_dung},
             "bao_cao": {"so_vang": len(vang), "so_nut": len(nut), "so_nut_khac_nhau": len(duy_nhat),

@@ -165,7 +165,7 @@ def test_phieu_mu_khong_lo_ten_he_o_dau(tmp_path):
     tt = chuan_bi()
     duong = mu.sinh_phieu(tt, tmp_path / "p.xlsx", nguoi="C")
     chuoi, tho = quet(duong)
-    assert len(chuoi) > 100  # chặn quét rỗng
+    assert len(chuoi) > 60  # chặn quét rỗng
     cac = [c.lower() for c in chuoi]
     for he in HE:  # giá trị ô, tên sheet, tên định nghĩa, thuộc tính: mọi tên hệ
         assert not any(he in c for c in cac), he
@@ -235,7 +235,7 @@ def dien(duong, quyet, ghi_chu="ghi chú tay"):
 
 
 def quyet_mac_dinh(ten_vang, ten_nut):
-    return "may_rong_hon" if ten_nut == "Sai số chuẩn" else "khong_khop"
+    return "may_rong_hon" if ten_nut == "Sai" else "khong_khop"
 
 
 def test_doc_phieu_ghi_bang_can_va_nhat_ky_tai_lap_duoc(tmp_path):
@@ -249,7 +249,7 @@ def test_doc_phieu_ghi_bang_can_va_nhat_ky_tai_lap_duoc(tmp_path):
     tay = [h for h in can["hang"] if h["nguon_quyet_dinh"] == "phan_tay"]
     assert tay and all(h["ma_phan"] and h["ghi_chu"] == "ghi chú tay" for h in tay)
     rong = [h for h in tay if h["quan_he"] == "may_rong_hon"]
-    assert [(h["vang"], h["may"]) for h in rong] == [("G-4", "chinh:n6")]
+    assert [(h["vang"], h["may"]) for h in rong] == [("G-4", "b4:n14")]
     # luật tự động nằm cùng bảng, không có ma_phan
     tu = {h["nguon_quyet_dinh"] for h in can["hang"]} - {"phan_tay"}
     assert tu == {"luat_ten", "luat_cau_neo"}
@@ -428,11 +428,84 @@ def test_doc_vang_gom_ca_nguon_ngoai_cua_g4():
     assert len([v for v in ds if not v["khoa"].startswith("ngoai:")]) == len(kho["khai_niem"])
 
 
-def test_chi_vang_chua_can_bo_ca_gan_cua_vang_da_can_bang_luat():
-    day_du = chuan_bi()
-    gon = chuan_bi(chi_vang_chua_can=True)
-    vang_day_du = {p["vang"] for p in day_du["phieu"]}
-    vang_gon = {p["vang"] for p in gon["phieu"]}
-    assert "G-1" in vang_day_du and "G-1" not in vang_gon        # G-1 đã căn bằng tên: ứng viên gần của nó bị bỏ
-    assert "G-4" in vang_gon                                      # G-4 chưa căn: giữ nguyên
-    assert gon["tu_dong"] == day_du["tu_dong"] and len(gon["phieu"]) < len(day_du["phieu"])
+# ---------------------------------------------------------------- sau trả lời câu hỏi: giảm số ca phán tay
+
+
+def tt_k(vang_, nut_, **kw):
+    return mu.chuan_bi(vang_, nut_, ma_sach=MA, seed=1, nguong_cau=0.9, **kw)
+
+
+def ten_trong_phieu(tt, khoa):
+    return sorted(p["nut"]["ten"] for p in tt["phieu"] if p["vang"] == khoa)
+
+
+def test_moi_vang_chi_dua_k_node_gan_nhat_theo_giong_ten():
+    g = vang("G", "Sai số", 5, "Sai số là chênh lệch.")
+    nut_ = [nut(f"chinh:{n}", "Sai số " + " ".join(["thêm"] * n), 5, None) for n in range(1, 7)]
+    assert len(luat.can_tu_dong([g], nut_)["ung_vien"]) == 3                      # mặc định k = 3
+    assert ten_trong_phieu(tt_k([g], nut_), "G") == sorted(n["ten"] for n in nut_[:3])   # tên ngắn nhất giống nhất
+    assert len(tt_k([g], nut_, k_ung_vien=2)["phieu"]) == 2
+    assert len(tt_k([g], nut_, k_ung_vien=10)["phieu"]) == 6
+
+
+def test_dong_hang_giong_ten_xep_theo_giong_cau():
+    g = vang("G", "Sai số", 5, "Sai số là chênh lệch giữa giá trị đo và giá trị thật.")
+    gan = nut("chinh:a", "Sai số hệ", 5, "Sai số là chênh lệch giữa giá trị đo và giá trị thật trong một mẫu lấy ngẫu nhiên.")
+    xa = nut("chinh:b", "Sai số hệ", 5, "Một câu hoàn toàn khác về nhạc lý.")
+    ket = tt_k([g], [xa, gan], k_ung_vien=1)
+    assert [p["nut"]["id_goc"] for p in ket["phieu"]] == [["chinh:a"]]
+
+
+def test_vang_da_can_van_co_ung_vien_nhung_bo_node_da_can_voi_vang_khac():
+    vang_ = [vang("A", "Cao độ", 3, None), vang("B", "Cao độ tuyệt đối", 3, None)]
+    nut_ = [nut("chinh:1", "cao độ", 3, None), nut("chinh:2", "cao độ tuyệt đối", 3, None),
+            nut("chinh:3", "Cao độ âm thanh", 3, None)]
+    ket = luat.can_tu_dong(vang_, nut_)
+    assert {(h["vang"], h["may"]) for h in ket["hang"]} == {("A", "chinh:1"), ("B", "chinh:2")}
+    gan = {(u["vang"], u["node"]) for u in ket["ung_vien"]}
+    assert ("A", "chinh:3") in gan                  # A đã căn nhưng node 3 chưa căn với ai: có thể là may_hep_hon
+    assert ("A", "chinh:2") not in gan              # node 2 đã căn bằng luật với vàng khác (B)
+    assert ("B", "chinh:1") not in gan
+
+
+def test_khu_trung_node_theo_ten_chuan_hoa_va_cau_neo_giua_cac_he():
+    g = vang("G", "Sai số", 5, None)
+    nut_ = [nut("chinh:a", "Sai số chuẩn", 5, "Sai số chuẩn là căn bậc hai."),
+            nut("b1:a", "  sai số CHUẨN. ", 5, "sai   số chuẩn là căn bậc hai"),          # khác hoa thường, khoảng trắng, dấu câu cuối
+            nut("b2:z", "Sai số chuẩn", 6, "Sai số chuẩn là căn bậc hai.")]             # khác trang: node khác
+    tt = tt_k([g], nut_)
+    assert sorted(sorted(p["nut"]["id_goc"]) for p in tt["phieu"]) == [["b1:a", "chinh:a"], ["b2:z"]]
+    can, nhat_ky = mu.bang_can(tt, {p["ma_phan"]: {"quan_he": "khop", "ghi_chu": ""} for p in tt["phieu"]})
+    ap_dung = sorted(h["may"] for h in nhat_ky if h.get("buoc") == "phan_tay")
+    assert ap_dung == ["b1:a", "b2:z", "chinh:a"]                                       # nhật ký ghi đủ các <he>:<ma> được áp
+
+
+def test_so_ca_phan_tay_khong_vuot_k_nhan_so_vang():
+    tt = chuan_bi()
+    assert len(tt["phieu"]) <= 3 * len(VANG)
+    per = {}
+    for p in tt["phieu"]:
+        per[p["vang"]] = per.get(p["vang"], 0) + 1
+    assert max(per.values()) <= 3
+
+
+def test_tach_roi_cham_ra_dung_so_nhu_bang_mot_he_dung_tay():
+    from danhgia.cham.bang import cham
+    from tests.evaluation import dung_tay as dt
+    hd = dt.hop_dong([dt.khai_niem("a"), dt.khai_niem("b"), dt.khai_niem("c")],
+                     [dt.canh("a", "b"), dt.canh("b", "c")], ["a", "b", "c"])
+    g3_ = dt.g3("S", [("G1", "c1"), ("G2", "c1"), ("G3", "c1")])
+    g4_ = dt.g4("S", [("G1", "G2"), ("G2", "G3")])
+    gop = {"schema": "danh-gia-can-1", "ma_sach": "S", "hang": [
+        {"vang": "G1", "may": "chinh:a", "quan_he": "khop", "nguon_quyet_dinh": "luat_ten", "ma_phan": None, "ghi_chu": "", "nhat_ky": ""},
+        {"vang": "G2", "may": "chinh:b", "quan_he": "khop", "nguon_quyet_dinh": "phan_tay", "ma_phan": "c0001", "ghi_chu": "x", "nhat_ky": ""},
+        {"vang": "G3", "may": "b1:zzz", "quan_he": "khop", "nguon_quyet_dinh": "luat_ten", "ma_phan": None, "ghi_chu": "", "nhat_ky": ""},
+        {"vang": "G3", "may": "chinh:c", "quan_he": "may_rong_hon", "nguon_quyet_dinh": "phan_tay", "ma_phan": "c0002", "ghi_chu": "", "nhat_ky": ""},
+    ]}
+    tay = dt.can("S", [("G1", "a", "khop"), ("G2", "b", "khop"), ("G3", "c", "may_rong_hon")])
+    for che_do in ("cung", "ca_hai"):
+        a = cham(hd, g3_, g4_, mu.tach_theo_he(gop, "chinh"), mem=che_do)
+        b = cham(hd, g3_, g4_, tay, mem=che_do)
+        assert a == b and a
+    ket = {r["thuoc"] for r in cham(hd, g3_, g4_, mu.tach_theo_he(gop, "chinh"))}
+    assert ket  # có số đếm thật
