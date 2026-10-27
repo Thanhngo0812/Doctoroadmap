@@ -92,7 +92,8 @@ def _khai_niem(nut, *, trong_day_hoc, bi_loai, da_gop, vi_tri, chunks, loi):
     return ket_qua
 
 
-def _canh(graph, chunks, loi):
+def _canh(graph, chunks, loi, nguon_goc=None):
+    """`nguon_goc` (tuỳ chọn): ép mọi cạnh về một giá trị, cho hệ không phải hệ chính (baseline, oracle) vốn không có session_id pass chính/phụ."""
     ket_qua, thay = [], {}
     nhom = (("requires_edges", False), ("bypassed_edges", True), ("soft_backward_edges", False))
     for ten_nhom, bo_qua in nhom:
@@ -115,7 +116,7 @@ def _canh(graph, chunks, loi):
                 trang = chunks[ma_chunk]["page"] if ma_chunk in chunks else None
                 bang_chung = {"trang": trang, "cau": e["quote"]}
             ket_qua.append({"nguon": e["source"], "dich": e["target"],
-                            "nguon_goc": _nguon_goc(e.get("session_id"), noi, loi), "mem": mem,
+                            "nguon_goc": nguon_goc or _nguon_goc(e.get("session_id"), noi, loi), "mem": mem,
                             "ly_do_mem": e["soft_reason"] if mem else None, "bo_qua": bo_qua,
                             "bang_chung": bang_chung})
     return ket_qua
@@ -229,6 +230,19 @@ def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None):
         raise LoiXuat(loi)
     duong_chunks = kho / "chunks" / doc_id / f"v{config['chunks_version']}"
     chunks_list, sections = _doc(duong_chunks / "chunks.json"), _doc(duong_chunks / "sections.json")
+    return xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, dinh_danh=dinh_danh, kho=kho,
+                           kho_pha_b=kho_pha_b, loi=loi)
+
+
+def xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, *, dinh_danh, kho=None, kho_pha_b=None,
+                    loi=None, chi_phi=None, nguon_goc_canh=None):
+    """Dựng hợp đồng từ graph đã nạp (không đọc kho). Hệ chính đi qua `xuat`; bộ phát lại và baseline đưa graph tự dựng vào đây.
+
+    `chi_phi` (tuỳ chọn) thay phần đo của kho: hệ không chạy pipeline không có đo đạc để đọc. `nguon_goc_canh` ép nguồn gốc
+    cạnh (baseline, oracle). `manifest` cần `config_hash` và `config.model_id`.
+    """
+    loi = [] if loi is None else loi
+    config = manifest.get("config", {})
     chunks = {c["chunk_id"]: c for c in chunks_list}
     vi_tri = {ma: i for i, ma in enumerate(graph["sequence"])}
     khai_niem = []
@@ -250,12 +264,12 @@ def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None):
         "cau_truc": _cau_truc(chunks_list, sections, loi),
         "khai_niem": khai_niem,
         "ban_do_danh_tinh": dict(graph.get("identity_map") or {}),
-        "canh": _canh(graph, chunks, loi),
+        "canh": _canh(graph, chunks, loi, nguon_goc_canh),
         "cap_ung_vien": _cap_ung_vien(graph),
         "lo_trinh": {"day_hoc": list(graph["sequence"]),
                      "module": [{"ma": m["module_id"], "ten": m["title"], "thanh_vien": list(m["node_ids"])}
                                 for m in graph["modules"]]},
-        "chi_phi": _chi_phi(kho, doc_id, phien_ban, graph, kho_pha_b, loi),
+        "chi_phi": chi_phi if chi_phi is not None else _chi_phi(Path(kho), doc_id, phien_ban, graph, kho_pha_b, loi),
     }
     if loi:
         raise LoiXuat(loi)
