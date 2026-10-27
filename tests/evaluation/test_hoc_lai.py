@@ -1,5 +1,6 @@
 """DG-20: phần thuần của việc chọn lại siêu tham số (chia LOBO, dừng sớm theo seed, luật một sai số chuẩn, so sánh cặp)."""
 import math
+import statistics
 
 import pytest
 
@@ -115,6 +116,16 @@ def test_mot_se_ca_cham_nguong_duoc_chon():
 def test_mot_se_khong_phai_cau_hinh_cao_nhat_khi_co_cau_hinh_it_la_trong_nguong():
     ap = {7: ap_16(0.795, 0.08), 15: ap_16(0.79, 0.08), 31: ap_16(0.8, 0.08), 63: ap_16(0.7, 0.08), 127: ap_16(0.7, 0.08), 255: ap_16(0.7, 0.08)}
     assert chon_mot_se(ap)["chon"] == 7 != chon_ap_cao_nhat(ap)["chon"]
+
+
+def test_mot_se_bo_cuon_khong_co_ap_khoi_trung_binh_va_se():
+    # 14 cuốn có AP (None ở 2 cuốn không có dòng dương): SE = sd / √14, không phải √16
+    co = ap_16(0.80, 0.08)[:14]
+    ap = {7: co + [None, float("nan")], 15: [x - 0.1 for x in co] + [None, None]}
+    kq = chon_mot_se(ap)
+    assert kq["so_cuon_hop_le"] == 14
+    assert kq["se"] == pytest.approx(statistics.stdev(co) / math.sqrt(14))
+    assert kq["ap_trung_binh"][7] == pytest.approx(statistics.fmean(co))
 
 
 def test_mot_se_doi_hoi_du_16_cuon():

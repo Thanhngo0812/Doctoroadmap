@@ -86,3 +86,42 @@ def m2_data():
         x, y = pairs.matrix(d["rows"]), pairs.pair_labels(d["rows"], labels["rows"])
         result[key] = (x[y >= 0], y[y >= 0])
     return result, list(pairs.FEATURES)
+
+
+# Cấu hình hiện tại của từng mô hình; chỉ `num_leaves` đổi trong lưới, mọi tham số khác giữ nguyên (vé, phần A bước 3).
+CAU_HINH = {
+    "m1": dict(learning_rate=0.05, min_child_samples=30, class_weight="balanced", random_state=42, deterministic=True, force_col_wise=True),
+    "m2": dict(learning_rate=0.05, min_child_samples=10, class_weight="balanced", random_state=42, deterministic=True, force_col_wise=True),
+    "m3": dict(learning_rate=0.03, min_child_samples=20, subsample=0.8, subsample_freq=1, colsample_bytree=0.8, reg_lambda=1.0,
+               is_unbalance=True, random_state=20261005),
+}
+HIEN_TAI = {"m1": 15, "m2": 7, "m3": 15}
+VONG_HIEN_TAI = {"m1": 300, "m2": 150, "m3": 300}
+
+
+def nap(mo_hinh):
+    """{cuốn: (X, y)} cho m1, m2, m3. M3 giữ ô thiếu là NaN ở đây; LightGBM của M3 điền -1 như sản phẩm (`thi_nghiem_e2b.fit_predict`)."""
+    if mo_hinh == "m3":
+        import json
+        features = json.loads((goc() / "vendor/a8-pass-phu-ml/manifest.json").read_text(encoding="utf-8"))["dac_trung"]
+        data = m3_data()
+        return {b: (g[features].to_numpy(dtype=float), g.nhan.to_numpy()) for b, g in data.groupby("doc")}, features
+    return (m1_data if mo_hinh == "m1" else m2_data)()
+
+
+def cho_lgbm(mo_hinh, x):
+    return np.nan_to_num(x, nan=-1.0) if mo_hinh == "m3" else x
+
+
+def lgbm(mo_hinh, so_la, so_vong, **them):
+    from lightgbm import LGBMClassifier
+    return LGBMClassifier(n_estimators=so_vong, num_leaves=so_la, n_jobs=THREADS, verbosity=-1, **CAU_HINH[mo_hinh], **them)
+
+
+def noi(data, cuon):
+    return np.concatenate([data[b][0] for b in cuon]), np.concatenate([data[b][1] for b in cuon])
+
+
+def ap(y, p):
+    from sklearn.metrics import average_precision_score
+    return float(average_precision_score(y, p)) if y.sum() > 0 else None
