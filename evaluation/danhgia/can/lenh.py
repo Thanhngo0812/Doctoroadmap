@@ -35,7 +35,7 @@ def _chuan_bi(a):
         hop_dong[he] = hd
     g3, g4 = _doc(a.g3), _doc(a.g4)
     tt = mu.chuan_bi(luat.doc_vang(g3, g4), luat.doc_nut(hop_dong), ma_sach=g3["ma_sach"], seed=a.seed,
-                     nguong_cau=a.nguong_cau, nguong_gan=a.nguong_gan, nguong_jaccard=a.nguong_jaccard)
+                     nguong_cau=a.nguong_cau, nguong_gan=a.nguong_gan, nguong_jaccard=a.nguong_jaccard, chi_vang_chua_can=a.chi_vang_chua_can)
     d = Path(a.ra)
     _ghi(d / "chuan-bi.json", tt)
     mu.sinh_phieu(tt, d / "phieu-mu.xlsx", nguoi="C")
@@ -98,6 +98,8 @@ def them_lenh(parser):
     p.add_argument("--nguong-cau", type=float, default=luat.NGUONG_CAU_MAC_DINH)
     p.add_argument("--nguong-gan", type=float, default=luat.NGUONG_GAN_MAC_DINH)
     p.add_argument("--nguong-jaccard", type=float, default=luat.NGUONG_JACCARD_MAC_DINH)
+    p.add_argument("--chi-vang-chua-can", action="store_true",
+                   help="chỉ đưa vào phiếu cặp của khái niệm vàng chưa căn được bằng luật (giảm số ca phán; mặc định đưa mọi cặp gần)")
     p.add_argument("--ra", required=True)
     p.set_defaults(chay=_chuan_bi)
 

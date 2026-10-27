@@ -426,3 +426,13 @@ def test_doc_vang_gom_ca_nguon_ngoai_cua_g4():
     ngoai = [v for v in ds if v["khoa"].startswith("ngoai:")]
     assert [(v["ten"], v["trang"]) for v in ngoai] == [("Tập hợp", 2)] and ngoai[0]["khoa"] == "ngoai:Tập hợp|2"
     assert len([v for v in ds if not v["khoa"].startswith("ngoai:")]) == len(kho["khai_niem"])
+
+
+def test_chi_vang_chua_can_bo_ca_gan_cua_vang_da_can_bang_luat():
+    day_du = chuan_bi()
+    gon = chuan_bi(chi_vang_chua_can=True)
+    vang_day_du = {p["vang"] for p in day_du["phieu"]}
+    vang_gon = {p["vang"] for p in gon["phieu"]}
+    assert "G-1" in vang_day_du and "G-1" not in vang_gon        # G-1 đã căn bằng tên: ứng viên gần của nó bị bỏ
+    assert "G-4" in vang_gon                                      # G-4 chưa căn: giữ nguyên
+    assert gon["tu_dong"] == day_du["tu_dong"] and len(gon["phieu"]) < len(day_du["phieu"])

@@ -61,7 +61,7 @@ def _khoa_hien_thi(n):
 
 
 def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, nguong_gan=luat.NGUONG_GAN_MAC_DINH,
-             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH):
+             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH, chi_vang_chua_can=False):
     he = {n["id"].split(":")[0] for n in nut}
     cam = {h.lower() for h in he}
     nhom = {}
@@ -76,7 +76,8 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
         for id_goc in theo_u[h["may"]]["id_goc"]:
             tu_dong.append({**h, "may": id_goc})
     theo_vang = {v["khoa"]: v for v in vang}
-    cap = [(u["vang"], u["node"]) for u in ket["ung_vien"]]
+    da_can = {h["vang"] for h in ket["hang"]}
+    cap = [(u["vang"], u["node"]) for u in ket["ung_vien"] if not (chi_vang_chua_can and u["vang"] in da_can)]
     rng = Lcg(seed)
     thu_tu = [cap[i] for i in _xao(len(cap), rng)]
     ma_phan = _sinh_ma("c", len(thu_tu), cam)
@@ -91,6 +92,7 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
     vang_can = {h["vang"] for h in tu_dong}
     return {"schema": SCHEMA_CHUAN_BI, "ma_sach": ma_sach, "seed": seed,
             "nguong": {"cau": nguong_cau, "gan": nguong_gan, "jaccard": nguong_jaccard},
+            "chi_vang_chua_can": chi_vang_chua_can,
             "vang": theo_vang, "tu_dong": tu_dong, "khong_ung_vien": ket["khong_ung_vien"], "phieu": phieu,
             "ma_node": {ma_nut[u]: theo_u[u]["id_goc"] for u in nut_dung},
             "bao_cao": {"so_vang": len(vang), "so_nut": len(nut), "so_nut_khac_nhau": len(duy_nhat),
