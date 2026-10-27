@@ -84,6 +84,13 @@ def test_chunk_o_trang_xa_khong_duoc_gan():
     assert chunk is None and ly_do == "khong_khop"
 
 
+def test_lech_hai_trang_khong_duoc_gan_nhung_lech_mot_trang_hai_phia_duoc():
+    cau = "Độ lệch chuẩn là căn bậc hai của phương sai."  # nằm ở trang 3 (c4)
+    assert tim_chunk(cau, 1, CHUNKS)[2] == "khong_khop" and tim_chunk(cau, 5, CHUNKS)[2] == "khong_khop"
+    assert tim_chunk(cau, 2, CHUNKS)[2] == "ok_lech_trang" and tim_chunk(cau, 4, CHUNKS)[2] == "ok_lech_trang"
+    assert tim_chunk(cau, 3, CHUNKS)[2] == "ok"
+
+
 def test_cau_co_o_trang_dung_thi_khong_nhay_sang_trang_khac():
     # cùng câu có ở trang 1 (c1) và trang 2 (c3): vàng ghi trang 2 thì luôn c3, vàng ghi trang 1 thì luôn c1
     cau = "Mẫu là một phần của tổng thể được chọn ra."
