@@ -81,8 +81,13 @@ Lược đồ dưới gửi qua `responseJsonSchema`. Adapter tự lọc khoá t
 
 ## Ghi chú cho bộ chuyển đổi (DG-07)
 
-Bộ chuyển đổi xử lý đầu ra B5 theo bốn luật:
-- `trang_thai` của mọi khái niệm B5 ghi là `defined_here`, vì B5 chỉ trả khái niệm được dạy. Câu neo là `cau_dinh_nghia`.
-- Quan hệ có `nguon` hay `dich` không nằm trong `khai_niem` thì vẫn giữ, nhưng đếm vào chỉ số "quan hệ trỏ khái niệm lạ". Không vá.
-- B5b hợp nhất khái niệm giữa các chương **chỉ** khi tên trùng sau chuẩn hoá.
-- Đầu ra bị cắt vì chạm trần token thì ghi cờ, không gọi lại.
+Bộ chuyển đổi xử lý đầu ra B5 theo các luật sau (DG-07 đã cài, nghiệm thu 2026-10-27):
+- `trang_thai_day` của mọi khái niệm B5 ghi là `taught`, vì B5 chỉ trả khái niệm được dạy (hợp đồng không có giá trị `defined_here`). Câu neo là `cau_dinh_nghia`
+  kèm trang.
+- Cạnh B5 có `nguon_goc = baseline`; hệ được nhận ra qua `dinh_danh.he` (`b5a`, `b5b`).
+- Quan hệ có `nguon` hay `dich` không nằm trong `khai_niem` không vào `canh`, vì hợp đồng không cho cạnh có đầu lạ. Chúng được giữ nguyên trong báo cáo lượt và
+  đếm vào chỉ số "quan hệ trỏ khái niệm lạ". Không vá: không thêm khái niệm cho đủ đầu.
+- Câu trích được kiểm có thật trong sách và được đếm, nhưng không bị loại khỏi hợp đồng; thước truy nguyên tự đếm câu bịa.
+- Hợp nhất khái niệm (trong một lời gọi, và giữa các chương ở B5b) **chỉ** khi tên trùng sau chuẩn hoá.
+- B5a đọc cả cuốn; B5b đọc mọi chương của manifest, mọi loại, nên hai chế độ cùng phạm vi văn bản với hệ chính.
+- Đầu ra bị cắt vì chạm trần token thì ghi cờ, lượt đó tính là thất bại, không gọi lại.
