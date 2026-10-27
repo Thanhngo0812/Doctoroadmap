@@ -46,10 +46,14 @@ LUOC_DO = {
                      "additionalProperties": False, "properties": {
             "tieu_de": {"type": "array", "items": _vat({
                 "ma": _CHUOI, "chu": _CHUOI, "cap": _NGUYEN_HOAC_NULL, "cha": _CHUOI_HOAC_NULL,
-                "trang": _NGUYEN_HOAC_NULL, "ma_dong": _CHUOI_HOAC_NULL})},
+                "trang": _NGUYEN_HOAC_NULL,
+                "ma_dong": {"type": ["array", "null"], "items": _CHUOI}})},   # mã dòng của bảng dòng, hoặc null nếu chưa căn
             "muc": {"type": "array", "items": _vat({"ma": _CHUOI, "vai_tro": {"enum": VAI_TRO_VUNG}})},
             "doan_van": {"type": "array", "items": _vat({
                 "ma": _CHUOI, "trang": _NGUYEN_HOAC_NULL, "duong_muc": _DS_CHUOI, "vai_tro": {"enum": VAI_TRO_VUNG}})},
+            # tuỳ chọn (DG-13): căn dòng của bảng dòng với mục; hợp đồng B5 và baseline không có vẫn hợp lệ
+            "dong_thuoc_muc": {"type": "object", "additionalProperties": _CHUOI_HOAC_NULL},
+            "dong_khong_can": _DS_CHUOI,
         }},
         "khai_niem": {"type": "array", "items": _vat({
             "ma": _CHUOI, "ten": _CHUOI, "ten_khac": _DS_CHUOI, "kieu": _CHUOI,

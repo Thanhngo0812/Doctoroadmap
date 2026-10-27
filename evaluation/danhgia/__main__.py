@@ -16,6 +16,7 @@ _LENH = {
     "phieu-g4": "danhgia.phieu.lenh_g4",
     "can-khai-niem": "danhgia.can.lenh",
     "thuoc-khai-niem": "danhgia.cham.lenh_khai_niem",
+    "cham-a1a2": "danhgia.cham.lenh_a1a2",
     "b5": "danhgia.xuat.b5.lenh",
     "baseline": "danhgia.xuat.baseline.lenh",
     "phat-lai": "danhgia.phat_lai.lenh",
@@ -37,9 +38,16 @@ def lenh_xuat(args):
     dinh_danh = {"he": args.he, "bien_the": args.bien_the, "luot_nhieu": args.luot_nhieu, "commit": args.commit,
                  "ngay_chay": args.ngay_chay, "transport": args.transport, "sha256_pdf": args.sha256_pdf,
                  "so_trang": args.so_trang}
-    hd = xuat(args.kho, args.doc, args.phien_ban, dinh_danh=dinh_danh, kho_pha_b=args.kho_pha_b)
+    bang_dong = None
+    if args.pdf:   # căn dòng của bảng dòng `src` với mục (khối cau_truc có ma_dong và dong_thuoc_muc)
+        from danhgia.xuat import bang_dong as bd
+        bang_dong = bd.dong_tu_pdf(args.pdf)
+    hd = xuat(args.kho, args.doc, args.phien_ban, dinh_danh=dinh_danh, kho_pha_b=args.kho_pha_b, bang_dong=bang_dong)
     _ghi(args.ra, hd)
     print(f"đã ghi {args.ra}: {len(hd['khai_niem'])} khái niệm, {len(hd['canh'])} cạnh")
+    if bang_dong is not None:
+        ct = hd["cau_truc"]
+        print(f"căn dòng: {len(ct['dong_thuoc_muc'])}/{len(bang_dong)} dòng căn được, {len(ct['dong_khong_can'])} dòng không căn được")
 
 
 def lenh_kiem(args):
@@ -103,6 +111,7 @@ def _tham_so():
     xuat.add_argument("--transport", required=True)
     xuat.add_argument("--sha256-pdf", default=None)
     xuat.add_argument("--so-trang", type=int, default=None)
+    xuat.add_argument("--pdf", default=None, help="PDF gốc: dựng bảng dòng `src` và căn dòng vào mục (cau_truc.ma_dong, dong_thuoc_muc)")
     xuat.add_argument("--kho-pha-b", default=None, help="tệp JSON kho Pha B riêng của lượt chạy")
     xuat.add_argument("--ra", required=True)
     xuat.set_defaults(chay=lenh_xuat)
