@@ -63,7 +63,8 @@ def _khoa_hien_thi(n):
 
 
 def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, nguong_gan=luat.NGUONG_GAN_MAC_DINH,
-             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH, k_ung_vien=luat.K_UNG_VIEN_MAC_DINH):
+             nguong_jaccard=luat.NGUONG_JACCARD_MAC_DINH, k_ung_vien=luat.K_UNG_VIEN_MAC_DINH,
+             k_ung_vien_da_can=luat.K_UNG_VIEN_DA_CAN_MAC_DINH):
     he = {n["id"].split(":")[0] for n in nut}
     cam = {h.lower() for h in he}
     nhom = {}
@@ -72,7 +73,8 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
     duy_nhat = [{"id": f"u{i}", "ten": ds[0]["ten"], "ten_khac": list(ds[0]["ten_khac"]), "trang": ds[0]["trang"],
                  "cau": ds[0]["cau"], "id_goc": sorted(n["id"] for n in ds)} for i, ds in enumerate(nhom.values())]
     theo_u = {u["id"]: u for u in duy_nhat}
-    ket = luat.can_tu_dong(vang, duy_nhat, nguong_cau=nguong_cau, nguong_gan=nguong_gan, nguong_jaccard=nguong_jaccard, k_ung_vien=k_ung_vien)
+    ket = luat.can_tu_dong(vang, duy_nhat, nguong_cau=nguong_cau, nguong_gan=nguong_gan, nguong_jaccard=nguong_jaccard, k_ung_vien=k_ung_vien,
+                          k_ung_vien_da_can=k_ung_vien_da_can)
     tu_dong = []
     for h in ket["hang"]:
         for id_goc in theo_u[h["may"]]["id_goc"]:
@@ -80,6 +82,8 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
     theo_vang = {v["khoa"]: v for v in vang}
     cap = [(u["vang"], u["node"]) for u in ket["ung_vien"]]
     rng = Lcg(seed)
+    for _ in range(4):  # bỏ vài số đầu: seed liền nhau cho số đầu tương quan
+        rng.chi_so(2)
     thu_tu = [cap[i] for i in _xao(len(cap), rng)]
     ma_phan = _sinh_ma("c", len(thu_tu), cam)
     nut_dung = sorted({u for _, u in cap}, key=lambda u: int(u[1:]))
@@ -93,7 +97,7 @@ def chuan_bi(vang, nut, *, ma_sach, seed, nguong_cau=luat.NGUONG_CAU_MAC_DINH, n
     vang_can = {h["vang"] for h in tu_dong}
     return {"schema": SCHEMA_CHUAN_BI, "ma_sach": ma_sach, "seed": seed,
             "nguong": {"cau": nguong_cau, "gan": nguong_gan, "jaccard": nguong_jaccard},
-            "k_ung_vien": k_ung_vien,
+            "k_ung_vien": k_ung_vien, "k_ung_vien_da_can": k_ung_vien_da_can,
             "vang": theo_vang, "tu_dong": tu_dong, "khong_ung_vien": ket["khong_ung_vien"], "phieu": phieu,
             "ma_node": {ma_nut[u]: theo_u[u]["id_goc"] for u in nut_dung},
             "bao_cao": {"so_vang": len(vang), "so_nut": len(nut), "so_nut_khac_nhau": len(duy_nhat),

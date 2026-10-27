@@ -187,8 +187,8 @@ def test_ma_node_khong_vo_tinh_chua_ten_he():
 def test_ma_ngau_nhien_tat_dinh_theo_seed_va_doi_seed_thi_doi():
     a, b = chuan_bi(seed=7), chuan_bi(seed=7)
     assert a == b
-    ma = {s: json.dumps(chuan_bi(seed=s)["ma_node"], sort_keys=True) for s in range(1, 8)}
-    assert len(set(ma.values())) >= 6
+    ma = {s: json.dumps(chuan_bi(seed=s)["ma_node"], sort_keys=True) for s in range(1, 13)}   # 4 node: 24 cách gán
+    assert len(set(ma.values())) >= 7
     thu_tu = {s: [h["ma_phan"] + h["nut"]["ma"] for h in chuan_bi(seed=s)["phieu"]] for s in range(1, 8)}
     assert len({tuple(v) for v in thu_tu.values()}) >= 6
 
@@ -509,3 +509,26 @@ def test_tach_roi_cham_ra_dung_so_nhu_bang_mot_he_dung_tay():
         assert a == b and a
     ket = {r["thuoc"] for r in cham(hd, g3_, g4_, mu.tach_theo_he(gop, "chinh"))}
     assert ket  # có số đếm thật
+
+
+def test_vang_da_can_chi_nhan_1_node_gan_nhat_con_vang_chua_can_nhan_3():
+    da_can = vang("A", "Cao độ", 3, None)
+    chua_can = vang("B", "Sai số", 5, None)
+    nut_ = [nut("chinh:0", "cao độ", 3, None)]                                           # căn A bằng luật tên
+    nut_ += [nut(f"chinh:a{n}", "Cao độ " + " ".join(["thêm"] * n), 3, None) for n in range(1, 4)]   # 3 node gần chưa căn của A
+    nut_ += [nut(f"chinh:b{n}", "Sai số " + " ".join(["thêm"] * n), 5, None) for n in range(1, 6)]   # 5 node gần của B
+    tt = tt_k([da_can, chua_can], nut_)
+    assert ten_trong_phieu(tt, "A") == ["Cao độ thêm"]                                   # đúng 1 dòng: node gần nhất
+    assert ten_trong_phieu(tt, "B") == ["Sai số thêm", "Sai số thêm thêm", "Sai số thêm thêm thêm"]   # đúng 3 dòng
+    ket = luat.can_tu_dong([da_can, chua_can], nut_)
+    assert sum(u["vang"] == "A" for u in ket["ung_vien"]) == 1 and sum(u["vang"] == "B" for u in ket["ung_vien"]) == 3
+
+
+def test_hai_tham_so_k_doc_lap():
+    da_can = vang("A", "Cao độ", 3, None)
+    chua_can = vang("B", "Sai số", 5, None)
+    nut_ = [nut("chinh:0", "cao độ", 3, None)]
+    nut_ += [nut(f"chinh:a{n}", "Cao độ " + " ".join(["thêm"] * n), 3, None) for n in range(1, 4)]
+    nut_ += [nut(f"chinh:b{n}", "Sai số " + " ".join(["thêm"] * n), 5, None) for n in range(1, 6)]
+    tt = tt_k([da_can, chua_can], nut_, k_ung_vien=4, k_ung_vien_da_can=2)
+    assert len(ten_trong_phieu(tt, "A")) == 2 and len(ten_trong_phieu(tt, "B")) == 4
