@@ -1,0 +1,40 @@
+{
+  "source": "Independent SQL connection, synthetic accounts, zero external mail/provider calls",
+  "course_id": "b27b1d7f-f9a4-47ff-9138-dbded52e4a24",
+  "invitations": [
+    {
+      "id": "7d6eecdc-cd04-46e4-889c-2eeb42731969",
+      "email_normalized": "159a7932d9bb49868438e2a449c0d1be@example.vn",
+      "invitee_account_id": "6b75a6a6-b0da-48ca-91d8-17f931ff463c",
+      "status": "accepted",
+      "expires_at": "2026-01-08 00:00:00+00:00",
+      "responded_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "membership": [
+    {
+      "account_id": "39a877db-06e0-445e-bcf4-9d2b9d6cd6d0",
+      "role": "owner",
+      "via": "owner"
+    },
+    {
+      "account_id": "6b75a6a6-b0da-48ca-91d8-17f931ff463c",
+      "role": "learner",
+      "via": "email"
+    }
+  ],
+  "audit": [
+    {
+      "action": "invitation_sent",
+      "actor_id": "39a877db-06e0-445e-bcf4-9d2b9d6cd6d0",
+      "target_id": "7d6eecdc-cd04-46e4-889c-2eeb42731969",
+      "meta": {}
+    },
+    {
+      "action": "invitation_accepted",
+      "actor_id": "6b75a6a6-b0da-48ca-91d8-17f931ff463c",
+      "target_id": "7d6eecdc-cd04-46e4-889c-2eeb42731969",
+      "meta": {}
+    }
+  ]
+}

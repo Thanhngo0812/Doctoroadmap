@@ -273,3 +273,17 @@ it('keeps a document hourly-limit notice after the final answer and in saved his
   expect(await screen.findByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.')).toBeVisible();
   expect(screen.queryByText('Tài liệu đã tạo')).not.toBeInTheDocument();
 });
+
+it('allows core to decide cache reuse under a limited learner quota instead of blocking the question', async () => {
+  const original = globalThis.fetch;
+  vi.stubGlobal('fetch', vi.fn((input, init) => String(input).endsWith('/me/usage')
+    ? Promise.resolve(json({ contract_version: 'usage-1', learner_today: { used_ratio: 1, limited: true, resets_at: '2026-10-27T00:00:00+07:00' } }))
+    : original(input, init)));
+  render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  expect(await screen.findByText('Đã dùng hết hạn mức hôm nay.')).toBeVisible();
+  const field = screen.getByRole('textbox', { name: 'Câu hỏi' }); expect(field).toBeEnabled();
+  await userEvent.type(field, 'Mở nội dung đã có'); await userEvent.click(screen.getByRole('button', { name: 'Gửi câu hỏi' }));
+  await waitFor(() => expect(requests).toHaveLength(1));
+  await act(async () => { frame('final', { answer: { ...answer, answer_md: 'Nội dung đã có vẫn dùng được.' } }); controller.close(); });
+  expect(await screen.findByText('Nội dung đã có vẫn dùng được.')).toBeVisible();
+});

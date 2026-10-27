@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="17" skipped="0" tests="17" time="42.034" timestamp="2026-10-27T11:39:15.635876+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pending_dedup_reinvite_token_hash_ttl_and_public_dto" time="6.944"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000255764A...unction invited.&lt;locals&gt;.actor at 0x000002556FA02DE0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002557FB6E390&gt;)
+
+    def test_pending_dedup_reinvite_token_hash_ttl_and_public_dto(invited):
+        rt = invited
+        recipient = email(rt.receiver)
+        first = send(rt, [recipient, '  ' + recipient.upper() + '  '])
+&gt;       identity = iid(first)
+                   ^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:126:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_registration_not_bound_until_matching_email_verified" time="1.797"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000255161A...unction invited.&lt;locals&gt;.actor at 0x000002557FF67560&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516296240&gt;)
+
+    def test_registration_not_bound_until_matching_email_verified(invited):
+        rt = invited
+        address = uuid4().hex + '@example.vn'
+&gt;       identity = iid(send(rt, [address]))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:155:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_other_user_and_unverified_cannot_respond[accept]" time="1.830"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000255164C...unction invited.&lt;locals&gt;.actor at 0x00000255166CFB00&gt;, app=&lt;fastapi.applications.FastAPI object at 0x00000255165C2000&gt;)
+action = 'accept'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+&gt;       identity = iid(send(rt, [email(unverified)]))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:175:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_other_user_and_unverified_cannot_respond[decline]" time="3.190"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551684...unction invited.&lt;locals&gt;.actor at 0x00000255161771A0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x00000255168CA150&gt;)
+action = 'decline'
+
+    @pytest.mark.parametrize('action', ['accept', 'decline'])
+    def test_other_user_and_unverified_cannot_respond(invited, action):
+        rt = invited
+        unverified = rt.user(False)
+&gt;       identity = iid(send(rt, [email(unverified)]))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:175:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_expiry_exact_boundary_and_expired_reinvite" time="1.715"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551643...unction invited.&lt;locals&gt;.actor at 0x0000025516A3B4C0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516971310&gt;)
+
+    def test_expiry_exact_boundary_and_expired_reinvite(invited):
+        rt = invited
+&gt;       identity = iid(send(rt))
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:186:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_accept_replay_decline_cancel_and_course_scope" time="1.877"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000025516B5...unction invited.&lt;locals&gt;.actor at 0x0000025516CF00E0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516C64770&gt;)
+
+    def test_accept_replay_decline_cancel_and_course_scope(invited):
+        rt = invited
+&gt;       identity = iid(send(rt))
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:208:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_owner_authorization_validation_and_csrf" time="1.961"><failure message="assert (404 == 422)&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000025516E4...unction invited.&lt;locals&gt;.actor at 0x0000025516F4BF60&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516F66BA0&gt;)
+
+    def test_owner_authorization_validation_and_csrf(invited):
+        rt = invited
+        raw = [email(rt.receiver)]
+        for addresses in ([], ['invalid'], ['a@example.vn'] * 51):
+            response = rt.owner.post(f'/api/v1/courses/{rt.course.id}/invitations', headers=headers(rt.owner), json={'emails': addresses})
+&gt;           assert response.status_code == 422 and response.json()['error']['fields']
+E           assert (404 == 422)
+E            +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:233: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_201st_daily_mail_and_vietnam_day_reset" time="1.775"><failure message="AssertionError: assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code&#10; +    where &lt;Response [404 Not Found]&gt; = send(namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551812...unction invited.&lt;locals&gt;.actor at 0x00000255182FA5C0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518255730&gt;), ['64338a17f8d645819144de20240450f5@example.vn', '50503f049e774d7cbfc038a8e1091a5a@example.vn', '086a95ccbd344873b9b662...f6894cf@example.vn', '6ed6662e86604084bdd06cca257c41e8@example.vn', '831baadc796e4c189a71a3ab54193f32@example.vn', ...])">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551812...unction invited.&lt;locals&gt;.actor at 0x00000255182FA5C0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518255730&gt;)
+
+    def test_201st_daily_mail_and_vietnam_day_reset(invited):
+        rt = invited
+        rt.clock.instant = rt.clock.instant.replace(hour=16, minute=59)
+        for _ in range(4):
+&gt;           assert send(rt, [f'{uuid4().hex}@example.vn' for _ in range(50)]).status_code == 200
+E           AssertionError: assert 404 == 200
+E            +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+E            +    where &lt;Response [404 Not Found]&gt; = send(namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551812...unction invited.&lt;locals&gt;.actor at 0x00000255182FA5C0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518255730&gt;), ['64338a17f8d645819144de20240450f5@example.vn', '50503f049e774d7cbfc038a8e1091a5a@example.vn', '086a95ccbd344873b9b662...f6894cf@example.vn', '6ed6662e86604084bdd06cca257c41e8@example.vn', '831baadc796e4c189a71a3ab54193f32@example.vn', ...])
+
+src\web\backend\tests\test_w12_invitations.py:259: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_two_runtimes_race_on_last_mail_or_course_seat[mail]" time="1.178"><failure message="TypeError: SharingService.__init__() got an unexpected keyword argument 'mailer'">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002557FB1...unction invited.&lt;locals&gt;.actor at 0x0000025516B9A520&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516329790&gt;)
+race = 'mail'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+        identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+        barrier = Barrier(2)
+        def work(index):
+            engine = create_database_engine(rt.settings.database_url)
+            try:
+                service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                barrier.wait(timeout=10)
+                try:
+                    if race in ('mail', 'same-invite'):
+                        return service.invite_by_email(actor, rt.course.id, [email(rt.receiver)])
+                    client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
+                    return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
+                except WebError as error:
+                    return error.code
+            finally:
+                engine.dispose()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+&gt;           results = list(pool.map(work, range(2)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:292:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+index = 0
+
+    def work(index):
+        engine = create_database_engine(rt.settings.database_url)
+        try:
+&gt;           service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: SharingService.__init__() got an unexpected keyword argument 'mailer'
+
+src\web\backend\tests\test_w12_invitations.py:280: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_two_runtimes_race_on_last_mail_or_course_seat[capacity]" time="1.401"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551695...unction invited.&lt;locals&gt;.actor at 0x00000255167AF880&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025516C9ACC0&gt;)
+race = 'capacity'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+&gt;       identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:275:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_two_runtimes_race_on_last_mail_or_course_seat[same-accept]" time="1.431"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551839...unction invited.&lt;locals&gt;.actor at 0x00000255184C34C0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518471A00&gt;)
+race = 'same-accept'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+&gt;       identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:275:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_two_runtimes_race_on_last_mail_or_course_seat[same-invite]" time="1.302"><failure message="TypeError: SharingService.__init__() got an unexpected keyword argument 'mailer'">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551859...unction invited.&lt;locals&gt;.actor at 0x0000025518748860&gt;, app=&lt;fastapi.applications.FastAPI object at 0x00000255186DDD30&gt;)
+race = 'same-invite'
+
+    @pytest.mark.parametrize('race', ['mail', 'capacity', 'same-accept', 'same-invite'])
+    def test_two_runtimes_race_on_last_mail_or_course_seat(invited, race):
+        rt = invited
+        actor = rt.actor(rt.owner)
+        if race == 'mail':
+            rt.settings.invite_emails_per_day = 1
+        if race == 'capacity':
+            rt.settings.course_max_members = 2
+        identities = [iid(send(rt, [email(client)])) for client in (rt.receiver, rt.outsider)] if race in ('capacity', 'same-accept') else []
+        barrier = Barrier(2)
+        def work(index):
+            engine = create_database_engine(rt.settings.database_url)
+            try:
+                service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                barrier.wait(timeout=10)
+                try:
+                    if race in ('mail', 'same-invite'):
+                        return service.invite_by_email(actor, rt.course.id, [email(rt.receiver)])
+                    client = rt.receiver if race == 'same-accept' else (rt.receiver, rt.outsider)[index]
+                    return service.accept_invitation(rt.actor(client), identities[0 if race == 'same-accept' else index])
+                except WebError as error:
+                    return error.code
+            finally:
+                engine.dispose()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+&gt;           results = list(pool.map(work, range(2)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:292:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+index = 0
+
+    def work(index):
+        engine = create_database_engine(rt.settings.database_url)
+        try:
+&gt;           service = SharingService(PostgresSharingStore(engine), rt.settings, rt.clock, mailer=rt.mailer)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: SharingService.__init__() got an unexpected keyword argument 'mailer'
+
+src\web\backend\tests\test_w12_invitations.py:280: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pg_rollback_on_audit_failure[invite]" time="2.083"><failure message="AttributeError: 'SharingService' object has no attribute 'invite_by_email'">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000255188C...unction invited.&lt;locals&gt;.actor at 0x00000255189A1620&gt;, app=&lt;fastapi.applications.FastAPI object at 0x000002551887E330&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000255187834D0&gt;
+operation = 'invite'
+
+    @pytest.mark.parametrize('operation', ['invite', 'accept', 'decline', 'cancel'])
+    def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
+        rt = invited
+        identity = iid(send(rt)) if operation != 'invite' else None
+        before = sql(rt, 'SELECT * FROM invitation WHERE course_id=:cid', cid=rt.course.id) if identity else []
+        mail_count = len(rt.mailer.messages)
+        def fail(_):
+            raise RuntimeError('synthetic audit write failure')
+        monkeypatch.setattr(rt.service.store, 'append_audit', fail)
+        with pytest.raises(RuntimeError, match='synthetic audit write failure'):
+            if operation == 'invite':
+&gt;               rt.service.invite_by_email(rt.actor(rt.owner), rt.course.id, [email(rt.receiver)])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AttributeError: 'SharingService' object has no attribute 'invite_by_email'
+
+src\web\backend\tests\test_w12_invitations.py:318: AttributeError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pg_rollback_on_audit_failure[accept]" time="2.134"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002551609...unction invited.&lt;locals&gt;.actor at 0x00000255182D8720&gt;, app=&lt;fastapi.applications.FastAPI object at 0x00000255182934A0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000255189DF800&gt;
+operation = 'accept'
+
+    @pytest.mark.parametrize('operation', ['invite', 'accept', 'decline', 'cancel'])
+    def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
+        rt = invited
+&gt;       identity = iid(send(rt)) if operation != 'invite' else None
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:310:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pg_rollback_on_audit_failure[decline]" time="2.109"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000025518A1...unction invited.&lt;locals&gt;.actor at 0x0000025518AE0E00&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518AD36B0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002551804E9F0&gt;
+operation = 'decline'
+
+    @pytest.mark.parametrize('operation', ['invite', 'accept', 'decline', 'cancel'])
+    def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
+        rt = invited
+&gt;       identity = iid(send(rt)) if operation != 'invite' else None
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:310:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_pg_rollback_on_audit_failure[cancel]" time="1.620"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000025518B9...unction invited.&lt;locals&gt;.actor at 0x0000025518D184A0&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518C5D280&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025518AD74A0&gt;
+operation = 'cancel'
+
+    @pytest.mark.parametrize('operation', ['invite', 'accept', 'decline', 'cancel'])
+    def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
+        rt = invited
+&gt;       identity = iid(send(rt)) if operation != 'invite' else None
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:310:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w12_invitations" name="test_schema_pending_unique_hash_and_head" time="1.692"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">invited = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000025518E2...unction invited.&lt;locals&gt;.actor at 0x0000025518CBE660&gt;, app=&lt;fastapi.applications.FastAPI object at 0x0000025518F6CD10&gt;)
+
+    def test_schema_pending_unique_hash_and_head(invited):
+        rt = invited
+        assert sql(rt, 'SELECT version_num FROM alembic_version') == [{'version_num': 'w12_0008'}]
+        assert set(c['name'] for c in inspect(rt.engine).get_columns('invitation')) == {
+            'id','course_id','email_normalized','invitee_account_id','invited_by','token_hash','status','expires_at','created_at','responded_at'}
+&gt;       identity = iid(send(rt))
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w12_invitations.py:335:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = &lt;Response [404 Not Found]&gt;
+
+    def iid(response):
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w12_invitations.py:114: AssertionError</failure></testcase></testsuite></testsuites>

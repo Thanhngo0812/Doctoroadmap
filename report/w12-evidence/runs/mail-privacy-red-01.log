@@ -1,0 +1,68 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_console_mailer_never_logs_invitation_token _______________
+
+caplog = <_pytest.logging.LogCaptureFixture object at 0x0000011D7CB1BE90>
+
+    def test_console_mailer_never_logs_invitation_token(caplog):
+        import logging
+        from wayfinder.application.email_templates import render_invitation_email
+        from wayfinder.infrastructure.mail import ConsoleMailer
+        token='SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED'
+        content=render_invitation_email(course_title='Khóa kiểm thử',
+            action_url=ORIGIN+'/dang-ky#invitation='+token,base_url=ORIGIN)
+        caplog.set_level(logging.INFO,logger='wayfinder.infrastructure.mail')
+        ConsoleMailer().send('synthetic@example.vn',content.subject,content.text,html_body=content.html)
+>       assert token not in caplog.text
+E       assert 'SYNTHETIC_I..._BE_REDACTED' not in 'INFO     wa...>\n</html>\n'
+E
+E         'SYNTHETIC_INVITATI...EN_MUST_BE_REDACTED' is contained here:
+E           nvitation=SYNTHETIC_INVITATION_TOKEN_MUST_BE_REDACTED
+E
+E           Lời mời có hiệu lực trong 7 ngày. Nếu không muốn tham gia, hãy bỏ qua thư này.
+E           <!doctype html>
+E           <html lang="vi">...
+E
+E         ...Full output truncated (19 lines hidden), use '-vv' to show
+
+src\web\backend\tests\test_w12_invitations.py:520: AssertionError
+------------------------------ Captured log call ------------------------------
+INFO     wayfinder.infrastructure.mail:mail.py:19 Email to=synthetic@example.vn subject=Lời mời tham gia khoá học WayFinder
+Xin chào bạn,
+
+Bạn được mời tham gia khoá “Khóa kiểm thử”. Đăng ký hoặc đăng nhập và xác minh đúng email nhận thư, sau đó mở Lời mời trong ứng dụng để chấp nhận hoặc từ chối. Khi tham gia, chủ khoá thấy tên hiển thị, ngày tham gia, lần học gần nhất và tiến độ theo module; không thấy chat, tài liệu hoặc câu trả lời quiz của bạn.
+
+https://testserver/dang-ky#invitation=FIXTURE_TOKEN_OMITTED
+
+Lời mời có hiệu lực trong 7 ngày. Nếu không muốn tham gia, hãy bỏ qua thư này.
+<!doctype html>
+<html lang="vi">
+<body style="margin:0;background:#F6F8FA;color:#12161B;font-family:Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#F6F8FA;padding:32px 12px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#FFFFFF;border-radius:12px;padding:32px;">
+        <tr><td align="center" style="padding-bottom:24px;"><img src="https://testserver/assets/Artboard%2024.png" alt="WayFinder" width="220" style="display:block;width:220px;height:auto;border:0;"></td></tr>
+        <tr><td><h1 style="font-size:24px;line-height:1.3;margin:0 0 16px;">Bạn được mời vào khoá học</h1>
+          <p style="font-size:16px;line-height:1.6;margin:0 0 8px;">Xin chào bạn,</p>
+          <p style="font-size:16px;line-height:1.6;margin:0 0 24px;">Bạn được mời tham gia khoá “Khóa kiểm thử”. Đăng ký hoặc đăng nhập và xác minh đúng email nhận thư, sau đó mở Lời mời trong ứng dụng để chấp nhận hoặc từ chối. Khi tham gia, chủ khoá thấy tên hiển thị, ngày tham gia, lần học gần nhất và tiến độ theo module; không thấy chat, tài liệu hoặc câu trả lời quiz của bạn.</p>
+          <p style="margin:0 0 24px;"><a href="https://testserver/dang-ky#invitation=FIXTURE_TOKEN_OMITTED" style="display:inline-block;background:#0A6AB3;color:#FFFFFF;text-decoration:none;padding:12px 20px;border-radius:8px;">Mở WayFinder</a></p>
+          <p style="font-size:13px;line-height:1.5;color:#5B6673;word-break:break-word;">Nếu nút không hoạt động, hãy mở liên kết: <a href="https://testserver/dang-ky#invitation=FIXTURE_TOKEN_OMITTED" style="color:#0A6AB3;">https://testserver/dang-ky#invitation=FIXTURE_TOKEN_OMITTED</a></p>
+          <p style="font-size:13px;line-height:1.5;color:#5B6673;">Liên kết có hiệu lực trong 7 ngày.</p>
+          <p style="font-size:13px;line-height:1.5;color:#5B6673;">Bạn cũng có thể <a href="https://testserver/dang-nhap" style="color:#0A6AB3;">đăng nhập</a> hoặc <a href="https://testserver/quen-mat-khau" style="color:#0A6AB3;">đặt lại mật khẩu</a>.</p>
+        </td></tr>
+      </table>
+      <p style="font-size:12px;color:#5B6673;margin:16px 0 0;">WayFinder</p>
+    </td></tr>
+  </table>
+</body>
+</html>
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w12-email-invitations-backend\report\w12-evidence\runs\mail-privacy-red-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w12_invitations.py::test_console_mailer_never_logs_invitation_token
+1 failed, 26 deselected, 1 warning in 5.44s

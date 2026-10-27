@@ -1,0 +1,64 @@
+"""Break actual W12 guards, require assertion failures, restore exact owned source bytes."""
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+root=Path(__file__).resolve().parents[1]
+base='src/web/backend/wayfinder/'
+s=base+'application/sharing.py'
+r=base+'infrastructure/sharing_store.py'
+api=base+'api/sharing.py'
+cases=[
+ ('foreign-recipient',[(s,"if candidate is None or candidate.email_normalized != account['email_normalized']:","if candidate is None:"),
+    (s,"if course is None or invitation is None or invitation.email_normalized != account['email_normalized'] or (\n                    invitation.invitee_account_id is not None and invitation.invitee_account_id != actor.user_id):",
+     "if course is None or invitation is None:")], 'other_user'),
+ ('unverified-recipient',[(s,"if not actor.email_verified or account['email_verified_at'] is None:","if False:")], 'other_user'),
+ ('expired-equality',[(s,'self.clock.now() >= invitation.expires_at:', 'self.clock.now() > invitation.expires_at:')], 'expiry_exact'),
+ ('daily-owner-lock',[(s,'self.store.lock_invitation_sender(actor.user_id)','pass  # mutant omits cross-course sender lock')], 'two_runtimes and mail'),
+ ('course-seat-lock',[(s,'self.store.get_course(candidate.course_id, for_update=True)','self.store.get_course(candidate.course_id, for_update=False)')], 'two_runtimes and capacity'),
+ ('replay-rejected',[(s,"if accept and invitation.status == 'accepted' and member is not None:",'if False:')], 'accept_replay'),
+ ('verify-hook-skipped',[(base+'composition.py','accounts.on_email_verified = sharing.attach_verified_invitations','accounts.on_email_verified = None')], 'registration_not_bound'),
+ ('bind-unverified',[(r,"AND a.email_verified_at IS NOT NULL AND a.status='active' ","AND a.status='active' ")], 'direct_binding'),
+ ('dto-bypassed',[(api,"@router.get('/me/invitations', response_model=InvitationList)","@router.get('/me/invitations', response_model=None)")], 'dto_filters'),
+ ('respond-not-atomic',[(s,'import logging','import logging\nfrom contextlib import nullcontext'),
+     (s,'with self.store.atomic():\n            # All invitation mutations','with nullcontext():\n            # All invitation mutations')], 'rollback_on_audit_failure and accept'),
+ ('pending-unique-removed',[(base+'migrations/versions/w12_0008_invitations.py',
+     'CREATE UNIQUE INDEX uq_invitation_pending_course_email','CREATE INDEX uq_invitation_pending_course_email')], 'schema_pending_unique'),
+]
+out=root/'report/w12-evidence/mutations/attempt2'
+out.mkdir(parents=True,exist_ok=False)
+originals={p:(root/p).read_bytes() for _,patches,_ in cases for p,_,_ in patches}
+results=[]
+try:
+ for name,patches,selection in cases:
+  try:
+   for path,before,after in patches:
+    source=(root/path).read_text(encoding='utf-8')
+    assert source.count(before)==1,(name,'ambiguous patch')
+    (root/path).write_text(source.replace(before,after),encoding='utf-8',newline='\n')
+   command=[sys.executable,'scripts/w05_run_tests.py','-o','addopts=','-q',
+      'src/web/backend/tests/test_w12_invitations.py','-k',selection,'--basetemp=tmp/w12-mutant-'+name,
+      '--junitxml='+str((out/(name+'.xml')).relative_to(root))]
+   mutant={p:sha256((root/p).read_bytes()).hexdigest() for p,_,_ in patches}
+   result=subprocess.run(command,cwd=root,capture_output=True,encoding='utf-8',errors='replace',
+      env={**os.environ,'W12_EVIDENCE_RUN':'mutant-'+name})
+   (out/(name+'.log')).write_bytes((result.stdout+result.stderr).encode())
+   tree=ET.parse(out/(name+'.xml'))
+   failures,errors=tree.findall('.//failure'),tree.findall('.//error')
+   assert result.returncode==1 and failures and not errors,(name,'not assertion RED')
+   assert all(f.get('message','').startswith(('assert ','AssertionError:','DID NOT RAISE','Failed: DID NOT RAISE'))
+              for f in failures),(name,'unexpected failure')
+   results.append(dict(name=name,command=command,exit_code=result.returncode,assertion_failures=len(failures),
+      setup_errors=0,mutant_sha256=mutant))
+   print(name+': caught',flush=True)
+  finally:
+   for path,data in originals.items(): (root/path).write_bytes(data)
+finally:
+ for path,data in originals.items(): (root/path).write_bytes(data)
+ (out/'summary.json').write_text(json.dumps(dict(results=results,
+    sources_restored=all((root/path).read_bytes()==data for path,data in originals.items()),
+    original_sha256={p:sha256(data).hexdigest() for p,data in originals.items()}),indent=2)+'\n',encoding='utf-8')

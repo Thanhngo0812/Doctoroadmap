@@ -102,7 +102,8 @@ def assert_private_course_routes_protected(app, client, headers, cid):
         import re
         path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
         for method in route.methods - {"HEAD", "OPTIONS"}:
-            body = ({} if method == "POST" and route.path.endswith("/share-links")
+            body = ({"emails": ["recipient@example.vn"]} if method == "POST" and route.path.endswith("/invitations")
+                    else {} if method == "POST" and route.path.endswith("/share-links")
                     else {"learned": True} if method == "PUT" and "{node_id}" in route.path
                     else {"title": "Attack", "owner": "someone-else"}
                     if method not in {"GET", "DELETE"} else None)

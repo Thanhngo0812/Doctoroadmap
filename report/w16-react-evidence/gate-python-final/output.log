@@ -1,0 +1,111 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 35%]
+.....................................x.................................. [ 38%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 48%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 73%]
+........................................................................ [ 76%]
+........................................................................ [ 78%]
+........................................................................ [ 81%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+.......F.................................................s.............. [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 96%]
+........................................................................ [ 99%]
+..................                                                       [100%]
+================================== FAILURES ===================================
+_ test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate] _
+
+builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_cf9d5734c66e4e9bb8378...oken': 'YR2q8OaOwffs3a4COmSLDsftqHcD7hPWVCF-OT-Oz8I'}, app=<fastapi.applications.FastAPI object at 0x0000023B4454D430>)
+guarded_pg = None
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/tmp/cong-w16-react-final-1/test_real_internal_dry_run_has1')
+book = 'candidate'
+
+    @pytest.mark.parametrize('book', ['doc-6', 'candidate'])
+    def test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost(builds, guarded_pg, tmp_path, book):
+        from doc2roadmap.application.use_cases.build_document import BuildDocument
+        from doc2roadmap.config import Settings
+        from wayfinder.domain.file_paths import safe_path
+        from wayfinder.infrastructure.real_build import RealBuildRuntime
+        copied = tmp_path / 'dry-run-copy'
+        candidate = json.loads((ROOT / 'report/w15-evidence/candidate.json').read_text(encoding='utf-8'))
+        entries = []
+        if book == 'doc-6':
+            manifest_path = ROOT / 'report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json'
+            assert sha256(manifest_path.read_bytes()).hexdigest() == '5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84'
+            entries = [row for row in json.loads(manifest_path.read_text(encoding='utf-8'))['files']
+                       if '/doc-6/' in row['path'] or row['path'] == 'doc-6.pdf']
+            source_relative = 'doc-6.pdf'
+        else:
+            source_relative = candidate['staged_copy']
+            entries = [dict(path=source_relative, sha256=candidate['sha256'])]
+        for entry in entries:
+            source = safe_path(ROOT, entry['path'])
+>           assert source.stat().st_nlink == 1 and not source.is_symlink()
+                   ^^^^^^^^^^^^^
+
+src\web\backend\tests\test_internal_dry_run_w15.py:38:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/tmp/w15-candidate/input.pdf')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-react\\tmp\\w15-candidate\\input.pdf'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:840: FileNotFoundError
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-pypdfium2]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-pypdfium2]
+tests/integration/test_ingest_real.py::test_real_ingest_reuses_parse_and_keeps_unchanged_chunk_ids
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\docling\models\stages\ocr\rapid_ocr_model.py:430: DeprecationWarning: deprecated
+    if self.options.rec_font_path is not None:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-react\report\w16-react-evidence\gate-python-final.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_internal_dry_run_w15.py::test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate]
+1 failed, 2823 passed, 1 skipped, 1 xfailed, 8 warnings in 1083.49s (0:18:03)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

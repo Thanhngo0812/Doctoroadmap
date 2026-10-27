@@ -6,7 +6,8 @@ from sqlalchemy import insert, select, text, update
 
 from wayfinder.application.auth_ports import AuditEvent
 from wayfinder.domain.courses import Course, Membership
-from wayfinder.domain.sharing import ShareLink, ShareMember
+from wayfinder.domain.sharing import Invitation, ShareLink, ShareMember
+from wayfinder.infrastructure.auth_store import _advisory_lock_id
 from wayfinder.infrastructure.sharing_schema import sharing_metadata
 
 
@@ -49,6 +50,70 @@ class PostgresSharingStore:
             row = connection.execute(text("SELECT * FROM membership WHERE course_id=:cid AND account_id=:uid"),
                                      {"cid": cid, "uid": uid}).mappings().first()
         return Membership(**{key: str(value) if isinstance(value, UUID) else value for key, value in row.items()}) if row else None
+
+    def invitation_account(self, *, uid=None, email=None):
+        with self._use_connection() as connection:
+            return connection.execute(text('SELECT id,email_normalized,email_verified_at,status FROM account WHERE ' +
+                ('id=:value' if uid is not None else 'email_normalized=:value')),
+                {'value': uid if uid is not None else email}).mappings().first()
+
+    def lock_invitation_sender(self, uid):
+        with self._use_connection() as connection:
+            connection.execute(text('SELECT pg_advisory_xact_lock(:key)'),
+                {'key': _advisory_lock_id('invitation-sender:' + uid)})
+
+    def invitation_send_count(self, uid, start, end):
+        with self._use_connection() as connection:
+            return connection.scalar(text("SELECT count(*) FROM audit_event WHERE actor_id=:uid "
+                "AND action='invitation_sent' AND at>=:start AND at<:end"), {'uid': uid,'start':start,'end':end})
+
+    def get_invitation(self, iid, *, for_update=False):
+        try:
+            iid = str(UUID(iid))
+        except (ValueError, TypeError, AttributeError):
+            return None
+        table = self._table('invitation')
+        statement = select(table).where(table.c.id == iid)
+        if for_update:
+            statement = statement.with_for_update()
+        with self._use_connection() as connection:
+            row = connection.execute(statement).mappings().first()
+            return _invitation(row) if row else None
+
+    def pending_invitation(self, cid, email):
+        table = self._table('invitation')
+        with self._use_connection() as connection:
+            row = connection.execute(select(table).where(table.c.course_id==cid,
+                table.c.email_normalized==email, table.c.status=='pending').with_for_update()).mappings().first()
+            return _invitation(row) if row else None
+
+    def save_invitation(self, invitation, *, existing=False):
+        from dataclasses import asdict
+        table = self._table('invitation')
+        values = asdict(invitation)
+        statement = update(table).where(table.c.id==invitation.id).values(**values) if existing else insert(table).values(**values)
+        with self._use_connection(write=True) as connection:
+            connection.execute(statement)
+
+    def bind_verified_invitations(self, account, at):
+        with self._use_connection(write=True) as connection:
+            connection.execute(text("UPDATE invitation AS i SET invitee_account_id=a.id FROM account AS a "
+                "WHERE a.id=:uid AND a.email_verified_at IS NOT NULL AND a.status='active' "
+                "AND i.email_normalized=a.email_normalized AND i.status='pending' AND i.expires_at>:now"),
+                {'uid': account.id, 'now': at})
+
+    def list_invitations(self, *, cid=None, uid=None, email=None, now=None):
+        table = self._table('invitation')
+        course = self._table('course')
+        statement = select(table, course.c.title.label('course_title')).join(course, course.c.id==table.c.course_id)
+        if cid is not None:
+            statement = statement.where(table.c.course_id==cid, table.c.status=='pending')
+        else:
+            statement = statement.where(table.c.invitee_account_id==uid, table.c.email_normalized==email,
+                table.c.status=='pending', table.c.expires_at>now)
+        with self._use_connection() as connection:
+            return [(_invitation({key:value for key,value in row.items() if key!='course_title'}), row['course_title'])
+                    for row in connection.execute(statement.order_by(table.c.created_at, table.c.id)).mappings()]
 
     def get_link_by_hash(self, token_hash, *, for_update=False):
         table = self._table("share_link")
@@ -170,3 +235,8 @@ def _link_values(link):
         "token_tail": link.token_tail, "created_by": link.created_by, "expires_at": link.expires_at,
         "max_uses": link.max_uses, "use_count": link.use_count, "revoked_at": link.revoked_at,
         "created_at": link.created_at}
+
+
+def _invitation(row):
+    return Invitation(**{key: str(value) if isinstance(value, UUID) else bytes(value) if key=='token_hash' else value
+                         for key,value in row.items()})
