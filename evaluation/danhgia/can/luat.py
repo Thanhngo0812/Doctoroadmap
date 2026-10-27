@@ -16,6 +16,7 @@ from danhgia.ten import am_tiet, do_giong
 NGUONG_CAU_MAC_DINH = 0.9   # Claude chốt giá trị vào giao thức ở DG-18
 NGUONG_GAN_MAC_DINH = 0.5
 NGUONG_JACCARD_MAC_DINH = 0.34
+K_UNG_VIEN_DA_CAN_MAC_DINH = 1   # vàng đã căn bằng luật: chỉ node chưa căn gần nhất (bắt may_hep_hon khi máy tách khái niệm)
 K_UNG_VIEN_MAC_DINH = 3     # số node gần nhất tối đa mỗi khái niệm vàng đưa vào phiếu; chưa hiệu chỉnh, Claude chốt ở DG-18
 _CHU = re.compile(r"[^\W\d_]+")
 
@@ -88,12 +89,13 @@ def _giong_cau(g, n):
 
 
 def can_tu_dong(vang, nut, *, nguong_cau=NGUONG_CAU_MAC_DINH, nguong_gan=NGUONG_GAN_MAC_DINH,
-                nguong_jaccard=NGUONG_JACCARD_MAC_DINH, k_ung_vien=K_UNG_VIEN_MAC_DINH):
+                nguong_jaccard=NGUONG_JACCARD_MAC_DINH, k_ung_vien=K_UNG_VIEN_MAC_DINH,
+                k_ung_vien_da_can=K_UNG_VIEN_DA_CAN_MAC_DINH):
     """`vang`: [{khoa, ten, ten_khac, trang, cau}]; `nut`: [{id, ten, ten_khac, trang, cau}].
     Trả `hang` (cặp căn bằng luật, quan hệ `khop`), `ung_vien` (cặp để phán tay) và `khong_ung_vien` (khoá vàng).
 
-    Ứng viên của mỗi khái niệm vàng: tối đa `k_ung_vien` node gần nhất, xếp theo độ giống tên rồi độ giống câu. Khái niệm vàng đã căn bằng
-    luật vẫn có ứng viên (để bắt `may_hep_hon` khi máy tách khái niệm) nhưng chỉ trong các node chưa căn bằng luật với khái niệm vàng nào."""
+    Ứng viên của mỗi khái niệm vàng chưa căn: tối đa `k_ung_vien` node gần nhất, xếp theo độ giống tên rồi độ giống câu. Khái niệm vàng đã căn bằng
+    luật vẫn có ứng viên (để bắt `may_hep_hon` khi máy tách khái niệm) nhưng chỉ trong các node chưa căn bằng luật với khái niệm vàng nào và tối đa `k_ung_vien_da_can` node."""
     khoa_nut = {n["id"]: khoa_ten(n["ten"], n["ten_khac"]) for n in nut}
     hang, gan, da_can = [], {}, set()
     for g in vang:
@@ -118,9 +120,11 @@ def can_tu_dong(vang, nut, *, nguong_cau=NGUONG_CAU_MAC_DINH, nguong_gan=NGUONG_
     ung_vien, khong = [], []
     for g in vang:
         ds = gan[g["khoa"]]["ds"]
+        k = k_ung_vien
         if gan[g["khoa"]]["can"]:
             ds = [n for n in ds if n["id"] not in da_can]
-        ds = sorted(ds, key=lambda n: (-_giong_ten(g, n), -_giong_cau(g, n), n["id"]))[:k_ung_vien]
+            k = k_ung_vien_da_can
+        ds = sorted(ds, key=lambda n: (-_giong_ten(g, n), -_giong_cau(g, n), n["id"]))[:k]
         ung_vien += [{"vang": g["khoa"], "node": n["id"]} for n in ds]
         if not ds and not gan[g["khoa"]]["can"]:
             khong.append(g["khoa"])
