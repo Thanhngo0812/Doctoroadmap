@@ -294,3 +294,9 @@ def test_cli_thuoc_khai_niem_in_bang_va_ghi_ca_truot(tmp_path, capsys):
     assert "a3.do_phu.nghiem" in out and "truy_nguyen.cau_neo_co_that.nghiem" in out and "ca bằng chứng khớp dưới ngưỡng nghiêm: 1" in out
     assert [c["ma"] for c in json.loads((tmp_path / "ca.json").read_text(encoding="utf-8"))] == ["t3"]
     assert json.loads((tmp_path / "bang.json").read_text(encoding="utf-8"))["theo_cuon"]
+
+
+def test_khai_niem_bia_chi_khi_ten_va_moi_ten_khac_deu_vang_mat():
+    hd = hd_([nd("a", ten="Zxq vwy", ten_khac=["Cao độ"]),          # tên chính không có, tên khác có trong sách: không bịa
+              nd("b", ten="Zxq vwy", ten_khac=["Qwv zzx"])])         # không tên nào có: bịa
+    assert tu_mau(khai_niem.truy_nguyen(hd, TRANG), "truy_nguyen.khai_niem_bia", "toan_sach") == (1, 2)
