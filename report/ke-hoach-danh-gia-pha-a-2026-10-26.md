@@ -415,6 +415,7 @@ Về chi và công cụ:
 | Q37 | Bốc 3 chương đầu, giữa, cuối theo seed; luật lọc không nhìn nội dung; nguồn ngoài 3 chương ghi kèm trang |
 | Q38 | Khai trước bốn thước phụ khi so với B5: khái niệm bịa, độ phủ theo độ dài sách, tỉ lệ tách giữa chương, độ ổn định; B5 chạy K lượt |
 | Q39 | B5 chạy trên tập phát triển ngày 01/11; B5 hơn ở F1 quan hệ thì ưu tiên nâng cấp theo hướng lai, trước đóng băng 07/11 |
+| Q40 | (27/10) Ba mô hình LightGBM (A1 nhận tiêu đề, A1 nối dòng, A8 pass phụ) chọn lại `num_leaves` ∈ {7…255} bằng LOBO-16 trên D-01, dừng sớm trên 3 cuốn của vòng trong (trần 5000 vòng), luật một sai số chuẩn; baseline logistic cho cả ba; cross-encoder XLM-R cho pass phụ (4 phần theo cuốn, máy GPU); đóng băng trước 31/10; vé DG-20 |
 
 ## 16. Rủi ro
 
