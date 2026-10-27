@@ -328,6 +328,9 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa nghiệm thu ba nhóm lần 9 — Codex đang kiểm, 2026-10-27:** ghim main e52bf4f2, web W-16 React 6ee15386, lõi backend W-12 f5cd2060, thiết kế bda1366b. Xin giữ ghép mã/main trong cửa kiểm và một cổng PG toàn repo; chưa coi thông báo này là xác nhận của phiên khác. Điều phối nhận main/cổng tích hợp trước ghép theo quyết định chủ dự án mà báo cáo W-12 đã trích. Giữ Vertex, 0 USD mới, chỉ commit local/chưa push; bảy tệp dở root giữ nguyên, không dọn/link dữ liệu hoặc worktree. Sẽ mở lại cửa khi hoàn tất.
+
+
 **Cửa nghiệm thu ba nhóm lần 8 — đã xong, mở lại sau commit hồ sơ local 2026-10-26:** W-10/backend W-04/guard thiết kế ghép local 1be7e1c, cổng ee5a75f xanh; Codex không còn cổng PG toàn repo đang chạy. Claude nhận main local mới tiếp làn SA, vẫn chưa push. SA-61 đã ghép ab5c2fa, giữ cấu hình web Vertex; không quyền chi mới hoặc bật trần build demo. W-16/W-04 React do web tiếp, lõi backend W-12, W-23 vẫn mở. Lời giao đã soạn, chưa gửi phiên bên ngoài.
 
 

@@ -1,13 +1,21 @@
 """`python -m danhgia <lệnh>`: bảng lệnh con. PYTHONPATH gồm `evaluation` và `src`.
 
-Lệnh của vé DG-04: `xuat`, `kiem`, `chuyen-vang`, `cham`, `doi-chieu`. Các vé khác thêm lệnh vào `LENH`.
+Lệnh của vé DG-04 (`xuat`, `kiem`, `chuyen-vang`, `cham`, `doi-chieu`) khai báo trong `_tham_so`. Các vé khác thêm một dòng vào `_LENH`.
 """
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 from pathlib import Path
+
+# tên lệnh con -> mô-đun có `them_lenh(parser)`; parser đặt `args.chay` là hàm nhận args và trả mã thoát
+_LENH = {
+    "phieu-g3": "danhgia.phieu.lenh_g3",
+    "phieu-g4": "danhgia.phieu.lenh_g4",
+    "b5": "danhgia.xuat.b5.lenh",
+}
 
 
 def _ghi(duong, gia_tri):
@@ -91,11 +99,11 @@ def _tham_so():
     xuat.add_argument("--so-trang", type=int, default=None)
     xuat.add_argument("--kho-pha-b", default=None, help="tệp JSON kho Pha B riêng của lượt chạy")
     xuat.add_argument("--ra", required=True)
-    xuat.set_defaults(ham=lenh_xuat)
+    xuat.set_defaults(chay=lenh_xuat)
 
     kiem = lenh.add_parser("kiem", help="kiểm hợp đồng")
     kiem.add_argument("hop_dong")
-    kiem.set_defaults(ham=lenh_kiem)
+    kiem.set_defaults(chay=lenh_kiem)
 
     chuyen = lenh.add_parser("chuyen-vang", help="vàng A8 cũ -> G3, G4, bảng căn")
     chuyen.add_argument("--kho", required=True)
@@ -107,7 +115,7 @@ def _tham_so():
     chuyen.add_argument("--cho-phep-chua-can", action="store_true",
                         help="chuyển phần quy được thay vì từ chối khi có id vàng không quy được")
     chuyen.add_argument("--ra", required=True, help="thư mục ghi g3.json, g4.json, can.json")
-    chuyen.set_defaults(ham=lenh_chuyen_vang)
+    chuyen.set_defaults(chay=lenh_chuyen_vang)
 
     cham = lenh.add_parser("cham", help="hợp đồng + G3 + G4 + bảng căn -> bảng số đếm")
     cham.add_argument("--hop-dong", required=True)
@@ -118,21 +126,24 @@ def _tham_so():
                       help="spec = số báo cáo (mặc định); giu_lai_v3 = hồ sơ lịch sử, chỉ để so với số v3 và T-01 đã báo")
     cham.add_argument("--mem", choices=("cung", "ca_hai"), default="cung")
     cham.add_argument("--ra", default=None)
-    cham.set_defaults(ham=lenh_cham)
+    cham.set_defaults(chay=lenh_cham)
 
     doi = lenh.add_parser("doi-chieu", help="bộ chấm mới so với bộ chấm cũ trên cùng graph và vàng")
     doi.add_argument("--kho", required=True)
     doi.add_argument("--doc", required=True)
     doi.add_argument("--phien-ban", type=int, required=True)
     doi.add_argument("--vang", required=True, help="tệp vàng A8 cũ")
-    doi.set_defaults(ham=lenh_doi_chieu)
+    doi.set_defaults(chay=lenh_doi_chieu)
+
+    for ten, mo_dun in _LENH.items():
+        importlib.import_module(mo_dun).them_lenh(lenh.add_parser(ten))
     return goc
 
 
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8")
     args = _tham_so().parse_args(argv)
-    return args.ham(args) or 0
+    return args.chay(args) or 0
 
 
 if __name__ == "__main__":
