@@ -35,6 +35,7 @@ KHAI_NIEM_B2 = [
     ("K6", "Tham số", [], "c3", "Tham số là đặc trưng của tổng thể.", True),
     ("K8", "Kiểm định", [], "c4", C4, True),
     ("K9", "Phần tử", [], "c1", "Tổng thể là tập hợp các phần tử.", False),  # nhắc trong c1 nhưng hệ chính không dạy
+    ("K10", "Tập hợp", [], "c1", "Tổng thể là tập hợp các phần tử.", True),  # cùng câu neo với K1: vị trí dạy bằng nhau
 ]
 
 
@@ -53,9 +54,11 @@ def hd_b2(khai_niem=KHAI_NIEM_B2):
 #   K5: c3 chứa "tổng thể" (K1), "mẫu" (K2).  K6: c3 chứa "ước lượng điểm" (K5), "tổng thể" (K1), "mẫu" (K2).
 #   K8: c4 chứa "ước lượng" (tên khác của K5), "tham số" (K6).
 #   K1: cửa sổ c1 chứa "mẫu" (K2) nhưng K2 dạy sau K1 -> không có cạnh.  K7 "lượn" không khớp "lượng" (khác âm tiết).
+#   K10 cùng câu neo với K1 (vị trí dạy bằng nhau): K1 và K10 không có cạnh nào giữa chúng; K10 dạy trước K2 và "tập hợp" nằm
+#   trong cửa sổ c1 của K2 -> K10 -> K2.
 #   K9 không trong dãy học -> không bao giờ là đầu cạnh dù "phần tử" nằm trong c1.
 CANH_B2 = {("K1", "K2"), ("K2", "K3"), ("K2", "K4"), ("K3", "K4"), ("K1", "K5"), ("K2", "K5"), ("K1", "K6"), ("K2", "K6"),
-           ("K5", "K6"), ("K5", "K8"), ("K6", "K8")}
+           ("K5", "K6"), ("K5", "K8"), ("K6", "K8"), ("K10", "K2")}
 
 
 def cap(canh):
@@ -77,6 +80,11 @@ def test_b2_x_phai_day_truoc_y():
     assert ("K2", "K1") not in canh  # tên K2 nằm trong cửa sổ K1 nhưng K2 dạy sau
     assert ("K6", "K5") not in canh  # tên K6 nằm trong cửa sổ K5 (cùng chunk) nhưng câu neo của K6 đứng sau
     assert len(canh) == len(CANH_B2)  # chặn kiểm vô nghĩa: tập cạnh không rỗng
+
+
+def test_b2_dong_vi_tri_day_khong_phai_day_truoc():
+    canh = cap(canh_b2(hd_b2(), CHUNKS))
+    assert ("K1", "K10") not in canh and ("K10", "K1") not in canh
 
 
 def test_b2_chi_xet_khai_niem_trong_day_hoc():

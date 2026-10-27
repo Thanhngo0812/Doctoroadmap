@@ -137,6 +137,14 @@ def test_tat_r17_hoan_lai_ham_goc():
     assert len(mem) == 5
 
 
+def test_tat_r17_canh_mem_co_san_khong_vao_tien_quyet_cua_node(goc):
+    """Cạnh `cong_cu` mềm từ trước không được thành ràng buộc cứng của hàm dãy học, dù bật hay tắt R17."""
+    for kq in (goc, phat_lai(KHO, DOC, PB, tat_luat_r17=True)):
+        (cong_cu,) = [e for e in kq.payload["requires_edges"] if e.get("soft_reason") == "cong_cu"]
+        nut = {n["node_id"]: n for n in kq.payload["nodes"]}
+        assert cong_cu["source"] not in nut[cong_cu["target"]]["prerequisites"]
+
+
 # ---------- bỏ cạnh pass chính / pass phụ ----------
 
 def test_bo_pass_chinh_chi_con_canh_pass_phu():
