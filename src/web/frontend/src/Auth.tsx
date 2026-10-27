@@ -230,6 +230,13 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
   const navigate = useNavigate();
   const location = useLocation();
   const requestedNext = new URLSearchParams(location.search).get('next');
+  const invitation = new URLSearchParams(location.hash.slice(1)).has('invitation') || location.state?.invitation === true;
+  const invitationState = invitation ? { invitation: true } : undefined;
+  useEffect(() => {
+    if (new URLSearchParams(location.hash.slice(1)).has('invitation')) {
+      navigate(location.pathname + location.search, { replace: true, state: { invitation: true } });
+    }
+  }, [location.hash, location.pathname, location.search, navigate]);
   const next = requestedNext?.startsWith('/') && !requestedNext.startsWith('//') && !/[\\\s]/.test(requestedNext) ? requestedNext : '/khoa-hoc';
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -253,7 +260,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     if (auth.status === 'error') setFeedback({ kind: 'error', message: auth.error ?? 'Không thể kiểm tra phiên đăng nhập.' });
   }, [auth.status, auth.error]);
 
-  if (auth.status === 'authenticated') return <Navigate to={next} replace />;
+  if (auth.status === 'authenticated') return <Navigate to={next} state={invitationState} replace />;
   const isRegister = mode === 'register';
   const switchPath = isRegister ? '/dang-nhap' : '/dang-ky';
   const switchTarget = requestedNext ? `${switchPath}?next=${encodeURIComponent(next)}` : switchPath;
@@ -261,7 +268,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
       || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.startViewTransition) return;
     event.preventDefault();
-    transitionAuth(() => navigate(switchTarget));
+    transitionAuth(() => navigate(switchTarget, { state: invitationState }));
   };
   const clearFieldError = (name: string) => {
     setFieldErrors((previous) => ({ ...previous, [name]: '' }));
@@ -287,11 +294,11 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     try {
       if (isRegister) {
         const result = await auth.register(email.trim(), password, displayName.trim());
-        if (result.account) navigate(next, { replace: true });
+        if (result.account) navigate(next, { replace: true, state: invitationState });
         else setFeedback({ kind: 'success', message: result.message });
       } else {
         await auth.login(email.trim(), password);
-        navigate(next, { replace: true });
+        navigate(next, { replace: true, state: invitationState });
       }
     } catch (cause) {
       if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession();
@@ -317,13 +324,14 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     <>
       <header className="site-header"><div className="header-inner">
         <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button><Link className="auth-switch" to={switchTarget} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></div>
+        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button><Link className="auth-switch" to={switchTarget} state={invitationState} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></div>
       </div></header>
       <main className="auth-layout page-frame">
         <section className="auth-card" aria-labelledby="auth-title">
           <span className="section-kicker">MỘT LỘ TRÌNH CỦA RIÊNG BẠN</span>
           <h1 ref={headingRef} tabIndex={-1} id="auth-title">{isRegister ? 'Tạo tài khoản WayFinder' : 'Đăng nhập WayFinder'}</h1>
           <p className="auth-intro">{isRegister ? 'Lưu lại hành trình học tập của bạn, từng chặng một.' : 'Tiếp tục hành trình học tập của bạn.'}</p>
+          {invitation && <p className="auth-intro">Xác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.</p>}
           <div className={`auth-feedback-slot ${feedback ? 'is-visible' : ''}`}><div className="auth-feedback-clip">{feedback && <div ref={feedbackRef} tabIndex={-1} className={`auth-feedback ${feedback.kind}`} role={feedback.kind === 'error' ? 'alert' : 'status'}>{feedback.message}{auth.status === 'error' && <button className="auth-retry" type="button" onClick={() => { void auth.refresh().then(() => setFeedback(null)).catch(() => undefined); }}>Thử lại</button>}</div>}</div></div>
           <form onSubmit={submit} noValidate>
             {isRegister && <div className="auth-field"><label htmlFor="display-name">Tên hiển thị</label><input id="display-name" aria-invalid={Boolean(fieldErrors.display_name)} aria-describedby={fieldErrors.display_name ? 'display-name-error' : undefined} autoComplete="name" name="display_name" value={displayName} onChange={(event) => { setDisplayName(event.target.value); clearFieldError('display_name'); }} required maxLength={60} />{fieldErrors.display_name && <small id="display-name-error" className="field-error">{fieldErrors.display_name}</small>}</div>}
@@ -332,7 +340,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
             {isRegister && <div className="auth-field"><label htmlFor="password-confirmation">Nhập lại mật khẩu</label><span className={`password-control ${fieldErrors.password_confirmation ? 'is-invalid' : ''}`}><input id="password-confirmation" aria-invalid={Boolean(fieldErrors.password_confirmation)} aria-describedby={fieldErrors.password_confirmation ? 'password-confirmation-error' : undefined} type={showConfirmation ? 'text' : 'password'} autoComplete="new-password" name="password_confirmation" value={confirmation} onChange={(event) => { setConfirmation(event.target.value); clearFieldError('password_confirmation'); }} required minLength={8} maxLength={128} /><button type="button" aria-label={showConfirmation ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'} aria-pressed={showConfirmation} onClick={() => setShowConfirmation(!showConfirmation)}>{showConfirmation ? 'Ẩn' : 'Hiện'}</button></span>{fieldErrors.password_confirmation && <small id="password-confirmation-error" className="field-error">{fieldErrors.password_confirmation}</small>}</div>}
             <button className="button button-primary button-large auth-submit" type="submit" disabled={busy || auth.status === 'loading'}>{busy ? 'Đang xử lý…' : isRegister ? 'Tạo tài khoản' : 'Đăng nhập'}</button>
           </form>
-          <p className="auth-alternate">{isRegister ? 'Đã có tài khoản?' : 'Chưa có tài khoản?'} <Link to={switchTarget} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></p>
+          <p className="auth-alternate">{isRegister ? 'Đã có tài khoản?' : 'Chưa có tài khoản?'} <Link to={switchTarget} state={invitationState} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></p>
           {!isRegister && <p className="auth-alternate"><Link to="/quen-mat-khau">Quên mật khẩu?</Link></p>}
           <p className="auth-demo-note"><Link to="/demo">Thử lộ trình mẫu trước <span aria-hidden="true">↗</span></Link></p>
         </section>

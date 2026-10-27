@@ -6,6 +6,7 @@ import { useAuth } from './Auth';
 import { coursePath, getCourse } from './courses-api';
 import { createShareLink, getMembers, joinByLink, listShareLinks, leaveCourse, previewJoin, removeMember, revokeShareLink, type CreatedShareLink, type JoinPreview, type Member, type MembersView, type ShareLink } from './sharing-api';
 import './sharing.css';
+import { EmailInvitations } from './Invitations';
 
 const errorText = (cause: unknown) => cause instanceof ApiError
   ? cause.message : 'Không thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.';
@@ -24,6 +25,7 @@ export function ShareDialog({ courseId, open, onClose }: { courseId: string; ope
   const [notice, setNotice] = useState<string | null>(null);
   const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
   const [revoking, setRevoking] = useState<string | null>(null);
+  const [method, setMethod] = useState<'link' | 'email'>('link');
 
   const clearOneTimeState = () => {
     setCreated(null);
@@ -34,6 +36,7 @@ export function ShareDialog({ courseId, open, onClose }: { courseId: string; ope
     setRevoking(null);
     setExpiresInDays('7');
     setMaxUses('');
+    setMethod('link');
   };
 
   useEffect(() => {
@@ -119,6 +122,12 @@ export function ShareDialog({ courseId, open, onClose }: { courseId: string; ope
 
   return <dialog ref={dialogRef} className="sharing-dialog" aria-labelledby="sharing-dialog-title" onClose={close}>
     <header className="sharing-dialog__header"><h2 id="sharing-dialog-title">Chia sẻ khoá học</h2><button className="sharing-close" type="button" aria-label="Đóng" onClick={() => dialogRef.current?.close()}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
+    <div className="sharing-methods" role="tablist" aria-label="Cách mời tham gia" onKeyDown={event => {
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault(); const next = event.key === 'Home' ? 'link' : event.key === 'End' ? 'email' : method === 'link' ? 'email' : 'link';
+      setMethod(next); event.currentTarget.querySelector<HTMLButtonElement>('#share-method-' + next)?.focus();
+    }}>{(['link','email'] as const).map(value => <button id={'share-method-' + value} key={value} type="button" role="tab" aria-selected={method === value} aria-controls={'share-panel-' + value} tabIndex={method === value ? 0 : -1} onClick={() => setMethod(value)}>{value === 'link' ? 'Bằng link' : 'Mời qua email'}</button>)}</div>
+    {method === 'email' ? <div id="share-panel-email" role="tabpanel" aria-labelledby="share-method-email">{open && <EmailInvitations key={courseId} courseId={courseId} />}</div> : <div id="share-panel-link" role="tabpanel" aria-labelledby="share-method-link">
     <p className="sharing-dialog__intro">Tạo link để người khác tham gia khoá học.</p>
     {created && <section className="sharing-once" aria-label="Link mới tạo">
       <p>Link này chỉ hiện một lần. Hãy sao chép ngay.</p>
@@ -150,6 +159,7 @@ export function ShareDialog({ courseId, open, onClose }: { courseId: string; ope
         </li>)}
       </ul>}
     </section>
+    </div>}
   </dialog>;
 }
 
