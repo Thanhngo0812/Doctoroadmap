@@ -158,7 +158,7 @@ def _khau_tu_stats(manifest):
     stats = manifest.get("stats") or {}
     if "runtime_seconds" not in stats:
         return None
-    return {"giay_chay": stats["runtime_seconds"], "giay_cho_embedding": stats.get("embedding_wait_seconds"),
+    return {"giay_chay": stats["runtime_seconds"], "giay_cho_embedding": stats.get("embedding_seconds"),
             "so_loi_goi_mo_hinh": stats.get("model_calls"), "token_vao": stats.get("input_tokens"),
             "token_ra": stats.get("output_tokens"), "so_loi_goi_embedding": stats.get("embedding_model_calls"),
             "usd": None}

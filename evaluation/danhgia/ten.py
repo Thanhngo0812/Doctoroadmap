@@ -1,6 +1,7 @@
 """Chuẩn hoá tên và câu, khớp theo ranh giới âm tiết tiếng Việt.
 
-Cùng một phép biến đổi cho tên và câu: NFC, chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu, giữ dấu tiếng Việt.
+Cùng một phép biến đổi cho tên và câu: NFKC, chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu, giữ dấu tiếng Việt. NFKC (không phải NFC)
+đưa chỉ số trên/dưới, chữ ghép và ký tự tương thích về dạng thường, nên "χ²" trùng "χ2" (gán thử xstk 27/10).
 Âm tiết là chuỗi chữ-số liền nhau; khoảng trắng, dấu câu và dấu gạch dưới (chỗ nối từ ghép) là ranh giới. Mỗi âm tiết
 được so nguyên vẹn, nên "quy" không bị đổi thành "qui" và không phụ thuộc vị trí trong câu (bài học chữ "y", vòng 2).
 """
@@ -14,7 +15,7 @@ _AM_TIET = re.compile(r"[^\W_]+")
 
 
 def chuan_hoa(s: str | None) -> str:
-    s = unicodedata.normalize("NFC", s or "").lower()
+    s = unicodedata.normalize("NFKC", s or "").lower()
     return re.sub(r"\s+", " ", s).strip(_DAU_HAI_DAU)
 
 

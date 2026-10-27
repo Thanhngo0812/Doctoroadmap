@@ -1,7 +1,7 @@
 """Validator phiếu G3: đọc phiếu Excel đã điền thành JSON thô `danh-gia-g3-1`, hoặc trả danh sách lỗi.
 
 Lỗi (chặn): thieu_cot, thieu_sheet, thieu_meta, sai_sach, thieu_truong, gia_tri_ngoai_danh_sach, trang_khong_phai_so,
-trang_ngoai_chuong, trung_ten. Cảnh báo (không chặn): cau_khong_khop, dong_khong_co_ma.
+trang_ngoai_chuong (chỉ day_o_day, day_qua_vi_du), trang_ngoai_sach (chi_nhac, kien_thuc_nen), trung_ten. Cảnh báo (không chặn): cau_khong_khop, dong_khong_co_ma.
 Phiếu sai thì gửi lại, validator không sửa hộ.
 """
 
@@ -143,14 +143,18 @@ def kiem_phieu(duong_dan: str | Path, manifest: dict, trang_text: Callable[[int]
                 so = _so_trang(trang)
                 if so is None:
                     loi("trang_khong_phai_so", "trang", f"{trang!r} không phải số trang")
-                elif not chuong["trang_dau"] <= so <= chuong["trang_cuoi"]:
-                    loi("trang_ngoai_chuong", "trang",
-                        f"trang {so} ngoài chương ({chuong['trang_dau']}–{chuong['trang_cuoi']})")
+                elif can_cau:
+                    if not chuong["trang_dau"] <= so <= chuong["trang_cuoi"]:
+                        loi("trang_ngoai_chuong", "trang",
+                            f"trang {so} ngoài chương ({chuong['trang_dau']}–{chuong['trang_cuoi']}); "
+                            f"{trang_thai} phải có trang trong chương")
+                elif not 1 <= so <= manifest["so_trang"]:
+                    loi("trang_ngoai_sach", "trang", f"trang {so} ngoài sách (1–{manifest['so_trang']})")
             elif can_cau:
                 loi("thieu_truong", "trang", "thiếu trang định nghĩa")
             if not cau and can_cau:
                 loi("thieu_truong", "cau", "thiếu câu định nghĩa")
-            if cau and so is not None and chuong["trang_dau"] <= so <= chuong["trang_cuoi"]:
+            if cau and so is not None and 1 <= so <= manifest["so_trang"]:  # mọi dòng có cả trang lẫn câu, kể cả trang ngoài chương
                 if do_khop_cau(cau, trang_text(so)) < nguong:
                     kq.canh_bao.append(Loi("cau_khong_khop", f"câu không khớp văn bản trang {so} (ngưỡng {nguong})",
                                            ma_chuong, ma, "cau"))

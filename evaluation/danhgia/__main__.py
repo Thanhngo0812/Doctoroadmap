@@ -17,6 +17,7 @@ _LENH = {
     "b5": "danhgia.xuat.b5.lenh",
     "baseline": "danhgia.xuat.baseline.lenh",
     "phat-lai": "danhgia.phat_lai.lenh",
+    "g1g2": "danhgia.g1g2.lenh",
 }
 
 

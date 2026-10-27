@@ -209,7 +209,7 @@ theo các chương đó.
 `khong_khop`, kèm nguồn quyết định (luật nào, hay phán tay) và nhật ký.
 
 **Luật tự động**, chạy theo thứ tự:
-1. Trùng tên chuẩn hoặc tên khác sau chuẩn hoá. Chuẩn hoá gồm NFC, chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu; giữ dấu tiếng Việt.
+1. Trùng tên chuẩn hoặc tên khác sau chuẩn hoá. Chuẩn hoá gồm NFKC (để "χ²" trùng "χ2"; sửa sau gán thử 27/10), chữ thường, gộp khoảng trắng, bỏ dấu câu ở hai đầu; giữ dấu tiếng Việt.
    Khớp theo ranh giới âm tiết, cùng phép biến đổi cho tên và câu, đúng bài học lỗi chữ "y" (vòng 2 pass phụ, mục 8.11).
 2. Câu neo của máy trùng câu định nghĩa vàng: cùng trang, độ giống ký tự sau chuẩn hoá vượt ngưỡng khai trong giao thức.
 3. Ký hiệu không dùng để căn, theo định nghĩa "Ký hiệu" trong `CONTEXT.md`.
