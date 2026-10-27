@@ -15,18 +15,18 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 
 | Vé | Việc | Ai | Chặn bởi | Hạn | Trạng thái |
 |---|---|---|---|---|---|
-| [01](01-manifest-va-boc-chuong.md) | Manifest sách, bốc chương theo seed, kiểm PDF gốc | Claude | — | 28/10 | Claude cài xong trên `work/dg-01-bo-sach` (nối tiếp DG-05; 11 test, phá 8/8); manifest tập phát triển xong; manifest tập thử chờ sách |
-| [02](02-phieu-g3-kho-khai-niem.md) | Hướng dẫn và phiếu G3 trọn vòng, tới kho chốt | Claude (hướng dẫn) + agent A | lược đồ manifest của 01 | 28/10 | agent A đang cài (2026-10-26); hướng dẫn g3-1 chờ duyệt |
-| [03](03-phieu-g4-quan-he.md) | Hướng dẫn và phiếu G4 trọn vòng, tới vàng chính/hợp/giao | Claude (hướng dẫn) + agent A | 02 | 29/10 | hướng dẫn g4-1 chờ duyệt; công cụ chờ 02 |
-| [04](04-hop-dong-xuat-cham-a8-a10.md) | Hợp đồng đánh giá, bộ xuất hệ chính, chấm A8/A10, đối chiếu bộ chấm cũ | agent B | — | 29/10 | agent B đang cài (2026-10-26) |
-| [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | Claude cài xong trên `work/dg-05-thong-ke` (22 test, phá 12/12); chờ agent soát |
-| [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | chưa làm |
-| [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | chưa làm |
+| [01](01-manifest-va-boc-chuong.md) | Manifest sách, bốc chương theo seed, kiểm PDF gốc | Claude | — | 28/10 | **đã ghép** (34a7920, 27/10); manifest tập phát triển xong; tập thử: 4/8 cuốn đã bốc theo boc-1 (lý, kinh tế, luật, văn), 4 cuốn chờ sách thay |
+| [02](02-phieu-g3-kho-khai-niem.md) | Hướng dẫn và phiếu G3 trọn vòng, tới kho chốt | Claude (hướng dẫn) + agent A | lược đồ manifest của 01 | 28/10 | **đã ghép** (123ca21, 27/10); hướng dẫn g3-1 chủ dự án duyệt 27/10 |
+| [03](03-phieu-g4-quan-he.md) | Hướng dẫn và phiếu G4 trọn vòng, tới vàng chính/hợp/giao | Claude (hướng dẫn) + agent A | 02 | 29/10 | **đã ghép** (123ca21, 27/10); hướng dẫn g4-1 chủ dự án duyệt 27/10 |
+| [04](04-hop-dong-xuat-cham-a8-a10.md) | Hợp đồng đánh giá, bộ xuất hệ chính, chấm A8/A10, đối chiếu bộ chấm cũ | agent B | — | 29/10 | **đã ghép** (da64233, 27/10); đối chiếu bộ chấm cũ lệch 0 |
+| [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | **đã ghép** (34a7920, 27/10); agent soát xong, sửa theo soát |
+| [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | nghiệm thu trên `work/dg-06-cong-tac` (561aaaa); **chờ cổng toàn repo** rồi ghép |
+| [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | agent B đang cài (27/10) |
 | [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | chưa làm |
 | [09](09-can-khai-niem.md) | Căn khái niệm: luật tự động, phiếu căn tay mù, nhật ký, phiếu kiểm 20% | agent A | 02, 04 | 01/11 | chưa làm |
 | [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | chưa làm |
 | [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | chưa làm |
-| [12](12-nhap-g1-g2-va-phieu-duyet.md) | Gói nháp G1/G2, lỗi cài, phiếu duyệt | agent A | lược đồ manifest của 01 | 31/10 | chưa làm |
+| [12](12-nhap-g1-g2-va-phieu-duyet.md) | Gói nháp G1/G2, lỗi cài, phiếu duyệt | agent A | lược đồ manifest của 01 | 31/10 | agent A đang cài (27/10) |
 | [13](13-cham-a1-a2.md) | Chấm A1/A2 | agent A | 04, 12 | 02/11 | chưa làm |
 | [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | chưa làm |
 | [15](15-quy-loi-theo-khau.md) | Quy lỗi 7 bậc, xếp loại cạnh ngoài vàng | agent B | 10, 13 | 03/11 | chưa làm |

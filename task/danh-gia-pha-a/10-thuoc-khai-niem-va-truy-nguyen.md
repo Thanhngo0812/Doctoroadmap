@@ -27,3 +27,4 @@ Văn bản sách được truyền vào lõi chấm dưới dạng dữ liệu (
 - [ ] Mỗi thước có một ca dựng tay với số tính tay. Có các ca: mẫu số 0; `uncertain`; khái niệm vàng không căn được; node gộp hai vàng.
 - [ ] Bằng chứng có thật trên hợp đồng hệ chính phát triển gần 1: câu neo lấy từ chunk nên phải khớp; ca nào không khớp thì in ra để Claude đọc.
 - [ ] Bảng phá, gồm ít nhất: tính tách trên mọi node thay vì node trong dãy học; khớp câu không chuẩn hoá khoảng trắng; coi `uncertain` là sai.
+- [ ] **Trần người** (từ soát DG-05, mục S-02): F1 của hệ so với từng người là một lần chấm với vàng thô của người đó (G3/G4 bản một người, chưa hội ý), do lõi chấm làm; gói thống kê chỉ gộp số đếm. Có test trên ca dựng tay hai người.
