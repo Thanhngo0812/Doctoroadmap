@@ -137,6 +137,7 @@ def test_he_khong_co_cap_ung_vien_gop_5_va_6_thanh_6_va_bao_co():
     hd["cap_ung_vien"] = None
     ket = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=MUC_LOI)
     assert ket["meta"]["ly_do_5_khong_ap"] is True
+    assert 5 in ket["meta"]["khong_ap"] and 1 not in ket["meta"]["khong_ap"]
     assert dem(ket["rows"], "quy_loi.ly_do_5.nghiem") == 0 and dem(ket["rows"], "quy_loi.ly_do_6.nghiem") == 3
     kiem_tong(ket["rows"])
 
@@ -241,3 +242,27 @@ def test_cli_buoc_phai_chon_ro_ly_do_1(tmp_path):
     tham_so = [t for t in _bo_tep(tmp_path, "phat_trien") if t != "--khong-ap-ly-do-1"]
     with pytest.raises(SystemExit):
         main(["quy-loi", *tham_so])
+
+
+def test_ly_do_5_doi_dung_khi_nguon_nam_trong_hay_ngoai_cua_so():
+    hd, a, b, c = the_gioi()
+    truoc = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=MUC_LOI, co_danh_sach=True)
+    assert dem(truoc["rows"], "quy_loi.ly_do_5.nghiem") == 1 and dem(truoc["rows"], "quy_loi.ly_do_6.nghiem") == 2
+    hd["cap_ung_vien"]["cua_so_dinh_nghia"]["n12"] = ["n11"]      # nguồn G11 vào cửa sổ định nghĩa của đích G12
+    sau = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=MUC_LOI, co_danh_sach=True)
+    assert dem(sau["rows"], "quy_loi.ly_do_5.nghiem") == 0 and dem(sau["rows"], "quy_loi.ly_do_6.nghiem") == 3
+    lai = {(m["nguon"], m["dich"]) for m in sau["danh_sach"] if m["ly_do"] == 6}
+    assert (g(11), g(12)) in lai
+    hd["cap_ung_vien"]["cua_so_dinh_nghia"]["n12"] = ["n15"]      # nguồn khác trong cửa sổ: G11 vẫn ngoài cửa sổ
+    ngoai = quy_loi(hd, a, b, c, tap="phat_trien")
+    assert dem(ngoai["rows"], "quy_loi.ly_do_5.nghiem") == 1
+    kiem_tong(sau["rows"])
+
+
+def test_cua_so_thieu_duoc_bao_co_khi_hop_dong_co_ung_vien_ma_khong_co_cua_so():
+    hd, a, b, c = the_gioi()
+    hd["cap_ung_vien"]["cua_so_dinh_nghia"] = None
+    ket = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=MUC_LOI)
+    assert ket["meta"]["cua_so_thieu"] is True and 5 not in ket["meta"]["khong_ap"]
+    assert dem(ket["rows"], "quy_loi.ly_do_6.nghiem") == 1    # chỉ còn cặp ứng viên G13>G14
+    assert dem(ket["rows"], "quy_loi.ly_do_5.nghiem") == 2    # cạnh có nguồn trong cửa sổ (G15>G16) rơi về lý do 5 vì không biết cửa sổ

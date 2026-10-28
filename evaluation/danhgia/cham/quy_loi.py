@@ -12,9 +12,9 @@ học, đúng định nghĩa `a10.q6`), được gán vào **lý do đầu tiên
 7. có cạnh máy đúng chiều (kể cả cạnh mềm, R17) nhưng dãy học vẫn đặt ngược (A9/A10).
 
 Diễn giải cần Claude duyệt (ghi ở báo cáo): lý do 5 và 6 chỉ xét khi **chưa có cạnh máy đúng chiều**, vì cạnh do pass chính tạo ra không cần nằm trong tập cặp
-ứng viên. Hệ không có `cap_ung_vien` (B5, baseline) không phân biệt được 5 và 6: mọi cạnh như vậy vào lý do 6 và `meta.ly_do_5_khong_ap` là true.
-`cua_so_dinh_nghia` của hợp đồng có dạng `{node đích: [node nguồn có tên trong cửa sổ]}`; bộ xuất hiện để `None`, khi đó chỉ cặp ứng viên được xét và
-`meta.cua_so_thieu` là true.
+ứng viên. Hệ không có `cap_ung_vien` (B5, baseline) không phân biệt được 5 và 6: mọi cạnh như vậy vào lý do 6 và `meta.ly_do_5_khong_ap` là true và 5 nằm trong `meta.khong_ap` (cờ "không áp" của lý do 5).
+`cua_so_dinh_nghia` của hợp đồng có dạng `{node đích: [node nguồn có tên trong cửa sổ]}` (bộ xuất điền, xem `xuat/cua_so.py`); khi `None`
+thì chỉ cặp ứng viên được xét và `meta.cua_so_thieu` là true.
 
 Cạnh máy ngoài vàng (đích trong phạm vi) được xếp loại theo thứ tự: `dung_g5b` (G5(b) đã phán đúng), `nguoc_chieu` (cạnh ngược có trong vàng), `bac_cau` (nằm
 trong bao đóng bắc cầu của vàng), `sai_han`; cạnh có trong vàng là `trong_vang`.
@@ -140,7 +140,7 @@ def quy_loi(hd, g3, g4, can, *, tap, muc="nghiem", vang="chinh", mem="cung", muc
         for m in LOAI_MAY:
             rows.append(dong.dem(he, ma_sach, c, f"quy_loi.may.{m}.{muc}", dem[c][m]))
     kiem_tong(rows)
-    meta = {"khong_ap": [1] if muc_loi is None else [], "ly_do_5_khong_ap": not co_ung_vien,
+    meta = {"khong_ap": ([1] if muc_loi is None else []) + ([5] if not co_ung_vien else []), "ly_do_5_khong_ap": not co_ung_vien,
             "cua_so_thieu": co_ung_vien and not co_cua_so, "so_canh_vang": len(cap_vang)}
     return {"rows": rows, "danh_sach": danh_sach, "meta": meta}
 
