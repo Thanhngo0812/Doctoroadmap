@@ -1,0 +1,59 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_actual_http_guards_dtos_and_filter_errors ________________
+
+case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=<test_independent_admin.OfflineSQLStore object at 0x00...8af3491', role='user', email_verified=True, status='active'), seed=<function case.<locals>.seed at 0x0000023E4187C2C0>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023E41827C80>
+
+    def test_actual_http_guards_dtos_and_filter_errors(case, monkeypatch):
+        rt = case
+        app = create_app(rt.settings,WebServices(health_check=lambda:'ok',admin=rt.service))
+        actor = [rt.admin]
+        app.dependency_overrides[get_actor] = lambda: actor[0]
+        with TestClient(app,base_url='https://testserver') as client:
+            for path in ('/api/v1/admin/users','/api/v1/admin/audit'):
+                actor[0] = rt.learner
+                assert client.get(path).status_code == 403
+                actor[0] = rt.admin
+                for parameters in ({'limit':101},{'offset':-1}):
+                    response = client.get(path,params=parameters)
+                    assert response.status_code == 422 and response.json()['error']['fields']
+                    assert response.headers['cache-control'] == 'no-store'
+            for parameters in ({'actor_id':'invalid'}, {'action':'bad name'}, {'action':'x'*81},
+                               {'since':'2026-10-01'}, {'since':NOW.isoformat(),'until':NOW.isoformat()}):
+                response = client.get('/api/v1/admin/audit',params=parameters)
+                assert response.status_code == 422 and response.json()['error']['fields']
+            original = rt.store.list_users
+            def extra(**kwargs):
+                result = original(**kwargs)
+                result['meta'] = MARKER
+                for item in result['items']:
+                    item['password_hash'] = MARKER
+                    item['builds_this_month']['private'] = MARKER
+                return result
+            monkeypatch.setattr(rt.store,'list_users',extra)
+            response = client.get('/api/v1/admin/users')
+            assert response.status_code == 200
+>           assert MARKER not in response.text
+E           assert 'R10_SYNTHET...VATE_CONTENT' not in '{"items":[{...TE_CONTENT"}'
+E
+E             'R10_SYNTHETIC_PRIVATE_CONTENT' is contained here:
+E               private":"R10_SYNTHETIC_PRIVATE_CONTENT"},"password_hash":"R10_SYNTHETIC_PRIVATE_CONTENT"},{"id":"de87e1e5083b48fe9cd04329a8af3491","email":"literal_%@example.vn","display_name":"Synthetic","role":"user","status":"active","email_verified_at":"2026-10-28 06:00:00+00:00","created_at":"2026-10-28 06:00:00+00:00","last_login_at":"2026-10-28 06:00:00+00:00","build_monthly_max":null,"owned_courses":0,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-11-01T00:00:00+07:00","private":"R10_SYNTHETIC_PRIVATE_CONTENT"},"p...
+E
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+test_independent_admin.py:241: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+test_independent_admin.py: 10 warnings
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: DeprecationWarning: The default datetime adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r10-core-review-20261028\runs\r10-http-dto.xml -
+=========================== short test summary info ===========================
+FAILED test_independent_admin.py::test_actual_http_guards_dtos_and_filter_errors
+1 failed, 21 deselected, 11 warnings in 4.69s

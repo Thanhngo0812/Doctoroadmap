@@ -1,0 +1,870 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Account.test.tsx src/App.test.tsx src/W03.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w04-react-evidence/react-green1.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 14689ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 1288ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1179ms
+     ✓ keeps duplicate registration generic when no session is created 1215ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 796ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1271ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1178ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 749ms
+     ✓ clears errors and private form state when leaving register 1320ms
+     ✓ does not carry a late login failure into the registration form 764ms
+     ✓ keeps a success notification visible after login reaches courses 694ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 833ms
+     ✓ shows the actual password field message for body.password 1101ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1124ms
+ ✓ src/W03.test.tsx (21 tests) 5749ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ sends a generic password-reset request without revealing whether the email exists 433ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 792ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 806ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1717ms
+     ✓ keeps the reset form available after a retryable network failure 840ms
+ ❯ src/Account.test.tsx (8 tests | 1 failed) 8780ms
+   ✓ saves a trimmed display name through PATCH and updates the shared account without extra private fields 540ms
+   ✓ validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace 2326ms
+   ✓ maps server fields body.display_name to the actual field and keeps the form for correction 225ms
+   ✓ maps server fields body to the actual field and keeps the form for correction 171ms
+   ✓ wrong current password marks that field without logging out or clearing the typed new password 1529ms
+   × requires confirmation, clears secrets after successful change and keeps the current account 2336ms
+   ✓ confirms logout-all before POST and safely removes the private page 289ms
+   ✓ does not retain password state or apply a delayed profile response after leaving the route 1363ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Account.test.tsx > requires confirmation, clears secrets after successful change and keeps the current account
+TestingLibraryElementError: Unable to find an element with the text: /Đã đổi mật khẩu/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"profile-page"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"profile-back"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [0m← Khoá học của tôi[0m
+          [36m</a>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"profile-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mTài khoản của bạn[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mThông tin cá nhân và bảo mật đăng nhập.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"profile-grid"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-info-title"[39m
+              [33mclass[39m=[32m"profile-section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"profile-info-title"[39m
+              [36m>[39m
+                [0mThông tin tài khoản[0m
+              [36m</h2>[39m
+              [36m<dl[39m
+                [33mclass[39m=[32m"profile-identity"[39m
+              [36m>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0mEmail[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0man@example.invalid[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0mTrạng thái email[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0mChưa xác minh[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+              [36m</dl>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"profile-verification"[39m
+              [36m>[39m
+                [36m<p>[39m
+                  [0mXác minh email để mời bạn qua email[0m
+                [36m</p>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"profile-link"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mGửi lại thư xác minh[0m
+                [36m</button>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<form[39m
+                [33mnovalidate[39m=[32m""[39m
+              [36m>[39m
+                [36m<fieldset>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-display-name"[39m
+                    [36m>[39m
+                      [0mTên hiển thị[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33maria-describedby[39m=[32m"profile-name-hint"[39m
+                      [33maria-invalid[39m=[32m"false"[39m
+                      [33mautocomplete[39m=[32m"name"[39m
+                      [33mid[39m=[32m"profile-display-name"[39m
+                      [33mmaxlength[39m=[32m"256"[39m
+                      [33mvalue[39m=[32m"An"[39m
+                    [36m/>[39m
+                    [36m<small[39m
+                      [33mid[39m=[32m"profile-name-hint"[39m
+                    [36m>[39m
+                      [0mTừ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.[0m
+                    [36m</small>[39m
+                  [36m</div>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-primary"[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0mLưu thay đổi[0m
+                  [36m</button>[39m
+                [36m</fieldset>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m/>[39m
+              [36m</form>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-password-title"[39m
+              [33mclass[39m=[32m"profile-section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"profile-password-title"[39m
+              [36m>[39m
+                [0mĐổi mật khẩu[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"profile-muted"[39m
+              [36m>[39m
+                [0mSau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.[0m
+              [36m</p>[39m
+              [36m<form[39m
+                [33mnovalidate[39m=[32m""[39m
+              [36m>[39m
+                [36m<fieldset>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-current-password"[39m
+                    [36m>[39m
+                      [0mMật khẩu hiện tại[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"current-password"[39m
+                        [33mid[39m=[32m"profile-current-password"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện mật khẩu hiện tại"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-new-password"[39m
+                    [36m>[39m
+                      [0mMật khẩu mới[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-describedby[39m=[32m"profile-password-hint"[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"new-password"[39m
+                        [33mid[39m=[32m"profile-new-password"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện mật khẩu mới"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<small[39m
+                    [33mclass[39m=[32m"profile-password-hint"[39m
+                    [33mid[39m=[32m"profile-password-hint"[39m
+                  [36m>[39m
+                    [0mTừ 8 đến 128 ký tự; tránh mật khẩu phổ biến.[0m
+                  [36m</small>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-confirmation"[39m
+                    [36m>[39m
+                      [0mXác nhận mật khẩu mới[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-describedby[39m=[32m"profile-password-hint"[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"new-password"[39m
+                        [33mid[39m=[32m"profile-confirmation"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện xác nhận mật khẩu mới"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-primary"[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0mĐổi mật khẩu[0m
+                  [36m</button>[39m
+                [36m</fieldset>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"profile-feedback success"[39m
+                    [33mrole[39m=[32m"status"[39m
+                  [36m>[39m
+                    [0mĐã hoàn tất.[0m
+                  [36m</p>[39m
+                [36m</div>[39m
+              [36m</form>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-sessions-title"[39m
+              [33mclass[39m=[32m"profile-section profile-sessions"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<h2[39m
+                  [33mid[39m=[32m"profile-sessions-title"[39m
+                [36m>[39m
+                  [0mPhiên đăng nhập[0m
+                [36m</h2>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"profile-muted"[39m
+                [36m>[39m
+                  [0mĐăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"button profile-logout-all"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất khỏi mọi thiết bị[0m
+              [36m</button>[39m
+            [36m</section>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"profile-page"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"profile-back"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [0m← Khoá học của tôi[0m
+          [36m</a>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"profile-heading"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mTài khoản của bạn[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mThông tin cá nhân và bảo mật đăng nhập.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"profile-grid"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-info-title"[39m
+              [33mclass[39m=[32m"profile-section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"profile-info-title"[39m
+              [36m>[39m
+                [0mThông tin tài khoản[0m
+              [36m</h2>[39m
+              [36m<dl[39m
+                [33mclass[39m=[32m"profile-identity"[39m
+              [36m>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0mEmail[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0man@example.invalid[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+                [36m<div>[39m
+                  [36m<dt>[39m
+                    [0mTrạng thái email[0m
+                  [36m</dt>[39m
+                  [36m<dd>[39m
+                    [0mChưa xác minh[0m
+                  [36m</dd>[39m
+                [36m</div>[39m
+              [36m</dl>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"profile-verification"[39m
+              [36m>[39m
+                [36m<p>[39m
+                  [0mXác minh email để mời bạn qua email[0m
+                [36m</p>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"profile-link"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mGửi lại thư xác minh[0m
+                [36m</button>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<form[39m
+                [33mnovalidate[39m=[32m""[39m
+              [36m>[39m
+                [36m<fieldset>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-display-name"[39m
+                    [36m>[39m
+                      [0mTên hiển thị[0m
+                    [36m</label>[39m
+                    [36m<input[39m
+                      [33maria-describedby[39m=[32m"profile-name-hint"[39m
+                      [33maria-invalid[39m=[32m"false"[39m
+                      [33mautocomplete[39m=[32m"name"[39m
+                      [33mid[39m=[32m"profile-display-name"[39m
+                      [33mmaxlength[39m=[32m"256"[39m
+                      [33mvalue[39m=[32m"An"[39m
+                    [36m/>[39m
+                    [36m<small[39m
+                      [33mid[39m=[32m"profile-name-hint"[39m
+                    [36m>[39m
+                      [0mTừ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.[0m
+                    [36m</small>[39m
+                  [36m</div>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-primary"[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0mLưu thay đổi[0m
+                  [36m</button>[39m
+                [36m</fieldset>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m/>[39m
+              [36m</form>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-password-title"[39m
+              [33mclass[39m=[32m"profile-section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"profile-password-title"[39m
+              [36m>[39m
+                [0mĐổi mật khẩu[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"profile-muted"[39m
+              [36m>[39m
+                [0mSau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.[0m
+              [36m</p>[39m
+              [36m<form[39m
+                [33mnovalidate[39m=[32m""[39m
+              [36m>[39m
+                [36m<fieldset>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-current-password"[39m
+                    [36m>[39m
+                      [0mMật khẩu hiện tại[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"current-password"[39m
+                        [33mid[39m=[32m"profile-current-password"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện mật khẩu hiện tại"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-new-password"[39m
+                    [36m>[39m
+                      [0mMật khẩu mới[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-describedby[39m=[32m"profile-password-hint"[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"new-password"[39m
+                        [33mid[39m=[32m"profile-new-password"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện mật khẩu mới"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<small[39m
+                    [33mclass[39m=[32m"profile-password-hint"[39m
+                    [33mid[39m=[32m"profile-password-hint"[39m
+                  [36m>[39m
+                    [0mTừ 8 đến 128 ký tự; tránh mật khẩu phổ biến.[0m
+                  [36m</small>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"profile-field"[39m
+                  [36m>[39m
+                    [36m<label[39m
+                      [33mfor[39m=[32m"profile-confirmation"[39m
+                    [36m>[39m
+                      [0mXác nhận mật khẩu mới[0m
+                    [36m</label>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"profile-password"[39m
+                    [36m>[39m
+                      [36m<input[39m
+                        [33maria-describedby[39m=[32m"profile-password-hint"[39m
+                        [33maria-invalid[39m=[32m"false"[39m
+                        [33mautocomplete[39m=[32m"new-password"[39m
+                        [33mid[39m=[32m"profile-confirmation"[39m
+                        [33mtype[39m=[32m"password"[39m
+                        [33mvalue[39m=[32m""[39m
+                      [36m/>[39m
+                      [36m<button[39m
+                        [33maria-label[39m=[32m"Hiện xác nhận mật khẩu mới"[39m
+                        [33maria-pressed[39m=[32m"false"[39m
+                        [33mtype[39m=[32m"button"[39m
+                      [36m>[39m
+                        [0mHiện[0m
+                      [36m</button>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-primary"[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0mĐổi mật khẩu[0m
+                  [36m</button>[39m
+                [36m</fieldset>[39m
+                [36m<div[39m
+                  [33maria-live[39m=[32m"polite"[39m
+                  [33mclass[39m=[32m"profile-feedback-slot"[39m
+                [36m>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"profile-feedback success"[39m
+                    [33mrole[39m=[32m"status"[39m
+                  [36m>[39m
+                    [0mĐã hoàn tất.[0m
+                  [36m</p>[39m
+                [36m</div>[39m
+              [36m</form>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"profile-sessions-title"[39m
+              [33mclass[39m=[32m"profile-section profile-sessions"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<h2[39m
+                  [33mid[39m=[32m"profile-sessions-title"[39m
+                [36m>[39m
+                  [0mPhiên đăng nhập[0m
+                [36m</h2>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"profile-muted"[39m
+                [36m>[39m
+                  [0mĐăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"button profile-logout-all"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất khỏi mọi thiết bị[0m
+              [36m</button>[39m
+            [36m</section>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:69:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 52 passed (53)
+   Start at  17:51:52
+   Duration  34.83s (tests 85%, environment 6%, import 6%, setup 2%, transform 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/report/w04-react-evidence/react-green1.xml

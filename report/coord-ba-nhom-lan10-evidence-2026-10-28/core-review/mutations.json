@@ -1,0 +1,68 @@
+[
+    {
+        "name":  "r10-revoke",
+        "selection":  "disable_then_enable",
+        "native_exit":  1,
+        "failures":  1,
+        "errors":  0,
+        "assertion_failures":  1,
+        "source_before_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225",
+        "caught":  true,
+        "restored_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+    },
+    {
+        "name":  "r10-last-admin",
+        "selection":  "last_role_admin",
+        "native_exit":  1,
+        "failures":  1,
+        "errors":  0,
+        "assertion_failures":  1,
+        "source_before_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225",
+        "caught":  true,
+        "restored_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+    },
+    {
+        "name":  "r10-atomic",
+        "selection":  "transaction_rolls_back",
+        "native_exit":  1,
+        "failures":  2,
+        "errors":  0,
+        "assertion_failures":  2,
+        "source_before_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225",
+        "caught":  true,
+        "restored_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+    },
+    {
+        "name":  "r10-audit-meta",
+        "selection":  "sql_audit_boundary",
+        "native_exit":  1,
+        "failures":  1,
+        "errors":  0,
+        "assertion_failures":  1,
+        "source_before_sha256":  "048a2a542fb6d175aaed7cd467f9deffd70d0e572faa1277cf2f1208ffb00a0c",
+        "caught":  true,
+        "restored_sha256":  "048a2a542fb6d175aaed7cd467f9deffd70d0e572faa1277cf2f1208ffb00a0c"
+    },
+    {
+        "name":  "r10-http-dto",
+        "selection":  "actual_http_guards",
+        "native_exit":  1,
+        "failures":  1,
+        "errors":  0,
+        "assertion_failures":  1,
+        "source_before_sha256":  "8d8ff7e20961a94c651df7f6ee82729f3b0326e6d30350c5701876105ca20830",
+        "caught":  true,
+        "restored_sha256":  "8d8ff7e20961a94c651df7f6ee82729f3b0326e6d30350c5701876105ca20830"
+    },
+    {
+        "name":  "r10-after-lock",
+        "selection":  "after_lock_recheck",
+        "native_exit":  1,
+        "failures":  1,
+        "errors":  0,
+        "assertion_failures":  1,
+        "source_before_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225",
+        "caught":  true,
+        "restored_sha256":  "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+    }
+]

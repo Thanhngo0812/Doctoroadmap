@@ -1,0 +1,281 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-invitations-react
+
+ ❯ src/ReviewW12.test.tsx (4 tests | 1 failed | 3 skipped) 1099ms
+   ↓ review regression: a list response started before POST cannot erase the newly created invitation
+   ↓ review: exactly 50 distinct addresses reach the actual API contract once
+   ↓ review: an unverified account makes no inbox request and exposes no accept control
+   × review: actual AuthPage removes raw fragment before any invitation API request 1097ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  07:52:59
+   Duration  2.98s (tests 41%, environment 39%, setup 10%, import 6%, transform 4%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-fragment-mutant.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ReviewW12.test.tsx > review: actual AuthPage removes raw fragment before any invitation API request
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=REVIEW_RAW_TOKEN
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33maria-label[39m=[32m"review URL"[39m
+      [36m>[39m
+        [0m/dang-ky#invitation=REVIEW_RAW_TOKEN[0m
+      [36m</output>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"site-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"auth-switch"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"auth-layout page-frame"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"auth-title"[39m
+          [33mclass[39m=[32m"auth-card"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"section-kicker"[39m
+          [36m>[39m
+            [0mMỘT LỘ TRÌNH CỦA RIÊNG BẠN[0m
+          [36m</span>[39m
+          [36m<h1[39m
+            [33mid[39m=[32m"auth-title"[39m
+            [33mtabindex[39m=[32m"-1"[39m
+          [36m>[39m
+            [0mTạo tài khoản WayFinder[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-intro"[39m
+          [36m>[39m
+            [0mLưu lại hành trình học tập của bạn, từng chặng một.[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-intro"[39m
+          [36m>[39m
+            [0mXác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"auth-feedback-slot "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-feedback-clip"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"display-name"[39m
+              [36m>[39m
+                [0mTên hiển thị[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"name"[39m
+                [33mid[39m=[32m"display-name"[39m
+                [33mmaxlength[39m=[32m"60"[39m
+                [33mname[39m=[32m"display_name"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"email"[39m
+              [36m>[39m
+                [0mEmail[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"email"[39m
+                [33mid[39m=[32m"email"[39m
+                [33mmaxlength[39m=[32m"254"[39m
+                [33mname[39m=[32m"email"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mtype[39m=[32m"email"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password"[39m
+              [36m>[39m
+                [0mMật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-describedby[39m=[32m"password-guidance"[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+              [36m<small[39m
+                [33mid[39m=[32m"password-guidance"[39m
+              [36m>[39m
+                [0mTừ 8 đến 128 ký tự.[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password-confirmation"[39m
+              [36m>[39m
+                [0mNhập lại mật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password-confirmation"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password_confirmation"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu xác nhận"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary button-large auth-submit"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mTạo tài khoản[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-alternate"[39m
+          [36m>[39m
+            [0mĐã có tài khoản?[0m
+            [0m [0m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-demo-note"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/demo"[39m
+            [36m>[39m
+              [0mThử lộ trình mẫu trước [0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m↗[0m
+              [36m</span>[39m
+            [36m</a>[39m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ src/ReviewW12.test.tsx:53:65
+
+ ❯ runWithExpensiveErrorDiagnosticsDisabled ../node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback ../node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback ../node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

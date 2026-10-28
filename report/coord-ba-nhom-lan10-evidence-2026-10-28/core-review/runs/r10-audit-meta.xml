@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.275" timestamp="2026-10-28T07:50:38.959002+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_sql_audit_boundary_and_projection" time="0.463"><failure message="AssertionError: assert {'action', 'a..., 'meta', ...} == {'action', 'a...rget_id', ...}&#10;  &#10;  Extra items in the left set:&#10;  'meta'&#10;  Use -v to get more diff">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...064c41e', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x000002C3721FC2C0&gt;)
+
+    def test_sql_audit_boundary_and_projection(case):
+        rt = case
+        for seconds in (-1,0,59,60):
+            rt.store.append_audit(AuditEvent(NOW+timedelta(seconds=seconds),rt.learner.user_id,
+                'password_changed','account',rt.learner.user_id,'127.0.0.1',{'password_hash':MARKER,'token':MARKER}))
+        result = rt.service.list_audit(rt.admin,actor_id=rt.learner.user_id,action='password_changed',
+            since=NOW,until=NOW+timedelta(seconds=60),limit=1)
+        assert result['total'] == 2 and len(result['items']) == 1
+&gt;       assert set(result['items'][0]) == {'id','at','actor_id','action','target_kind','target_id','ip'}
+E       AssertionError: assert {'action', 'a..., 'meta', ...} == {'action', 'a...rget_id', ...}
+E
+E         Extra items in the left set:
+E         'meta'
+E         Use -v to get more diff
+
+test_independent_admin.py:205: AssertionError</failure></testcase></testsuite></testsuites>

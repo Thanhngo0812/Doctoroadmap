@@ -1,0 +1,29 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w04-account-react
+
+ ❯ src/ReviewW04.test.tsx (3 tests | 1 failed | 2 skipped) 77ms
+   × review: stale successful refresh cannot replace B identity or its CSRF header 75ms
+   ↓ review: delayed profile PATCH from A cannot replace B identity or its CSRF header
+   ↓ review: queued logout-all transition for A cannot clear the later B session
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 skipped (3)
+   Start at  07:52:56
+   Duration  1.87s (environment 64%, setup 19%, import 7%, tests 5%, transform 4%, worker 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w04-refresh-epoch-mutant.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ReviewW04.test.tsx > review: stale successful refresh cannot replace B identity or its CSRF header
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  b@example.invalid
+Received:
+  a@example.invalid
+ ❯ assertB src/ReviewW04.test.tsx:26:75
+
+ ❯ src/ReviewW04.test.tsx:32:109
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

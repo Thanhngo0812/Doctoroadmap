@@ -279,8 +279,8 @@ kiện kiểm được từ hợp đồng đánh giá cộng vàng.
 2. Một đầu không có node căn `khop` (A3).
 3. Một đầu bị tách hoặc gộp nhầm (A4).
 4. Một đầu có trạng thái làm nó ra khỏi dãy học (A5).
-5. Cặp không nằm trong tập cặp đã xét, và nguồn không nằm trong cửa sổ định nghĩa của đích (A6/A7).
-6. A8 không đề xuất cạnh.
+5. Hợp đồng không có cạnh máy đúng chiều cho cặp này, cặp không nằm trong tập cặp đã xét, và nguồn không nằm trong cửa sổ định nghĩa của đích (A6/A7).
+6. Hợp đồng không có cạnh máy đúng chiều cho cặp này (A8 không đề xuất). Có cạnh mà vẫn sai thì rơi vào lý do 7 (DG-15).
 7. Cạnh có nhưng bị làm mềm (R17) hay mất ở A9, hoặc dãy học đặt ngược (A10).
 
 Cạnh máy ngoài vàng được xếp loại: đúng theo G5(b), ngược chiều, bắc cầu của cạnh vàng, hay sai hẳn. Kết quả là bảng thác nước theo cuốn và tổng.

@@ -30,7 +30,7 @@ agent khác. Người điều phối:
 | chủ dự án | chủ dự án | duyệt tiền, chốt thiết kế, giao việc, cấp tài khoản và khoá (Cloudinary, Gmail, Gemini), cung cấp logo | |
 | người điều phối | Codex, tiếp nhận 2026-10-18 | chọn vé, soạn lời giao vé, nhắc, gom câu hỏi, giữ nhật ký | duyệt tiền, đổi spec, tự viết mã sản phẩm |
 | người soát cấp cao | nhân viên cấp cao, vé [SA-45](../task/sau-a10/45-soat-thay-claude-nhan-vien-cap-cao.md) | soát vé Pha B, ghi phán xét, tạo vé sửa từ SA-46; soát cả vé web, vé sửa web từ W-24 | đổi spec, ADR, quyết định Q1–Q30 |
-| nhân viên lõi | nhân viên đã làm SA-01…44 | vé Pha B, phần lõi web W-05/W-13/W-15; mốc backend W-16/W-04/W-12 đã nhận; W-17.1 người dùng/audit theo phân công 27/10 | sửa tệp của phiên pha A |
+| nhân viên lõi | nhân viên đã làm SA-01…44 | vé Pha B, phần lõi web W-05/W-13/W-15; mốc backend W-16/W-04/W-12 đã nhận; W-17.1 đang sửa bảo vệ admin đầu tiên theo quyết định 28/10 | sửa tệp của phiên pha A |
 | nhóm web (4 người) | nhóm đồ án | vé W-01…W-21, W-23 | sửa lõi ngoài W-05, W-13 |
 | người thiết kế | trong nhóm | W-22 (Figma) | vẽ lại logo |
 | agentic | họ mô hình **khác Gemini** | bộ câu hỏi thử 19a | thấy đáp án câu kiểm |
@@ -38,6 +38,8 @@ agent khác. Người điều phối:
 | Claude | khi có lượt | nghiên cứu, kiểm thử, soát, nhắc việc, điều phối, viết spec và vé | cài mã sản phẩm |
 
 ## 2. Tình hình lúc bàn giao
+
+**Mới nhất — Codex nghiệm thu lần 10, 2026-10-28:** nhận toàn W-04 f52466dc, ghép **local 18206f31**, cổng b766931a trên main 776f1f00: **3527 Python/0 fail/3 skip/1 xfail, 239 React/build**; browser HTTP/PG thật 12 cấu hình/38 ảnh/38 Axe/29 SQL snapshots. Chưa nhận/chưa ghép W-12 af2993a5 (WEB-R10-01: GET cũ làm mất lời mời mới trên UI, SQL vẫn có pending), backend W-17.1 9cf405ac (POL-R10-01 theo quyết định mới), W-23 lát 1 24538ae0 (D-R10-01…04 về ảnh/số đo/provenance/copy). Chủ dự án nói **“admin đầu tiên ko đc khóa hay gì”**: đã chốt bảo vệ admin đầu tiên khỏi khoá quản trị/hạ quyền/xoá, ADR 0030/spec/W-17/W-20 đã ghi, không còn chờ chọn chính sách. Web sửa W-12; lõi sửa bảo vệ admin đầu tiên; thiết kế sửa lát 1 W-23. Chi mới 0 USD, giữ Vertex/SA-61 đã ghép, không Cloud; **chỉ commit local/chưa push**. [Biên bản lần 10](dieu-phoi-nghiem-thu-ba-nhom-lan10-2026-10-28.md), [lời giao lần 10](lenh-giao-viec-ba-nhom-lan10-2026-10-28.md), chưa gửi phiên bên ngoài. Tám tệp dở tracked/tám W-23 untracked giữ SHA, không dọn/link dữ liệu/worktree. Cổng ở 5fcedba6 đã dừng đúng tiến trình điều phối khi chỉ thị mới tới, giữ native 4294967295; cổng cuối chỉ chứa W-04. Mở lại cửa sau commit hồ sơ local.
 
 **Mới nhất — Codex nghiệm thu lần 9, 2026-10-27:** đóng toàn W-16 6ee15386, nhận backend W-12 f5cd2060 và guard wiring thiết kế bda1366b, ghép **local 1513ac7f**. Nhận main 95827530 vào đỉnh kiểm 8a3c262f: **3407 Python/0 fail/3 skip (Cloudinary + hai replay DG)/1 replay xfail cũ, 229 React/build**; browser nguồn b0d7677b, web/harness không đổi sau nhận main, 12 cấu hình/66 ảnh/66 Axe, 220 JSON đủ body. SSE quiz chưa thu đủ terminal, không tuyên bố phủ toàn stream. W-12 còn React; W-23 chưa đạt, D-R9-01/02 báo cáo đã sửa; D-R8-02 đạt 64→mutant onclick assertion đỏ→64 xanh. Web React W-04 rồi W-12; lõi backend W-17.1 người dùng/audit; thiết kế cặp ảnh thật W-23/hỗ trợ W-04/W-12. SA-61 đã ghép ab5c2fa, web vẫn Vertex. Chi mới 0 USD, không paid/grant/W-15/khôi phục mới; **chỉ commit local/chưa push theo quyết định chủ dự án 24/10**. [Biên bản lần 9](dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md), [lời giao lần 9](lenh-giao-viec-ba-nhom-lan9-2026-10-27.md), chưa gửi phiên bên ngoài. Sáu tệp dở cũ giữ SHA; kế hoạch Pha A do phiên khác cập nhật và uv.lock phát sinh được giữ theo snapshot tiếp tục, không dọn/link dữ liệu/worktree. Mở lại cửa sau commit hồ sơ local lần 9.
 
@@ -330,6 +332,12 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa nghiệm thu ba nhóm lần 10 — đã xong, mở lại sau commit hồ sơ local 2026-10-28:** chỉ W-04 ghép local 18206f31, cổng b766931a xanh; Codex không còn full PG đang chạy. Ba nhánh W-12/W-17.1/W-23 mới giữ ở nhánh vì Required. Tất cả lời giao đã soạn, chưa gửi ngoài. Chỉ commit local/chưa push, Vertex/0 USD mới/không dọn dữ liệu.
+
+**Quyết định 28/10 đã chốt:** “admin đầu tiên ko đc khóa hay gì” → bảo vệ định danh admin đầu tiên bền vững khỏi khoá quản trị/hạ quyền/xoá; ADR 0030 và spec đã ghi. Không áp dụng cách đếm admin cuối thay cho bảo vệ đầu tiên. Code 9cf405ac chưa đáp ứng, nhóm lõi sửa POL-R10-01; không còn câu hỏi chọn hai phương án cũ.
+
+**Điểm kỹ thuật W-17 cần phối hợp Claude trước mốc retry/cancel admin:** BuildService hiện require_upload/requested_by, spec mục 9 có huỷ/thử lại thay chủ nhưng bảng HTTP mới nêu admin retry. Chốt port/route/projection trước nối, không giả Actor người tải hoặc bỏ guard chung. Không cản mốc sửa admin đầu tiên.
+
 **Cửa nghiệm thu ba nhóm lần 9 — đã xong, mở lại sau commit hồ sơ local 2026-10-27:** W-16/backend W-12/guard wiring thiết kế ghép local 1513ac7f, cổng 8a3c262f xanh; Codex không còn cổng PG toàn repo đang chạy. Claude tiếp làn Pha A/SA từ main local mới, chưa push. Các merge đánh giá tới 95827530 đã nhận trước cổng cuối. Lời giao lần 9 đã soạn, chưa gửi ngoài. Giữ Vertex/SA-61 đã ghép, 0 USD mới, không dọn dữ liệu/worktree. DB UUID browser lượt ngắt giữ nguyên; DB UUID harness cuối đã kết thúc và cổng 8026 đóng.
 
 
@@ -613,3 +621,5 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-26 | nghiệm thu ba nhóm lần 8 | Codex | nhận W-10 aaf68eb, backend W-04 c1f2fe9 và guard feb5f5e; ghép **local 1be7e1c**, không push | Cổng ee5a75f:2.824 Python/0 fail/1 Cloudinary skip/1 replay xfail cũ,219 React/build; browser12 cấu hình/96 ảnh/65 Axe/27 SSE đủ body, hai lỗi W-10 đóng. W-04 có49 ca, A đổi giữA/hủyB, logout-all hủyA+B/rollback/audit. D-R7-02 đóng, D-R8-01 bảng ảnh đính chính; W-23 chưa đạt. Docker/db-test đầu tắt giữ logs/chạy lại; provider mới0USD, sáu tệp dở giữ SHA. Web W-16 React rồiW-04; lõi backendW-12; thiết kếW-23/mẫu; SA-61 đã ghép ab5c2fa nhưng web Vertex. Mở cửa SA/cổng toàn repo sau commit hồ sơ lần8; không dọn/link dữ liệu/worktree |
 
 | 2026-10-27 | nghiệm thu ba nhóm lần 9 | Codex | W-16 đạt, backend W-12 đạt, guard D-R8-02 đạt; ghép **local 1513ac7f**, chưa push | Nhận main 95827530/cổng 8a3c262f: 3407 Python/0 fail/3 skip/1 xfail, 229 React/build; browser 12 cấu hình/66 ảnh/66 Axe/220 JSON đủ, quiz SSE chưa đủ terminal. Web W-04 React → W-12 React; lõi W-17.1 người dùng/audit; thiết kế W-23 cặp ảnh thực, D-R9-01/02 đã sửa/W-23 chưa đạt. Chi mới 0 USD, Vertex/SA-61 đã ghép; không paid/khôi phục/dọn dữ liệu. Bảo toàn phần dở, kế hoạch Pha A/uv.lock có snapshot; mở lại cửa PG/ghép sau commit hồ sơ local, lời giao chưa gửi ngoài. |
+
+| 2026-10-28 | nghiệm thu ba nhóm lần 10 và bảo vệ admin đầu tiên | Codex | W-04 đạt/ghép local 18206f31; W-12/W-17.1/W-23 mới giữ nhánh, chưa push | Cổng b766931a: 3527 Python/0 fail/3 skip/1 xfail, 239 React/build; browser 12 cấu hình/38 ảnh/38 Axe. WEB-R10-01 có HTTP/SQL phản chứng; POL-R10-01 test mới đỏ sau chỉ thị “admin đầu tiên ko đc khóa hay gì”, ADR 0030/spec/W-17/W-20 đã ghi; D-R10-01…04 chưa đạt lát 1 W-23. Giao web/lõi/thiết kế sửa đúng Required, chưa gửi ngoài. 0 USD mới, Vertex, giữ tám tracked/tám untracked W-23; không dọn dữ liệu. Mở lại cửa PG/ghép sau commit hồ sơ local. |

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="22" time="8.197" timestamp="2026-10-28T07:48:33.693213+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_sql_user_filters_are_literal_and_public" time="0.383"><failure message="wayfinder.application.accounts.AuthError: Không có quyền quản trị.">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...8f470f3', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE76FC2C0&gt;)
+
+    def test_sql_user_filters_are_literal_and_public(case):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO course VALUES (:id,:uid,:private)'),
+                dict(id=str(uuid4()),uid=rt.learner.user_id,private=MARKER))
+            for at, counts in [('2026-10-01 00:00:00+07:00', True),
+                               ('2026-10-20 00:00:00+07:00', True),
+                               ('2026-11-01 00:00:00+07:00', True),
+                               ('2026-10-15 00:00:00+07:00', False)]:
+                conn.execute(text('INSERT INTO build VALUES (:id,:uid,:counts,:at)'),
+                    dict(id=str(uuid4()),uid=rt.learner.user_id,counts=counts,at=at))
+&gt;       result = rt.service.list_users(rt.admin, email=' LITERAL_% ')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_independent_admin.py:106:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\application\admin.py:21: in list_users
+    self.authorize(actor)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.admin.AdminService object at 0x0000027EE742E0C0&gt;
+actor = Actor(user_id='5c1ff664-b518-4617-bd4d-a540392bd289', role='admin', email_verified=True, status='active')
+
+    def authorize(self, actor: Actor | None) -&gt; None:
+        decision = decide(actor, 'admin_users', None, None)
+        if not decision.allowed:
+            raise AuthError(decision.code, 'Không có quyền quản trị.')
+        # A previously authenticated Actor must not keep privileges after demotion/disable.
+        account = self.store.get_account(actor.user_id)
+        if account is None or account.status != 'active' or account.role != 'admin':
+&gt;           raise AuthError('forbidden', 'Không có quyền quản trị.')
+E           wayfinder.application.accounts.AuthError: Không có quyền quản trị.
+
+src\web\backend\wayfinder\application\admin.py:18: AuthError</failure></testcase><testcase classname="test_independent_admin" name="test_service_denies_every_operation_before_mutation[guest-unauthenticated]" time="0.023" /><testcase classname="test_independent_admin" name="test_service_denies_every_operation_before_mutation[user-forbidden]" time="0.019" /><testcase classname="test_independent_admin" name="test_service_denies_every_operation_before_mutation[disabled-account_disabled]" time="0.015" /><testcase classname="test_independent_admin" name="test_service_denies_every_operation_before_mutation[stale_role-forbidden]" time="0.016" /><testcase classname="test_independent_admin" name="test_service_denies_every_operation_before_mutation[stale_status-forbidden]" time="0.018" /><testcase classname="test_independent_admin" name="test_after_lock_recheck_prevents_stale_actor_write" time="0.020" /><testcase classname="test_independent_admin" name="test_disable_then_enable_never_recreates_sessions_and_is_idempotent" time="0.017"><failure message="wayfinder.application.accounts.AuthError: Không có quyền quản trị.">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...5409a7d', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7877A60&gt;)
+
+    def test_disable_then_enable_never_recreates_sessions_and_is_idempotent(case):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),
+                [dict(id=str(uuid4()),uid=rt.learner.user_id) for _ in range(2)])
+&gt;       result = rt.service.update_user(rt.admin, rt.learner.user_id, {'status':'disabled','build_monthly_max':8})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_independent_admin.py:153:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\application\admin.py:29: in update_user
+    self.authorize(actor)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.admin.AdminService object at 0x0000027EE781FF80&gt;
+actor = Actor(user_id='2d3bdb24-4a79-4a89-85eb-d4d88a4bf796', role='admin', email_verified=True, status='active')
+
+    def authorize(self, actor: Actor | None) -&gt; None:
+        decision = decide(actor, 'admin_users', None, None)
+        if not decision.allowed:
+            raise AuthError(decision.code, 'Không có quyền quản trị.')
+        # A previously authenticated Actor must not keep privileges after demotion/disable.
+        account = self.store.get_account(actor.user_id)
+        if account is None or account.status != 'active' or account.role != 'admin':
+&gt;           raise AuthError('forbidden', 'Không có quyền quản trị.')
+E           wayfinder.application.accounts.AuthError: Không có quyền quản trị.
+
+src\web\backend\wayfinder\application\admin.py:18: AuthError</failure></testcase><testcase classname="test_independent_admin" name="test_sql_transaction_rolls_back_role_status_quota_and_sessions[audit]" time="0.020"><failure message="wayfinder.application.accounts.AuthError: Không có quyền quản trị.">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...8fdff46', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE788B2E0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000027EE789DD60&gt;
+failure_point = 'audit'
+
+    @pytest.mark.parametrize('failure_point', ['audit','session_delete'])
+    def test_sql_transaction_rolls_back_role_status_quota_and_sessions(case, monkeypatch, failure_point):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),dict(id=str(uuid4()),uid=rt.learner.user_id))
+        before = snapshot(rt)
+        def fail(*_):
+            raise RuntimeError('R10 injected failure')
+        monkeypatch.setattr(rt.store,'append_audit' if failure_point=='audit' else 'delete_account_sessions',fail)
+        with pytest.raises(RuntimeError,match='R10 injected failure'):
+&gt;           rt.service.update_user(rt.admin,rt.learner.user_id,
+                {'role':'admin','status':'disabled','build_monthly_max':7})
+
+test_independent_admin.py:179:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\application\admin.py:29: in update_user
+    self.authorize(actor)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.admin.AdminService object at 0x0000027EE789D370&gt;
+actor = Actor(user_id='6a3707cb-619b-4681-9fdb-d837c011363a', role='admin', email_verified=True, status='active')
+
+    def authorize(self, actor: Actor | None) -&gt; None:
+        decision = decide(actor, 'admin_users', None, None)
+        if not decision.allowed:
+            raise AuthError(decision.code, 'Không có quyền quản trị.')
+        # A previously authenticated Actor must not keep privileges after demotion/disable.
+        account = self.store.get_account(actor.user_id)
+        if account is None or account.status != 'active' or account.role != 'admin':
+&gt;           raise AuthError('forbidden', 'Không có quyền quản trị.')
+E           wayfinder.application.accounts.AuthError: Không có quyền quản trị.
+
+src\web\backend\wayfinder\application\admin.py:18: AuthError</failure></testcase><testcase classname="test_independent_admin" name="test_sql_transaction_rolls_back_role_status_quota_and_sessions[session_delete]" time="0.021"><failure message="wayfinder.application.accounts.AuthError: Không có quyền quản trị.">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...ce903e2', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7877100&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000027EE781DA90&gt;
+failure_point = 'session_delete'
+
+    @pytest.mark.parametrize('failure_point', ['audit','session_delete'])
+    def test_sql_transaction_rolls_back_role_status_quota_and_sessions(case, monkeypatch, failure_point):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),dict(id=str(uuid4()),uid=rt.learner.user_id))
+        before = snapshot(rt)
+        def fail(*_):
+            raise RuntimeError('R10 injected failure')
+        monkeypatch.setattr(rt.store,'append_audit' if failure_point=='audit' else 'delete_account_sessions',fail)
+        with pytest.raises(RuntimeError,match='R10 injected failure'):
+&gt;           rt.service.update_user(rt.admin,rt.learner.user_id,
+                {'role':'admin','status':'disabled','build_monthly_max':7})
+
+test_independent_admin.py:179:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\application\admin.py:29: in update_user
+    self.authorize(actor)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.admin.AdminService object at 0x0000027EE781E8D0&gt;
+actor = Actor(user_id='ce7dbf6c-c2e6-4665-aee0-1ae5c5361893', role='admin', email_verified=True, status='active')
+
+    def authorize(self, actor: Actor | None) -&gt; None:
+        decision = decide(actor, 'admin_users', None, None)
+        if not decision.allowed:
+            raise AuthError(decision.code, 'Không có quyền quản trị.')
+        # A previously authenticated Actor must not keep privileges after demotion/disable.
+        account = self.store.get_account(actor.user_id)
+        if account is None or account.status != 'active' or account.role != 'admin':
+&gt;           raise AuthError('forbidden', 'Không có quyền quản trị.')
+E           wayfinder.application.accounts.AuthError: Không có quyền quản trị.
+
+src\web\backend\wayfinder\application\admin.py:18: AuthError</failure></testcase><testcase classname="test_independent_admin" name="test_last_role_admin_demote_rejected_but_disable_is_explicit_gap" time="0.021"><failure message="AssertionError: assert 'forbidden' == 'conflict'&#10;  &#10;  - conflict&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...2e1d8fd', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE77EF560&gt;)
+
+    def test_last_role_admin_demote_rejected_but_disable_is_explicit_gap(case):
+        rt = case
+        before = snapshot(rt)
+        with pytest.raises(AuthError) as caught:
+            rt.service.update_user(rt.admin,rt.admin.user_id,{'role':'user'})
+&gt;       assert caught.value.code == 'conflict'
+E       AssertionError: assert 'forbidden' == 'conflict'
+E
+E         - conflict
+E         + forbidden
+
+test_independent_admin.py:189: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_sql_audit_boundary_and_projection" time="0.022"><failure message="wayfinder.application.accounts.AuthError: Không có quyền quản trị.">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...f4a762d', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE77DD440&gt;)
+
+    def test_sql_audit_boundary_and_projection(case):
+        rt = case
+        for seconds in (-1,0,59,60):
+            rt.store.append_audit(AuditEvent(NOW+timedelta(seconds=seconds),rt.learner.user_id,
+                'password_changed','account',rt.learner.user_id,'127.0.0.1',{'password_hash':MARKER,'token':MARKER}))
+&gt;       result = rt.service.list_audit(rt.admin,actor_id=rt.learner.user_id,action='password_changed',
+            since=NOW,until=NOW+timedelta(seconds=60),limit=1)
+
+test_independent_admin.py:201:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\application\admin.py:63: in list_audit
+    self.authorize(actor)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.admin.AdminService object at 0x0000027EE7924830&gt;
+actor = Actor(user_id='c8e46980-ccab-455e-af29-e81824790cc2', role='admin', email_verified=True, status='active')
+
+    def authorize(self, actor: Actor | None) -&gt; None:
+        decision = decide(actor, 'admin_users', None, None)
+        if not decision.allowed:
+            raise AuthError(decision.code, 'Không có quyền quản trị.')
+        # A previously authenticated Actor must not keep privileges after demotion/disable.
+        account = self.store.get_account(actor.user_id)
+        if account is None or account.status != 'active' or account.role != 'admin':
+&gt;           raise AuthError('forbidden', 'Không có quyền quản trị.')
+E           wayfinder.application.accounts.AuthError: Không có quyền quản trị.
+
+src\web\backend\wayfinder\application\admin.py:18: AuthError</failure></testcase><testcase classname="test_independent_admin" name="test_actual_http_guards_dtos_and_filter_errors" time="0.480"><failure message="assert (403 == 422)&#10; +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...eec1586', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE78DC400&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000027EE790B170&gt;
+
+    def test_actual_http_guards_dtos_and_filter_errors(case, monkeypatch):
+        rt = case
+        app = create_app(rt.settings,WebServices(health_check=lambda:'ok',admin=rt.service))
+        actor = [rt.admin]
+        app.dependency_overrides[get_actor] = lambda: actor[0]
+        with TestClient(app,base_url='https://testserver') as client:
+            for path in ('/api/v1/admin/users','/api/v1/admin/audit'):
+                actor[0] = rt.learner
+                assert client.get(path).status_code == 403
+                actor[0] = rt.admin
+                for parameters in ({'limit':101},{'offset':-1}):
+                    response = client.get(path,params=parameters)
+&gt;                   assert response.status_code == 422 and response.json()['error']['fields']
+E                   assert (403 == 422)
+E                    +  where 403 = &lt;Response [403 Forbidden]&gt;.status_code
+
+test_independent_admin.py:223: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes0]" time="0.018"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...00d8c89', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7B89B20&gt;)
+changes = {}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes1]" time="0.025"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...6006643', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7C14A40&gt;)
+changes = {'role': None}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes2]" time="0.028"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...82b7786', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7BE8180&gt;)
+changes = {'status': None}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes3]" time="0.028"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...082a90d', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7BEB7E0&gt;)
+changes = {'build_monthly_max': True}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes4]" time="0.029"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...4daf086', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7C36E80&gt;)
+changes = {'build_monthly_max': 0}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes5]" time="0.025"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...c088bea', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7BEA7A0&gt;)
+changes = {'build_monthly_max': '3'}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes6]" time="0.024"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...4975f82', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7B8BC40&gt;)
+changes = {'build_monthly_max': 2147483648}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_bad_patch_leaves_all_sql_state_unchanged[changes7]" time="0.025"><failure message="AssertionError: assert 'forbidden' == 'validation'&#10;  &#10;  - validation&#10;  + forbidden">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...cacb6e3', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000027EE7C153A0&gt;)
+changes = {'email': 'other@example.vn'}
+
+    @pytest.mark.parametrize('changes', [{}, {'role':None}, {'status':None},{'build_monthly_max':True},
+        {'build_monthly_max':0},{'build_monthly_max':'3'},{'build_monthly_max':2147483648},{'email':'other@example.vn'}])
+    def test_bad_patch_leaves_all_sql_state_unchanged(case, changes):
+        before = snapshot(case)
+        with pytest.raises(AuthError) as caught:
+            case.service.update_user(case.admin,case.learner.user_id,changes)
+&gt;       assert caught.value.code == 'validation'
+E       AssertionError: assert 'forbidden' == 'validation'
+E
+E         - validation
+E         + forbidden
+
+test_independent_admin.py:249: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_delivery_evidence_manifest_and_junit_are_consistent" time="3.251" /></testsuite></testsuites>

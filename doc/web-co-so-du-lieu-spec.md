@@ -76,6 +76,8 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 
 **`account`**
 
+**Ràng buộc bảo vệ admin đầu tiên, 2026-10-28:** giữ định danh bootstrap bền vững, không suy từ role/status/created_at hiện hành hoặc danh sách lọc. Không cho khoá quản trị, hạ quyền hoặc xoá tài khoản đó. Thiết kế lưu định danh/migration DB đã có do bản sửa W-17.1 đề xuất và nghiệm thu trước áp dụng; chưa tự thêm cột hoặc chuyển DB dùng chung trong lần điều phối. [ADR 0030](adr/0030-bao-ve-tai-khoan-admin-dau-tien.md).
+
 | cột | kiểu | ràng buộc |
 |---|---|---|
 | `id` | uuid | khoá chính |

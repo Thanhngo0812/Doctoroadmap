@@ -1,0 +1,104 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-invitations-react
+
+ ❯ src/ReviewW12.test.tsx (4 tests | 1 failed) 615ms
+   × review regression: a list response started before POST cannot erase the newly created invitation 391ms
+   ✓ review: exactly 50 distinct addresses reach the actual API contract once 125ms
+   ✓ review: an unverified account makes no inbox request and exposes no accept control 19ms
+   ✓ review: actual AuthPage removes raw fragment before any invitation API request 76ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  07:53:36
+   Duration  3.61s (environment 53%, tests 19%, setup 17%, import 7%, transform 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-independent-final.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/ReviewW12.test.tsx > review regression: a list response started before POST cannot erase the newly created invitation
+TestingLibraryElementError: Unable to find an element with the text: new@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<section[39m
+      [33maria-label[39m=[32m"Mời qua email"[39m
+      [33mclass[39m=[32m"email-invitations"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"invitation-muted"[39m
+      [36m>[39m
+        [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mnovalidate[39m=[32m""[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mfor[39m=[32m"invitation-emails"[39m
+        [36m>[39m
+          [0mEmail người nhận[0m
+        [36m</label>[39m
+        [36m<textarea[39m
+          [33maria-describedby[39m=[32m"invitation-email-hint"[39m
+          [33maria-invalid[39m=[32m"false"[39m
+          [33mautocomplete[39m=[32m"off"[39m
+          [33mclass[39m=[32m"invitation-field"[39m
+          [33mid[39m=[32m"invitation-emails"[39m
+          [33mplaceholder[39m=[32m"ban@example.com,
+nhom@example.com"[39m
+          [33mrows[39m=[32m"3"[39m
+          [33mspellcheck[39m=[32m"false"[39m
+        [36m/>[39m
+        [36m<small[39m
+          [33mid[39m=[32m"invitation-email-hint"[39m
+        [36m>[39m
+          [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+        [36m</small>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mGửi lời mời[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"invitation-notice"[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [0mĐã tạo 1 lời mời và yêu cầu gửi thư. Người nhận cần chấp nhận trong ứng dụng.[0m
+      [36m</p>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"invitation-list-heading"[39m
+      [36m>[39m
+        [36m<h3>[39m
+          [0mLời mời đang chờ[0m
+        [36m</h3>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mTải lại[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"invitation-muted"[39m
+      [36m>[39m
+        [0mChưa có lời mời đang chờ.[0m
+      [36m</p>[39m
+    [36m</section>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/ReviewW12.test.tsx:31:17
+     29|   expect(await screen.findByText(/Đã tạo 1 lời mời/)).toBeVisible();
+     30|   await act(async()=>release(json({items:[]})));
+     31|   expect(screen.getByText(item.email)).toBeVisible();
+       |                 ^
+     32|   expect(screen.queryByText('Chưa có lời mời đang chờ.')).not.toBeInTh…
+     33| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
