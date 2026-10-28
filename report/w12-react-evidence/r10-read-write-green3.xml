@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="19" failures="1" errors="0" time="7.5391334">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-28T04:21:15.420Z" hostname="ADMIN" tests="19" failures="1" errors="0" skipped="0" time="7.5391334">
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (0 initial items)" time="0.7948548">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (1 initial items)" time="0.6120353">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="keeps the draft on send failure, serializes a reload, and allows retry after a list error" time="0.6327472">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores the old course list after switching course and still allows a send in the new course" time="1.0890358">
+            <failure message="Unable to find an element with the text: an@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;div
+        aria-label=&quot;Cách mời tham gia&quot;
+        class=&quot;sharing-methods&quot;
+        role=&quot;tablist&quot;
+      &gt;
+        &lt;button
+          aria-controls=&quot;share-panel-link&quot;
+          aria-selected=&quot;true&quot;
+          id=&quot;share-method-link&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;0&quot;
+          type=&quot;button&quot;
+        &gt;
+          Bằng link
+        &lt;/button&gt;
+        &lt;button
+          aria-controls=&quot;share-panel-email&quot;
+          aria-selected=&quot;false&quot;
+          id=&quot;share-method-email&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;-1&quot;
+          type=&quot;button&quot;
+        &gt;
+          Mời qua email
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div
+        aria-labelledby=&quot;share-method-link&quot;
+        id=&quot;share-panel-link&quot;
+        role=&quot;tabpanel&quot;
+      &gt;
+        &lt;p
+          class=&quot;sharing-dialog__intro&quot;
+        &gt;
+          Tạo link để người khác tham gia khoá học.
+        &lt;/p&gt;
+        &lt;form
+          class=&quot;sharing-form&quot;
+        &gt;
+          &lt;label&gt;
+            Thời hạn
+            &lt;select&gt;
+              &lt;option
+                value=&quot;7&quot;
+              &gt;
+                7 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;30&quot;
+              &gt;
+                30 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;90&quot;
+              &gt;
+                90 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;never&quot;
+              &gt;
+                Không hết hạn
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+            Số lượt tối đa 
+            &lt;span&gt;
+              (để trống nếu không giới hạn)
+            &lt;/span&gt;
+            &lt;input
+              inputmode=&quot;numeric&quot;
+              min=&quot;1&quot;
+              step=&quot;1&quot;
+              type=&quot;number&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/label&gt;
+          &lt;button
+            class=&quot;button button-primary&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Tạo link chia sẻ
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;section
+          aria-labelledby=&quot;sharing-links-title&quot;
+          class=&quot;sharing-links&quot;
+        &gt;
+          &lt;h3
+            id=&quot;sharing-links-title&quot;
+          &gt;
+            Link đã tạo
+          &lt;/h3&gt;
+          &lt;p&gt;
+            Chưa có link chia sẻ.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;div
+        aria-label=&quot;Cách mời tham gia&quot;
+        class=&quot;sharing-methods&quot;
+        role=&quot;tablist&quot;
+      &gt;
+        &lt;button
+          aria-controls=&quot;share-panel-link&quot;
+          aria-selected=&quot;true&quot;
+          id=&quot;share-method-link&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;0&quot;
+          type=&quot;button&quot;
+        &gt;
+          Bằng link
+        &lt;/button&gt;
+        &lt;button
+          aria-controls=&quot;share-panel-email&quot;
+          aria-selected=&quot;false&quot;
+          id=&quot;share-method-email&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;-1&quot;
+          type=&quot;button&quot;
+        &gt;
+          Mời qua email
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div
+        aria-labelledby=&quot;share-method-link&quot;
+        id=&quot;share-panel-link&quot;
+        role=&quot;tabpanel&quot;
+      &gt;
+        &lt;p
+          class=&quot;sharing-dialog__intro&quot;
+        &gt;
+          Tạo link để người khác tham gia khoá học.
+        &lt;/p&gt;
+        &lt;form
+          class=&quot;sharing-form&quot;
+        &gt;
+          &lt;label&gt;
+            Thời hạn
+            &lt;select&gt;
+              &lt;option
+                value=&quot;7&quot;
+              &gt;
+                7 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;30&quot;
+              &gt;
+                30 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;90&quot;
+              &gt;
+                90 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;never&quot;
+              &gt;
+                Không hết hạn
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+            Số lượt tối đa 
+            &lt;span&gt;
+              (để trống nếu không giới hạn)
+            &lt;/span&gt;
+            &lt;input
+              inputmode=&quot;numeric&quot;
+              min=&quot;1&quot;
+              step=&quot;1&quot;
+              type=&quot;number&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/label&gt;
+          &lt;button
+            class=&quot;button button-primary&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Tạo link chia sẻ
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;section
+          aria-labelledby=&quot;sharing-links-title&quot;
+          class=&quot;sharing-links&quot;
+        &gt;
+          &lt;h3
+            id=&quot;sharing-links-title&quot;
+          &gt;
+            Link đã tạo
+          &lt;/h3&gt;
+          &lt;p&gt;
+            Chưa có link chia sẻ.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: an@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;div
+        aria-label=&quot;Cách mời tham gia&quot;
+        class=&quot;sharing-methods&quot;
+        role=&quot;tablist&quot;
+      &gt;
+        &lt;button
+          aria-controls=&quot;share-panel-link&quot;
+          aria-selected=&quot;true&quot;
+          id=&quot;share-method-link&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;0&quot;
+          type=&quot;button&quot;
+        &gt;
+          Bằng link
+        &lt;/button&gt;
+        &lt;button
+          aria-controls=&quot;share-panel-email&quot;
+          aria-selected=&quot;false&quot;
+          id=&quot;share-method-email&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;-1&quot;
+          type=&quot;button&quot;
+        &gt;
+          Mời qua email
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div
+        aria-labelledby=&quot;share-method-link&quot;
+        id=&quot;share-panel-link&quot;
+        role=&quot;tabpanel&quot;
+      &gt;
+        &lt;p
+          class=&quot;sharing-dialog__intro&quot;
+        &gt;
+          Tạo link để người khác tham gia khoá học.
+        &lt;/p&gt;
+        &lt;form
+          class=&quot;sharing-form&quot;
+        &gt;
+          &lt;label&gt;
+            Thời hạn
+            &lt;select&gt;
+              &lt;option
+                value=&quot;7&quot;
+              &gt;
+                7 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;30&quot;
+              &gt;
+                30 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;90&quot;
+              &gt;
+                90 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;never&quot;
+              &gt;
+                Không hết hạn
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+            Số lượt tối đa 
+            &lt;span&gt;
+              (để trống nếu không giới hạn)
+            &lt;/span&gt;
+            &lt;input
+              inputmode=&quot;numeric&quot;
+              min=&quot;1&quot;
+              step=&quot;1&quot;
+              type=&quot;number&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/label&gt;
+          &lt;button
+            class=&quot;button button-primary&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Tạo link chia sẻ
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;section
+          aria-labelledby=&quot;sharing-links-title&quot;
+          class=&quot;sharing-links&quot;
+        &gt;
+          &lt;h3
+            id=&quot;sharing-links-title&quot;
+          &gt;
+            Link đã tạo
+          &lt;/h3&gt;
+          &lt;p&gt;
+            Chưa có link chia sẻ.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;div
+        aria-label=&quot;Cách mời tham gia&quot;
+        class=&quot;sharing-methods&quot;
+        role=&quot;tablist&quot;
+      &gt;
+        &lt;button
+          aria-controls=&quot;share-panel-link&quot;
+          aria-selected=&quot;true&quot;
+          id=&quot;share-method-link&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;0&quot;
+          type=&quot;button&quot;
+        &gt;
+          Bằng link
+        &lt;/button&gt;
+        &lt;button
+          aria-controls=&quot;share-panel-email&quot;
+          aria-selected=&quot;false&quot;
+          id=&quot;share-method-email&quot;
+          role=&quot;tab&quot;
+          tabindex=&quot;-1&quot;
+          type=&quot;button&quot;
+        &gt;
+          Mời qua email
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div
+        aria-labelledby=&quot;share-method-link&quot;
+        id=&quot;share-panel-link&quot;
+        role=&quot;tabpanel&quot;
+      &gt;
+        &lt;p
+          class=&quot;sharing-dialog__intro&quot;
+        &gt;
+          Tạo link để người khác tham gia khoá học.
+        &lt;/p&gt;
+        &lt;form
+          class=&quot;sharing-form&quot;
+        &gt;
+          &lt;label&gt;
+            Thời hạn
+            &lt;select&gt;
+              &lt;option
+                value=&quot;7&quot;
+              &gt;
+                7 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;30&quot;
+              &gt;
+                30 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;90&quot;
+              &gt;
+                90 ngày
+              &lt;/option&gt;
+              &lt;option
+                value=&quot;never&quot;
+              &gt;
+                Không hết hạn
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+            Số lượt tối đa 
+            &lt;span&gt;
+              (để trống nếu không giới hạn)
+            &lt;/span&gt;
+            &lt;input
+              inputmode=&quot;numeric&quot;
+              min=&quot;1&quot;
+              step=&quot;1&quot;
+              type=&quot;number&quot;
+              value=&quot;&quot;
+            /&gt;
+          &lt;/label&gt;
+          &lt;button
+            class=&quot;button button-primary&quot;
+            type=&quot;submit&quot;
+          &gt;
+            Tạo link chia sẻ
+          &lt;/button&gt;
+        &lt;/form&gt;
+        &lt;section
+          aria-labelledby=&quot;sharing-links-title&quot;
+          class=&quot;sharing-links&quot;
+        &gt;
+          &lt;h3
+            id=&quot;sharing-links-title&quot;
+          &gt;
+            Link đã tạo
+          &lt;/h3&gt;
+          &lt;p&gt;
+            Chưa có link chia sẻ.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:66:48
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after unmount" time="0.0730336">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after logout" time="0.1400902">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.463758">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.2192031">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.0910593">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.483517">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.5125051">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.165579">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.1398087">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0400015">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.4960422">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.1947764">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.1703863">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.1262092">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.0912328">
+        </testcase>
+    </testsuite>
+</testsuites>

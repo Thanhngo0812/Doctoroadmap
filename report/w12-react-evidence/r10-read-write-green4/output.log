@@ -1,0 +1,23 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/r10-read-write-green4.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ✓ src/Invitations.test.tsx (19 tests) 6711ms
+   ✓ waits for the initial list before sending, then retains the canonical invitation (0 initial items) 653ms
+   ✓ waits for the initial list before sending, then retains the canonical invitation (1 initial items) 572ms
+   ✓ keeps the draft on send failure, serializes a reload, and allows retry after a list error 617ms
+   ✓ ignores the old course list after switching course and still allows a send in the new course 551ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1453ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 483ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 455ms
+   ✓ ignores a delayed send callback after the dialog changes course 500ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  11:21:34
+   Duration  9.04s (tests 76%, environment 10%, import 8%, setup 4%, transform 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/r10-read-write-green4.xml

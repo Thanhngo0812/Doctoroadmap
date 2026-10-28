@@ -1,0 +1,322 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/r10-read-write-green3.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (19 tests | 1 failed) 7539ms
+   ✓ waits for the initial list before sending, then retains the canonical invitation (0 initial items) 795ms
+   ✓ waits for the initial list before sending, then retains the canonical invitation (1 initial items) 612ms
+   ✓ keeps the draft on send failure, serializes a reload, and allows retry after a list error 633ms
+   × ignores the old course list after switching course and still allows a send in the new course 1089ms
+   ✓ does not render a delayed private list after unmount 73ms
+   ✓ does not render a delayed private list after logout 140ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1464ms
+   ✓ rejects 51 input addresses before POST, including duplicates counted in the input limit 219ms
+   ✓ shows pending invitations and cancels only the selected public invitation ID 91ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 484ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 513ms
+   ✓ discloses learner privacy before accepting and refreshes courses after the server commits 166ms
+   ✓ declines without posting membership and shows a course-full failure without removing the invitation 140ms
+   ✓ does not display pending emails or accept controls for an unverified account 40ms
+   ✓ ignores a delayed send callback after the dialog changes course 496ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 195ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 170ms
+   ✓ a failed invitation list for owner does not claim the list is empty and can reload 126ms
+   ✓ a failed invitation list for recipient does not claim the list is empty and can reload 91ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > ignores the old course list after switching course and still allows a send in the new course
+TestingLibraryElementError: Unable to find an element with the text: an@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-link"[39m
+        [33mid[39m=[32m"share-panel-link"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"sharing-dialog__intro"[39m
+        [36m>[39m
+          [0mTạo link để người khác tham gia khoá học.[0m
+        [36m</p>[39m
+        [36m<form[39m
+          [33mclass[39m=[32m"sharing-form"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0mThời hạn[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"7"[39m
+              [36m>[39m
+                [0m7 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"30"[39m
+              [36m>[39m
+                [0m30 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"90"[39m
+              [36m>[39m
+                [0m90 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"never"[39m
+              [36m>[39m
+                [0mKhông hết hạn[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0mSố lượt tối đa [0m
+            [36m<span>[39m
+              [0m(để trống nếu không giới hạn)[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mmin[39m=[32m"1"[39m
+              [33mstep[39m=[32m"1"[39m
+              [33mtype[39m=[32m"number"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-primary"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [0mTạo link chia sẻ[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+          [33mclass[39m=[32m"sharing-links"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mid[39m=[32m"sharing-links-title"[39m
+          [36m>[39m
+            [0mLink đã tạo[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0mChưa có link chia sẻ.[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-link"[39m
+        [33mid[39m=[32m"share-panel-link"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"sharing-dialog__intro"[39m
+        [36m>[39m
+          [0mTạo link để người khác tham gia khoá học.[0m
+        [36m</p>[39m
+        [36m<form[39m
+          [33mclass[39m=[32m"sharing-form"[39m
+        [36m>[39m
+          [36m<label>[39m
+            [0mThời hạn[0m
+            [36m<select>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"7"[39m
+              [36m>[39m
+                [0m7 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"30"[39m
+              [36m>[39m
+                [0m30 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"90"[39m
+              [36m>[39m
+                [0m90 ngày[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"never"[39m
+              [36m>[39m
+                [0mKhông hết hạn[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</label>[39m
+          [36m<label>[39m
+            [0mSố lượt tối đa [0m
+            [36m<span>[39m
+              [0m(để trống nếu không giới hạn)[0m
+            [36m</span>[39m
+            [36m<input[39m
+              [33minputmode[39m=[32m"numeric"[39m
+              [33mmin[39m=[32m"1"[39m
+              [33mstep[39m=[32m"1"[39m
+              [33mtype[39m=[32m"number"[39m
+              [33mvalue[39m=[32m""[39m
+            [36m/>[39m
+          [36m</label>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"button button-primary"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [0mTạo link chia sẻ[0m
+          [36m</button>[39m
+        [36m</form>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+          [33mclass[39m=[32m"sharing-links"[39m
+        [36m>[39m
+          [36m<h3[39m
+            [33mid[39m=[32m"sharing-links-title"[39m
+          [36m>[39m
+            [0mLink đã tạo[0m
+          [36m</h3>[39m
+          [36m<p>[39m
+            [0mChưa có link chia sẻ.[0m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:66:48
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 passed (19)
+   Start at  11:21:05
+   Duration  10.05s (tests 77%, import 9%, environment 8%, transform 3%, setup 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/r10-read-write-green3.xml

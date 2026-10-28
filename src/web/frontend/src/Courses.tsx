@@ -5,6 +5,7 @@ import { ApiError } from './api';
 import { buildStatusLabel } from './builds-api';
 import { coursePath, joinSample, listCourses, resumePath, type Course, type CourseList } from './courses-api';
 import './courses.css';
+import { InvitationsInbox } from './Invitations';
 
 export type ThemeProps = { theme: 'light' | 'dark'; onToggleTheme: () => void };
 const message = (cause: unknown) => cause instanceof ApiError ? cause.message : 'Không thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.';
@@ -110,9 +111,10 @@ export function CoursesPage(props: ThemeProps) {
   return <CourseShell {...props}>
     <div className="courses-heading"><div className="courses-heading-copy"><h1>Khoá học của tôi</h1><p>Chọn một tài liệu, tiếp tục chặng đang học.</p></div></div>
     {!auth.account?.email_verified && <p className="courses-alert">Xác minh email để mời bạn qua email. <Link to="/tai-khoan">Gửi lại thư xác minh</Link></p>}
+    {auth.account && <InvitationsInbox key={auth.account.id} onJoined={() => setReload(value => value + 1)} />}
     {error && <div className="courses-error"><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
     {!data && !error && <Loading />}
-    {empty && <section className="courses-empty" aria-labelledby="courses-empty-title"><img src={props.theme === 'dark' ? '/assets/OTP1.png' : '/assets/OTP4.png'} alt="" /><h2 id="courses-empty-title">Bắt đầu hành trình của bạn</h2><p>Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.</p><div className="courses-empty-actions"><Link className="button button-primary" to="/tai-len">Tải tài liệu</Link>{data.samples.length > 0 && <a className="button button-secondary" href="#sample-courses">Thử khoá mẫu</a>}</div></section>}
+    {empty && <section className="courses-empty" aria-labelledby="courses-empty-title"><img src="/assets/OTP4.png" alt="" /><h2 id="courses-empty-title">Bắt đầu hành trình của bạn</h2><p>Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.</p><div className="courses-empty-actions"><Link className="button button-primary" to="/tai-len">Tải tài liệu</Link>{data.samples.length > 0 && <a className="button button-secondary" href="#sample-courses">Thử khoá mẫu</a>}</div></section>}
     {data && (['owned', 'joined', 'samples'] as const).map(group => {
       if (group === 'samples' && !data.samples.length) return null;
       if (empty && group !== 'samples') return null;

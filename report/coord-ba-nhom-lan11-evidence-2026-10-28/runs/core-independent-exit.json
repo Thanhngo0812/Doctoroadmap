@@ -1,0 +1,17 @@
+{
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_coord_r11_probe.py",
+    "src/web/backend/tests/test_w17_first_admin.py::test_new_owner_policy_first_admin_cannot_be_disabled",
+    "--basetemp=tmp/coord-r11-core-probe",
+    "--junitxml=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r11-tools-20261028/runs/core-independent.xml"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r11-acceptance-20261028",
+  "commit": "98f9c38dee5dcdb27c0553fda477394064e7a390",
+  "native_exit_code": 1,
+  "elapsed_seconds": 12.5
+}

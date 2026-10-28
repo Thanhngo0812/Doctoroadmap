@@ -290,6 +290,19 @@ Mô hình được chọn rồi đóng băng trước khi chạy tập thử; s�
 Cùng quy trình áp cho hồi quy logistic, để trả lời "vì sao LightGBM". Riêng bước phụ A8 được so thêm với một cross-encoder (multilingual-e5 [25]) đọc thẳng câu
 văn; vì học mô hình này cần GPU, nó được chấm trên 4 phần chia theo cuốn, và LightGBM cùng logistic được chấm lại trên đúng 4 phần đó.
 
+Kết quả chọn (bằng chứng trên 16 cuốn huấn luyện, nhãn bạc; chưa phải số báo cáo):
+
+Bảng 7b. Chọn mô hình học máy
+
+| Mô hình | Cấu hình cũ (đặt tay) | Cấu hình chọn | LightGBM so với logistic (AP trung bình theo cuốn) |
+|---|---|---|---|
+| A1 nhận tiêu đề | 15 lá | 7 lá | +0,023, thắng 15/16 cuốn (p = 0,0005) |
+| A1 nối dòng tiêu đề | 7 lá | 15 lá | +0,054, chưa vượt nhiễu (dữ liệu chỉ 787 dòng) |
+| A8 bước phụ | 15 lá | 7 lá | +0,010, chưa vượt nhiễu (p = 0,077) |
+
+Cross-encoder ở bước phụ A8 đạt AP 0,644, thấp hơn LightGBM (0,660) trên cùng 4 phần, và chạy chậm hơn khoảng 25.000 lần trên CPU (2,5 phút cho
+1.000 cặp so với dưới 0,01 giây). Đọc thẳng câu văn không hơn đặc trưng cấu trúc trên dữ liệu này, nên sản phẩm giữ LightGBM.
+
 [CHÈN HÌNH 5 – Biểu đồ đường: trục ngang là số lá (7 → 255, thang log), trục dọc là AP trung bình trên 16 cuốn, mỗi mô hình một đường, có thanh
 sai số chuẩn; đường ngang mảnh đánh dấu "tốt nhất − 1 SE"; điểm được chọn tô đậm.]
 

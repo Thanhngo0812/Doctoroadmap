@@ -1,0 +1,80 @@
+{
+  "source": "33f5b2d2d5f30f9e1778a2f1ddeecc3ce2180e81",
+  "configurations": 12,
+  "screens": 49,
+  "axeRuns": 49,
+  "axeViolations": 0,
+  "http": 256,
+  "sqlSnapshots": 15,
+  "pageErrors": 0,
+  "consoleEntries": 106,
+  "serializedReads": [
+    {
+      "stage": "serialized-get-primary",
+      "initialItems": 1,
+      "postStatus": 200,
+      "postCount": 1,
+      "sqlPending": true,
+      "visibleAfterReload": true
+    },
+    {
+      "stage": "serialized-get-primary-reduced",
+      "initialItems": 2,
+      "postStatus": 200,
+      "postCount": 1,
+      "sqlPending": true,
+      "visibleAfterReload": true
+    },
+    {
+      "stage": "serialized-get-race_empty",
+      "initialItems": 0,
+      "postStatus": 200,
+      "postCount": 1,
+      "sqlPending": true,
+      "visibleAfterReload": true
+    },
+    {
+      "stage": "serialized-get-race_empty-reduced",
+      "initialItems": 1,
+      "postStatus": 200,
+      "postCount": 1,
+      "sqlPending": true,
+      "visibleAfterReload": true
+    }
+  ],
+  "proof": {
+    "deduplicated": true,
+    "ttlDays": 7,
+    "hashBytes": 32,
+    "fullMemberCount": 200,
+    "verifiedEmailBeforeMembership": true,
+    "explicitAccept": true,
+    "wrongEmailDenied": true,
+    "cancelledExpiredDenied": true,
+    "dailyCap": 200,
+    "tokenStayedOutOfRequestsAndStorage": true
+  },
+  "liveFonts": {
+    "fonts": [
+      {
+        "familyName": "Be Vietnam Pro",
+        "postScriptName": "BeVietnamPro-Bold",
+        "isCustomFont": true,
+        "glyphCount": 16
+      }
+    ]
+  },
+  "designFindings": [
+    {
+      "level": "WARN",
+      "id": "hero-void",
+      "width": 1280,
+      "message": "31% of the first screen is one empty block (853×373px at 320,427).",
+      "fix": "Place the void on purpose or fill it: move the picture, the film or one fact into it, grow the headline to meet it, or shrink the screen to its content. A void reads as placed only when something closes it on the far side and it is the screen's one rest."
+    }
+  ],
+  "temporaryDatabaseRemoved": true,
+  "serverThreadStopped": true,
+  "newProviderCostUsd": 0,
+  "dirtySourcePaths": []
+}
