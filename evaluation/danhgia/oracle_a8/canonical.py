@@ -41,7 +41,7 @@ def _ma(tien_to, ma):
     return tien_to + hashlib.sha256(ma.encode("utf-8")).hexdigest()[:24]
 
 
-_KY_HIEU_TOAN = re.compile(r"[=<>≤≥≠≈∈∉∑∏√∫±×÷∞∂∆∇^_/()\[\]{}|+*−]")
+_KY_HIEU_TOAN = re.compile(r"[=<>≤≥≠≈∈∉∑∏√∫±×÷∞∂∆∇^_/()\[\]{}|+*−²³¹⁰⁴-⁹₀-₉]")
 _CHO_CONG_THUC = "[formula]"
 
 
@@ -77,21 +77,32 @@ def tim_chunk(cau, trang, chunks, nguong=NGUONG_CAU):
     theo_thu_tu = sorted(chunks, key=lambda c: c["order_index"])
     tiep = {c["chunk_id"]: n for c, n in zip(theo_thu_tu, theo_thu_tu[1:])}
     tot_nhat = 0.0
-    for cac_trang, ly_do in (((trang,), "ok"), ((trang - 1, trang + 1), "ok_lech_trang")):
-        ung = [c for c in chunks if c["page"] in cac_trang]
-        for hau_to, nhap in (("", lambda c: c["text"]),
-                             ("_vat_chunk", lambda c: c["text"] + " " + tiep[c["chunk_id"]]["text"] if c["chunk_id"] in tiep
-                              and tiep[c["chunk_id"]]["page"] in (c["page"], c["page"] + 1) else None)):
-            diem = []
-            for c in ung:
-                van_ban = nhap(c)
-                if van_ban is not None:
-                    diem.append((diem_cau(chuan, c["page"], {c["page"]: van_ban}), c.get("role") == "noi_dung", -c["order_index"], c))
-            if diem:
-                tot = max(diem, key=lambda d: d[:3])
-                tot_nhat = max(tot_nhat, tot[0])
-                if tot[0] >= nguong:
-                    return tot[3], tot[0], ly_do + hau_to
+    tang = (((trang,), "ok"), ((trang - 1, trang + 1), "ok_lech_trang"))
+
+    def don(c):
+        return diem_cau(chuan, c["page"], {c["page"]: c["text"]})
+
+    # 1) câu nằm trọn trong một chunk: cùng trang, rồi trang liền kề
+    for cac_trang, ly_do in tang:
+        diem = [(don(c), c.get("role") == "noi_dung", -c["order_index"], c) for c in chunks if c["page"] in cac_trang]
+        if diem:
+            tot = max(diem, key=lambda d: d[:3])
+            tot_nhat = max(tot_nhat, tot[0])
+            if tot[0] >= nguong:
+                return tot[3], tot[0], ly_do
+    # 2) câu vắt hai chunk liền nhau (kể cả sang trang liền sau): chỉ khi KHÔNG chunk nào chứa trọn câu, để câu nằm trọn ở chunk kế
+    #    không bị gắn vào chunk đứng trước nó; gắn vào chunk đầu
+    for cac_trang, ly_do in tang:
+        diem = []
+        for c in chunks:
+            n = tiep.get(c["chunk_id"])
+            if c["page"] in cac_trang and n is not None and n["page"] in (c["page"], c["page"] + 1) and don(c) < nguong and don(n) < nguong:
+                diem.append((diem_cau(chuan, c["page"], {c["page"]: c["text"] + " " + n["text"]}), c.get("role") == "noi_dung", -c["order_index"], c))
+        if diem:
+            tot = max(diem, key=lambda d: d[:3])
+            tot_nhat = max(tot_nhat, tot[0])
+            if tot[0] >= nguong:
+                return tot[3], tot[0], ly_do + "_vat_chunk"
     return None, tot_nhat, "khong_khop"
 
 

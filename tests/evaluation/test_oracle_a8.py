@@ -378,7 +378,7 @@ def test_che_cong_thuc_tinh_tay():
     from danhgia.oracle_a8.canonical import che_cong_thuc
     assert che_cong_thuc(CAU_CT) == "Khi đó ta tính được độ chính xác [formula] của ước lượng [formula] theo công thức: [formula]"
     assert che_cong_thuc("Mẫu là một phần của tổng thể") == "Mẫu là một phần của tổng thể"  # câu chữ không đổi
-    assert che_cong_thuc("N = [ t_α² f(1-f) / ε² ] + 1") == "[formula]"
+    assert che_cong_thuc("N = [ t_α² f(1-f) / ε² ] + 1") == "[formula] 1"  # số đứng riêng là chữ thường, giữ lại
 
 
 def test_cau_vang_co_cong_thuc_gan_dung_chunk_co_cho_giu_cho():
