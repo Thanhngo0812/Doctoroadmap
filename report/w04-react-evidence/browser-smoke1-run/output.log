@@ -1,0 +1,15 @@
+warning: in the working copy of 'src/web/frontend/src/Auth.tsx', LF will be replaced by CRLF the next time Git touches it
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-react\scripts\w04_react_runtime.py", line 94, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-react\scripts\w04_react_runtime.py", line 52, in main
+    with accounts.store.atomic():accounts.store.delete_account_sessions(ids[label])
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py", line 301, in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py", line 105, in __init__
+    self.gen = func(*args, **kwds)
+               ^^^^^^^^^^^^^^^^^^^
+TypeError: PostgresAuthStore.atomic() missing 1 required positional argument: 'keys'
