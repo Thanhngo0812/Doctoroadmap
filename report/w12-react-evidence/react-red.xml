@@ -1,0 +1,5273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="10" errors="0" time="4.8291059">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-27T11:27:03.888Z" hostname="ADMIN" tests="11" failures="10" errors="0" skipped="0" time="4.8291059">
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="0.2730483">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:40:71
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.1028559">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:47:71
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.0892173">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:51:71
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.0771229">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:55:84
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.0868439">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:55:84
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="1.0267735">
+            <failure message="Unable to find role=&quot;heading&quot; and name &quot;Lời mời&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;heading&quot; and name &quot;Lời mời&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:59:50
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="1.0140101">
+            <failure message="Unable to find an element with the text: Đại số tuyến tính. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Đại số tuyến tính. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;Đường dẫn kiểm&quot;
+    &gt;
+      /khoa-hoc
+    &lt;/output&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;courses-heading&quot;
+        &gt;
+          &lt;div
+            class=&quot;courses-heading-copy&quot;
+          &gt;
+            &lt;h1&gt;
+              Khoá học của tôi
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Chọn một tài liệu, tiếp tục chặng đang học.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;section
+          aria-labelledby=&quot;courses-empty-title&quot;
+          class=&quot;courses-empty&quot;
+        &gt;
+          &lt;img
+            alt=&quot;&quot;
+            src=&quot;/assets/OTP4.png&quot;
+          /&gt;
+          &lt;h2
+            id=&quot;courses-empty-title&quot;
+          &gt;
+            Bắt đầu hành trình của bạn
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;courses-empty-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:64:50
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0367511">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.0548118">
+            <failure message="Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;tab&quot; and name &quot;Mời qua email&quot;
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;dialog
+    aria-labelledby=&quot;sharing-dialog-title&quot;
+    class=&quot;sharing-dialog&quot;
+    open=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;sharing-dialog__header&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Chia sẻ khoá học&quot;:
+  &lt;h2
+    id=&quot;sharing-dialog-title&quot;
+  /&gt;
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;h3
+    id=&quot;sharing-links-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Đóng&quot;:
+  &lt;button
+    aria-label=&quot;Đóng&quot;
+    class=&quot;sharing-close&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tạo link chia sẻ&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;sharing-dialog__intro&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Thời hạn&quot;:
+  &lt;select /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;7 ngày&quot;:
+  &lt;option
+    value=&quot;7&quot;
+  /&gt;
+
+  Name &quot;30 ngày&quot;:
+  &lt;option
+    value=&quot;30&quot;
+  /&gt;
+
+  Name &quot;90 ngày&quot;:
+  &lt;option
+    value=&quot;90&quot;
+  /&gt;
+
+  Name &quot;Không hết hạn&quot;:
+  &lt;option
+    value=&quot;never&quot;
+  /&gt;
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name &quot;Số lượt tối đa (để trống nếu không giới hạn)&quot;:
+  &lt;input
+    inputmode=&quot;numeric&quot;
+    min=&quot;1&quot;
+    step=&quot;1&quot;
+    type=&quot;number&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Link đã tạo&quot;:
+  &lt;section
+    aria-labelledby=&quot;sharing-links-title&quot;
+    class=&quot;sharing-links&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;p
+    role=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;dialog
+      aria-labelledby=&quot;sharing-dialog-title&quot;
+      class=&quot;sharing-dialog&quot;
+      open=&quot;&quot;
+    &gt;
+      &lt;header
+        class=&quot;sharing-dialog__header&quot;
+      &gt;
+        &lt;h2
+          id=&quot;sharing-dialog-title&quot;
+        &gt;
+          Chia sẻ khoá học
+        &lt;/h2&gt;
+        &lt;button
+          aria-label=&quot;Đóng&quot;
+          class=&quot;sharing-close&quot;
+          type=&quot;button&quot;
+        &gt;
+          &lt;svg
+            aria-hidden=&quot;true&quot;
+            fill=&quot;none&quot;
+            height=&quot;20&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-width=&quot;1.7&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;20&quot;
+          &gt;
+            &lt;path
+              d=&quot;m6 6 12 12M18 6 6 18&quot;
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;p
+        class=&quot;sharing-dialog__intro&quot;
+      &gt;
+        Tạo link để người khác tham gia khoá học.
+      &lt;/p&gt;
+      &lt;form
+        class=&quot;sharing-form&quot;
+      &gt;
+        &lt;label&gt;
+          Thời hạn
+          &lt;select&gt;
+            &lt;option
+              value=&quot;7&quot;
+            &gt;
+              7 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;30&quot;
+            &gt;
+              30 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;90&quot;
+            &gt;
+              90 ngày
+            &lt;/option&gt;
+            &lt;option
+              value=&quot;never&quot;
+            &gt;
+              Không hết hạn
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/label&gt;
+        &lt;label&gt;
+          Số lượt tối đa 
+          &lt;span&gt;
+            (để trống nếu không giới hạn)
+          &lt;/span&gt;
+          &lt;input
+            inputmode=&quot;numeric&quot;
+            min=&quot;1&quot;
+            step=&quot;1&quot;
+            type=&quot;number&quot;
+            value=&quot;&quot;
+          /&gt;
+        &lt;/label&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Tạo link chia sẻ
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;section
+        aria-labelledby=&quot;sharing-links-title&quot;
+        class=&quot;sharing-links&quot;
+      &gt;
+        &lt;h3
+          id=&quot;sharing-links-title&quot;
+        &gt;
+          Link đã tạo
+        &lt;/h3&gt;
+        &lt;p
+          role=&quot;status&quot;
+        &gt;
+          Đang tải link…
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/dialog&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:71:82
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="1.0311731">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+ ❯ src/Invitations.test.tsx:76:151
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="1.0339846">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+ ❯ src/Invitations.test.tsx:76:151
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

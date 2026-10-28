@@ -1,0 +1,126 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/gate-react-final.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ✓ src/Invitations.test.tsx (13 tests) 4191ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1431ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 462ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 514ms
+   ✓ ignores a delayed send callback after the dialog changes course 412ms
+ ✓ src/W11AuthReturn.repro.test.tsx (22 tests) 36779ms
+   ✓ control: direct login returns to the exact invitation after authentication 1279ms
+   ✓ control: direct register returns to the exact invitation after authentication 1981ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 2058ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 1841ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 1847ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 1831ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 1513ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 1865ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 1790ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 1605ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 1894ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 1711ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 1803ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 2102ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2157ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 1712ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 1833ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 1829ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 936ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 897ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1045ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1247ms
+ ✓ src/App.test.tsx (24 tests) 13568ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 1808ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1111ms
+     ✓ keeps duplicate registration generic when no session is created 988ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 778ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1269ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1094ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 668ms
+     ✓ clears errors and private form state when leaving register 940ms
+     ✓ does not carry a late login failure into the registration form 759ms
+     ✓ keeps a success notification visible after login reaches courses 573ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 598ms
+     ✓ shows the actual password field message for body.password 702ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1056ms
+ ✓ src/Assistant.test.tsx (19 tests) 9511ms
+   ✓ streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn 1192ms
+   ✓ retains received text after a disconnect and retries with the same intent ID and focus 667ms
+   ✓ does not send a focus from the roadmap and shows a ratio rather than invented daily turns 434ms
+   ✓ restores a pending intent after remount and reconciles the saved result without sending a new turn 757ms
+   ✓ renames sessions and requires explicit confirmation before deleting history 1060ms
+   ✓ opens a persisted artifact only from a structured event, independently of model prose 575ms
+   ✓ blocks sending while a new session is being created and then sends into that session 444ms
+   ✓ clears displayed history when the next request is denied: not_found 547ms
+   ✓ clears displayed history when the next request is denied: unauthenticated 605ms
+   ✓ keeps a completed new turn when an older history request arrives afterwards 455ms
+   ✓ keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID 610ms
+   ✓ separates starting a conversation from options for the currently selected conversation 308ms
+   ✓ resizes by keyboard within reading-safe bounds and restores the chosen width after remount 309ms
+   ✓ shows the current question in conversation metadata before the next history reload 440ms
+   ✓ keeps a document hourly-limit notice after the final answer and in saved history 420ms
+   ✓ allows core to decide cache reuse under a limited learner quota instead of blocking the question 449ms
+ ✓ src/W03.test.tsx (21 tests) 5820ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ sends a generic password-reset request without revealing whether the email exists 439ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 832ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 554ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1533ms
+     ✓ keeps the reset form available after a retryable network failure 1059ms
+stdout | src/Content.test.tsx > R7 ignores a late submission result after browser history opens another attempt
+R7_OBSERVED {"activeRoute":"/khoa-hoc/c/quiz/qa_2","heading":"Quiz ôn tập","secondQuestionVisible":true}
+
+ ✓ src/Content.test.tsx (15 tests) 4638ms
+   ✓ offers the quiz and document actions on the real roadmap 444ms
+   ✓ uses core groups independently of origin on the real module page 548ms
+   ✓ keeps a selection made while quiz items stream and submits the actual shuffled option ID 317ms
+   ✓ validates six modules locally, sends no request, and allows a corrected document scope 1021ms
+   ✓ ignores old success submit callbacks while a new attempt is pending 389ms
+   ✓ ignores old unauthenticated submit callbacks while a new attempt is pending 318ms
+   ✓ ignores old not_found submit callbacks while a new attempt is pending 309ms
+stdout | src/Assistant.final-usage-race.test.tsx > review: a question submitted after final is sent while the usage refresh remains pending
+REVIEW_OBSERVATION {"usageCalls":2,"postedQuestions":[{"question":"First question","client_turn_id":"3fcd3ebc-7d27-4f97-993e-a0ecab1114ad"},{"question":"Second question must not disappear","client_turn_id":"017e5a84-61e6-4c90-994c-ac018e173e33"}],"draftAfterSubmit":""}
+
+ ✓ src/Assistant.final-usage-race.test.tsx (5 tests) 3456ms
+   ✓ review: a question submitted after final is sent while the usage refresh remains pending 1300ms
+   ✓ an old usage success and finally cannot unlock or replace the next streaming turn 498ms
+   ✓ an old usage network error and finally cannot unlock or replace the next streaming turn 550ms
+   ✓ accepts the next question before old EOF and ignores a late old stream error 633ms
+   ✓ a late old usage result cannot overwrite newer usage after both answers finish 472ms
+ ✓ src/Sharing.test.tsx (16 tests) 2985ms
+   ✓ creates a one-time share URL, copies only on a successful clipboard write, and clears it on close 677ms
+   ✓ does not reveal a one-time URL when creation finishes after the dialog closes 413ms
+ ✓ src/Learning.test.tsx (16 tests) 3445ms
+   ✓ shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe 843ms
+   ✓ rolls back an optimistic learner mark after a failed save 317ms
+ ✓ src/Learning.review-repro.test.tsx (17 tests) 3156ms
+   ✓ shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe 829ms
+ ✓ src/Courses.test.tsx (17 tests) 1751ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 479ms
+   ✓ loads a membership-gated course entry and selected resume module from actual route shapes 356ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1216ms
+   ✓ shows the selected module and the shared learner mark on the module route 341ms
+ ✓ src/Builds.test.tsx (10 tests) 1386ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 760ms
+ ✓ src/Usage.test.tsx (9 tests) 1182ms
+ ✓ src/SourceViewer.test.tsx (3 tests) 447ms
+ ✓ src/LectureMarkdown.test.tsx (2 tests) 215ms
+ ✓ src/TaskWait.test.tsx (2 tests) 116ms
+ ✓ src/CourseShellGuest.test.tsx (1 test) 259ms
+ ✓ src/api.test.ts (22 tests) 36ms
+
+ Test Files  19 passed (19)
+      Tests  242 passed (242)
+   Start at  18:50:42
+   Duration  149.76s (tests 65%, environment 18%, import 12%, setup 5%)
+
+    Isolate  19 workers spawned · ~1.60s startup each (spawn + environment, per file)
+             at least ~28.74s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/gate-react-final.xml

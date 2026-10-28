@@ -1,0 +1,1111 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/react-green1.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (11 tests | 6 failed) 13172ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1799ms
+   × rejects 51 input addresses before POST, including duplicates counted in the input limit 5017ms
+   ✓ shows pending invitations and cancels only the selected public invitation ID 115ms
+   × maps owner error email_unverified without an internal error or delivery claim 1360ms
+   × maps owner error rate_limited without an internal error or delivery claim 1262ms
+   ✓ discloses learner privacy before accepting and refreshes courses after the server commits 121ms
+   ✓ declines without posting membership and shows a course-full failure without removing the invitation 156ms
+   ✓ does not display pending emails or accept controls for an unverified account 38ms
+   × ignores a delayed send callback after the dialog changes course 1236ms
+   × clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 1026ms
+   × clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 1039ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > rejects 51 input addresses before POST, including duplicates counted in the input limit
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/Invitations.test.tsx:46:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/Invitations.test.tsx > maps owner error email_unverified without an internal error or delivery claim
+TestingLibraryElementError: Unable to find role="alert"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-email"[39m
+        [33mid[39m=[32m"share-panel-email"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"Mời qua email"[39m
+          [33mclass[39m=[32m"email-invitations"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-muted"[39m
+          [36m>[39m
+            [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+          [36m</p>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"invitation-emails"[39m
+            [36m>[39m
+              [0mEmail người nhận[0m
+            [36m</label>[39m
+            [36m<textarea[39m
+              [33maria-describedby[39m=[32m"invitation-email-hint invitation-email-error"[39m
+              [33maria-invalid[39m=[32m"true"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mclass[39m=[32m"invitation-field"[39m
+              [33mid[39m=[32m"invitation-emails"[39m
+              [33mplaceholder[39m=[32m"ban@example.com,\\nnhom@example.com"[39m
+              [33mrows[39m=[32m"3"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0mebxaanm@pelxea.mipnlvea.liindv,ablaind@exa[0m
+            [36m</textarea>[39m
+            [36m<small[39m
+              [33mid[39m=[32m"invitation-email-hint"[39m
+            [36m>[39m
+              [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+            [36m</small>[39m
+            [36m<small[39m
+              [33mclass[39m=[32m"invitation-error"[39m
+              [33mid[39m=[32m"invitation-email-error"[39m
+            [36m>[39m
+              [0mEmail chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.[0m
+            [36m</small>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGửi lời mời[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"invitation-list-heading"[39m
+          [36m>[39m
+            [36m<h3>[39m
+              [0mLời mời đang chờ[0m
+            [36m</h3>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mTải lại[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<ul[39m
+            [33mclass[39m=[32m"invitation-list"[39m
+          [36m>[39m
+            [36m<li>[39m
+              [36m<div>[39m
+                [36m<strong>[39m
+                  [0man@example.invalid[0m
+                [36m</strong>[39m
+                [36m<small>[39m
+                  [0mHết hạn 15:00 03-11 (giờ Việt Nam)[0m
+                [36m</small>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Huỷ lời mời cho an@example.invalid"[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mHuỷ[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-email"[39m
+        [33mid[39m=[32m"share-panel-email"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"Mời qua email"[39m
+          [33mclass[39m=[32m"email-invitations"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-muted"[39m
+          [36m>[39m
+            [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+          [36m</p>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"invitation-emails"[39m
+            [36m>[39m
+              [0mEmail người nhận[0m
+            [36m</label>[39m
+            [36m<textarea[39m
+              [33maria-describedby[39m=[32m"invitation-email-hint invitation-email-error"[39m
+              [33maria-invalid[39m=[32m"true"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mclass[39m=[32m"invitation-field"[39m
+              [33mid[39m=[32m"invitation-emails"[39m
+              [33mplaceholder[39m=[32m"ban@example.com,\\nnhom@example.com"[39m
+              [33mrows[39m=[32m"3"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0mebxaanm@pelxea.mipnlvea.liindv,ablaind@exa[0m
+            [36m</textarea>[39m
+            [36m<small[39m
+              [33mid[39m=[32m"invitation-email-hint"[39m
+            [36m>[39m
+              [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+            [36m</small>[39m
+            [36m<small[39m
+              [33mclass[39m=[32m"invitation-error"[39m
+              [33mid[39m=[32m"invitation-email-error"[39m
+            [36m>[39m
+              [0mEmail chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.[0m
+            [36m</small>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGửi lời mời[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"invitation-list-heading"[39m
+          [36m>[39m
+            [36m<h3>[39m
+              [0mLời mời đang chờ[0m
+            [36m</h3>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mTải lại[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<ul[39m
+            [33mclass[39m=[32m"invitation-list"[39m
+          [36m>[39m
+            [36m<li>[39m
+              [36m<div>[39m
+                [36m<strong>[39m
+                  [0man@example.invalid[0m
+                [36m</strong>[39m
+                [36m<small>[39m
+                  [0mHết hạn 15:00 03-11 (giờ Việt Nam)[0m
+                [36m</small>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Huỷ lời mời cho an@example.invalid"[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mHuỷ[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:56:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/Invitations.test.tsx > maps owner error rate_limited without an internal error or delivery claim
+TestingLibraryElementError: Unable to find role="alert"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-email"[39m
+        [33mid[39m=[32m"share-panel-email"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"Mời qua email"[39m
+          [33mclass[39m=[32m"email-invitations"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-muted"[39m
+          [36m>[39m
+            [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+          [36m</p>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"invitation-emails"[39m
+            [36m>[39m
+              [0mEmail người nhận[0m
+            [36m</label>[39m
+            [36m<textarea[39m
+              [33maria-describedby[39m=[32m"invitation-email-hint invitation-email-error"[39m
+              [33maria-invalid[39m=[32m"true"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mclass[39m=[32m"invitation-field"[39m
+              [33mid[39m=[32m"invitation-emails"[39m
+              [33mplaceholder[39m=[32m"ban@example.com,\\nnhom@example.com"[39m
+              [33mrows[39m=[32m"3"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0mabna@ne@xeaxmapmlpel.ei.nivnavlaildi,dban@[0m
+            [36m</textarea>[39m
+            [36m<small[39m
+              [33mid[39m=[32m"invitation-email-hint"[39m
+            [36m>[39m
+              [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+            [36m</small>[39m
+            [36m<small[39m
+              [33mclass[39m=[32m"invitation-error"[39m
+              [33mid[39m=[32m"invitation-email-error"[39m
+            [36m>[39m
+              [0mEmail chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.[0m
+            [36m</small>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGửi lời mời[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"invitation-list-heading"[39m
+          [36m>[39m
+            [36m<h3>[39m
+              [0mLời mời đang chờ[0m
+            [36m</h3>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mTải lại[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<ul[39m
+            [33mclass[39m=[32m"invitation-list"[39m
+          [36m>[39m
+            [36m<li>[39m
+              [36m<div>[39m
+                [36m<strong>[39m
+                  [0man@example.invalid[0m
+                [36m</strong>[39m
+                [36m<small>[39m
+                  [0mHết hạn 15:00 03-11 (giờ Việt Nam)[0m
+                [36m</small>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Huỷ lời mời cho an@example.invalid"[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mHuỷ[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Cách mời tham gia"[39m
+        [33mclass[39m=[32m"sharing-methods"[39m
+        [33mrole[39m=[32m"tablist"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-link"[39m
+          [33maria-selected[39m=[32m"false"[39m
+          [33mid[39m=[32m"share-method-link"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mBằng link[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"share-panel-email"[39m
+          [33maria-selected[39m=[32m"true"[39m
+          [33mid[39m=[32m"share-method-email"[39m
+          [33mrole[39m=[32m"tab"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mMời qua email[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"share-method-email"[39m
+        [33mid[39m=[32m"share-panel-email"[39m
+        [33mrole[39m=[32m"tabpanel"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-label[39m=[32m"Mời qua email"[39m
+          [33mclass[39m=[32m"email-invitations"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-muted"[39m
+          [36m>[39m
+            [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+          [36m</p>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<label[39m
+              [33mfor[39m=[32m"invitation-emails"[39m
+            [36m>[39m
+              [0mEmail người nhận[0m
+            [36m</label>[39m
+            [36m<textarea[39m
+              [33maria-describedby[39m=[32m"invitation-email-hint invitation-email-error"[39m
+              [33maria-invalid[39m=[32m"true"[39m
+              [33mautocomplete[39m=[32m"off"[39m
+              [33mclass[39m=[32m"invitation-field"[39m
+              [33mid[39m=[32m"invitation-emails"[39m
+              [33mplaceholder[39m=[32m"ban@example.com,\\nnhom@example.com"[39m
+              [33mrows[39m=[32m"3"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0mabna@ne@xeaxmapmlpel.ei.nivnavlaildi,dban@[0m
+            [36m</textarea>[39m
+            [36m<small[39m
+              [33mid[39m=[32m"invitation-email-hint"[39m
+            [36m>[39m
+              [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+            [36m</small>[39m
+            [36m<small[39m
+              [33mclass[39m=[32m"invitation-error"[39m
+              [33mid[39m=[32m"invitation-email-error"[39m
+            [36m>[39m
+              [0mEmail chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.[0m
+            [36m</small>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mGửi lời mời[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"invitation-list-heading"[39m
+          [36m>[39m
+            [36m<h3>[39m
+              [0mLời mời đang chờ[0m
+            [36m</h3>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mTải lại[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<ul[39m
+            [33mclass[39m=[32m"invitation-list"[39m
+          [36m>[39m
+            [36m<li>[39m
+              [36m<div>[39m
+                [36m<strong>[39m
+                  [0man@example.invalid[0m
+                [36m</strong>[39m
+                [36m<small>[39m
+                  [0mHết hạn 15:00 03-11 (giờ Việt Nam)[0m
+                [36m</small>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Huỷ lời mời cho an@example.invalid"[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mHuỷ[0m
+              [36m</button>[39m
+            [36m</li>[39m
+          [36m</ul>[39m
+        [36m</section>[39m
+      [36m</div>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:56:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/Invitations.test.tsx > ignores a delayed send callback after the dialog changes course
+AssertionError: expected null to be type of 'function'
+
+Ignored nodes: comments, script, style
+[36m<html[39m
+  [33mdata-theme[39m=[32m"light"[39m
+[36m>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<dialog[39m
+        [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+        [33mclass[39m=[32m"sharing-dialog"[39m
+        [33mopen[39m=[32m""[39m
+      [36m>[39m
+        [36m<header[39m
+          [33mclass[39m=[32m"sharing-dialog__header"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"sharing-dialog-title"[39m
+          [36m>[39m
+            [0mChia sẻ khoá học[0m
+          [36m</h2>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Đóng"[39m
+            [33mclass[39m=[32m"sharing-close"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-width[39m=[32m"1.7"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Cách mời tham gia"[39m
+          [33mclass[39m=[32m"sharing-methods"[39m
+          [33mrole[39m=[32m"tablist"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-controls[39m=[32m"share-panel-link"[39m
+            [33maria-selected[39m=[32m"false"[39m
+            [33mid[39m=[32m"share-method-link"[39m
+            [33mrole[39m=[32m"tab"[39m
+            [33mtabindex[39m=[32m"-1"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mBằng link[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-controls[39m=[32m"share-panel-email"[39m
+            [33maria-selected[39m=[32m"true"[39m
+            [33mid[39m=[32m"share-method-email"[39m
+            [33mrole[39m=[32m"tab"[39m
+            [33mtabindex[39m=[32m"0"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mMời qua email[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33maria-labelledby[39m=[32m"share-method-email"[39m
+          [33mid[39m=[32m"share-panel-email"[39m
+          [33mrole[39m=[32m"tabpanel"[39m
+        [36m>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Mời qua email"[39m
+            [33mclass[39m=[32m"email-invitations"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"invitation-muted"[39m
+            [36m>[39m
+              [0mTối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.[0m
+            [36m</p>[39m
+            [36m<form[39m
+              [33mnovalidate[39m=[32m""[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"invitation-emails"[39m
+              [36m>[39m
+                [0mEmail người nhận[0m
+              [36m</label>[39m
+              [36m<textarea[39m
+                [33maria-describedby[39m=[32m"invitation-email-hint invitation-email-error"[39m
+                [33maria-invalid[39m=[32m"true"[39m
+                [33mautocomplete[39m=[32m"off"[39m
+                [33mclass[39m=[32m"invitation-field"[39m
+                [33mid[39m=[32m"invitation-emails"[39m
+                [33mplaceholder[39m=[32m"ban@example.com,\\nnhom@example.com"[39m
+                [33mrows[39m=[32m"3"[39m
+                [33mspellcheck[39m=[32m"false"[39m
+              [36m>[39m
+                [0mbbaann@@eexxaammppllee..iinnvvaalliidd,ban[0m
+              [36m</textarea>[39m
+              [36m<small[39m
+                [33mid[39m=[32m"invitation-email-hint"[39m
+              [36m>[39m
+                [0mDán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.[0m
+              [36m</small>[39m
+              [36m<small[39m
+                [33mclass[39m=[32m"invitation-error"[39m
+                [33mid[39m=[32m"invitation-email-error"[39m
+              [36m>[39m
+                [0mEmail chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.[0m
+              [36m</small>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"button button-primary"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mGửi lời mời[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"invitation-list-heading"[39m
+            [36m>[39m
+              [36m<h3>[39m
+                [0mLời mời đang chờ[0m
+              [36m</h3>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mTải lại[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<ul[39m
+              [33mclass[39m=[32m"invitation-list"[39m
+            [36m>[39m
+              [36m<li>[39m
+                [36m<div>[39m
+                  [36m<strong>[39m
+                    [0man@example.invalid[0m
+                  [36m</strong>[39m
+                  [36m<small>[39m
+                    [0mHết hạn 15:00 03-11 (giờ Việt Nam)[0m
+                  [36m</small>[39m
+                [36m</div>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Huỷ lời mời cho an@example.invalid"[39m
+                  [33mclass[39m=[32m"button button-secondary"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHuỷ[0m
+                [36m</button>[39m
+              [36m</li>[39m
+            [36m</ul>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</dialog>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+Expected: "function"
+Received: "object"
+
+ ❯ src/Invitations.test.tsx:71:318
+
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/Invitations.test.tsx > clears the invitation fragment, keeps only boolean context through auth switching (transition=false)
+ FAIL  src/Invitations.test.tsx > clears the invitation fragment, keeps only boolean context through auth switching (transition=true)
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+[36m<html[39m
+  [33mdata-theme[39m=[32m"light"[39m
+[36m>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+      [36m>[39m
+        [0m/dang-ky#invitation=PRIVATE_INVITATION_FIXTURE[0m
+      [36m</output>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"site-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"auth-switch"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"auth-layout page-frame"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"auth-title"[39m
+          [33mclass[39m=[32m"auth-card"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"section-kicker"[39m
+          [36m>[39m
+            [0mMỘT LỘ TRÌNH CỦA RIÊNG BẠN[0m
+          [36m</span>[39m
+          [36m<h1[39m
+            [33mid[39m=[32m"auth-title"[39m
+            [33mtabindex[39m=[32m"-1"[39m
+          [36m>[39m
+            [0mTạo tài khoản WayFinder[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-intro"[39m
+          [36m>[39m
+            [0mLưu lại hành trình học tập của bạn, từng chặng một.[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-intro"[39m
+          [36m>[39m
+            [0mXác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"auth-feedback-slot "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-feedback-clip"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"display-name"[39m
+              [36m>[39m
+                [0mTên hiển thị[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"name"[39m
+                [33mid[39m=[32m"display-name"[39m
+                [33mmaxlength[39m=[32m"60"[39m
+                [33mname[39m=[32m"display_name"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"email"[39m
+              [36m>[39m
+                [0mEmail[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"email"[39m
+                [33mid[39m=[32m"email"[39m
+                [33mmaxlength[39m=[32m"254"[39m
+                [33mname[39m=[32m"email"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mtype[39m=[32m"email"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password"[39m
+              [36m>[39m
+                [0mMật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-describedby[39m=[32m"password-guidance"[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+              [36m<small[39m
+                [33mid[39m=[32m"password-guidance"[39m
+              [36m>[39m
+                [0mTừ 8 đến 128 ký tự.[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password-confirmation"[39m
+              [36m>[39m
+                [0mNhập lại mật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password-confirmation"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password_confirmation"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu xác nhận"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary button-large auth-submit"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mTạo tài khoản[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-alternate"[39m
+          [36m>[39m
+            [0mĐã có tài khoản?[0m
+            [0m [0m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-demo-note"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/demo"[39m
+            [36m>[39m
+              [0mThử lộ trình mẫu trước [0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m↗[0m
+              [36m</span>[39m
+            [36m</a>[39m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ src/Invitations.test.tsx:76:151
+
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 5 passed (11)
+   Start at  18:28:36
+   Duration  16.33s (tests 82%, import 7%, environment 6%, transform 3%, setup 2%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/react-green1.xml
