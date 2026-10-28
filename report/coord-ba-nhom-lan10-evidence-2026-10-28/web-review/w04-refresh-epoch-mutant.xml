@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="1" errors="0" time="0.0765155">
+    <testsuite name="src/ReviewW04.test.tsx" timestamp="2026-10-28T00:52:58.643Z" hostname="ADMIN" tests="3" failures="1" errors="0" skipped="2" time="0.0765155">
+        <testcase classname="src/ReviewW04.test.tsx" name="review: stale successful refresh cannot replace B identity or its CSRF header" time="0.0749814">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  b@example.invalid
+Received:
+  a@example.invalid" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  b@example.invalid
+Received:
+  a@example.invalid
+ ❯ assertB src/ReviewW04.test.tsx:26:75
+ ❯ src/ReviewW04.test.tsx:32:109
+            </failure>
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: delayed profile PATCH from A cannot replace B identity or its CSRF header" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: queued logout-all transition for A cannot clear the later B session" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

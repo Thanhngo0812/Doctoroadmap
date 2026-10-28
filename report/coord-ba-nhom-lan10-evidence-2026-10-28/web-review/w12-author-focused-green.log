@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-invitations-react
+
+ ❯ src/Invitations.test.tsx (0 test)
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  07:49:00
+   Duration  4.84s (environment 69%, setup 26%, transform 4%, worker 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-author-focused-green.xml
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx [ src/Invitations.test.tsx ]
+Error: Failed to resolve import "remark-gfm" from "src/LectureMarkdown.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-invitations-react/src/LectureMarkdown.tsx:4:22
+  2  |  import { memo } from "react";
+  3  |  import remarkMath from "remark-math";
+  4  |  import remarkGfm from "remark-gfm";
+     |                         ^
+  5  |  import rehypeKatex from "rehype-katex";
+  6  |  import "katex/dist/katex.min.css";
+ ❯ TransformPluginContext._formatLog ../node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error ../node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl ../node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ ../node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform ../node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform ../node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform ../node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

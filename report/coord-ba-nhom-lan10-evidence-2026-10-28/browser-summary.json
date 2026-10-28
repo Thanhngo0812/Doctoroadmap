@@ -1,0 +1,26 @@
+{
+  "source": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+  "configurations": 12,
+  "screens": 38,
+  "axeRuns": 38,
+  "http": 70,
+  "sqlSnapshots": 29,
+  "consoleErrors": 92,
+  "pageErrors": 0,
+  "sessionProof": {
+    "passwordKeepsARevokesB": true,
+    "oldDeniedNewAccepted": true,
+    "logoutAllRevokesBoth": true,
+    "oldRefreshDoesNotResurrectA": true
+  },
+  "secretStorageClean": true,
+  "designFindings": [
+    {
+      "level": "WARN",
+      "id": "panel-void",
+      "width": 1280,
+      "message": "1 card(s) hold a blank band inside: 44px in \"Thông tin tài khoản\".",
+      "fix": "A card stretches to its neighbour only when it has content to fill. Keep a legend or a note directly under its chart (only an action or a total may sit at a stretched card's foot), let a short card keep its own height (align-items: start), and let a filtered block shrink to its rows."
+    }
+  ]
+}

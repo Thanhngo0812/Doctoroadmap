@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.900" timestamp="2026-10-28T07:50:27.544533+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_sql_transaction_rolls_back_role_status_quota_and_sessions[audit]" time="0.258"><failure message="AssertionError: assert {'account': [..._session': []} == {'account': [...584de995e5'}]}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Differing items:&#10;  {'auth_session': []} != {'auth_session': [{'account_id': '7d4e92116800420a956fe79dcd970f72', 'id': '44fe2777-df5e-43b4-aae1-1c584de995e5'}]}&#10;  {'account': [{'build_monthly_max': 7, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email':...2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'd7475b8948dd493aa4d86f760560f6c8@example.vn', ...}]} != {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...2026-10-28 0...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...d970f72', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000019F4D03C400&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000019F4CFE7AD0&gt;
+failure_point = 'audit'
+
+    @pytest.mark.parametrize('failure_point', ['audit','session_delete'])
+    def test_sql_transaction_rolls_back_role_status_quota_and_sessions(case, monkeypatch, failure_point):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),dict(id=str(uuid4()),uid=rt.learner.user_id))
+        before = snapshot(rt)
+        def fail(*_):
+            raise RuntimeError('R10 injected failure')
+        monkeypatch.setattr(rt.store,'append_audit' if failure_point=='audit' else 'delete_account_sessions',fail)
+        with pytest.raises(RuntimeError,match='R10 injected failure'):
+            rt.service.update_user(rt.admin,rt.learner.user_id,
+                {'role':'admin','status':'disabled','build_monthly_max':7})
+&gt;       assert snapshot(rt) == before
+E       AssertionError: assert {'account': [..._session': []} == {'account': [...584de995e5'}]}
+E
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'auth_session': []} != {'auth_session': [{'account_id': '7d4e92116800420a956fe79dcd970f72', 'id': '44fe2777-df5e-43b4-aae1-1c584de995e5'}]}
+E         {'account': [{'build_monthly_max': 7, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email':...2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'd7475b8948dd493aa4d86f760560f6c8@example.vn', ...}]} != {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...2026-10-28 0...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+test_independent_admin.py:182: AssertionError</failure></testcase><testcase classname="test_independent_admin" name="test_sql_transaction_rolls_back_role_status_quota_and_sessions[session_delete]" time="0.033"><failure message="AssertionError: assert {'account': [...53445161a7'}]} == {'account': [...53445161a7'}]}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...ax': 7, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'literal_%@example.vn', ...}]} != {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...: None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'literal_%@example.vn', ...}]}&#10;  Use -v to get more diff">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...601677c', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000019F4D119940&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000019F4D1165D0&gt;
+failure_point = 'session_delete'
+
+    @pytest.mark.parametrize('failure_point', ['audit','session_delete'])
+    def test_sql_transaction_rolls_back_role_status_quota_and_sessions(case, monkeypatch, failure_point):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),dict(id=str(uuid4()),uid=rt.learner.user_id))
+        before = snapshot(rt)
+        def fail(*_):
+            raise RuntimeError('R10 injected failure')
+        monkeypatch.setattr(rt.store,'append_audit' if failure_point=='audit' else 'delete_account_sessions',fail)
+        with pytest.raises(RuntimeError,match='R10 injected failure'):
+            rt.service.update_user(rt.admin,rt.learner.user_id,
+                {'role':'admin','status':'disabled','build_monthly_max':7})
+&gt;       assert snapshot(rt) == before
+E       AssertionError: assert {'account': [...53445161a7'}]} == {'account': [...53445161a7'}]}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...ax': 7, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'literal_%@example.vn', ...}]} != {'account': [{'build_monthly_max': None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'emai...: None, 'created_at': '2026-10-28 06:00:00+00:00', 'display_name': 'Synthetic', 'email': 'literal_%@example.vn', ...}]}
+E         Use -v to get more diff
+
+test_independent_admin.py:182: AssertionError</failure></testcase></testsuite></testsuites>

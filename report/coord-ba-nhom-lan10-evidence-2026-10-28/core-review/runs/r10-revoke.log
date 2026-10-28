@@ -1,0 +1,34 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_disable_then_enable_never_recreates_sessions_and_is_idempotent _____
+
+case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=<test_independent_admin.OfflineSQLStore object at 0x00...3e68992', role='user', email_verified=True, status='active'), seed=<function case.<locals>.seed at 0x0000015DA1FCC2C0>)
+
+    def test_disable_then_enable_never_recreates_sessions_and_is_idempotent(case):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),
+                [dict(id=str(uuid4()),uid=rt.learner.user_id) for _ in range(2)])
+        result = rt.service.update_user(rt.admin, rt.learner.user_id, {'status':'disabled','build_monthly_max':8})
+        assert result['status'] == 'disabled' and result['builds_this_month']['max'] == 8
+>       assert rows(rt,'SELECT * FROM auth_session') == []
+E       AssertionError: assert [{'account_id...a6219f61cd1'}] == []
+E
+E         Left contains 2 more items, first extra item: {'account_id': '7372cf5405424e3fb796c32e83e68992', 'id': '31f0cc64-1af2-4032-b2ac-1224ac39efa0'}
+E         Use -v to get more diff
+
+test_independent_admin.py:156: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+test_independent_admin.py: 10 warnings
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: DeprecationWarning: The default datetime adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r10-core-review-20261028\runs\r10-revoke.xml -
+=========================== short test summary info ===========================
+FAILED test_independent_admin.py::test_disable_then_enable_never_recreates_sessions_and_is_idempotent
+1 failed, 21 deselected, 11 warnings in 5.38s
