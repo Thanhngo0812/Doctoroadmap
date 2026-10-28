@@ -26,18 +26,19 @@ HUONG_DAN = ("Bạn là người phán độc lập. Không dùng AI, không tra
              "Sheet Khái niệm: mỗi dòng là một khái niệm do máy lập. Chọn: day (khái niệm được dạy trong sách), chi_nhac (chỉ nhắc qua), "
              "khong_phai_khai_niem (không phải khái niệm cần học), rac (rác, câu vô nghĩa).\n"
              "Sheet Cạnh: mỗi dòng là một cặp 'học điều kiện trước, rồi mới học đích'. Chọn: can (cần học điều kiện trước), khong_can (không cần), "
-             "nguoc_chieu (đích phải học trước điều kiện). Câu bằng chứng và trang chỉ để tham khảo.\n"
+             "nguoc_chieu (đích phải học trước điều kiện). Mỗi dòng cho tên, câu định nghĩa và trang của hai khái niệm X (điều kiện) và Y (đích); hãy tra sách để quyết "
+             "X có phải tiên quyết của Y không.\n"
              "Sheet Module: cho điểm 1 đến 7 cho từng nhóm khái niệm:\n" + "\n".join(f"  {k} = {v}" for k, v in NEO_LIKERT.items()) + "\n"
              "Sheet So sánh: mỗi dòng là hai lộ trình học cho cùng một sách; chọn lộ trình giúp người mới học tốt hơn (trai, phai) hoặc hoa nếu ngang nhau, "
              "kèm lý do ngắn.\nKhông sửa cột mã (đang ẩn) và không đổi tiêu đề cột.")
 TIEU_DE = {
     "Khái niệm": ["ma", "Tên khái niệm", "Tên khác", "Câu trong sách", "Trang", "Phán", "Ghi chú"],
-    "Cạnh": ["ma", "Điều kiện (học trước)", "Đích (học sau)", "Câu bằng chứng", "Trang", "Phán", "Ghi chú"],
+    "Cạnh": ["ma", "Điều kiện X (học trước)", "Câu định nghĩa của X", "Trang X", "Đích Y (học sau)", "Câu định nghĩa của Y", "Trang Y", "Phán", "Ghi chú"],
     "Module": ["ma", "Module", "Các khái niệm (theo thứ tự)", "Điểm (1-7)", "Ghi chú"],
     "So sánh": ["ma", "Lộ trình trái", "Lộ trình phải", "Phán", "Lý do"],
 }
 CAC_SHEET = (("a", "Khái niệm", chon.PHAN_A), ("b", "Cạnh", chon.PHAN_B), ("m", "Module", chon.DIEM_RUBRIC), ("p", "So sánh", chon.PHAN_SO_SANH))
-COT_PHAN = {"a": 6, "b": 6, "m": 4, "p": 4}
+COT_PHAN = {"a": 6, "b": 8, "m": 4, "p": 4}
 
 
 def chuan_bi(hop_dong_theo_he, can_gop, g3, g4_chinh, g4_tho_theo_nguoi, *, ma_sach, seed, chinh="chinh"):
@@ -65,7 +66,7 @@ def _dong_sheet(trang_thai, nguoi, loai):
     if loai == "a":
         return [(h["ma"], h["ten"], "; ".join(h["ten_khac"]), h["cau"], h["trang"]) for h in trang_thai["a"]]
     if loai == "b":
-        return [(h["ma"], h["nguon"], h["dich"], h["cau"], h["trang"]) for h in trang_thai["nguoi"][nguoi]["b"]]
+        return [(h["ma"], h["nguon"], h["dn_nguon"], h["trang_nguon"], h["dich"], h["dn_dich"], h["trang_dich"]) for h in trang_thai["nguoi"][nguoi]["b"]]
     if loai == "m":
         return [(h["ma"], h["ten"], "\n".join(f"{i}. {x}" for i, x in enumerate(h["thanh_vien"], start=1))) for h in trang_thai["m"]]
     return [(h["ma"], h["trai"], h["phai"]) for h in trang_thai["nguoi"][nguoi]["p"]]
@@ -87,12 +88,12 @@ def sinh_phieu(trang_thai, nguoi, duong):
                 ws.cell(r, c).value = v
                 ws.cell(r, c).alignment = Alignment(wrap_text=True, vertical="top")
         ws.column_dimensions["A"].hidden = True
-        for cot, rong in zip("BCDEFG", (40, 40, 50, 8, 18, 30)):
+        for cot, rong in zip("BCDEFGHI", (30, 50, 8, 30, 50, 8, 18, 30)):
             ws.column_dimensions[cot].width = rong
         ws.freeze_panes = "B2"
         dv = DataValidation(type="list", formula1='"' + ",".join(str(x) for x in lua_chon) + '"', allow_blank=True, showErrorMessage=True,
                             errorTitle="Phán", error="Chọn một giá trị trong danh sách.")
-        cot = "ABCDEFG"[COT_PHAN[loai] - 1]
+        cot = "ABCDEFGHI"[COT_PHAN[loai] - 1]
         dv.add(f"{cot}2:{cot}{max(len(dong) + 1, 2)}")
         ws.add_data_validation(dv)
     meta = wb.create_sheet("meta")

@@ -103,7 +103,8 @@ def test_precision_khong_canh_du_va_khong_canh_may():
 
 
 def canh_gia(n):
-    return {"tong": n + 10, "khop": 10, "du": [{"nguon": f"A{i}", "dich": f"B{i}", "cau": f"Cau {i}.", "trang": 1, "id": f"x{i}"} for i in range(n)]}
+    return {"tong": n + 10, "khop": 10, "so_du": n, "du": [{"nguon": f"A{i}", "dn_nguon": f"A{i} la mot.", "trang_nguon": 1, "dich": f"B{i}",
+                                                           "dn_dich": f"B{i} la hai.", "trang_dich": 2, "id": f"x{i}"} for i in range(n)]}
 
 
 def test_mau_b_cat_o_100_moi_he_va_gop_hang_giong_nhau_giua_he():
@@ -120,8 +121,12 @@ def test_mau_b_cat_o_100_moi_he_va_gop_hang_giong_nhau_giua_he():
 
 def test_canh_ngoai_vang_phan_khop_du_nguoc_va_dau_khong_can():
     kq = chon.canh_ngoai_vang(HOP_DONG["chinh"], G3, G4, __import__("danhgia.can.mu", fromlist=["x"]).tach_theo_he(CAN, "chinh"))
-    assert (kq["tong"], kq["khop"]) == (7, 3)
-    assert sorted((e["nguon"], e["dich"]) for e in kq["du"]) == sorted([("Cuong do", "Truong do"), ("Am sac", "Phach"), ("Phach", "Nhip"), ("Hoa am", "Cao do")])
+    assert (kq["tong"], kq["khop"], kq["so_du"]) == (7, 3, 4)
+    # n7 "Hoa am" không căn được và không có câu neo: cạnh n7>n1 là dư nhưng thiếu câu định nghĩa nên không vào phiếu (đếm riêng, precision vẫn chia cho cả 4)
+    assert sorted((e["nguon"], e["dich"]) for e in kq["du"]) == sorted([("Cuong do", "Truong do"), ("Am sac", "Phach"), ("Phach", "Nhip")])
+    assert kq["khong_du_truong"] == 1
+    e = next(e for e in kq["du"] if e["nguon"] == "Am sac")
+    assert (e["dn_nguon"], e["trang_nguon"], e["dn_dich"], e["trang_dich"]) == ("Am sac la khai niem so 4.", 4, "Phach la khai niem so 6.", 6)   # câu của kho chốt G3
 
 
 def test_mau_a_khai_niem_may_khong_can_duoc_gop_moi_he():
@@ -133,7 +138,8 @@ def test_mau_a_khai_niem_may_khong_can_duoc_gop_moi_he():
 
 
 def hang_may_gia(n, he_cua=lambda i: "chinh"):
-    return [{"nguon": f"A{i}", "dich": f"B{i}", "cau": f"Cau {i}.", "trang": 1, "canh": {he_cua(i): 1}} for i in range(n)]
+    return [{"nguon": f"A{i}", "dn_nguon": f"A{i} la mot.", "trang_nguon": 1, "dich": f"B{i}", "dn_dich": f"B{i} la hai.", "trang_dich": 2,
+             "canh": {he_cua(i): 1}} for i in range(n)]
 
 
 def test_doi_chung_dung_ti_le_moi_loai_10_phan_tram():
@@ -142,17 +148,17 @@ def test_doi_chung_dung_ti_le_moi_loai_10_phan_tram():
         dem = {l: sum(h["loai"] == l for h in hang) for l in ("may", "doi_chung_vang", "doi_chung_ngau")}
         assert dem["may"] == n
         k = round(n / 8)
-        assert dem["doi_chung_ngau"] == min(k, 8) and dem["doi_chung_vang"] == min(k, 4)   # fixture: 8 cặp cùng chương không cạnh; S1 có 4 cạnh vàng thô
+        assert dem["doi_chung_ngau"] == min(k, 8) and dem["doi_chung_vang"] == min(k, 3)   # fixture: 8 cặp cùng chương không cạnh; S1 có 3 cạnh vàng thô có đủ câu định nghĩa
     hang = chon.dung_phieu_b(hang_may_gia(24), G3, G4, G4_THO["S1"], seed=1, nguoi="S1", cam=HE)
     # 24 hàng máy: k = 3 mỗi loại (S1 có 4 cạnh vàng thô nên đủ), tổng 30, đúng 10% mỗi loại
     assert sum(h["loai"] == "doi_chung_ngau" for h in hang) == 3 and len(hang) == 30
-    assert sum(h["loai"] == "doi_chung_vang" for h in hang) == min(3, 4)
+    assert sum(h["loai"] == "doi_chung_vang" for h in hang) == 3
 
 
 def test_cau_doi_chung_vang_la_vang_tho_cua_chinh_nguoi_phan_khong_phai_vang_hoi_y():
-    tho = {(q["nguon"] if isinstance(q["nguon"], str) else q["nguon"]["ngoai"]["ten"], q["dich"]) for q in G4_THO["S1"]["quan_he"]}
+    tho = {(q["nguon"], q["dich"]) for q in G4_THO["S1"]["quan_he"] if isinstance(q["nguon"], str)}     # nguồn "ngoài" không vào phiếu
     ten = {x["ma"]: x["ten"] for x in G3["khai_niem"]}
-    cua_s1 = {(ten.get(a, a), ten[b]) for a, b in tho}
+    cua_s1 = {(ten[a], ten[b]) for a, b in tho}
     chinh = {(ten[q["nguon"]], ten[q["dich"]]) for q in G4["vang_chinh"] if isinstance(q["nguon"], str)}
     thay_ngoai_hoi_y = False
     for seed in range(1, 15):
@@ -172,14 +178,17 @@ def test_cap_ngau_nhien_khong_bao_gio_trung_canh_vang_chinh_ca_hai_chieu_va_cung
     for seed in range(1, 30):
         for h in chon.dung_phieu_b(hang_may_gia(80), G3, G4, G4_THO["S1"], seed=seed, nguoi="S1", cam=HE):
             if h["loai"] == "doi_chung_ngau":
-                assert (h["nguon"], h["dich"]) not in co_canh and chuong[h["nguon"]] == chuong[h["dich"]] and h["cau"]
+                assert (h["nguon"], h["dich"]) not in co_canh and chuong[h["nguon"]] == chuong[h["dich"]] and h["dn_dich"]
 
 
 def test_hang_may_va_doi_chung_giong_het_cot_va_dinh_dang():
     hang = chon.dung_phieu_b(hang_may_gia(24), G3, G4, G4_THO["S1"], seed=1, nguoi="S1", cam=HE)
-    khoa = {tuple(sorted(set(h) - {"loai", "canh"})) for h in hang}
-    assert len(khoa) == 1
-    assert all(isinstance(h["trang"], int) and isinstance(h["cau"], str) for h in hang)
+    assert {tuple(sorted(set(h) - {"loai", "canh", "ma"})) for h in hang} == {tuple(sorted(chon.TRUONG_HANG_B))}
+    # với mọi hàng, tập trường khác rỗng như nhau giữa ba loại: đủ sáu trường (không loại nào có thêm hay thiếu một trường)
+    khac_rong = {l: {frozenset(t for t in chon.TRUONG_HANG_B if h[t] not in (None, "")) for h in hang if h["loai"] == l} for l in
+                 ("may", "doi_chung_vang", "doi_chung_ngau")}
+    assert all(v == {frozenset(chon.TRUONG_HANG_B)} for v in khac_rong.values()), khac_rong
+    assert all(isinstance(h["trang_nguon"], int) and isinstance(h["trang_dich"], int) for h in hang)
 
 
 def test_xao_tat_dinh_theo_seed_va_nguoi():
@@ -252,8 +261,8 @@ def test_phieu_khong_lo_ten_he_hay_loai_dong(tmp_path):
 
 def test_trang_thai_chuan_bi_dung_vang_tho_tung_nguoi_qua_nhieu_seed():
     ten = {x["ma"]: x["ten"] for x in G3["khai_niem"]}
-    cap = lambda q: (q["nguon"]["ngoai"]["ten"] if isinstance(q["nguon"], dict) else ten[q["nguon"]], ten[q["dich"]])  # noqa: E731
-    tho = {n: {cap(q) for q in g["quan_he"]} for n, g in G4_THO.items()}
+    cap = lambda q: (ten[q["nguon"]], ten[q["dich"]])  # noqa: E731
+    tho = {n: {cap(q) for q in g["quan_he"] if isinstance(q["nguon"], str)} for n, g in G4_THO.items()}
     chinh = {("Cao do", "Truong do"), ("Truong do", "Cuong do"), ("Nhip", "Phach")}
     ngoai_hoi_y = set()
     for seed in range(1, 12):
@@ -315,9 +324,10 @@ def test_doc_phieu_precision_hieu_chinh_doi_chung_rubric_va_so_sanh(tmp_path):
         assert loi == []
         phan[nguoi] = ket
     kq = tinh.ket_qua(tt, phan)["theo_nguoi"]["S1"]
-    # chinh: 7 cạnh, khớp 3, dư 4 (n3>n2 ngược, n4>n6 đúng, n6>n5 ngược, n7>n1 không cần), mẫu phủ hết dư: (3 + 1) / 7
-    assert kq["precision"]["chinh"]["precision"] == pytest.approx(4 / 7) and kq["precision"]["chinh"]["n_mau"] == 4
-    assert kq["precision"]["chinh"]["nguoc_chieu"] == 2 and kq["precision"]["chinh"]["khong_can"] == 1
+    # chinh: 7 cạnh, khớp 3, dư 4 nhưng n7>n1 thiếu câu định nghĩa nên không vào phiếu: mẫu 3 (n3>n2 ngược, n4>n6 đúng, n6>n5 ngược);
+    # p = 1/3, ước lượng dư đúng = 4/3, precision = (3 + 4/3) / 7 = 13/21
+    assert kq["precision"]["chinh"]["precision"] == pytest.approx(13 / 21) and kq["precision"]["chinh"]["n_mau"] == 3
+    assert kq["precision"]["chinh"]["nguoc_chieu"] == 2 and kq["precision"]["chinh"]["khong_can"] == 0
     assert kq["precision"]["b1"]["precision"] == pytest.approx(2 / 3)           # khớp 1, dư 2 (n4>n6 đúng, n2>n1 không cần)
     assert kq["precision"]["b5"]["precision"] == pytest.approx(1 / 2)           # khớp 1, dư 1 (n3>n4 không cần)
     assert kq["doi_chung"]["vang"]["ti_le_bac"] == 1.0 and kq["doi_chung"]["ngau"]["ti_le_nhan"] == 0.0
@@ -364,4 +374,16 @@ def test_cli_tron_vong(tmp_path, capsys):
     assert main(["phieu-g5", "doc", "--thu-muc", str(d), "--phieu", *[f"{n}={d / f'phieu-{n}.xlsx'}" for n in G4_THO]]) == 0
     assert "precision hiệu chỉnh" in capsys.readouterr().out
     kq = json.loads((d / "ket-qua-g5.json").read_text(encoding="utf-8"))
-    assert kq["theo_nguoi"]["S1"]["precision"]["chinh"]["precision"] == pytest.approx(4 / 7) and set(kq["precision_trung_binh"]) == set(HE)
+    assert kq["theo_nguoi"]["S1"]["precision"]["chinh"]["precision"] == pytest.approx(13 / 21) and set(kq["precision_trung_binh"]) == set(HE)
+
+
+def test_sheet_canh_moi_dong_cung_tap_cot_khac_rong_va_khong_co_cot_bang_chung(tmp_path):
+    tt = tt_mau()
+    ws = openpyxl.load_workbook(phieu.sinh_phieu(tt, "S1", tmp_path / "S1.xlsx"))["Cạnh"]
+    tieu_de = [ws.cell(1, c).value for c in range(1, ws.max_column + 1)]
+    assert not any("chứng" in t.lower() for t in tieu_de if t)                      # không còn cột câu bằng chứng của cạnh
+    assert tieu_de[1:7] == ["Điều kiện X (học trước)", "Câu định nghĩa của X", "Trang X", "Đích Y (học sau)", "Câu định nghĩa của Y", "Trang Y"]
+    khac_rong = {tuple(c for c in range(1, ws.max_column + 1) if ws.cell(r, c).value not in (None, "")) for r in range(2, ws.max_row + 1)}
+    assert khac_rong == {(1, 2, 3, 4, 5, 6, 7)}          # mã và sáu trường; cột Phán và Ghi chú còn trống; mọi dòng (máy lẫn đối chứng) như nhau
+    loai = {h["loai"] for h in tt["nguoi"]["S1"]["b"]}
+    assert loai == {"may", "doi_chung_vang", "doi_chung_ngau"}                      # phiếu thật sự có đủ ba loại
