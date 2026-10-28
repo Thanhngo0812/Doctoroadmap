@@ -27,11 +27,13 @@ PASSWORD = 'W17 synthetic local passphrase!'
 
 
 @pytest.fixture
-def admin_case(postgres_database_url, monkeypatch, request):
+def admin_case(empty_postgres_database_url, monkeypatch, request):
+    from wayfinder.infrastructure.database import upgrade_database
+    upgrade_database(empty_postgres_database_url)
     bundle = build_test_application()
     clock = bundle.phase_b.clock
     settings = WebSettings(
-        _env_file=None, database_url=postgres_database_url.render_as_string(hide_password=False),
+        _env_file=None, database_url=empty_postgres_database_url.render_as_string(hide_password=False),
         frontend_dist=Path('missing'), public_base_url=ORIGIN, allowed_origins=[ORIGIN],
         artifact_root=Path('tmp/w17-artifacts'))
     attempted = []
@@ -101,7 +103,7 @@ def patch(rt, data, *, target=None, actor=None):
 def record(name, data):
     run = os.environ.get('W17_EVIDENCE_RUN')
     if run:
-        path = Path('report/w17-evidence') / run / (name + '.json')
+        path = Path(os.environ.get('W17_EVIDENCE_ROOT','report/w17-evidence')) / run / (name + '.json')
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2, default=str)+'\n', encoding='utf-8')
 
@@ -153,7 +155,7 @@ def test_last_admin_demote_rejected(admin_case):
     with rt.engine.begin() as connection:
         connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id<>:uid"), {'uid':rt.owner.id})
     response = patch(rt, {'role': 'user'}, target=rt.owner)
-    assert response.status_code == 409 and response.json()['error']['code'] == 'conflict'
+    assert response.status_code == 409 and response.json()['error']['code'] == 'protected_admin'
     assert sql(rt, 'SELECT role FROM account WHERE id=:uid', uid=rt.owner.id) == [{'role':'admin'}]
     record('last-admin-conflict',response.json())
 
@@ -263,7 +265,7 @@ def test_pagination_literal_email_filters_and_last_login(admin_case):
     assert rt.owner.client.get('/api/v1/admin/users',params={'email':second.email,'role':'admin'}).json()['total']==0
 
 
-def test_two_postgres_runtimes_cannot_demote_both_last_admins(admin_case,monkeypatch):
+def test_two_postgres_runtimes_keep_first_admin_while_demoting_later_admin(admin_case):
     from wayfinder.application.admin import AdminService
     from wayfinder.infrastructure.admin_store import PostgresAdminStore
     from wayfinder.infrastructure.database import create_database_engine
@@ -274,13 +276,6 @@ def test_two_postgres_runtimes_cannot_demote_both_last_admins(admin_case,monkeyp
     engine=create_database_engine(rt.engine.url)
     other=AdminService(PostgresAdminStore(engine),settings=rt.settings,clock=rt.clock)
     services=[rt.services.admin,other]
-    for service in services:
-        original=service.store.admin_count
-        def slow_count(original=original):
-            value=original()
-            sleep(.2)  # Both unprotected transactions would read two admins before either update.
-            return value
-        monkeypatch.setattr(service.store,'admin_count',slow_count)
     barrier=Barrier(2)
     def demote(pair):
         service,user=pair
@@ -293,7 +288,7 @@ def test_two_postgres_runtimes_cannot_demote_both_last_admins(admin_case,monkeyp
     try:
         with ThreadPoolExecutor(max_workers=2) as pool:
             results=list(pool.map(demote,zip(services,[rt.owner,second])))
-        assert sorted(results)==['changed','conflict']
+        assert sorted(results)==['changed','protected_admin']
         remaining=sql(rt,"SELECT id FROM account WHERE role='admin'")
         assert len(remaining)==1
         assert sum(user.client.get('/api/v1/admin/users').status_code==200 for user in (rt.owner,second))==1
@@ -328,16 +323,16 @@ def test_csrf_and_origin_required_and_missing_user_is_stable(admin_case):
     assert rt.learner.client.get('/api/v1/me').status_code==200
 
 
-def test_disabling_only_admin_is_allowed_by_existing_status_rule_and_does_not_revive(admin_case):
+def test_disabling_only_first_admin_is_rejected_and_preserves_session(admin_case):
     rt=admin_case
     with rt.engine.begin() as connection:
         connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id<>:uid"),{'uid':rt.owner.id})
     response=patch(rt,{'status':'disabled'},target=rt.owner)
-    assert response.status_code==200
-    assert sql(rt,'SELECT id FROM auth_session WHERE account_id=:uid',uid=rt.owner.id)==[]
-    assert rt.owner.client.get('/api/v1/me').status_code==401
-    assert sql(rt,'SELECT role,status FROM account WHERE id=:uid',uid=rt.owner.id)==[{'role':'admin','status':'disabled'}]
-    record('last-admin-disabled',response.json())
+    assert response.status_code==409 and response.json()['error']['code']=='protected_admin'
+    assert len(sql(rt,'SELECT id FROM auth_session WHERE account_id=:uid',uid=rt.owner.id))==1
+    assert rt.owner.client.get('/api/v1/me').status_code==200
+    assert sql(rt,'SELECT role,status FROM account WHERE id=:uid',uid=rt.owner.id)==[{'role':'admin','status':'active'}]
+    record('last-admin-protected',response.json())
 
 
 def test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta(admin_case):

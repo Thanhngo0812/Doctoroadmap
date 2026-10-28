@@ -45,6 +45,13 @@ class AdminService:
             target = self.store.get_account(uid)
             if target is None:
                 raise AuthError('not_found', 'Không tìm thấy tài khoản.')
+            protected = self.store.first_admin_id()
+            blocked = [field for field in ('status','role') if
+                field in changes and (changes[field]=='disabled' if field=='status' else changes[field]!='admin')]
+            if blocked and (protected is None or uid == protected):
+                raise AuthError('bootstrap_required' if protected is None else 'protected_admin',
+                    'Cần xác lập định danh admin đầu tiên.' if protected is None else 'Không thể khoá hoặc hạ quyền admin đầu tiên.',
+                    fields=[{'loc':field,'message':'Tài khoản được bảo vệ bởi chính sách admin đầu tiên.'} for field in blocked])
             if target.role == 'admin' and changes.get('role', target.role) == 'user' and self.store.admin_count() <= 1:
                 raise AuthError('conflict', 'Không thể hạ quyền quản trị viên cuối cùng.')
             now = self.clock.now()

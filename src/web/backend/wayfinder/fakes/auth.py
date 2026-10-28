@@ -21,6 +21,7 @@ class FakeAuthStore:
         self.email_tokens: dict[bytes, EmailToken] = {}
         self.email_tokens_by_id: dict[str, EmailToken] = {}
         self._lock = RLock()
+        self.bootstrap_admin_id: str | None = None
 
     @contextmanager
     def atomic(self, keys):
@@ -41,6 +42,17 @@ class FakeAuthStore:
 
     def get_account(self, account_id: str) -> Account | None:
         return self.accounts.get(account_id)
+
+    def first_admin_id(self):
+        return self.bootstrap_admin_id
+
+    def has_admins(self):
+        return any(account.role=='admin' for account in self.accounts.values())
+
+    def establish_first_admin(self, account_id, at):
+        if self.bootstrap_admin_id is not None:
+            raise RuntimeError('bootstrap identity is immutable')
+        self.bootstrap_admin_id = account_id
 
     def update_last_login(self, account_id: str, at: datetime) -> None:
         account = self.accounts[account_id]

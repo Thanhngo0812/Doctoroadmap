@@ -2865,6 +2865,16 @@
               }
             }
           },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminPolicyErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -3210,6 +3220,95 @@
         ],
         "title": "AdminMonthlyBuilds"
       },
+      "AdminPolicyError": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "protected_admin",
+              "bootstrap_required",
+              "conflict"
+            ],
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "retry_after": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retry After"
+          },
+          "ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ref"
+          },
+          "fields": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AdminPolicyField"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fields"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "AdminPolicyError"
+      },
+      "AdminPolicyErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/AdminPolicyError"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "AdminPolicyErrorResponse"
+      },
+      "AdminPolicyField": {
+        "properties": {
+          "loc": {
+            "type": "string",
+            "title": "Loc"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "message"
+        ],
+        "title": "AdminPolicyField"
+      },
       "AdminUserPatch": {
         "properties": {
           "status": {
@@ -3336,6 +3435,17 @@
           },
           "builds_this_month": {
             "$ref": "#/components/schemas/AdminMonthlyBuilds"
+          },
+          "is_first_admin": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is First Admin"
           }
         },
         "type": "object",
@@ -3350,7 +3460,8 @@
           "last_login_at",
           "owned_courses",
           "build_monthly_max",
-          "builds_this_month"
+          "builds_this_month",
+          "is_first_admin"
         ],
         "title": "AdminUserResponse"
       },

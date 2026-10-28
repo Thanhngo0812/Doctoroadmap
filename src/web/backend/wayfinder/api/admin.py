@@ -35,6 +35,7 @@ class AdminUserResponse(BaseModel):
     owned_courses: int
     build_monthly_max: int | None
     builds_this_month: AdminMonthlyBuilds
+    is_first_admin: bool | None
 
 
 class AdminUsersResponse(BaseModel):
@@ -61,6 +62,23 @@ class AdminAuditResponse(BaseModel):
     offset: int
 
 
+class AdminPolicyField(BaseModel):
+    loc: str
+    message: str
+
+
+class AdminPolicyError(BaseModel):
+    code: Literal['protected_admin','bootstrap_required','conflict']
+    message: str
+    retry_after: int | None = None
+    ref: str | None = None
+    fields: list[AdminPolicyField] | None = None
+
+
+class AdminPolicyErrorResponse(BaseModel):
+    error: AdminPolicyError
+
+
 def admin_router():
     router = APIRouter(prefix='/api/v1/admin', tags=['admin'])
 
@@ -78,7 +96,7 @@ def admin_router():
               offset: int=Query(0,ge=0,le=100000)):
         return admin.list_users(actor,email=email,role=role,status=status,limit=limit,offset=offset)
 
-    @router.patch('/users/{uid}',response_model=AdminUserResponse)
+    @router.patch('/users/{uid}',response_model=AdminUserResponse,responses={409:{'model':AdminPolicyErrorResponse}})
     def update_user(uid: UUID, data: AdminUserPatch, request: Request, admin=Depends(service),actor: Actor=Depends(get_actor)):
         return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
 

@@ -31,6 +31,7 @@ class PostgresAdminStore(PostgresAuthStore):
         # Select only public columns, never load password/session/learning payloads.
         return '''SELECT a.id,a.email,a.display_name,a.role,a.status,a.email_verified_at,
             a.created_at,a.last_login_at,a.build_monthly_max,
+            (SELECT a.id=ba.account_id FROM bootstrap_admin ba WHERE singleton) AS is_first_admin,
             (SELECT count(*) FROM course c WHERE c.owner_id=a.id) AS owned_courses,
             (SELECT count(*) FROM build b WHERE b.requested_by=a.id AND b.counts_quota
                 AND b.queued_at>=:start AND b.queued_at<:end) AS builds_used FROM account a'''
@@ -46,7 +47,7 @@ class PostgresAdminStore(PostgresAuthStore):
     def admin_count(self):
         table = self._table('account')
         with self._use_connection() as conn:
-            return conn.scalar(select(func.count()).select_from(table).where(table.c.role=='admin'))
+            return conn.scalar(select(func.count()).select_from(table).where(table.c.role=='admin',table.c.status=='active'))
 
     def update_user(self, uid, changes, at):
         table = self._table('account')
