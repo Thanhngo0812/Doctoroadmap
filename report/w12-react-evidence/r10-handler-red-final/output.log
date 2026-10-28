@@ -1,0 +1,52 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/r10-handler-red-final.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (19 tests | 2 failed) 6546ms
+   × waits for the initial list before sending, then retains the canonical invitation (0 initial items) 570ms
+   × waits for the initial list before sending, then retains the canonical invitation (1 initial items) 532ms
+   ✓ keeps the draft on send failure, serializes a reload, and allows retry after a list error 594ms
+   ✓ ignores the old course list after switching course and still allows a send in the new course 523ms
+   ✓ does not render a delayed private list after unmount 80ms
+   ✓ does not render a delayed private list after logout 108ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1431ms
+   ✓ rejects 51 input addresses before POST, including duplicates counted in the input limit 234ms
+   ✓ shows pending invitations and cancels only the selected public invitation ID 106ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 454ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 475ms
+   ✓ discloses learner privacy before accepting and refreshes courses after the server commits 151ms
+   ✓ declines without posting membership and shows a course-full failure without removing the invitation 189ms
+   ✓ does not display pending emails or accept controls for an unverified account 35ms
+   ✓ ignores a delayed send callback after the dialog changes course 477ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 194ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 165ms
+   ✓ a failed invitation list for owner does not claim the list is empty and can reload 132ms
+   ✓ a failed invitation list for recipient does not claim the list is empty and can reload 93ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation (0 initial items)
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation (1 initial items)
+AssertionError: expected [ { …(3) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/Invitations.test.tsx:46:85
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  11:22:39
+   Duration  8.85s (tests 75%, import 10%, environment 9%, setup 3%, transform 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/r10-handler-red-final.xml

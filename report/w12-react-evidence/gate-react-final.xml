@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="242" failures="0" errors="0" time="94.1566715">
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-27T11:53:12.031Z" hostname="ADMIN" tests="24" failures="0" errors="0" skipped="0" time="13.5678854">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="1.8079467">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.1064671">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.1055437">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.0877965">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.068619">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on courses" time="1.1113536">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="0.9875853">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.777856">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.0465059">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="1.2691249">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="1.0938241">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.0977641">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving login" time="0.6684912">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving register" time="0.9398321">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; does not carry a late login failure into the registration form" time="0.7585071">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; keeps a success notification visible after login reaches courses" time="0.5725586">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows inline errors for short invalid fields without submitting to the API" time="0.5975726">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for body.password" time="0.7022645">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for [ &apos;body&apos;, &apos;password&apos; ]" time="1.0563717">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is false" time="0.0721251">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is true" time="0.0961805">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion false" time="0.1685743">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion true" time="0.1656472">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; keeps the account visible and allows retry when logout fails" time="0.2041926">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Assistant.final-usage-race.test.tsx" timestamp="2026-10-27T11:53:12.040Z" hostname="ADMIN" tests="5" failures="0" errors="0" skipped="0" time="3.4559454">
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="review: a question submitted after final is sent while the usage refresh remains pending" time="1.3004348">
+            <system-out>
+REVIEW_OBSERVATION {&quot;usageCalls&quot;:2,&quot;postedQuestions&quot;:[{&quot;question&quot;:&quot;First question&quot;,&quot;client_turn_id&quot;:&quot;3fcd3ebc-7d27-4f97-993e-a0ecab1114ad&quot;},{&quot;question&quot;:&quot;Second question must not disappear&quot;,&quot;client_turn_id&quot;:&quot;017e5a84-61e6-4c90-994c-ac018e173e33&quot;}],&quot;draftAfterSubmit&quot;:&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage success and finally cannot unlock or replace the next streaming turn" time="0.497716">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage network error and finally cannot unlock or replace the next streaming turn" time="0.5501944">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="accepts the next question before old EOF and ignores a late old stream error" time="0.6327954">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="a late old usage result cannot overwrite newer usage after both answers finish" time="0.4724795">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-27T11:53:12.042Z" hostname="ADMIN" tests="19" failures="0" errors="0" skipped="0" time="9.5105778">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.1915144">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.6673878">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.4336027">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.7566052">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="1.0597435">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.5747637">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.4435832">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: not_found" time="0.5467723">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: unauthenticated" time="0.6047661">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a completed new turn when an older history request arrives afterwards" time="0.4550307">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID" time="0.6097317">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="separates starting a conversation from options for the currently selected conversation" time="0.3081852">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="distinguishes conversations with identical titles by their update date and time" time="0.0677798">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="resizes by keyboard within reading-safe bounds and restores the chosen width after remount" time="0.3094487">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clamps a saved width to the viewport without losing the preference on a larger screen" time="0.0891781">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps the phone conversation full-screen without the desktop resize handle" time="0.0809155">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="shows the current question in conversation metadata before the next history reload" time="0.4399562">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a document hourly-limit notice after the final answer and in saved history" time="0.4195921">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="allows core to decide cache reuse under a limited learner quota instead of blocking the question" time="0.4489542">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Builds.test.tsx" timestamp="2026-10-27T11:53:12.048Z" hostname="ADMIN" tests="10" failures="0" errors="0" skipped="0" time="1.3856815">
+        <testcase classname="src/Builds.test.tsx" name="requires rights confirmation before upload and queues only after explicit title confirmation" time="0.7602054">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="aborts an in-flight upload when leaving the upload screen" time="0.16766">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="selects one dropped file without uploading before rights confirmation" time="0.0399987">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="recovers an awaiting build from its scoped route and does not start it on load" time="0.0383697">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="polls active builds every three seconds and only exposes controls allowed by the returned state" time="0.03715">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="confirms this learner’s own title when a shared build is already running" time="0.0913146">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="offers retry only for a retryable failure and sends the course scope" time="0.0794178">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="shows the real course action after success" time="0.0444835">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="cancels only when the server allows it and includes the course ID" time="0.0914001">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="explains a completed cancellation without suggesting an unavailable retry button" time="0.0335699">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-27T11:53:12.051Z" hostname="ADMIN" tests="15" failures="0" errors="0" skipped="0" time="4.6377966">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.4440927">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.5482044">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.3169198">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="1.0208911">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.1538951">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.1370145">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.1097444">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0.0613462">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps keyboard focus on the current option when streaming becomes a saved quiz" time="0.165833">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="R7 ignores a late submission result after browser history opens another attempt" time="0.2183572">
+            <system-out>
+R7_OBSERVED {&quot;activeRoute&quot;:&quot;/khoa-hoc/c/quiz/qa_2&quot;,&quot;heading&quot;:&quot;Quiz ôn tập&quot;,&quot;secondQuestionVisible&quot;:true}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old success submit callbacks while a new attempt is pending" time="0.3893456">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old network submit callbacks while a new attempt is pending" time="0.257365">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old unauthenticated submit callbacks while a new attempt is pending" time="0.3182538">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old not_found submit callbacks while a new attempt is pending" time="0.3091725">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores a previous course submit even when the new course has the same attempt ID" time="0.1832565">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/CourseShellGuest.test.tsx" timestamp="2026-10-27T11:53:12.055Z" hostname="ADMIN" tests="1" failures="0" errors="0" skipped="0" time="0.2593325">
+        <testcase classname="src/CourseShellGuest.test.tsx" name="shows a guest login action that preserves the invite instead of an empty account menu" time="0.2569756">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Courses.test.tsx" timestamp="2026-10-27T11:53:12.055Z" hostname="ADMIN" tests="17" failures="0" errors="0" skipped="0" time="1.7512181">
+        <testcase classname="src/Courses.test.tsx" name="shows real-shaped owned joined and samples without inventing sample progress" time="0.4789823">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="joins through POST with session CSRF and moves the returned card to joined exactly once" time="0.2320906">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="hides samples in an empty production-shaped response and offers the specified next steps" time="0.0519171">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps the page frame while loading and retries a failed request" time="0.1021484">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows join errors beside the sample and never creates a pretend membership" time="0.090178">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="redirects guests and preserves their course path" time="0.0398969">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="loads a membership-gated course entry and selected resume module from actual route shapes" time="0.356213">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows not found for an outsider without rendering private course metadata" time="0.0312442">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows building and failed courses without offering a pretend resume or progress" time="0.0498832">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps each course context and the real worker step on shared-build cards" time="0.0464208">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="refreshes active build cards after three seconds and stops after the course becomes ready" time="0.0475621">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /" time="0.0571167">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap" time="0.0314126">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-ky" time="0.0335062">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example" time="0.0344336">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example" time="0.0298494">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="resumes the requested private route after authenticating" time="0.0344822">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-27T11:53:12.060Z" hostname="ADMIN" tests="13" failures="0" errors="0" skipped="0" time="4.1913353">
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.4312956">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.2572468">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.1322737">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.4615619">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.5136485">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.239114">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.1462482">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0322471">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.4121024">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.1797496">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.1611482">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.1201618">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.1016046">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Learning.review-repro.test.tsx" timestamp="2026-10-27T11:53:12.064Z" hostname="ADMIN" tests="17" failures="0" errors="0" skipped="0" time="3.1560405">
+        <testcase classname="src/Learning.review-repro.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="0.8293276">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.124233">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.1440184">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.1562676">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.1439099">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.1283211">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.1447198">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.1770326">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.0475222">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="explains that DOCX has no numbered pages and still offers opening the original file" time="0.1666771">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: marking a prerequisite from the sidebar immediately refreshes its lesson badge" time="0.2224847">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: marking the next concept from the sidebar immediately refreshes its lesson badge" time="0.1864222">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: the self-check accepted by core stays folded during a stream: ### Tự kiểm tra" time="0.1486709">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: the self-check accepted by core stays folded during a stream: ## Tự kiểm tra" time="0.1602462">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: the self-check accepted by core stays folded during a stream: ### Tự kiểm tra:" time="0.1513639">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: the self-check accepted by core stays folded during a stream: #### Tự kiểm tra" time="0.1132879">
+        </testcase>
+        <testcase classname="src/Learning.review-repro.test.tsx" name="review: the self-check accepted by core stays folded during a stream:   ### Tự kiểm tra" time="0.1077607">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Learning.test.tsx" timestamp="2026-10-27T11:53:12.069Z" hostname="ADMIN" tests="16" failures="0" errors="0" skipped="0" time="3.4449335">
+        <testcase classname="src/Learning.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="0.8426243">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.1789869">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.2759655">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.2113531">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.2175357">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.1511121">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.218607">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.3169938">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.0595893">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="explains that DOCX has no numbered pages and still offers opening the original file" time="0.1382064">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps every related badge on current progress after sidebar save success=true without reloading the lecture" time="0.2007052">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps every related badge on current progress after sidebar save success=false without reloading the lecture" time="0.1908932">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: ## Tự kiểm tra" time="0.1035503">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: #### Tự kiểm tra" time="0.1102222">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check:   ### Tự kiểm tra:" time="0.1085702">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: 	##TỰ KIỂM TRA ::" time="0.116521">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/LectureMarkdown.test.tsx" timestamp="2026-10-27T11:53:12.074Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.2151503">
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; renders inline/block LaTeX and makes only registered source labels actionable" time="0.1995692">
+        </testcase>
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML" time="0.0135076">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Roadmap.test.tsx" timestamp="2026-10-27T11:53:12.075Z" hostname="ADMIN" tests="8" failures="0" errors="0" skipped="0" time="1.2163831">
+        <testcase classname="src/Roadmap.test.tsx" name="shows API-ordered modules, honest course and module totals, and the expanded concept checklist" time="0.2471413">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="marks a fully learned module with a success indicator" time="0.0513285">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows a quiet empty state when the API roadmap has no modules" time="0.0291071">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="clears an expired session after a progress write returns 401" time="0.1417527">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="optimistically updates one concept and restores only that checkbox when its request fails" time="0.1332345">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="rolls back when a successful write response omits the requested node" time="0.1034611">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="merges concurrent node responses by their own node so stale full snapshots cannot undo another check" time="0.1674677">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows the selected module and the shared learner mark on the module route" time="0.3409965">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Sharing.test.tsx" timestamp="2026-10-27T11:53:12.078Z" hostname="ADMIN" tests="16" failures="0" errors="0" skipped="0" time="2.9846918">
+        <testcase classname="src/Sharing.test.tsx" name="keeps the invalid join screen labelled by its own heading" time="0.241493">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="keeps a denied members screen labelled by its own heading" time="0.063323">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reference an absent heading while loading /join/pending" time="0.0306308">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reference an absent heading while loading /khoa-hoc/course-1/thanh-vien" time="0.0408304">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="creates a one-time share URL, copies only on a successful clipboard write, and clears it on close" time="0.6765528">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reveal a one-time URL when creation finishes after the dialog closes" time="0.4133672">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="clears a one-time URL when the open dialog switches to a different course" time="0.2875458">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="lets guests preview a valid course invite and return to that invite after authentication" time="0.0728417">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows the data disclosure to a signed-in learner before joining" time="0.1268511">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="uses one invalid-link message for a bad invite token" time="0.0374713">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows one join-action error without replacing the valid invite preview" time="0.1193087">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="ignores a join response after the invite token changes" time="0.2038609">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="lets an owner remove a learner after confirmation and keeps the owner row protected" time="0.1847428">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not apply a deferred member removal to the next course" time="0.2100474">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows one mutation alert and one heading when member removal fails" time="0.1465997">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows no other learner identities and lets a learner leave after confirmation" time="0.1244641">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/SourceViewer.test.tsx" timestamp="2026-10-27T11:53:12.082Z" hostname="ADMIN" tests="3" failures="0" errors="0" skipped="0" time="0.4467091">
+        <testcase classname="src/SourceViewer.test.tsx" name="restores focus to the matching citation even if streaming replaces the original button" time="0.2776397">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="requests the actual next/previous page and keeps boundary controls disabled" time="0.0793087">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="never relabels the previous image as a new page while the new request is pending" time="0.0876906">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/TaskWait.test.tsx" timestamp="2026-10-27T11:53:12.084Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.1161146">
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; waits at least 400ms, then exposes an animated WebP with a GIF fallback and status text" time="0.1049027">
+        </testcase>
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; uses only the static PNG when reduced motion is requested" time="0.0091969">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Usage.test.tsx" timestamp="2026-10-27T11:53:12.085Z" hostname="ADMIN" tests="9" failures="0" errors="0" skipped="0" time="1.181819">
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.35 and honest state Còn nhiều" time="0.236981">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 0.85 and honest state Gần hết" time="0.1076594">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="shows the API ratio 1 and honest state Đã hết" time="0.0564211">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps null build quota unlimited and never calls it zero remaining" time="0.0373995">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="offers retry after a usage failure without inventing a zero ratio" time="0.116898">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="ignores a stale usage result after route change and loads the new route independently" time="0.2575227">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="does not show late private usage after logout" time="0.1471885">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="keeps a persistent learner limit near document creation while saved content and quiz remain accessible" time="0.1281378">
+        </testcase>
+        <testcase classname="src/Usage.test.tsx" name="refreshes the banner from HTTP after the current assistant turn changes usage" time="0.0911121">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W03.test.tsx" timestamp="2026-10-27T11:53:12.088Z" hostname="ADMIN" tests="21" failures="0" errors="0" skipped="0" time="5.8199593">
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the recovery header scoped and omits the redundant account eyebrow" time="0.2612042">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=false)" time="0.0893957">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=false)" time="0.0496305">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=true)" time="0.0544892">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=true)" time="0.0389797">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows the verification reminder and resends with the in-memory CSRF token" time="0.1152513">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; does not verify on GET and confirms a fragment token only after a button press" time="0.0763982">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; captures a second verification token opened in the same tab after success" time="0.1711891">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; ignores a late response from the previous verification token" time="0.1454504">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; sends a generic password-reset request without revealing whether the email exists" time="0.4392514">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps recovery navigation pointed at the account for an authenticated user" time="0.0418347">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; uses the fragment token, resets without auto-login, and shows the success notice on login" time="0.8317844">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_expired by the token error type" time="0.0679476">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_used by the token error type" time="0.0602058">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_invalid by the token error type" time="0.0546541">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; focuses the recovery heading and hides reset fields after a terminal token error" time="0.5539789">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; replaces a terminal reset link with a second link opened in the same tab" time="1.532991">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the reset form available after a retryable network failure" time="1.0589675">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows a missing-token state and does not send a request" time="0.0350141">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /xac-minh?utm=mail" time="0.076778">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /dat-lai-mat-khau#token=" time="0.0593255">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W11AuthReturn.repro.test.tsx" timestamp="2026-10-27T11:53:12.095Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="36.7793249">
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="1.27915">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="1.9814085">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false)" time="2.0581588">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true)" time="1.8406036">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false)" time="1.8468671">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true)" time="1.8309432">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false)" time="1.5134876">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true)" time="1.8649387">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false)" time="1.790151">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true)" time="1.6047928">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false)" time="1.8944323">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true)" time="1.7107102">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false)" time="1.8032445">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true)" time="2.101597">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="2.1570841">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="1.7124984">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="1.8329507">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="1.8289303">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="0.9357429">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="0.8968576">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="1.0445835">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="1.2465157">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/api.test.ts" timestamp="2026-10-27T11:53:12.101Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="0.0357728">
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error ban_quet" time="0.0026189">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error ngon_ngu_khong_ho_tro" time="0.0002619">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error loi_mang" time="0.0002303">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error het_tran_he_thong" time="0.0001811">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error loi_noi_bo" time="0.0002222">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error confirmation_expired" time="0.000165">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error too_many_pages" time="0.0001605">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; sends cookies on reads and attaches the in-memory CSRF token on writes only" time="0.006582">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps unauthenticated to a stable Vietnamese message" time="0.003534">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps conflict to a stable Vietnamese message" time="0.0009975">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps validation to a stable Vietnamese message" time="0.0006197">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps owns_shared_courses to a stable Vietnamese message" time="0.0005282">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps structured server errors to Vietnamese without exposing raw server text" time="0.0010631">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; keeps a valid degraded health payload when the API uses HTTP 503 for database downtime" time="0.0015415">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; parses events across CRLF boundaries and a split multibyte Vietnamese character" time="0.0077158">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; joins multiline data and ignores comments" time="0.0008713">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps multiline data together when a CRLF pair is split between chunks" time="0.0007118">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; drops an event that is not terminated by a blank line at EOF" time="0.0004658">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps the last event ID across messages" time="0.0004918">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; preserves structured API errors from a failed SSE response" time="0.0006272">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels the stream when an event callback throws" time="0.0016301">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels an already-aborted stream and releases its reader" time="0.0016234">
+        </testcase>
+    </testsuite>
+</testsuites>

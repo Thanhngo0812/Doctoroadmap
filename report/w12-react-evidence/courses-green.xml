@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="28" failures="0" errors="0" time="7.3456227">
+    <testsuite name="src/Courses.test.tsx" timestamp="2026-10-27T11:43:09.671Z" hostname="ADMIN" tests="17" failures="0" errors="0" skipped="0" time="2.0906179">
+        <testcase classname="src/Courses.test.tsx" name="shows real-shaped owned joined and samples without inventing sample progress" time="0.3794346">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="joins through POST with session CSRF and moves the returned card to joined exactly once" time="0.2649446">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="hides samples in an empty production-shaped response and offers the specified next steps" time="0.0788458">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps the page frame while loading and retries a failed request" time="0.1467758">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows join errors beside the sample and never creates a pretend membership" time="0.1266458">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="redirects guests and preserves their course path" time="0.0476163">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="loads a membership-gated course entry and selected resume module from actual route shapes" time="0.3711072">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows not found for an outsider without rendering private course metadata" time="0.0331675">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows building and failed courses without offering a pretend resume or progress" time="0.0654023">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps each course context and the real worker step on shared-build cards" time="0.0927487">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="refreshes active build cards after three seconds and stops after the course becomes ready" time="0.1006446">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /" time="0.1165752">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap" time="0.0522915">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-ky" time="0.0536662">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example" time="0.0507083">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example" time="0.0476486">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="resumes the requested private route after authenticating" time="0.0576302">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-27T11:43:09.697Z" hostname="ADMIN" tests="11" failures="0" errors="0" skipped="0" time="5.2550048">
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.9081872">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.3886525">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.2489483">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.4527519">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.426227">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.2541148">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.2024162">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0576633">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.509612">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.4897276">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.3123357">
+        </testcase>
+    </testsuite>
+</testsuites>

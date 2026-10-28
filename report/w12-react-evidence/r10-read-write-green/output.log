@@ -1,0 +1,102 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/r10-read-write-green.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+stderr | src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation ({"id":"inv-1","course_id":"course-1","course_title":"Đại số tuyến tính","email":"an@example.invalid","status":"pending","expires_at":"2026-11-03T08:00:00Z","created_at":"2026-10-27T08:00:00Z","responded_at":null})
+An error occurred in the <EmailInvitations> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ ❯ src/Invitations.test.tsx (16 tests | 2 failed) 6802ms
+   × waits for the initial list before sending, then retains the canonical invitation (undefined) 528ms
+   × waits for the initial list before sending, then retains the canonical invitation ({"id":"inv-1","course_id":"course-1","course_title":"Đại số tuyến tính","email":"an@example.invalid","status":"pending","expires_at":"2026-11-03T08:00:00Z","created_at":"2026-10-27T08:00:00Z","responded_at":null}) 1572ms
+   ✓ keeps the draft on send failure, serializes a reload, and allows retry after a list error 657ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1435ms
+   ✓ rejects 51 input addresses before POST, including duplicates counted in the input limit 222ms
+   ✓ shows pending invitations and cancels only the selected public invitation ID 107ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 470ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 482ms
+   ✓ discloses learner privacy before accepting and refreshes courses after the server commits 89ms
+   ✓ declines without posting membership and shows a course-full failure without removing the invitation 159ms
+   ✓ does not display pending emails or accept controls for an unverified account 21ms
+   ✓ ignores a delayed send callback after the dialog changes course 500ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 165ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 185ms
+   ✓ a failed invitation list for owner does not claim the list is empty and can reload 112ms
+   ✓ a failed invitation list for recipient does not claim the list is empty and can reload 97ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation (undefined)
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ EmailInvitations src/Invitations.tsx:51:60
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation ({"id":"inv-1","course_id":"course-1","course_title":"Đại số tuyến tính","email":"an@example.invalid","status":"pending","expires_at":"2026-11-03T08:00:00Z","created_at":"2026-10-27T08:00:00Z","responded_at":null})
+TestingLibraryElementError: Unable to find an element with the text: /Đã tạo 1 lời mời/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:47:15
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: current.filter is not a function or its return value is not iterable
+ ❯ src/Invitations.tsx:37:48
+
+ ❯ basicStateReducer node_modules/react-dom/cjs/react-dom-client.development.js:8317:45
+ ❯ updateReducerImpl node_modules/react-dom/cjs/react-dom-client.development.js:8430:17
+ ❯ updateReducer node_modules/react-dom/cjs/react-dom-client.development.js:8350:14
+ ❯ Object.useState node_modules/react-dom/cjs/react-dom-client.development.js:29181:18
+ ❯ process.env.NODE_ENV.exports.useState node_modules/react/cjs/react.development.js:1309:34
+ ❯ EmailInvitations src/Invitations.tsx:13:26
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+
+This error originated in "src/Invitations.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "waits for the initial list before sending, then retains the canonical invitation ({"id":"inv-1","course_id":"course-1","course_title":"Đại số tuyến tính","email":"an@example.invalid","status":"pending","expires_at":"2026-11-03T08:00:00Z","created_at":"2026-10-27T08:00:00Z","responded_at":null})". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 14 passed (16)
+     Errors  1 error
+   Start at  11:18:29
+   Duration  8.78s (tests 79%, environment 10%, import 7%, setup 2%, transform 2%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/r10-read-write-green.xml
