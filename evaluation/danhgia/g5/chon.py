@@ -16,6 +16,7 @@ import zlib
 from danhgia.can.mu import _sinh_ma, _xao
 from danhgia.cham import a8
 from danhgia.cham.can import MUC_CAN, anh_xa_canh, doc_vang
+from danhgia.cham.do_thi import dong_bao
 from danhgia.ten import chuan_hoa
 from danhgia.thong_ke.lcg import Lcg
 
@@ -151,12 +152,14 @@ def doi_chung_vang(g4_tho, g3, k, seed, nguoi, *, tru=()):
     return boc(ds, k, seed, 3, nguoi)
 
 
-def doi_chung_ngau(g3, g4_chinh, k, seed, nguoi, *, tru=()):
-    """k cặp ngẫu nhiên: hai khái niệm vàng cùng chương, không có cạnh nào trong G4 chính theo cả hai chiều; câu kèm theo là câu định nghĩa của đích."""
-    co_canh = set()
-    for q in g4_chinh["vang_chinh"]:
-        if isinstance(q["nguon"], str):
-            co_canh |= {(q["nguon"], q["dich"]), (q["dich"], q["nguon"])}
+def doi_chung_ngau(g3, g4_chinh, k, seed, nguoi, *, tru=(), g4_tho_ca=()):
+    """k cặp ngẫu nhiên: hai khái niệm vàng cùng chương, không có cạnh nào theo cả hai chiều trong **bao đóng bắc cầu** của G4 chính (A>B>C thì (A,C) và
+    (C,A) không được chọn) và không có cạnh nào trong G4 thô của bất kỳ người phán nào (`g4_tho_ca`); câu kèm theo là câu định nghĩa của đích."""
+    cap = {(q["nguon"], q["dich"]) for q in g4_chinh["vang_chinh"] if isinstance(q["nguon"], str)}
+    for g in g4_tho_ca:
+        cap |= {(q["nguon"], q["dich"]) for q in g["quan_he"] if isinstance(q["nguon"], str)}
+    cap = dong_bao({(q["nguon"], q["dich"]) for q in g4_chinh["vang_chinh"] if isinstance(q["nguon"], str)}) | cap
+    co_canh = cap | {(b, a) for a, b in cap}
     theo_chuong = {}
     for x in g3["khai_niem"]:
         theo_chuong.setdefault(x["chuong"], []).append(x)
@@ -178,13 +181,14 @@ def so_dong_doi_chung(so_hang_may):
     return round(so_hang_may * TI_LE_DOI_CHUNG / (1 - 2 * TI_LE_DOI_CHUNG))
 
 
-def dung_phieu_b(hang_may, g3, g4_chinh, g4_tho, *, seed, nguoi, cam=()):
-    """Hàng (b) của một người: hàng máy + câu đối chứng, xáo tất định, mã ngẫu nhiên không chứa `cam` (tên hệ)."""
+def dung_phieu_b(hang_may, g3, g4_chinh, g4_tho, *, seed, nguoi, cam=(), g4_tho_ca=()):
+    """Hàng (b) của một người: hàng máy + câu đối chứng, xáo tất định, mã ngẫu nhiên không chứa `cam` (tên hệ).
+    `g4_tho_ca`: G4 thô của mọi người phán (cặp ngẫu nhiên không được là cạnh của bất kỳ ai); mặc định chỉ G4 thô của người này."""
     k = so_dong_doi_chung(len(hang_may))
     tru = {khoa_hang(h) for h in hang_may}
     dv = doi_chung_vang(g4_tho, g3, k, seed, nguoi, tru=tru)
     tru |= {khoa_hang(h) for h in dv}
-    dn = doi_chung_ngau(g3, g4_chinh, k, seed, nguoi, tru=tru)
+    dn = doi_chung_ngau(g3, g4_chinh, k, seed, nguoi, tru=tru, g4_tho_ca=tuple(g4_tho_ca) or (g4_tho,))
     hang = [dict(h, loai="may") for h in hang_may] + [dict(h, loai="doi_chung_vang", canh={}) for h in dv] \
         + [dict(h, loai="doi_chung_ngau", canh={}) for h in dn]
     xep = _xao(len(hang), _ra(seed, 5, nguoi))
@@ -214,12 +218,13 @@ def van_ban_lo_trinh(hd):
     return "\n".join(f"{i}. {m['ten']}: " + "; ".join(ten[x] for x in m["thanh_vien"]) for i, m in enumerate(hd["lo_trinh"]["module"], start=1))
 
 
-def cap_so_sanh(hop_dong_theo_he, *, chinh="chinh", seed, nguoi):
-    """Cặp (hệ chính, hệ khác) cho mọi hệ khác có lộ trình; trái phải xáo tất định theo seed và người phán."""
+def cap_so_sanh(hop_dong_theo_he, *, seed, nguoi):
+    """Vòng tròn đủ cặp giữa mọi hệ có lộ trình (mỗi hệ xuất hiện số lần như nhau, nên hệ chính không lộ ra là hệ chung của mọi dòng).
+    Trái phải của từng cặp và thứ tự các dòng đều xáo tất định theo seed và người phán."""
+    he = sorted(h for h, hd in hop_dong_theo_he.items() if hd["lo_trinh"] is not None)
     ket = []
-    for i, he in enumerate(sorted(h for h, hd in hop_dong_theo_he.items() if h != chinh and hd["lo_trinh"] is not None)):
-        chinh_trai = _ra(seed, 6, nguoi, i).dong_xu()
-        trai, phai = (chinh, he) if chinh_trai else (he, chinh)
-        ket.append({"cap": f"{chinh}~{he}", "trai_la": trai, "phai_la": phai, "trai": van_ban_lo_trinh(hop_dong_theo_he[trai]),
+    for i, (a, b) in enumerate((a, b) for j, a in enumerate(he) for b in he[j + 1:]):
+        trai, phai = (a, b) if _ra(seed, 6, nguoi, i).dong_xu() else (b, a)
+        ket.append({"cap": f"{a}~{b}", "trai_la": trai, "phai_la": phai, "trai": van_ban_lo_trinh(hop_dong_theo_he[trai]),
                     "phai": van_ban_lo_trinh(hop_dong_theo_he[phai])})
-    return ket
+    return [ket[i] for i in _xao(len(ket), _ra(seed, 9, nguoi))]

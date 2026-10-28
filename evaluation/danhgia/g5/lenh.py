@@ -39,8 +39,7 @@ def _chuan_bi(a):
         hop_dong[he] = hd
     g3, g4 = _doc(a.g3), _doc(a.g4)
     g4_tho = {n: _doc(d) for n, d in map(_cap, a.g4_tho)}
-    tt = phieu.chchuan_bi(hop_dong, _doc(a.can), g3, g4, g4_tho, ma_sach=g3["ma_sach"], seed=a.seed) if False else \
-        phieu.chuan_bi(hop_dong, _doc(a.can), g3, g4, g4_tho, ma_sach=g3["ma_sach"], seed=a.seed)
+    tt = phieu.chuan_bi(hop_dong, _doc(a.can), g3, g4, g4_tho, ma_sach=g3["ma_sach"], seed=a.seed)
     d = Path(a.ra)
     _ghi(d / "chuan-bi-g5.json", tt)
     for nguoi in tt["nguoi"]:
@@ -65,7 +64,8 @@ def _doc_phieu(a):
     _ghi(Path(a.thu_muc) / "ket-qua-g5.json", kq)
     for nguoi, k in kq["theo_nguoi"].items():
         for he, p in k["precision"].items():
-            print(f"{nguoi} {he}: precision hiệu chỉnh {p['precision']} [{p['thap']}, {p['cao']}] (mẫu {p['n_mau']}/{p['du']} cạnh dư, khớp {p['khop']})")
+            print(f"{nguoi} {he}: precision hiệu chỉnh {p['precision']} [{p['thap']}, {p['cao']}], cận dưới {p['precision_can_duoi']} "
+                  f"(mẫu {p['n_mau']}/{p['du']} cạnh dư, khớp {p['khop']}, thiếu trường {p['khong_du_truong']})")
         print(f"{nguoi} đối chứng: {k['doi_chung']}")
     return 0
 

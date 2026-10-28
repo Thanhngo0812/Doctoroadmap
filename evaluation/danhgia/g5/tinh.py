@@ -5,18 +5,23 @@ from danhgia.thong_ke.kiem_dinh import sign_test
 from danhgia.thong_ke.wilson import wilson
 
 
-def precision_hieu_chinh(khop, du, dung, n_mau):
+def precision_hieu_chinh(khop, du, dung, n_mau, du_du_truong=None):
     """Precision hiệu chỉnh của một hệ.
 
     - `khop`: số cạnh máy khớp vàng; `du`: số cạnh dư (ngoài vàng); `dung`, `n_mau`: số "can" trên mẫu phán `n_mau` cạnh dư (n_mau = min(du, 100)).
     - Ước lượng cạnh dư đúng = (dung / n_mau) × du; precision = (khop + ước lượng) / (khop + du).
     - Khoảng: Wilson trên tỉ lệ mẫu rồi suy ra theo cùng công thức (cận trên và dưới của tỉ lệ nhân với du). Mẫu phủ hết cạnh dư thì không có sai số chọn mẫu:
-      khoảng thu về một điểm. Không có cạnh máy nào thì precision là None."""
+      khoảng thu về một điểm. Không có cạnh máy nào thì precision là None.
+    - `du_du_truong`: số cạnh dư có đủ sáu trường để vào phiếu (mặc định bằng `du`). Cạnh dư thiếu trường không được phán; precision hiệu chỉnh giả định chúng
+      đúng với cùng tỉ lệ p. **`precision_can_duoi`** coi chúng là sai: (khop + p × du_du_truong) / (khop + du); `khong_du_truong` = du − du_du_truong."""
     tong = khop + du
+    du_du_truong = du if du_du_truong is None else du_du_truong
     if tong == 0:
-        return {"precision": None, "thap": None, "cao": None, "ti_le_mau": None, "uoc_luong_du_dung": None, "n_mau": n_mau}
+        return {"precision": None, "precision_can_duoi": None, "thap": None, "cao": None, "ti_le_mau": None, "uoc_luong_du_dung": None, "n_mau": n_mau,
+                "khong_du_truong": 0}
     if du == 0:
-        return {"precision": khop / tong, "thap": khop / tong, "cao": khop / tong, "ti_le_mau": None, "uoc_luong_du_dung": 0.0, "n_mau": 0}
+        return {"precision": khop / tong, "precision_can_duoi": khop / tong, "thap": khop / tong, "cao": khop / tong, "ti_le_mau": None,
+                "uoc_luong_du_dung": 0.0, "n_mau": 0, "khong_du_truong": 0}
     if n_mau <= 0:
         raise ValueError("có cạnh dư mà không có mẫu phán nào")
     p = dung / n_mau
@@ -27,7 +32,8 @@ def precision_hieu_chinh(khop, du, dung, n_mau):
     else:
         lo, hi = wilson(dung, n_mau)
         thap, cao = (khop + lo * du) / tong, (khop + hi * du) / tong
-    return {"precision": (khop + uoc) / tong, "thap": thap, "cao": cao, "ti_le_mau": p, "uoc_luong_du_dung": uoc, "n_mau": n_mau}
+    return {"precision": (khop + uoc) / tong, "precision_can_duoi": (khop + p * du_du_truong) / tong, "thap": thap, "cao": cao, "ti_le_mau": p,
+            "uoc_luong_du_dung": uoc, "n_mau": n_mau, "khong_du_truong": du - du_du_truong}
 
 
 def ket_qua_mot_nguoi(trang_thai, phan):
@@ -45,7 +51,7 @@ def ket_qua_mot_nguoi(trang_thai, phan):
             dc[h["loai"]][v] += 1
     kq["precision"] = {}
     for he, tk in trang_thai["b_thong_ke"].items():
-        kq["precision"][he] = precision_hieu_chinh(tk["khop"], tk["du"], dem[he]["can"], dem[he]["n"]) | {
+        kq["precision"][he] = precision_hieu_chinh(tk["khop"], tk["du"], dem[he]["can"], dem[he]["n"], tk["du_du_truong"]) | {
             "khong_can": dem[he]["khong_can"], "nguoc_chieu": dem[he]["nguoc_chieu"], "khop": tk["khop"], "du": tk["du"]}
     vang, ngau = dc["doi_chung_vang"], dc["doi_chung_ngau"]
     kq["doi_chung"] = {"vang": {"n": vang["n"], "bac": vang["n"] - vang["can"], "ti_le_bac": (vang["n"] - vang["can"]) / vang["n"] if vang["n"] else None},
@@ -58,12 +64,13 @@ def ket_qua_mot_nguoi(trang_thai, phan):
     so_sanh = {}
     for h in trang_thai["nguoi"][phan["nguoi"]]["p"]:
         v = phan["p"][h["ma"]]
-        doi = h["cap"].split("~")[1]
         thang = {"trai": h["trai_la"], "phai": h["phai_la"]}.get(v)
-        d = so_sanh.setdefault(h["cap"], {"chinh_thang": 0, "doi_thang": 0, "hoa": 0})
-        d["hoa" if thang is None else "chinh_thang" if thang == trang_thai["chinh"] else "doi_thang"] += 1
-    for d in so_sanh.values():
-        d["sign_test_p"] = sign_test(d["chinh_thang"], d["doi_thang"])
+        a, b = h["cap"].split("~")
+        d = so_sanh.setdefault(h["cap"], {a: 0, b: 0, "hoa": 0})
+        d["hoa" if thang is None else thang] += 1
+    for cap, d in so_sanh.items():
+        a, b = cap.split("~")
+        d["sign_test_p"] = sign_test(d[a], d[b])
     kq["so_sanh"] = so_sanh
     return kq
 

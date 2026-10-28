@@ -54,9 +54,10 @@ def chuan_bi(hop_dong_theo_he, can_gop, g3, g4_chinh, g4_tho_theo_nguoi, *, ma_s
     hang_m = [dict(module[i], ma=m) for m, i in zip(ma_m, _xao(len(module), chon._ra(seed, 8)))]
     nguoi = {}
     for ten in sorted(g4_tho_theo_nguoi):
-        so_sanh = chon.cap_so_sanh(hop_dong_theo_he, chinh=chinh, seed=seed, nguoi=ten)
+        so_sanh = chon.cap_so_sanh(hop_dong_theo_he, seed=seed, nguoi=ten)
         ma_p = _sinh_ma("p", len(so_sanh), cam)
-        nguoi[ten] = {"b": chon.dung_phieu_b(hang_may, g3, g4_chinh, g4_tho_theo_nguoi[ten], seed=seed, nguoi=ten, cam=cam),
+        nguoi[ten] = {"b": chon.dung_phieu_b(hang_may, g3, g4_chinh, g4_tho_theo_nguoi[ten], seed=seed, nguoi=ten, cam=cam,
+                                          g4_tho_ca=tuple(g4_tho_theo_nguoi.values())),
                       "p": [dict(h, ma=m) for m, h in zip(ma_p, so_sanh)]}
     return {"schema": SCHEMA, "ma_sach": ma_sach, "seed": seed, "he": sorted(hop_dong_theo_he), "chinh": chinh,
             "a": hang_a, "tong_a": tong_a, "b_thong_ke": thong_ke_b, "m": hang_m, "nguoi": nguoi}
