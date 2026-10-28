@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.212" timestamp="2026-10-28T07:50:15.348825+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_last_role_admin_demote_rejected_but_disable_is_explicit_gap" time="0.329"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...01e2340', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x000001B5C2EBC2C0&gt;)
+
+    def test_last_role_admin_demote_rejected_but_disable_is_explicit_gap(case):
+        rt = case
+        before = snapshot(rt)
+&gt;       with pytest.raises(AuthError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+test_independent_admin.py:188: Failed</failure></testcase></testsuite></testsuites>

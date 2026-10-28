@@ -1,5 +1,7 @@
 # W-17 — Quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký
 
+**Nghiệm thu lần 10, 2026-10-28: giữ backend 9cf405ac ở nhánh, chưa nhận/chưa ghép.** Theo hợp đồng cũ có 23 probe độc lập xanh/6 mutant bị bắt. Sau câu trả lời chủ dự án “admin đầu tiên ko đc khóa hay gì”, Required POL-R10-01 bắt buộc bảo vệ định danh admin đầu tiên khỏi khoá/hạ quyền/xoá, không chỉ đếm admin cuối. Test mới đã assertion đỏ/0 setup error. Sửa W-17.1 trước, không coi đây còn là Optional/chờ chủ dự án chọn; [ADR 0030](../../doc/adr/0030-bao-ve-tai-khoan-admin-dau-tien.md). Toàn W-17 còn mở/React chưa làm. [biên bản lần 10](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan10-2026-10-28.md) và [lời giao lần 10](../../report/lenh-giao-viec-ba-nhom-lan10-2026-10-28.md).
+
 **Phân công lần 9, 2026-10-27: mở mốc backend W-17.1, toàn W-17 vẫn mở.** W-14/W-16 đã đạt. Lõi nhận list_users/update_user + GET/PATCH admin/users và GET admin/audit, tái dùng account/session/audit/policy; web làm React ở lượt sau. Kiểm quyền/không lộ dữ liệu học, disable hủy mọi phiên, admin cuối/cạnh tranh, rollback audit. Không tạo migration rỗng, không bật trần demo/Cloudinary thật. Phần bản dựng/khoá mẫu rồi chi/log validation là các mốc sau, chưa hoàn tất; xem [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 3 (admin không đọc chat), 8 (`spend_summary`), 9, 10 (nhật ký); spec thiết kế, khu quản
@@ -15,6 +17,7 @@ dung học của người khác.
 
 **`AdminService`:** `list_users`, `update_user` (trạng thái, vai trò, `build_monthly_max`), `list_builds`, `set_sample_course`, và xem nhật ký.
 - Không tự hạ quyền nếu là admin cuối cùng.
+- **Bảo vệ admin đầu tiên (chủ dự án 28/10):** không cho khoá quản trị/hạ quyền/xoá tài khoản này qua service/API, kể cả tự thao tác; định danh server bền vững, không suy từ danh sách hoặc role hiện hành. Giữ hồ sơ/mật khẩu và guard xác thực bình thường.
 - **`UsageService.spend_summary`:** chi theo ngày × `purpose`, theo khoá học, 20 tài khoản chi nhiều nhất, số lời gọi, p50 và p90 giây, trong khoảng ngày
   chọn. Ghi rõ "ước theo token, không thay hoá đơn".
 - `system_caps_today`: trần nội dung dùng chung và trần khâu dựng hôm nay, đã dùng bao nhiêu.
@@ -32,6 +35,8 @@ dung học của người khác.
 và mục đích.
 
 ## Tiêu chí nghiệm thu
+
+- [ ] Bảo vệ định danh admin đầu tiên bền vững: không disable/demote/delete, kể cả có admin thứ hai, tự thao tác, PATCH nhiều trường/cạnh tranh; tài khoản thường cũ được nâng admin không thay người được bảo vệ; từ chối không làm đổi phiên/field/audit thành công.
 
 Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Người dùng thường gọi mọi route `/admin/*` đều bị `forbidden` (test liệt kê route).

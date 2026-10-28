@@ -553,3 +553,31 @@ def test_vang_a4_duoc_chep_vao_luot_va_ghi_sha256(chinh, sach):
     chep = chinh / "vang-a4.json"
     assert chep.is_file() and chep.read_bytes() == sach["a4"].read_bytes()
     assert ban_ghi.doc(chinh)["ket_qua"]["vang_a4_sha256"] == hashlib.sha256(sach["a4"].read_bytes()).hexdigest()
+
+
+def test_ghi_ban_ghi_thu_lai_khi_windows_khoa_tep_tam_thoi(tmp_path, monkeypatch):
+    # Cổng rút gọn 28/10: `Path.replace` báo WinError 5 khi trình quét đang giữ tệp vừa ghi; lượt thật không được chết vì việc này.
+    goc = Path.replace
+    lan = {"n": 0}
+
+    def replace_chap_chon(self, dich):
+        lan["n"] += 1
+        if lan["n"] <= 2:
+            raise PermissionError(5, "Access is denied")
+        return goc(self, dich)
+
+    monkeypatch.setattr(Path, "replace", replace_chap_chon)
+    monkeypatch.setattr(ban_ghi.time, "sleep", lambda _: None)
+    ban_ghi.ghi(tmp_path, {"schema": ban_ghi.SCHEMA, "x": 1})
+    assert lan["n"] == 3
+    assert json.loads((tmp_path / ban_ghi.TEN_TEP).read_text(encoding="utf-8"))["x"] == 1
+
+
+def test_ghi_ban_ghi_bao_loi_khi_tep_bi_khoa_mai(tmp_path, monkeypatch):
+    def luon_loi(self, dich):
+        raise PermissionError(5, "Access is denied")
+
+    monkeypatch.setattr(Path, "replace", luon_loi)
+    monkeypatch.setattr(ban_ghi.time, "sleep", lambda _: None)
+    with pytest.raises(PermissionError):
+        ban_ghi.ghi(tmp_path, {"schema": ban_ghi.SCHEMA})

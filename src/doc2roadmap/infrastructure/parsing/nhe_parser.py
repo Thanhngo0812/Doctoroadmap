@@ -9,8 +9,8 @@ from doc2roadmap.application.ports import ParsedDocument
 from .pdf_scope import require_native_pdf
 
 MODEL_HASHES = {
-    'heading.joblib': '90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70',
-    'join.joblib': '92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb',
+    'heading.joblib': '49f904eaf832d4685a3bb145ee509dd826d59d6cfb21f23f9cf1b3b6aa889088',
+    'join.joblib': '69b84b6d2e124cda26ca40186b1c0d74f11b8c022fe4ef40069ca518b45d2293',
 }
 ARTICLE = re.compile(r'^Điều\s+\d+[.]\s+\S', re.I)
 CLAUSE = re.compile(r'^(?:\d+[.]\s+|[a-zđ][)]\s+)', re.I)
@@ -59,7 +59,7 @@ class NheParser:
             if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
                 raise ValueError('Mô hình A1 nhẹ thiếu hoặc lệch SHA-256: ' + str(path))
         manifest = json.loads((self.model_dir / 'manifest.json').read_text(encoding='utf-8'))
-        if manifest['models'] != MODEL_HASHES or manifest['version'] != 'r2-full-v1':
+        if manifest['models'] != MODEL_HASHES or manifest['version'] != 'r2-full-v2-dg20':
             raise ValueError('Manifest mô hình A1 nhẹ không khớp phiên bản')
         self.pipeline_config = dict(a1='nhe', models=MODEL_HASHES.copy(), version=manifest['version'])
         self.runtime_config = dict(a1='nhe', models=MODEL_HASHES.copy())

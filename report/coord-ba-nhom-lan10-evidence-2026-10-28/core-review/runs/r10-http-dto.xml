@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.697" timestamp="2026-10-28T07:50:52.396897+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_actual_http_guards_dtos_and_filter_errors" time="0.823"><failure message="assert 'R10_SYNTHET...VATE_CONTENT' not in '{&quot;items&quot;:[{...TE_CONTENT&quot;}'&#10;  &#10;  'R10_SYNTHETIC_PRIVATE_CONTENT' is contained here:&#10;    private&quot;:&quot;R10_SYNTHETIC_PRIVATE_CONTENT&quot;},&quot;password_hash&quot;:&quot;R10_SYNTHETIC_PRIVATE_CONTENT&quot;},{&quot;id&quot;:&quot;de87e1e5083b48fe9cd04329a8af3491&quot;,&quot;email&quot;:&quot;literal_%@example.vn&quot;,&quot;display_name&quot;:&quot;Synthetic&quot;,&quot;role&quot;:&quot;user&quot;,&quot;status&quot;:&quot;active&quot;,&quot;email_verified_at&quot;:&quot;2026-10-28 06:00:00+00:00&quot;,&quot;created_at&quot;:&quot;2026-10-28 06:00:00+00:00&quot;,&quot;last_login_at&quot;:&quot;2026-10-28 06:00:00+00:00&quot;,&quot;build_monthly_max&quot;:null,&quot;owned_courses&quot;:0,&quot;builds_this_month&quot;:{&quot;used&quot;:0,&quot;max&quot;:null,&quot;resets_at&quot;:&quot;2026-11-01T00:00:00+07:00&quot;,&quot;private&quot;:&quot;R10_SYNTHETIC_PRIVATE_CONTENT&quot;},&quot;p...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...8af3491', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000023E4187C2C0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E41827C80&gt;
+
+    def test_actual_http_guards_dtos_and_filter_errors(case, monkeypatch):
+        rt = case
+        app = create_app(rt.settings,WebServices(health_check=lambda:'ok',admin=rt.service))
+        actor = [rt.admin]
+        app.dependency_overrides[get_actor] = lambda: actor[0]
+        with TestClient(app,base_url='https://testserver') as client:
+            for path in ('/api/v1/admin/users','/api/v1/admin/audit'):
+                actor[0] = rt.learner
+                assert client.get(path).status_code == 403
+                actor[0] = rt.admin
+                for parameters in ({'limit':101},{'offset':-1}):
+                    response = client.get(path,params=parameters)
+                    assert response.status_code == 422 and response.json()['error']['fields']
+                    assert response.headers['cache-control'] == 'no-store'
+            for parameters in ({'actor_id':'invalid'}, {'action':'bad name'}, {'action':'x'*81},
+                               {'since':'2026-10-01'}, {'since':NOW.isoformat(),'until':NOW.isoformat()}):
+                response = client.get('/api/v1/admin/audit',params=parameters)
+                assert response.status_code == 422 and response.json()['error']['fields']
+            original = rt.store.list_users
+            def extra(**kwargs):
+                result = original(**kwargs)
+                result['meta'] = MARKER
+                for item in result['items']:
+                    item['password_hash'] = MARKER
+                    item['builds_this_month']['private'] = MARKER
+                return result
+            monkeypatch.setattr(rt.store,'list_users',extra)
+            response = client.get('/api/v1/admin/users')
+            assert response.status_code == 200
+&gt;           assert MARKER not in response.text
+E           assert 'R10_SYNTHET...VATE_CONTENT' not in '{"items":[{...TE_CONTENT"}'
+E
+E             'R10_SYNTHETIC_PRIVATE_CONTENT' is contained here:
+E               private":"R10_SYNTHETIC_PRIVATE_CONTENT"},"password_hash":"R10_SYNTHETIC_PRIVATE_CONTENT"},{"id":"de87e1e5083b48fe9cd04329a8af3491","email":"literal_%@example.vn","display_name":"Synthetic","role":"user","status":"active","email_verified_at":"2026-10-28 06:00:00+00:00","created_at":"2026-10-28 06:00:00+00:00","last_login_at":"2026-10-28 06:00:00+00:00","build_monthly_max":null,"owned_courses":0,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-11-01T00:00:00+07:00","private":"R10_SYNTHETIC_PRIVATE_CONTENT"},"p...
+E
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+test_independent_admin.py:241: AssertionError</failure></testcase></testsuite></testsuites>

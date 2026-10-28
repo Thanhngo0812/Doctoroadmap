@@ -1,0 +1,2383 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Account.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w04-react-evidence/react-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/src/web/frontend
+
+ ❯ src/Account.test.tsx (8 tests | 8 failed) 8176ms
+   × saves a trimmed display name through PATCH and updates the shared account without extra private fields 1050ms
+   × validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace 1027ms
+   × maps server fields body.display_name to the actual field and keeps the form for correction 1007ms
+   × maps server fields body to the actual field and keeps the form for correction 1016ms
+   × wrong current password marks that field without logging out or clearing the typed new password 1019ms
+   × requires confirmation, clears secrets after successful change and keeps the current account 1020ms
+   × confirms logout-all before POST and safely removes the private page 1021ms
+   × does not retain password state or apply a delayed profile response after leaving the route 1014ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Account.test.tsx > saves a trimmed display name through PATCH and updates the shared account without extra private fields
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:41:63
+     39| };
+     40| it('saves a trimmed display name through PATCH and updates the shared …
+     41|   const user=userEvent.setup();page();const name=await screen.findByLa…
+       |                                                               ^
+     42|   await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));
+     43|   expect(await screen.findByText('Đã lưu thông tin tài khoản.')).toBeV…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/Account.test.tsx > validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:48:63
+     46| });
+     47| it('validates name after trim, rejecting 61 but accepting 60 with surr…
+     48|   const user=userEvent.setup();page();const name=await screen.findByLa…
+       |                                                               ^
+     49|   await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));e…
+     50|   await user.clear(name);await user.type(name,'  '+'a'.repeat(60)+'  '…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/Account.test.tsx > maps server fields body.display_name to the actual field and keeps the form for correction
+ FAIL  src/Account.test.tsx > maps server fields body to the actual field and keeps the form for correction
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:55:63
+     53| it.each(['body.display_name',['body','display_name']])('maps server fi…
+     54|   failure={error:{code:'validation',fields:[{loc,message:'Tên này chưa…
+     55|   const user=userEvent.setup();page();const name=await screen.findByLa…
+       |                                                               ^
+     56|   expect(await screen.findByText('Tên này chưa hợp lệ.')).toHaveAttrib…
+     57| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/Account.test.tsx > wrong current password marks that field without logging out or clearing the typed new password
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:59:97
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/Account.test.tsx > requires confirmation, clears secrets after successful change and keeps the current account
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:65:52
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/Account.test.tsx > confirms logout-all before POST and safely removes the private page
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:74:52
+     72| });
+     73| it('confirms logout-all before POST and safely removes the private pag…
+     74|   const user=userEvent.setup();page();await screen.findByLabelText('Tê…
+       |                                                    ^
+     75|   const dialog=screen.getByRole('dialog',{name:'Đăng xuất khỏi mọi thi…
+     76|   await user.click(screen.getByRole('button',{name:'Giữ đăng nhập'}));…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/Account.test.tsx > does not retain password state or apply a delayed profile response after leaving the route
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mRời hồ sơ[0m
+    [36m</button>[39m
+    [36m<button>[39m
+      [0mMở hồ sơ[0m
+    [36m</button>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ tối"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0m◐[0m
+          [36m</button>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"account-menu-name"[39m
+              [36m>[39m
+                [0mAn[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"account-menu-chevron"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.75"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-identity"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-email"[39m
+                  [33mtitle[39m=[32m"an@example.invalid"[39m
+                [36m>[39m
+                  [0man@example.invalid[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"18"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"18"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9 4H5v16h4M17 8l4 4-4 4M9 12h12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"account-page page-frame"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0mTÀI KHOẢN WAYFINDER[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mTài khoản của bạn[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mXin chào, [0m
+        [0mAn[0m
+        [0m. Bạn đã đăng nhập.[0m
+      [36m</p>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"verify-reminder-title"[39m
+        [33mclass[39m=[32m"verify-reminder"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"verify-reminder-title"[39m
+          [36m>[39m
+            [0mXác minh email để mời bạn qua email[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mGửi lại liên kết xác minh đến [0m
+            [0man@example.invalid[0m
+            [0m.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mGửi lại thư xác minh[0m
+        [36m</button>[39m
+      [36m</section>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account-summary"[39m
+      [36m>[39m
+        [36m<span>[39m
+          [0mEmail[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0man@example.invalid[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mTrạng thái email[0m
+        [36m</span>[39m
+        [36m<strong>[39m
+          [0mChưa xác minh[0m
+        [36m</strong>[39m
+      [36m</div>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:81:63
+     79| });
+     80| it('does not retain password state or apply a delayed profile response…
+     81|   const user=userEvent.setup();page();const name=await screen.findByLa…
+       |                                                               ^
+     82|   await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));a…
+     83|   hold=false;await user.click(screen.getByRole('button',{name:'Rời hồ …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  17:47:34
+   Duration  10.71s (tests 78%, environment 9%, import 6%, transform 5%, setup 2%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/report/w04-react-evidence/react-red.xml

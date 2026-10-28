@@ -1,5 +1,7 @@
 # W-20 — Xoá tài khoản, xoá khoá học, dọn artifact mồ côi
 
+**Quyết định chủ dự án 2026-10-28:** admin đầu tiên không được xoá tài khoản, kể cả tự xoá có mật khẩu. Kiểm phía server theo định danh được bảo vệ bền vững, không chỉ ẩn nút; giữ giao dịch/bảo toàn dữ liệu học và sổ chi của các tài khoản khác. [ADR 0030](../../doc/adr/0030-bao-ve-tai-khoan-admin-dau-tien.md). W-20 chưa được nhận hoàn tất; điều kiện này bắt buộc khi triển khai.
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 5 (xoá khoá), user story 14, 32; [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), mục 6
 (thủ tục xoá tài khoản), mục 7; [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md).
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-11, W-14 · **Trạng thái:** ready-for-agent
@@ -39,6 +41,7 @@ Người dùng phải rời hệ thống sạch được. Chủ khoá phải d�
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
+- [ ] Tài khoản admin đầu tiên không bị xoá qua service/API, kể cả có mật khẩu; không chạy dở thủ tục xoá/ẩn danh/sổ chi trước khi từ chối.
 - [ ] Xoá tài khoản thì kho Pha B không còn bản ghi nào có `owner` là người đó; tổng `cost_usd` của sổ chi không đổi; không dòng nào mang `learner_id` cũ.
 - [ ] Còn là chủ khoá có thành viên khác thì từ chối, và không xoá gì (giao dịch).
 - [ ] Xoá khoá học thì bản ghi Pha B của các thành viên còn nguyên.

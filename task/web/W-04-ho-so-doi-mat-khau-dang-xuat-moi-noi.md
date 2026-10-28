@@ -1,5 +1,7 @@
 # W-04 — Hồ sơ, đổi mật khẩu, đăng xuất mọi nơi
 
+**Nghiệm thu lần 10, 2026-10-28: đạt toàn W-04.** Nhận React f52466dc cùng backend c1f2fe9 đã nhận; ghép **local 18206f31**. Cổng b766931a: 3527 Python/0 fail/3 skip/1 xfail, 239 React/build; browser HTTP/PG/auth thật 12 cấu hình/38 ảnh/38 Axe/29 snapshot SQL. Đổi mật khẩu giữ A/hủy B, logout-all hủy A+B, epoch chặn /me cũ ghi đè người mới; source/test/guard đã soát độc lập. Chi mới 0 USD, chưa push. Web sửa W-12 trước W-17 React. [biên bản lần 10](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan10-2026-10-28.md) và [lời giao lần 10](../../report/lenh-giao-viec-ba-nhom-lan10-2026-10-28.md).
+
 **Điều phối lần 9, 2026-10-27:** backend giữ mốc c1f2fe9 đã nhận; W-16 nay đóng, web tiếp **React W-04** ở nhánh/worktree riêng, sau đó React W-12. Không giao lõi làm lại backend. Cần hai trình duyệt A/B chứng minh đổi mật khẩu giữ A/hủy B, logout-all hủy A+B và xoá private state UI; ảnh/video hồ sơ. Toàn W-04 vẫn mở đến nghiệm thu React. [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
 
 **Nghiệm thu lần 8, 2026-10-26: nhận mốc backend `c1f2fe9`, ghép local `1be7e1c`; toàn W-04 vẫn mở.** 49 ca W-04 trong cổng PG toàn repo 2.824 Python/219 React/build đạt; kiểm độc lập hai phiên, mật khẩu cũ/mới, rollback/audit/CSRF và hai mutation. PATCH me/POST me/password/logout-all đã có; A đổi giữ A/hủy B, logout-all hủy cả A+B. React do web sau W-16; không giao lõi làm lại. [biên bản lần 8](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan8-2026-10-26.md) và [lời giao lần 8](../../report/lenh-giao-viec-ba-nhom-lan8-2026-10-26.md).
@@ -7,7 +9,7 @@
 **Phân công sau nghiệm thu lần 7, 2026-10-26:** giao nhân viên lõi mốc backend W-04 ở worktree riêng; React/tích hợp vẫn do web làm sau W-10/W-16. Dùng lại AccountService/session/CSRF/audit W-02/W-03: hồ sơ tên 1–60, đổi mật khẩu từ A giữ A/hủy B, logout-all hủy cả A+B; định danh phiên hiện tại từ server, không tin payload. Không tạo migration rỗng hoặc viết frontend tạm. Chỉ 0 USD, [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md) và [phạm vi/lời giao](../../report/lenh-giao-viec-ba-nhom-lan7-2026-10-26.md). Backend đạt không đóng toàn vé có giao diện.
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2 (đổi mật khẩu, đăng xuất mọi nơi), user story 11–13; spec thiết kế, trang hồ sơ.
-**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** đạt toàn vé, ghép local lần 10
 
 **2026-10-20, sau W-03:** W-02/W-03 đã nghiệm thu, W-04 đủ điều kiện nhận. Web ưu tiên React/tích hợp W-06;
 xếp W-04 sau nếu chỉ có một phiên web, chỉ làm song song khi có người riêng và phân vùng AccountService.
@@ -37,7 +39,7 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [x] Hai phiên A, B; đổi mật khẩu từ A thì B bị `unauthenticated`, A vẫn dùng được.
 - [x] `logout_all` thì cả A và B bị `unauthenticated`.
 - [x] Tên hiển thị 61 ký tự bị `validation`, kèm `fields`.
-- [ ] Ảnh chụp trang hồ sơ ở 390 px và 1280 px.
+- [x] Ảnh chụp trang hồ sơ ở 390 px và 1280 px.
 
 ## Ngoài vé
 

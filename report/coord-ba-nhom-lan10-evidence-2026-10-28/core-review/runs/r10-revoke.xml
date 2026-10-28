@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.386" timestamp="2026-10-28T07:50:04.080084+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_disable_then_enable_never_recreates_sessions_and_is_idempotent" time="0.549"><failure message="AssertionError: assert [{'account_id...a6219f61cd1'}] == []&#10;  &#10;  Left contains 2 more items, first extra item: {'account_id': '7372cf5405424e3fb796c32e83e68992', 'id': '31f0cc64-1af2-4032-b2ac-1224ac39efa0'}&#10;  Use -v to get more diff">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...3e68992', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x0000015DA1FCC2C0&gt;)
+
+    def test_disable_then_enable_never_recreates_sessions_and_is_idempotent(case):
+        rt = case
+        with rt.engine.begin() as conn:
+            conn.execute(text('INSERT INTO auth_session VALUES (:id,:uid)'),
+                [dict(id=str(uuid4()),uid=rt.learner.user_id) for _ in range(2)])
+        result = rt.service.update_user(rt.admin, rt.learner.user_id, {'status':'disabled','build_monthly_max':8})
+        assert result['status'] == 'disabled' and result['builds_this_month']['max'] == 8
+&gt;       assert rows(rt,'SELECT * FROM auth_session') == []
+E       AssertionError: assert [{'account_id...a6219f61cd1'}] == []
+E
+E         Left contains 2 more items, first extra item: {'account_id': '7372cf5405424e3fb796c32e83e68992', 'id': '31f0cc64-1af2-4032-b2ac-1224ac39efa0'}
+E         Use -v to get more diff
+
+test_independent_admin.py:156: AssertionError</failure></testcase></testsuite></testsuites>
