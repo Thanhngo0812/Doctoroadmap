@@ -1,0 +1,2225 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/react-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (11 tests | 10 failed) 4829ms
+   × validates the email field and sends a deduplicated batch without owner or invitation token 273ms
+   × rejects 51 input addresses before POST, including duplicates counted in the input limit 103ms
+   × shows pending invitations and cancels only the selected public invitation ID 89ms
+   × maps owner error email_unverified without an internal error or delivery claim 77ms
+   × maps owner error rate_limited without an internal error or delivery claim 87ms
+   × discloses learner privacy before accepting and refreshes courses after the server commits 1027ms
+   × declines without posting membership and shows a course-full failure without removing the invitation 1014ms
+   ✓ does not display pending emails or accept controls for an unverified account 37ms
+   × ignores a delayed send callback after the dialog changes course 55ms
+   × clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 1031ms
+   × clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 1034ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > validates the email field and sends a deduplicated batch without owner or invitation token
+TestingLibraryElementError: Unable to find an accessible element with the role "tab" and name "Mời qua email"
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name "Chia sẻ khoá học":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+    [33mclass[39m=[32m"sharing-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"sharing-dialog__header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Chia sẻ khoá học":
+  [36m<h2[39m
+    [33mid[39m=[32m"sharing-dialog-title"[39m
+  [36m/>[39m
+
+  Name "Link đã tạo":
+  [36m<h3[39m
+    [33mid[39m=[32m"sharing-links-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Đóng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Đóng"[39m
+    [33mclass[39m=[32m"sharing-close"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tạo link chia sẻ":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sharing-dialog__intro"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Thời hạn":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "7 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"7"[39m
+  [36m/>[39m
+
+  Name "30 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"30"[39m
+  [36m/>[39m
+
+  Name "90 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"90"[39m
+  [36m/>[39m
+
+  Name "Không hết hạn":
+  [36m<option[39m
+    [33mvalue[39m=[32m"never"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Số lượt tối đa (để trống nếu không giới hạn)":
+  [36m<input[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mmin[39m=[32m"1"[39m
+    [33mstep[39m=[32m"1"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Link đã tạo":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+    [33mclass[39m=[32m"sharing-links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"sharing-dialog__intro"[39m
+      [36m>[39m
+        [0mTạo link để người khác tham gia khoá học.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mclass[39m=[32m"sharing-form"[39m
+      [36m>[39m
+        [36m<label>[39m
+          [0mThời hạn[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m7 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"30"[39m
+            [36m>[39m
+              [0m30 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"90"[39m
+            [36m>[39m
+              [0m90 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"never"[39m
+            [36m>[39m
+              [0mKhông hết hạn[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mSố lượt tối đa [0m
+          [36m<span>[39m
+            [0m(để trống nếu không giới hạn)[0m
+          [36m</span>[39m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mmin[39m=[32m"1"[39m
+            [33mstep[39m=[32m"1"[39m
+            [33mtype[39m=[32m"number"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mTạo link chia sẻ[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+        [33mclass[39m=[32m"sharing-links"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mid[39m=[32m"sharing-links-title"[39m
+        [36m>[39m
+          [0mLink đã tạo[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [0mĐang tải link…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:40:71
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/Invitations.test.tsx > rejects 51 input addresses before POST, including duplicates counted in the input limit
+TestingLibraryElementError: Unable to find an accessible element with the role "tab" and name "Mời qua email"
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name "Chia sẻ khoá học":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+    [33mclass[39m=[32m"sharing-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"sharing-dialog__header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Chia sẻ khoá học":
+  [36m<h2[39m
+    [33mid[39m=[32m"sharing-dialog-title"[39m
+  [36m/>[39m
+
+  Name "Link đã tạo":
+  [36m<h3[39m
+    [33mid[39m=[32m"sharing-links-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Đóng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Đóng"[39m
+    [33mclass[39m=[32m"sharing-close"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tạo link chia sẻ":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sharing-dialog__intro"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Thời hạn":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "7 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"7"[39m
+  [36m/>[39m
+
+  Name "30 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"30"[39m
+  [36m/>[39m
+
+  Name "90 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"90"[39m
+  [36m/>[39m
+
+  Name "Không hết hạn":
+  [36m<option[39m
+    [33mvalue[39m=[32m"never"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Số lượt tối đa (để trống nếu không giới hạn)":
+  [36m<input[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mmin[39m=[32m"1"[39m
+    [33mstep[39m=[32m"1"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Link đã tạo":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+    [33mclass[39m=[32m"sharing-links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"sharing-dialog__intro"[39m
+      [36m>[39m
+        [0mTạo link để người khác tham gia khoá học.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mclass[39m=[32m"sharing-form"[39m
+      [36m>[39m
+        [36m<label>[39m
+          [0mThời hạn[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m7 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"30"[39m
+            [36m>[39m
+              [0m30 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"90"[39m
+            [36m>[39m
+              [0m90 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"never"[39m
+            [36m>[39m
+              [0mKhông hết hạn[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mSố lượt tối đa [0m
+          [36m<span>[39m
+            [0m(để trống nếu không giới hạn)[0m
+          [36m</span>[39m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mmin[39m=[32m"1"[39m
+            [33mstep[39m=[32m"1"[39m
+            [33mtype[39m=[32m"number"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mTạo link chia sẻ[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+        [33mclass[39m=[32m"sharing-links"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mid[39m=[32m"sharing-links-title"[39m
+        [36m>[39m
+          [0mLink đã tạo[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [0mĐang tải link…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:47:71
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/Invitations.test.tsx > shows pending invitations and cancels only the selected public invitation ID
+TestingLibraryElementError: Unable to find an accessible element with the role "tab" and name "Mời qua email"
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name "Chia sẻ khoá học":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+    [33mclass[39m=[32m"sharing-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"sharing-dialog__header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Chia sẻ khoá học":
+  [36m<h2[39m
+    [33mid[39m=[32m"sharing-dialog-title"[39m
+  [36m/>[39m
+
+  Name "Link đã tạo":
+  [36m<h3[39m
+    [33mid[39m=[32m"sharing-links-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Đóng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Đóng"[39m
+    [33mclass[39m=[32m"sharing-close"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tạo link chia sẻ":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sharing-dialog__intro"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Thời hạn":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "7 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"7"[39m
+  [36m/>[39m
+
+  Name "30 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"30"[39m
+  [36m/>[39m
+
+  Name "90 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"90"[39m
+  [36m/>[39m
+
+  Name "Không hết hạn":
+  [36m<option[39m
+    [33mvalue[39m=[32m"never"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Số lượt tối đa (để trống nếu không giới hạn)":
+  [36m<input[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mmin[39m=[32m"1"[39m
+    [33mstep[39m=[32m"1"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Link đã tạo":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+    [33mclass[39m=[32m"sharing-links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"sharing-dialog__intro"[39m
+      [36m>[39m
+        [0mTạo link để người khác tham gia khoá học.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mclass[39m=[32m"sharing-form"[39m
+      [36m>[39m
+        [36m<label>[39m
+          [0mThời hạn[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m7 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"30"[39m
+            [36m>[39m
+              [0m30 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"90"[39m
+            [36m>[39m
+              [0m90 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"never"[39m
+            [36m>[39m
+              [0mKhông hết hạn[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mSố lượt tối đa [0m
+          [36m<span>[39m
+            [0m(để trống nếu không giới hạn)[0m
+          [36m</span>[39m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mmin[39m=[32m"1"[39m
+            [33mstep[39m=[32m"1"[39m
+            [33mtype[39m=[32m"number"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mTạo link chia sẻ[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+        [33mclass[39m=[32m"sharing-links"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mid[39m=[32m"sharing-links-title"[39m
+        [36m>[39m
+          [0mLink đã tạo[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [0mĐang tải link…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:51:71
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/Invitations.test.tsx > maps owner error email_unverified without an internal error or delivery claim
+ FAIL  src/Invitations.test.tsx > maps owner error rate_limited without an internal error or delivery claim
+TestingLibraryElementError: Unable to find an accessible element with the role "tab" and name "Mời qua email"
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name "Chia sẻ khoá học":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+    [33mclass[39m=[32m"sharing-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"sharing-dialog__header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Chia sẻ khoá học":
+  [36m<h2[39m
+    [33mid[39m=[32m"sharing-dialog-title"[39m
+  [36m/>[39m
+
+  Name "Link đã tạo":
+  [36m<h3[39m
+    [33mid[39m=[32m"sharing-links-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Đóng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Đóng"[39m
+    [33mclass[39m=[32m"sharing-close"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tạo link chia sẻ":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sharing-dialog__intro"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Thời hạn":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "7 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"7"[39m
+  [36m/>[39m
+
+  Name "30 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"30"[39m
+  [36m/>[39m
+
+  Name "90 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"90"[39m
+  [36m/>[39m
+
+  Name "Không hết hạn":
+  [36m<option[39m
+    [33mvalue[39m=[32m"never"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Số lượt tối đa (để trống nếu không giới hạn)":
+  [36m<input[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mmin[39m=[32m"1"[39m
+    [33mstep[39m=[32m"1"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Link đã tạo":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+    [33mclass[39m=[32m"sharing-links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"sharing-dialog__intro"[39m
+      [36m>[39m
+        [0mTạo link để người khác tham gia khoá học.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mclass[39m=[32m"sharing-form"[39m
+      [36m>[39m
+        [36m<label>[39m
+          [0mThời hạn[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m7 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"30"[39m
+            [36m>[39m
+              [0m30 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"90"[39m
+            [36m>[39m
+              [0m90 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"never"[39m
+            [36m>[39m
+              [0mKhông hết hạn[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mSố lượt tối đa [0m
+          [36m<span>[39m
+            [0m(để trống nếu không giới hạn)[0m
+          [36m</span>[39m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mmin[39m=[32m"1"[39m
+            [33mstep[39m=[32m"1"[39m
+            [33mtype[39m=[32m"number"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mTạo link chia sẻ[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+        [33mclass[39m=[32m"sharing-links"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mid[39m=[32m"sharing-links-title"[39m
+        [36m>[39m
+          [0mLink đã tạo[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [0mĐang tải link…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:55:84
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/Invitations.test.tsx > discloses learner privacy before accepting and refreshes courses after the server commits
+TestingLibraryElementError: Unable to find role="heading" and name "Lời mời"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<output[39m
+      [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</output>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-heading"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-heading-copy"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mKhoá học của tôi[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mChọn một tài liệu, tiếp tục chặng đang học.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+          [33mclass[39m=[32m"courses-empty"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m""[39m
+            [33msrc[39m=[32m"/assets/OTP4.png"[39m
+          [36m/>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"courses-empty-title"[39m
+          [36m>[39m
+            [0mBắt đầu hành trình của bạn[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mChưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-empty-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<output[39m
+      [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</output>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-heading"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-heading-copy"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mKhoá học của tôi[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mChọn một tài liệu, tiếp tục chặng đang học.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+          [33mclass[39m=[32m"courses-empty"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m""[39m
+            [33msrc[39m=[32m"/assets/OTP4.png"[39m
+          [36m/>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"courses-empty-title"[39m
+          [36m>[39m
+            [0mBắt đầu hành trình của bạn[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mChưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-empty-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:59:50
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/Invitations.test.tsx > declines without posting membership and shows a course-full failure without removing the invitation
+TestingLibraryElementError: Unable to find an element with the text: Đại số tuyến tính. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<output[39m
+      [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</output>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-heading"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-heading-copy"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mKhoá học của tôi[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mChọn một tài liệu, tiếp tục chặng đang học.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+          [33mclass[39m=[32m"courses-empty"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m""[39m
+            [33msrc[39m=[32m"/assets/OTP4.png"[39m
+          [36m/>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"courses-empty-title"[39m
+          [36m>[39m
+            [0mBắt đầu hành trình của bạn[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mChưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-empty-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<output[39m
+      [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</output>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mAn[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-heading"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-heading-copy"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mKhoá học của tôi[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mChọn một tài liệu, tiếp tục chặng đang học.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+          [33mclass[39m=[32m"courses-empty"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m""[39m
+            [33msrc[39m=[32m"/assets/OTP4.png"[39m
+          [36m/>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"courses-empty-title"[39m
+          [36m>[39m
+            [0mBắt đầu hành trình của bạn[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mChưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-empty-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:64:50
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/Invitations.test.tsx > ignores a delayed send callback after the dialog changes course
+TestingLibraryElementError: Unable to find an accessible element with the role "tab" and name "Mời qua email"
+
+Here are the accessible roles:
+
+  dialog:
+
+  Name "Chia sẻ khoá học":
+  [36m<dialog[39m
+    [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+    [33mclass[39m=[32m"sharing-dialog"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"sharing-dialog__header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Chia sẻ khoá học":
+  [36m<h2[39m
+    [33mid[39m=[32m"sharing-dialog-title"[39m
+  [36m/>[39m
+
+  Name "Link đã tạo":
+  [36m<h3[39m
+    [33mid[39m=[32m"sharing-links-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Đóng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Đóng"[39m
+    [33mclass[39m=[32m"sharing-close"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tạo link chia sẻ":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sharing-dialog__intro"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Thời hạn":
+  [36m<select />[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "7 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"7"[39m
+  [36m/>[39m
+
+  Name "30 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"30"[39m
+  [36m/>[39m
+
+  Name "90 ngày":
+  [36m<option[39m
+    [33mvalue[39m=[32m"90"[39m
+  [36m/>[39m
+
+  Name "Không hết hạn":
+  [36m<option[39m
+    [33mvalue[39m=[32m"never"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Số lượt tối đa (để trống nếu không giới hạn)":
+  [36m<input[39m
+    [33minputmode[39m=[32m"numeric"[39m
+    [33mmin[39m=[32m"1"[39m
+    [33mstep[39m=[32m"1"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Link đã tạo":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+    [33mclass[39m=[32m"sharing-links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<dialog[39m
+      [33maria-labelledby[39m=[32m"sharing-dialog-title"[39m
+      [33mclass[39m=[32m"sharing-dialog"[39m
+      [33mopen[39m=[32m""[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"sharing-dialog__header"[39m
+      [36m>[39m
+        [36m<h2[39m
+          [33mid[39m=[32m"sharing-dialog-title"[39m
+        [36m>[39m
+          [0mChia sẻ khoá học[0m
+        [36m</h2>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Đóng"[39m
+          [33mclass[39m=[32m"sharing-close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"20"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-width[39m=[32m"1.7"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"20"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m6 6 12 12M18 6 6 18"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</header>[39m
+      [36m<p[39m
+        [33mclass[39m=[32m"sharing-dialog__intro"[39m
+      [36m>[39m
+        [0mTạo link để người khác tham gia khoá học.[0m
+      [36m</p>[39m
+      [36m<form[39m
+        [33mclass[39m=[32m"sharing-form"[39m
+      [36m>[39m
+        [36m<label>[39m
+          [0mThời hạn[0m
+          [36m<select>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"7"[39m
+            [36m>[39m
+              [0m7 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"30"[39m
+            [36m>[39m
+              [0m30 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"90"[39m
+            [36m>[39m
+              [0m90 ngày[0m
+            [36m</option>[39m
+            [36m<option[39m
+              [33mvalue[39m=[32m"never"[39m
+            [36m>[39m
+              [0mKhông hết hạn[0m
+            [36m</option>[39m
+          [36m</select>[39m
+        [36m</label>[39m
+        [36m<label>[39m
+          [0mSố lượt tối đa [0m
+          [36m<span>[39m
+            [0m(để trống nếu không giới hạn)[0m
+          [36m</span>[39m
+          [36m<input[39m
+            [33minputmode[39m=[32m"numeric"[39m
+            [33mmin[39m=[32m"1"[39m
+            [33mstep[39m=[32m"1"[39m
+            [33mtype[39m=[32m"number"[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</label>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [0mTạo link chia sẻ[0m
+        [36m</button>[39m
+      [36m</form>[39m
+      [36m<section[39m
+        [33maria-labelledby[39m=[32m"sharing-links-title"[39m
+        [33mclass[39m=[32m"sharing-links"[39m
+      [36m>[39m
+        [36m<h3[39m
+          [33mid[39m=[32m"sharing-links-title"[39m
+        [36m>[39m
+          [0mLink đã tạo[0m
+        [36m</h3>[39m
+        [36m<p[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [0mĐang tải link…[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</dialog>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Invitations.test.tsx:71:82
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  src/Invitations.test.tsx > clears the invitation fragment, keeps only boolean context through auth switching (transition=false)
+ FAIL  src/Invitations.test.tsx > clears the invitation fragment, keeps only boolean context through auth switching (transition=true)
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+[36m<html[39m
+  [33mdata-theme[39m=[32m"light"[39m
+[36m>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<output[39m
+        [33maria-label[39m=[32m"Đường dẫn kiểm"[39m
+      [36m>[39m
+        [0m/dang-ky#invitation=PRIVATE_INVITATION_FIXTURE[0m
+      [36m</output>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"site-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"auth-switch"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"auth-layout page-frame"[39m
+      [36m>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"auth-title"[39m
+          [33mclass[39m=[32m"auth-card"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"section-kicker"[39m
+          [36m>[39m
+            [0mMỘT LỘ TRÌNH CỦA RIÊNG BẠN[0m
+          [36m</span>[39m
+          [36m<h1[39m
+            [33mid[39m=[32m"auth-title"[39m
+            [33mtabindex[39m=[32m"-1"[39m
+          [36m>[39m
+            [0mTạo tài khoản WayFinder[0m
+          [36m</h1>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-intro"[39m
+          [36m>[39m
+            [0mLưu lại hành trình học tập của bạn, từng chặng một.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"auth-feedback-slot "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-feedback-clip"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<form[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"display-name"[39m
+              [36m>[39m
+                [0mTên hiển thị[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"name"[39m
+                [33mid[39m=[32m"display-name"[39m
+                [33mmaxlength[39m=[32m"60"[39m
+                [33mname[39m=[32m"display_name"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"email"[39m
+              [36m>[39m
+                [0mEmail[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-invalid[39m=[32m"false"[39m
+                [33mautocomplete[39m=[32m"email"[39m
+                [33mid[39m=[32m"email"[39m
+                [33mmaxlength[39m=[32m"254"[39m
+                [33mname[39m=[32m"email"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mtype[39m=[32m"email"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password"[39m
+              [36m>[39m
+                [0mMật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-describedby[39m=[32m"password-guidance"[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+              [36m<small[39m
+                [33mid[39m=[32m"password-guidance"[39m
+              [36m>[39m
+                [0mTừ 8 đến 128 ký tự.[0m
+              [36m</small>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"auth-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mfor[39m=[32m"password-confirmation"[39m
+              [36m>[39m
+                [0mNhập lại mật khẩu[0m
+              [36m</label>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"password-control "[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33maria-invalid[39m=[32m"false"[39m
+                  [33mautocomplete[39m=[32m"new-password"[39m
+                  [33mid[39m=[32m"password-confirmation"[39m
+                  [33mmaxlength[39m=[32m"128"[39m
+                  [33mminlength[39m=[32m"8"[39m
+                  [33mname[39m=[32m"password_confirmation"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Hiện mật khẩu xác nhận"[39m
+                  [33maria-pressed[39m=[32m"false"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mHiện[0m
+                [36m</button>[39m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-primary button-large auth-submit"[39m
+              [33mtype[39m=[32m"submit"[39m
+            [36m>[39m
+              [0mTạo tài khoản[0m
+            [36m</button>[39m
+          [36m</form>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-alternate"[39m
+          [36m>[39m
+            [0mĐã có tài khoản?[0m
+            [0m [0m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dang-nhap"[39m
+            [36m>[39m
+              [0mĐăng nhập[0m
+            [36m</a>[39m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"auth-demo-note"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/demo"[39m
+            [36m>[39m
+              [0mThử lộ trình mẫu trước [0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m↗[0m
+              [36m</span>[39m
+            [36m</a>[39m
+          [36m</p>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ src/Invitations.test.tsx:76:151
+
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 1 passed (11)
+   Start at  18:26:54
+   Duration  9.58s (tests 52%, environment 18%, import 15%, transform 10%, setup 5%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/react-red.xml

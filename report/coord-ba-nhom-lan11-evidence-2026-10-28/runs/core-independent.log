@@ -1,0 +1,30 @@
+F.                                                                       [100%]
+================================== FAILURES ===================================
+___ test_disabled_later_admin_can_be_demoted_without_removing_active_admin ____
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000132EBD6..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000132FE857060>)
+
+    def test_disabled_later_admin_can_be_demoted_without_removing_active_admin(admin_case):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        assert rt.services.admin.store.admin_count()==1
+        response=patch(rt,{'role':'user','build_monthly_max':7},target=later)
+        proof={'response_status':response.status_code,'response':response.json(),'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),'first_admin_id':rt.services.admin.store.first_admin_id(),'owner_id':rt.owner.id,'later_id':later.id}
+        Path(r'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r11-tools-20261028/core-probe-proof.json').write_text(json.dumps(proof,indent=2,default=str))
+>       assert response.status_code==200, response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+src\web\backend\tests\test_coord_r11_probe.py:13: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r11-tools-20261028\runs\core-independent.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_coord_r11_probe.py::test_disabled_later_admin_can_be_demoted_without_removing_active_admin
+1 failed, 1 passed, 1 warning in 8.94s

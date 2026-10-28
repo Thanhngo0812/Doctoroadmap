@@ -1,0 +1,55 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Courses.test.tsx -t serves a real PNG --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/dark-asset-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Courses.test.tsx (18 tests | 1 failed | 17 skipped) 91ms
+   ↓ shows real-shaped owned joined and samples without inventing sample progress
+   ↓ joins through POST with session CSRF and moves the returned card to joined exactly once
+   ↓ hides samples in an empty production-shaped response and offers the specified next steps
+   × serves a real PNG illustration when the invitations page has no courses in dark mode 90ms
+   ↓ keeps the page frame while loading and retries a failed request
+   ↓ shows join errors beside the sample and never creates a pretend membership
+   ↓ redirects guests and preserves their course path
+   ↓ loads a membership-gated course entry and selected resume module from actual route shapes
+   ↓ shows not found for an outsider without rendering private course metadata
+   ↓ shows building and failed courses without offering a pretend resume or progress
+   ↓ keeps each course context and the real worker step on shared-build cards
+   ↓ refreshes active build cards after three seconds and stops after the course becomes ready
+   ↓ uses courses as the signed-in home on /
+   ↓ uses courses as the signed-in home on /dang-nhap
+   ↓ uses courses as the signed-in home on /dang-ky
+   ↓ uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example
+   ↓ uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example
+   ↓ resumes the requested private route after authenticating
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > serves a real PNG illustration when the invitations page has no courses in dark mode
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/Courses.test.tsx:78:29
+     76|   const image=document.querySelector<HTMLImageElement>('.courses-empty…
+     77|   const asset=new URL('../public'+image.getAttribute('src'),import.met…
+     78|   expect(existsSync(asset)).toBe(true);
+       |                             ^
+     79|   expect([...readFileSync(asset).subarray(0,8)]).toEqual([137,80,78,71…
+     80| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 skipped (18)
+   Start at  18:54:41
+   Duration  2.46s (environment 48%, import 30%, setup 9%, transform 9%, tests 4%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/dark-asset-red.xml

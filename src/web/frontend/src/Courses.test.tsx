@@ -3,6 +3,7 @@ import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
+import { existsSync, readFileSync } from 'node:fs';
 
 const account = { id: 'learner', email: 'an@example.vn', display_name: 'Nguyễn An', role: 'user', email_verified: true };
 const sample = { course_id: 'sample-1', doc_id: 'doc-1', title: 'Đại số tuyến tính', description: 'Từ không gian vector đến ánh xạ tuyến tính.', status: 'ready', is_sample: true, published_graph_version: 8, role: null, owner: { user_id: 'admin', display_name: 'Cô Mai' }, module_count: 35, member_count: null, progress: null, resume: null };
@@ -14,7 +15,7 @@ function renderPage(path = '/khoa-hoc') {
 }
 function mockFetch(courses: unknown) {
   return vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
-    ? json({ account, csrf_token: 'w06-csrf' }) : json(courses));
+    ? json({ account, csrf_token: 'w06-csrf' }) : String(input).endsWith('/me/invitations') ? json({items:[]}) : json(courses));
 }
 beforeEach(() => {
   localStorage.clear();
@@ -41,7 +42,7 @@ it('joins through POST with session CSRF and moves the returned card to joined e
   let resolveJoin!: (value: Response) => void;
   const pending = new Promise<Response>(resolve => { resolveJoin = resolve; });
   const fetcher = vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
-    ? json({ account, csrf_token: 'w06-csrf' }) : String(input).endsWith('/join-sample') ? pending : json({ owned: [], joined: [], samples: [sample] }));
+    ? json({ account, csrf_token: 'w06-csrf' }) : String(input).endsWith('/me/invitations') ? json({items:[]}) : String(input).endsWith('/join-sample') ? pending : json({ owned: [], joined: [], samples: [sample] }));
   vi.stubGlobal('fetch', fetcher);
   renderPage();
   const user = userEvent.setup();
@@ -68,12 +69,22 @@ it('hides samples in an empty production-shaped response and offers the specifie
   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: 'Tải tài liệu' }).every(link => link.getAttribute('href') === '/tai-len')).toBe(true);
 });
+it('serves a real PNG illustration when the invitations page has no courses in dark mode', async () => {
+  localStorage.setItem('wayfinder-theme','dark');
+  vi.stubGlobal('fetch', mockFetch({owned:[],joined:[],samples:[]}));
+  renderPage();await screen.findByText('Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.');
+  const image=document.querySelector<HTMLImageElement>('.courses-empty img')!;
+  const asset=new URL('../public'+image.getAttribute('src'),import.meta.url);
+  expect(existsSync(asset)).toBe(true);
+  expect([...readFileSync(asset).subarray(0,8)]).toEqual([137,80,78,71,13,10,26,10]);
+});
 
 it('keeps the page frame while loading and retries a failed request', async () => {
   let resolveList!: (value: Response) => void;
   let requests = 0;
   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
     if (String(input).endsWith('/me')) return json({ account, csrf_token: 'w06-csrf' });
+    if (String(input).endsWith('/me/invitations')) return json({items:[]});
     if (++requests === 1) return new Promise<Response>(resolve => { resolveList = resolve; });
     return json({ owned: [], joined: [], samples: [sample] });
   }));
@@ -87,7 +98,7 @@ it('keeps the page frame while loading and retries a failed request', async () =
 
 it('shows join errors beside the sample and never creates a pretend membership', async () => {
   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me') ? json({ account, csrf_token: 'w06-csrf' })
-    : String(input).endsWith('/join-sample') ? json({ error: { code: 'course_full' } }, 409) : json({ owned: [], joined: [], samples: [sample] })));
+    : String(input).endsWith('/me/invitations') ? json({items:[]}) : String(input).endsWith('/join-sample') ? json({ error: { code: 'course_full' } }, 409) : json({ owned: [], joined: [], samples: [sample] })));
   renderPage();
   await userEvent.setup().click(await screen.findByRole('button', { name: 'Tham gia' }));
   expect(await screen.findByRole('alert')).toHaveTextContent('Khoá học đã đủ người.');
@@ -156,6 +167,7 @@ it('refreshes active build cards after three seconds and stops after the course 
   let loads = 0;
   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
     if (String(input).endsWith('/me')) return json({ account, csrf_token: 'w14-csrf' });
+    if (String(input).endsWith('/me/invitations')) return json({items:[]});
     loads += 1;
     return json({ owned: [{ ...sample, course_id: 'polling-course', role: 'owner', status: loads === 1 ? 'building' : 'ready',
       build: { build_id: 'polling-build', course_id: 'polling-course', status: loads === 1 ? 'running' : 'succeeded', step: 'graph' } }], joined: [], samples: [] });

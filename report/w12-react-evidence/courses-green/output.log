@@ -1,0 +1,28 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Courses.test.tsx src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/courses-green.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ✓ src/Courses.test.tsx (17 tests) 2091ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 379ms
+   ✓ loads a membership-gated course entry and selected resume module from actual route shapes 371ms
+ ✓ src/Invitations.test.tsx (11 tests) 5255ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1908ms
+   ✓ rejects 51 input addresses before POST, including duplicates counted in the input limit 389ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 453ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 426ms
+   ✓ ignores a delayed send callback after the dialog changes course 510ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 490ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 312ms
+
+ Test Files  2 passed (2)
+      Tests  28 passed (28)
+   Start at  18:42:53
+   Duration  15.92s (tests 48%, environment 22%, import 19%, setup 9%, transform 3%)
+
+    Isolate  2 workers spawned · ~1.88s startup each (spawn + environment, per file)
+             at least ~1.88s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/courses-green.xml

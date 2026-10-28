@@ -1,5 +1,7 @@
 # W-12 — Mời qua email, lời mời trong ứng dụng
 
+**Nghiệm thu lần 11, 2026-10-28: đạt toàn vé, React a8e2075d ghép local 1511f05c; chưa push.** Đóng WEB-R10-01 bằng tuần tự tải/gửi và hai guard; bản cũ3 assertion đỏ, phá guard3/2 assertion đỏ, không setup error. Cổng 33f5b2d2: 3545 Python/259 React/build; browser12 cấu hình/49 PNG/49 Axe0 violation,4 lượt giữ GET thật/15 SQL. Giữ W-04 Auth và hợp đồng backend; không SMTP thật,0 USD. [Biên bản](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan11-2026-10-28.md).
+
 **Nghiệm thu lần 10, 2026-10-28: chưa nhận/chưa ghép React af2993a5; backend f5cd2060 vẫn giữ mốc đạt.** Required WEB-R10-01: GET danh sách cũ về sau POST thành công làm mất lời mời mới/nút huỷ trên UI dù SQL vẫn có pending. Probe component 1 assertion fail/0 setup error + 3 control pass, tái hiện HTTP/PG thật native 1. Sửa thứ tự đọc/mutation và loading/error/retry, không làm lại backend. W-04 đã ghép; nhận main mới giữ cả epoch W-04 và fragment W-12. [biên bản lần 10](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan10-2026-10-28.md) và [lời giao lần 10](../../report/lenh-giao-viec-ba-nhom-lan10-2026-10-28.md).
 
 **Nghiệm thu lần 9, 2026-10-27: nhận backend f5cd2060, ghép local 1513ac7f; toàn W-12 vẫn mở.** Sáu HTTP route/mẫu thư/FakeMailer/migration w12_0008 nối w11_0007; đúng email đã xác minh, 50 email/lần, 200 thư/chủ/ngày, TTL 7 ngày, race/rollback PostgreSQL đã kiểm. Link đăng ký dùng fragment theo lựa chọn chủ dự án; token không tự cấp membership. Sáu tiêu chí logic dưới đạt ở backend, còn hộp mời/inbox/luồng đăng ký React do web sau W-04. Không gửi SMTP thật, 0 USD/chưa push. [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
@@ -8,7 +10,7 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 6 (mời theo email), user story 36–37; [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md),
 bảng `invitation`; spec thiết kế, hộp mời, khối lời mời ở trang chủ, mẫu thư.
-**Ai:** lõi làm mốc backend/mẫu thư; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** backend đạt; còn React/tích hợp
+**Ai:** lõi làm mốc backend/mẫu thư; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** đạt toàn vé · đã ghép local 1511f05c
 
 ## Vì sao
 
@@ -47,7 +49,7 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [x] Lời mời quá 7 ngày (đồng hồ giả) không chấp nhận được.
 - [x] Thư thứ 201 trong ngày của một chủ khoá bị `rate_limited`.
 - [x] Người không phải người được mời không chấp nhận được lời mời (`not_found`).
-- [ ] Ảnh chụp hộp mời, khối lời mời; một thư mời xuất ra HTML.
+- [x] Ảnh chụp hộp mời, khối lời mời; một thư mời FakeMailer xuất ra HTML (browser lần11).
 
 ## Ngoài vé
 

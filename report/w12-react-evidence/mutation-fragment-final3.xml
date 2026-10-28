@@ -1,0 +1,1080 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="2" errors="0" time="2.107832">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-27T11:56:00.833Z" hostname="ADMIN" tests="13" failures="2" errors="0" skipped="11" time="2.107832">
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="1.0794339">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Xác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Xác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+ ❯ src/Invitations.test.tsx:76:151
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="1.0267646">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Xác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  /^\/dang-ky$/
+Received:
+  /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;output
+        aria-label=&quot;Đường dẫn kiểm&quot;
+      &gt;
+        /dang-ky#invitation=PRIVATE_INVITATION_FIXTURE
+      &lt;/output&gt;
+      &lt;header
+        class=&quot;site-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về trang chủ&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;a
+              class=&quot;auth-switch&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;auth-layout page-frame&quot;
+      &gt;
+        &lt;section
+          aria-labelledby=&quot;auth-title&quot;
+          class=&quot;auth-card&quot;
+        &gt;
+          &lt;span
+            class=&quot;section-kicker&quot;
+          &gt;
+            MỘT LỘ TRÌNH CỦA RIÊNG BẠN
+          &lt;/span&gt;
+          &lt;h1
+            id=&quot;auth-title&quot;
+            tabindex=&quot;-1&quot;
+          &gt;
+            Tạo tài khoản WayFinder
+          &lt;/h1&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Lưu lại hành trình học tập của bạn, từng chặng một.
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-intro&quot;
+          &gt;
+            Xác minh đúng email nhận lời mời, rồi chấp nhận tại Khoá học của tôi. Đăng ký không tự tham gia khoá học.
+          &lt;/p&gt;
+          &lt;div
+            class=&quot;auth-feedback-slot &quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-feedback-clip&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;form
+            novalidate=&quot;&quot;
+          &gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;display-name&quot;
+              &gt;
+                Tên hiển thị
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;name&quot;
+                id=&quot;display-name&quot;
+                maxlength=&quot;60&quot;
+                name=&quot;display_name&quot;
+                required=&quot;&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;email&quot;
+              &gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                aria-invalid=&quot;false&quot;
+                autocomplete=&quot;email&quot;
+                id=&quot;email&quot;
+                maxlength=&quot;254&quot;
+                name=&quot;email&quot;
+                required=&quot;&quot;
+                type=&quot;email&quot;
+                value=&quot;&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password&quot;
+              &gt;
+                Mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-describedby=&quot;password-guidance&quot;
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+              &lt;small
+                id=&quot;password-guidance&quot;
+              &gt;
+                Từ 8 đến 128 ký tự.
+              &lt;/small&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;auth-field&quot;
+            &gt;
+              &lt;label
+                for=&quot;password-confirmation&quot;
+              &gt;
+                Nhập lại mật khẩu
+              &lt;/label&gt;
+              &lt;span
+                class=&quot;password-control &quot;
+              &gt;
+                &lt;input
+                  aria-invalid=&quot;false&quot;
+                  autocomplete=&quot;new-password&quot;
+                  id=&quot;password-confirmation&quot;
+                  maxlength=&quot;128&quot;
+                  minlength=&quot;8&quot;
+                  name=&quot;password_confirmation&quot;
+                  required=&quot;&quot;
+                  type=&quot;password&quot;
+                  value=&quot;&quot;
+                /&gt;
+                &lt;button
+                  aria-label=&quot;Hiện mật khẩu xác nhận&quot;
+                  aria-pressed=&quot;false&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Hiện
+                &lt;/button&gt;
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;button
+              class=&quot;button button-primary button-large auth-submit&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Tạo tài khoản
+            &lt;/button&gt;
+          &lt;/form&gt;
+          &lt;p
+            class=&quot;auth-alternate&quot;
+          &gt;
+            Đã có tài khoản?
+             
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/dang-nhap&quot;
+            &gt;
+              Đăng nhập
+            &lt;/a&gt;
+          &lt;/p&gt;
+          &lt;p
+            class=&quot;auth-demo-note&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/demo&quot;
+            &gt;
+              Thử lộ trình mẫu trước 
+              &lt;span
+                aria-hidden=&quot;true&quot;
+              &gt;
+                ↗
+              &lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+ ❯ src/Invitations.test.tsx:76:151
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>
