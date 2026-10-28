@@ -1,0 +1,41 @@
+{
+  "base": "http://127.0.0.1:8024",
+  "databaseName": "wayfinder_w04_react_8f5373d8a298433dad61d823da97f207",
+  "temporaryDatabaseRemoved": true,
+  "externalCostUsd": 0,
+  "sourceCommit": "bc4349fd7369af467f7064bf88794a118800d529",
+  "dirtySourcePaths": [],
+  "providers": "FakeMailer; models/embedding/media not called; real auth/Argon2/PostgreSQL",
+  "accountId": "9b90537c-4624-4d03-b816-0bb74015b784",
+  "otherId": "f6b37490-108b-4f99-ba1a-533eb914fe2a",
+  "controlPath": "/api/v1/__test/w04/probe",
+  "fakeClock": "2026-10-27T08:00:00+00:00",
+  "migrationHead": "w12_0008",
+  "browserExitCode": 0,
+  "independentSqlFinal": {
+    "displayName": "Nguyễn An 1280 dark",
+    "originalPasswordValid": false,
+    "replacementPasswordValid": true,
+    "sessions": [
+      {
+        "account_id": "f6b37490-108b-4f99-ba1a-533eb914fe2a",
+        "count": 2
+      }
+    ],
+    "audit": [
+      {
+        "action": "password_changed",
+        "actor_id": "9b90537c-4624-4d03-b816-0bb74015b784",
+        "target_id": "9b90537c-4624-4d03-b816-0bb74015b784",
+        "meta": {}
+      },
+      {
+        "action": "logout_all",
+        "actor_id": "9b90537c-4624-4d03-b816-0bb74015b784",
+        "target_id": "9b90537c-4624-4d03-b816-0bb74015b784",
+        "meta": {}
+      }
+    ]
+  },
+  "serverThreadStopped": true
+}
