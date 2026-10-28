@@ -1,0 +1,19 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/react-green3.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ✓ src/Invitations.test.tsx (11 tests) 4389ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1716ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 481ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 500ms
+   ✓ ignores a delayed send callback after the dialog changes course 470ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  18:30:46
+   Duration  8.98s (tests 51%, import 19%, environment 18%, transform 7%, setup 5%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/react-green3.xml

@@ -1,0 +1,57 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx -t a failed invitation list --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/list-error-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (13 tests | 2 failed | 11 skipped) 229ms
+   ↓ validates the email field and sends a deduplicated batch without owner or invitation token
+   ↓ rejects 51 input addresses before POST, including duplicates counted in the input limit
+   ↓ shows pending invitations and cancels only the selected public invitation ID
+   ↓ maps owner error email_unverified without an internal error or delivery claim
+   ↓ maps owner error rate_limited without an internal error or delivery claim
+   ↓ discloses learner privacy before accepting and refreshes courses after the server commits
+   ↓ declines without posting membership and shows a course-full failure without removing the invitation
+   ↓ does not display pending emails or accept controls for an unverified account
+   ↓ ignores a delayed send callback after the dialog changes course
+   ↓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false)
+   ↓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true)
+   × a failed invitation list for owner does not claim the list is empty and can reload 165ms
+   × a failed invitation list for recipient does not claim the list is empty and can reload 62ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > a failed invitation list for owner does not claim the list is empty and can reload
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <p
+  class="invitation-muted"
+>
+  Chưa có lời mời đang chờ.
+</p> instead
+ ❯ src/Invitations.test.tsx:85:191
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/Invitations.test.tsx > a failed invitation list for recipient does not claim the list is empty and can reload
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <p
+  class="invitation-muted"
+>
+  Bạn chưa có lời mời đang chờ.
+</p> instead
+ ❯ src/Invitations.test.tsx:85:191
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 skipped (13)
+   Start at  18:48:47
+   Duration  2.26s (environment 33%, import 31%, setup 14%, tests 11%, transform 11%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/list-error-red.xml

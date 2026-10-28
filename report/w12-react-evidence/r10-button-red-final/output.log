@@ -1,0 +1,69 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Invitations.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/r10-button-red-final.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ❯ src/Invitations.test.tsx (19 tests | 3 failed) 6362ms
+   × waits for the initial list before sending, then retains the canonical invitation (0 initial items) 451ms
+   × waits for the initial list before sending, then retains the canonical invitation (1 initial items) 438ms
+   × keeps the draft on send failure, serializes a reload, and allows retry after a list error 555ms
+   ✓ ignores the old course list after switching course and still allows a send in the new course 534ms
+   ✓ does not render a delayed private list after unmount 79ms
+   ✓ does not render a delayed private list after logout 123ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1470ms
+   ✓ rejects 51 input addresses before POST, including duplicates counted in the input limit 221ms
+   ✓ shows pending invitations and cancels only the selected public invitation ID 108ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 468ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 431ms
+   ✓ discloses learner privacy before accepting and refreshes courses after the server commits 157ms
+   ✓ declines without posting membership and shows a course-full failure without removing the invitation 185ms
+   ✓ does not display pending emails or accept controls for an unverified account 23ms
+   ✓ ignores a delayed send callback after the dialog changes course 471ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=false) 243ms
+   ✓ clears the invitation fragment, keeps only boolean context through auth switching (transition=true) 184ms
+   ✓ a failed invitation list for owner does not claim the list is empty and can reload 111ms
+   ✓ a failed invitation list for recipient does not claim the list is empty and can reload 107ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation (0 initial items)
+ FAIL  src/Invitations.test.tsx > waits for the initial list before sending, then retains the canonical invitation (1 initial items)
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <button
+  class="button button-primary"
+  type="submit"
+/>
+ ❯ src/Invitations.test.tsx:45:15
+     43|  const user=userEvent.setup();render(share());await user.click(screen.…
+     44|  await user.type(await screen.findByLabelText('Email người nhận'),'ban…
+     45|  expect(send).toBeDisabled();await user.click(send);expect(calls.filte…
+       |               ^
+     46|  fireEvent.submit(send.closest('form')!);expect(calls.filter(c=>c.meth…
+     47|  await act(async()=>release(json({items:snapshot})));await waitFor(()=…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/Invitations.test.tsx > keeps the draft on send failure, serializes a reload, and allows retry after a list error
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <button
+  class="button button-primary"
+  type="submit"
+/>
+ ❯ src/Invitations.test.tsx:57:131
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 16 passed (19)
+   Start at  11:22:15
+   Duration  8.65s (tests 75%, environment 10%, import 9%, setup 3%, transform 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/r10-button-red-final.xml

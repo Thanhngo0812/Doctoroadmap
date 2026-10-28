@@ -1,0 +1,975 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=../../../report/w12-react-evidence/react-integration1.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 12031ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 1307ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1014ms
+     ✓ keeps duplicate registration generic when no session is created 1161ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 800ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1058ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 995ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 798ms
+     ✓ clears errors and private form state when leaving register 909ms
+     ✓ does not carry a late login failure into the registration form 397ms
+     ✓ keeps a success notification visible after login reaches courses 605ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 446ms
+     ✓ shows the actual password field message for body.password 900ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 590ms
+ ✓ src/Sharing.test.tsx (16 tests) 2132ms
+   ✓ creates a one-time share URL, copies only on a successful clipboard write, and clears it on close 435ms
+   ✓ does not reveal a one-time URL when creation finishes after the dialog closes 314ms
+ ✓ src/Assistant.test.tsx (19 tests) 8088ms
+   ✓ streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn 966ms
+   ✓ retains received text after a disconnect and retries with the same intent ID and focus 530ms
+   ✓ does not send a focus from the roadmap and shows a ratio rather than invented daily turns 364ms
+   ✓ restores a pending intent after remount and reconciles the saved result without sending a new turn 706ms
+   ✓ renames sessions and requires explicit confirmation before deleting history 872ms
+   ✓ opens a persisted artifact only from a structured event, independently of model prose 516ms
+   ✓ blocks sending while a new session is being created and then sends into that session 476ms
+   ✓ clears displayed history when the next request is denied: not_found 437ms
+   ✓ clears displayed history when the next request is denied: unauthenticated 473ms
+   ✓ keeps a completed new turn when an older history request arrives afterwards 417ms
+   ✓ keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID 500ms
+   ✓ shows the current question in conversation metadata before the next history reload 429ms
+   ✓ keeps a document hourly-limit notice after the final answer and in saved history 422ms
+   ✓ allows core to decide cache reuse under a limited learner quota instead of blocking the question 446ms
+ ✓ src/W03.test.tsx (21 tests) 5495ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ sends a generic password-reset request without revealing whether the email exists 459ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 825ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 850ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1646ms
+     ✓ keeps the reset form available after a retryable network failure 527ms
+stdout | src/Content.test.tsx > R7 ignores a late submission result after browser history opens another attempt
+R7_OBSERVED {"activeRoute":"/khoa-hoc/c/quiz/qa_2","heading":"Quiz ôn tập","secondQuestionVisible":true}
+
+ ✓ src/Content.test.tsx (15 tests) 3218ms
+   ✓ uses core groups independently of origin on the real module page 476ms
+   ✓ validates six modules locally, sends no request, and allows a corrected document scope 569ms
+   ✓ ignores old success submit callbacks while a new attempt is pending 372ms
+ ✓ src/Builds.test.tsx (10 tests) 1526ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 849ms
+stderr | src/Courses.test.tsx > shows real-shaped owned joined and samples without inventing sample progress
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/Courses.test.tsx > joins through POST with session CSRF and moves the returned card to joined exactly once
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/Courses.test.tsx > hides samples in an empty production-shaped response and offers the specified next steps
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/Courses.test.tsx > shows join errors beside the sample and never creates a pretend membership
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/Courses.test.tsx > shows building and failed courses without offering a pretend resume or progress
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/Courses.test.tsx > keeps each course context and the real worker step on shared-build cards
+An error occurred in the <InvitationsInbox> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ ❯ src/Courses.test.tsx (17 tests | 8 failed) 7015ms
+   × shows real-shaped owned joined and samples without inventing sample progress 1058ms
+   × joins through POST with session CSRF and moves the returned card to joined exactly once 1010ms
+   × hides samples in an empty production-shaped response and offers the specified next steps 1016ms
+   × keeps the page frame while loading and retries a failed request 140ms
+   × shows join errors beside the sample and never creates a pretend membership 1010ms
+   ✓ redirects guests and preserves their course path 26ms
+   ✓ loads a membership-gated course entry and selected resume module from actual route shapes 348ms
+   ✓ shows not found for an outsider without rendering private course metadata 25ms
+   × shows building and failed courses without offering a pretend resume or progress 1010ms
+   × keeps each course context and the real worker step on shared-build cards 1015ms
+   × refreshes active build cards after three seconds and stops after the course becomes ready 36ms
+   ✓ uses courses as the signed-in home on / 92ms
+   ✓ uses courses as the signed-in home on /dang-nhap 58ms
+   ✓ uses courses as the signed-in home on /dang-ky 45ms
+   ✓ uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example 40ms
+   ✓ uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example 42ms
+   ✓ resumes the requested private route after authenticating 43ms
+ ✓ src/Learning.review-repro.test.tsx (17 tests) 2410ms
+   ✓ shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe 830ms
+ ✓ src/Learning.test.tsx (16 tests) 2445ms
+   ✓ shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe 730ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1252ms
+   ✓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist 308ms
+   ✓ shows the selected module and the shared learner mark on the module route 354ms
+ ✓ src/Invitations.test.tsx (11 tests) 3937ms
+   ✓ validates the email field and sends a deduplicated batch without owner or invitation token 1554ms
+   ✓ maps owner error email_unverified without an internal error or delivery claim 460ms
+   ✓ maps owner error rate_limited without an internal error or delivery claim 452ms
+   ✓ ignores a delayed send callback after the dialog changes course 463ms
+stdout | src/Assistant.final-usage-race.test.tsx > review: a question submitted after final is sent while the usage refresh remains pending
+REVIEW_OBSERVATION {"usageCalls":2,"postedQuestions":[{"question":"First question","client_turn_id":"1117846b-e615-4b19-ba9e-81bc9b1808ee"},{"question":"Second question must not disappear","client_turn_id":"7b9df761-8334-4385-b87e-511e54c98dda"}],"draftAfterSubmit":""}
+
+ ✓ src/Assistant.final-usage-race.test.tsx (5 tests) 2501ms
+   ✓ review: a question submitted after final is sent while the usage refresh remains pending 969ms
+   ✓ an old usage success and finally cannot unlock or replace the next streaming turn 455ms
+   ✓ an old usage network error and finally cannot unlock or replace the next streaming turn 311ms
+   ✓ accepts the next question before old EOF and ignores a late old stream error 427ms
+   ✓ a late old usage result cannot overwrite newer usage after both answers finish 336ms
+ ✓ src/Usage.test.tsx (9 tests) 1085ms
+ ✓ src/W11AuthReturn.repro.test.tsx (22 tests) 33288ms
+   ✓ control: direct login returns to the exact invitation after authentication 1246ms
+   ✓ control: direct register returns to the exact invitation after authentication 1964ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 1829ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 1448ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 1162ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 1622ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 1528ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 1534ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 1821ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 934ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 1912ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 2061ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 1866ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 1756ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 1637ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 1535ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 1496ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2135ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 972ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 861ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 957ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1009ms
+ ✓ src/api.test.ts (22 tests) 30ms
+ ✓ src/SourceViewer.test.tsx (3 tests) 411ms
+ ✓ src/TaskWait.test.tsx (2 tests) 97ms
+ ✓ src/LectureMarkdown.test.tsx (2 tests) 236ms
+ ✓ src/CourseShellGuest.test.tsx (1 test) 149ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > shows real-shaped owned joined and samples without inventing sample progress
+TestingLibraryElementError: Unable to find role="region" and name "Được chia sẻ với tôi"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:29:32
+     27|   vi.stubGlobal('fetch', mockFetch({ owned: [owned], joined: [joined],…
+     28|   renderPage();
+     29|   const section = await screen.findByRole('region', { name: 'Được chia…
+       |                                ^
+     30|   expect(screen.getByLabelText('Tài khoản của Nguyễn An')).toBeInTheDo…
+     31|   expect(within(section).getByText('Xong 0/223 bài học')).toBeInTheDoc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/Courses.test.tsx > joins through POST with session CSRF and moves the returned card to joined exactly once
+TestingLibraryElementError: Unable to find role="button" and name "Tham gia"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:48:33
+     46|   renderPage();
+     47|   const user = userEvent.setup();
+     48|   await user.click(await screen.findByRole('button', { name: 'Tham gia…
+       |                                 ^
+     49|   expect(screen.getByRole('button', { name: 'Đang tham gia…' })).toBeD…
+     50|   await act(async () => { resolveJoin(json(joined)); });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/Courses.test.tsx > hides samples in an empty production-shaped response and offers the specified next steps
+TestingLibraryElementError: Unable to find an element with the text: Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:67:23
+     65|   vi.stubGlobal('fetch', mockFetch({ owned: [], joined: [], samples: […
+     66|   renderPage();
+     67|   expect(await screen.findByText('Chưa có khoá học. Tải tài liệu của b…
+       |                       ^
+     68|   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.t…
+     69|   expect(screen.getAllByRole('link', { name: 'Tải tài liệu' }).every(l…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/Courses.test.tsx > keeps the page frame while loading and retries a failed request
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Thử lại"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "Đến nội dung chính":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip-link"[39m
+    [33mhref[39m=[32m"#courses-main"[39m
+  [36m/>[39m
+
+  Name "WayFinder, về khoá học":
+  [36m<a[39m
+    [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+    [33mclass[39m=[32m"brand-link"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/khoa-hoc"[39m
+  [36m/>[39m
+
+  Name "Tải tài liệu":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-primary courses-upload"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-len"[39m
+  [36m/>[39m
+
+  Name "Tài khoản":
+  [36m<a[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-khoan"[39m
+  [36m/>[39m
+
+  Name "Mức dùng":
+  [36m<a[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/muc-dung"[39m
+  [36m/>[39m
+
+  Name "Tải tài liệu":
+  [36m<a[39m
+    [33mclass[39m=[32m"courses-menu-upload"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-len"[39m
+  [36m/>[39m
+
+  Name "Tải tài liệu":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-len"[39m
+  [36m/>[39m
+
+  Name "Thử khoá mẫu":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-secondary"[39m
+    [33mhref[39m=[32m"#sample-courses"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"courses-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "WayFinder":
+  [36m<img[39m
+    [33malt[39m=[32m"WayFinder"[39m
+    [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Bật chế độ sáng":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+    [33mclass[39m=[32m"icon-button theme-toggle"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Đăng xuất":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tải lại lời mời":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tham gia":
+  [36m<button[39m
+    [33mclass[39m=[32m"button button-secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"account-menu"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"courses-page page-frame"[39m
+    [33mid[39m=[32m"courses-main"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Khoá học của tôi":
+  [36m<h1 />[39m
+
+  Name "Lời mời":
+  [36m<h2[39m
+    [33mid[39m=[32m"invitations-title"[39m
+  [36m/>[39m
+
+  Name "Bắt đầu hành trình của bạn":
+  [36m<h2[39m
+    [33mid[39m=[32m"courses-empty-title"[39m
+  [36m/>[39m
+
+  Name "Khoá học mẫu":
+  [36m<h2[39m
+    [33mid[39m=[32m"courses-samples"[39m
+  [36m/>[39m
+
+  Name "Đại số tuyến tính":
+  [36m<h3[39m
+    [33mclass[39m=[32m"course-card__title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"invitation-muted"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"course-card__description"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"course-card__owner"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Lời mời":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"invitations-title"[39m
+    [33mclass[39m=[32m"invitations-inbox"[39m
+  [36m/>[39m
+
+  Name "Bắt đầu hành trình của bạn":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+    [33mclass[39m=[32m"courses-empty"[39m
+  [36m/>[39m
+
+  Name "Khoá học mẫu":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"courses-samples"[39m
+    [33mclass[39m=[32m"courses-section"[39m
+    [33mid[39m=[32m"sample-courses"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"invitation-error"[39m
+    [33mrole[39m=[32m"alert"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  presentation:
+
+  Name "":
+  [36m<img[39m
+    [33malt[39m=[32m""[39m
+    [33msrc[39m=[32m"/assets/OTP1.png"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "Đại số tuyến tính":
+  [36m<article[39m
+    [33maria-label[39m=[32m"Đại số tuyến tính"[39m
+    [33mclass[39m=[32m"course-card course-card--sample"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của Nguyễn An"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"courses-heading"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-heading-copy"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mKhoá học của tôi[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mChọn một tài liệu, tiếp tục chặng đang học.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"invitations-title"[39m
+          [33mclass[39m=[32m"invitations-inbox"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"invitation-list-heading"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"invitations-title"[39m
+            [36m>[39m
+              [0mLời mời[0m
+            [36m</h2>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mTải lại lời mời[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-error"[39m
+            [33mrole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0mCó lỗi phía máy chủ. Mã tra cứu: không có mã.[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"invitation-muted"[39m
+          [36m>[39m
+            [0mBạn chưa có lời mời đang chờ.[0m
+          [36m</p>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-empty-title"[39m
+          [33mclass[39m=[32m"courses-empty"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m""[39m
+            [33msrc[39m=[32m"/assets/OTP1.png"[39m
+          [36m/>[39m
+          [36m<h2[39m
+            [33mid[39m=[32m"courses-empty-title"[39m
+          [36m>[39m
+            [0mBắt đầu hành trình của bạn[0m
+          [36m</h2>[39m
+          [36m<p>[39m
+            [0mChưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.[0m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-empty-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mhref[39m=[32m"#sample-courses"[39m
+            [36m>[39m
+              [0mThử khoá mẫu[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+        [36m<section[39m
+          [33maria-labelledby[39m=[32m"courses-samples"[39m
+          [33mclass[39m=[32m"courses-section"[39m
+          [33mid[39m=[32m"sample-courses"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-section-heading"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"courses-samples"[39m
+            [36m>[39m
+              [0mKhoá học mẫu[0m
+            [36m</h2>[39m
+            [36m<span>[39m
+              [0m1[0m
+              [0m khoá học[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"courses-grid"[39m
+          [36m>[39m
+            [36m<article[39m
+              [33maria-label[39m=[32m"Đại số tuyến tính"[39m
+              [33mclass[39m=[32m"course-card course-card--sample"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"course-card__meta"[39m
+              [36m>[39m
+                [36m<span>[39m
+                  [0m35[0m
+                  [0m module[0m
+                [36m</span>[39m
+              [36m</div>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"course-card__title"[39m
+              [36m>[39m
+                [0mĐại số tuyến tính[0m
+              [36m</h3>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"course-card__description"[39m
+              [36m>[39m
+                [0mTừ không gian vector đến ánh xạ tuyến tính.[0m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"course-card__owner"[39m
+              [36m>[39m
+                [0mTừ Cô Mai[0m
+              [36m</p>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"course-card__actions"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"button button-secondary"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mTham gia[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</article>[39m
+          [36m</div>[39m
+        [36m</section>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Courses.test.tsx:84:40
+     82|   await act(async () => { resolveList(json({ error: { code: 'internal_…
+     83|   expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi p…
+     84|   await userEvent.setup().click(screen.getByRole('button', { name: 'Th…
+       |                                        ^
+     85|   expect(await screen.findByRole('button', { name: 'Tham gia' })).toBe…
+     86| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/Courses.test.tsx > shows join errors beside the sample and never creates a pretend membership
+TestingLibraryElementError: Unable to find role="button" and name "Tham gia"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:92:46
+     90|     : String(input).endsWith('/join-sample') ? json({ error: { code: '…
+     91|   renderPage();
+     92|   await userEvent.setup().click(await screen.findByRole('button', { na…
+       |                                              ^
+     93|   expect(await screen.findByRole('alert')).toHaveTextContent('Khoá học…
+     94|   expect(screen.getByRole('button', { name: 'Tham gia' })).toBeEnabled…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/Courses.test.tsx > shows building and failed courses without offering a pretend resume or progress
+TestingLibraryElementError: Unable to find an element with the text: Đang dựng. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:127:23
+    125|   ], joined: [], samples: [] }));
+    126|   renderPage();
+    127|   expect(await screen.findByText('Đang dựng')).toBeInTheDocument();
+       |                       ^
+    128|   expect(screen.getByText('Dựng chưa thành công')).toBeInTheDocument();
+    129|   expect(screen.getAllByRole('link', { name: /Xem khoá học/ })).toHave…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/Courses.test.tsx > keeps each course context and the real worker step on shared-build cards
+TestingLibraryElementError: Unable to find role="article" and name "Lớp buổi sáng"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div />[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:143:30
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/Courses.test.tsx > refreshes active build cards after three seconds and stops after the course becomes ready
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 6 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "shows real-shaped owned joined and samples without inventing sample progress". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "joins through POST with session CSRF and moves the returned card to joined exactly once". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "hides samples in an empty production-shaped response and offers the specified next steps". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "shows join errors beside the sample and never creates a pretend membership". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "shows building and failed courses without offering a pretend resume or progress". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ InvitationsInbox src/Invitations.tsx:77:62
+
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/Courses.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "keeps each course context and the real worker step on shared-build cards". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed | 18 passed (19)
+      Tests  8 failed | 232 passed (240)
+     Errors  6 errors
+   Start at  18:36:41
+   Duration  121.67s (tests 74%, environment 13%, import 9%, setup 4%, transform 1%)
+
+    Isolate  19 workers spawned · ~988ms startup each (spawn + environment, per file)
+             at least ~17.78s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w12-invitations-react/report/w12-react-evidence/react-integration1.xml

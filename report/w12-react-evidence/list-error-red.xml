@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="2" errors="0" time="0.2285088">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-27T11:48:49.686Z" hostname="ADMIN" tests="13" failures="2" errors="0" skipped="11" time="0.2285088">
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.164866">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;invitation-muted&quot;
+&gt;
+  Chưa có lời mời đang chờ.
+&lt;/p&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;invitation-muted&quot;
+&gt;
+  Chưa có lời mời đang chờ.
+&lt;/p&gt; instead
+ ❯ src/Invitations.test.tsx:85:191
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.0617724">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;invitation-muted&quot;
+&gt;
+  Bạn chưa có lời mời đang chờ.
+&lt;/p&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;invitation-muted&quot;
+&gt;
+  Bạn chưa có lời mời đang chờ.
+&lt;/p&gt; instead
+ ❯ src/Invitations.test.tsx:85:191
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
