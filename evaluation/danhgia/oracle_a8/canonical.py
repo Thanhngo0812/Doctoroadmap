@@ -15,6 +15,7 @@ import difflib
 import hashlib
 import json
 import re
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -45,14 +46,24 @@ _KY_HIEU_TOAN = re.compile(r"[=<>≤≥≠≈∈∉∑∏√∫±×÷∞∂∆�
 _CHO_CONG_THUC = "[formula]"
 
 
+def _chu_viet_don(tu, chu):
+    """Từ một chữ cái có dấu tiếng Việt (`ở`, `ý`, `à`): ký tự ngoài ASCII, không thuộc khối Hy Lạp. Đó là chữ thường, không phải biến số."""
+    if len(chu) != 1 or len(chu[0]) != 1:
+        return False
+    c = chu[0]
+    return ord(c) > 127 and not (0x370 <= ord(c) <= 0x3FF or 0x1F00 <= ord(c) <= 0x1FFF)
+
+
 def che_cong_thuc(cau):
     """Câu vàng gõ công thức bằng ký tự thật (`ε = t_α √(f(1-f)/n)`) còn chunk giữ chỗ `[formula]`. Thay mỗi đoạn liền kề các từ toán (có ký hiệu
-    toán, hoặc chỉ gồm chữ đơn như `p`, `ε`, `x̄`) bằng `[formula]`, để bộ khớp mảnh của DG-10 (`diem_cau`, tách câu ở chỗ giữ chỗ) khớp phần chữ
+    toán, hoặc chỉ gồm một chữ đơn như `p`, `ε`, `x̄`; trừ từ tiếng Việt một chữ có dấu như `ở`, `ý`, `à`) bằng `[formula]`, để bộ khớp mảnh của DG-10 (`diem_cau`, tách câu ở chỗ giữ chỗ) khớp phần chữ
     của câu với chunk và bỏ qua phần công thức. Chữ thường và số giữ nguyên."""
     ra = []
     for tu in str(cau).split():
+        tu = unicodedata.normalize("NFC", tu)
         chu = re.findall(r"[^\W\d_]+", tu)
-        la_toan = bool(_KY_HIEU_TOAN.search(tu)) or (bool(chu) and all(len(x) <= 1 for x in chu)) or (not chu and not any(c.isdigit() for c in tu))
+        la_toan = bool(_KY_HIEU_TOAN.search(tu)) or (bool(chu) and all(len(x) <= 1 for x in chu) and not _chu_viet_don(tu, chu)) or (
+            not chu and not any(c.isdigit() for c in tu))
         if la_toan:
             if not ra or ra[-1] != _CHO_CONG_THUC:
                 ra.append(_CHO_CONG_THUC)
@@ -259,16 +270,17 @@ def kiem_canonical(payload, manifest, chunk_ids=None):
 def ghi_canonical(kho, doc_id, payload, manifest):
     """Ghi canonical oracle làm phiên bản canonical mới của kho lượt và trả số phiên bản.
 
-    Kho lượt oracle không được có canonical của lượt chính. Nếu đã có canonical oracle cùng G3 thì dùng lại (chạy tiếp sau ngắt); nếu có
-    canonical khác thì từ chối, không ghi đè."""
+    Kho lượt oracle không được có canonical của lượt chính. Nếu đã có canonical oracle **cùng hash cấu hình** (cùng G3, ngưỡng, nguồn chunk) thì dùng lại
+    (chạy tiếp sau ngắt); canonical khác, kể cả oracle đã đổi cấu hình, thì từ chối, không ghi đè."""
     goc = Path(kho) / "canonical" / doc_id
     co = sorted((int(p.name[1:]), p) for p in goc.iterdir() if p.name[1:].isdigit()) if goc.exists() else []
     if co:
         so, duong = co[-1]
         cu = json.loads((duong / "manifest.json").read_text(encoding="utf-8"))
-        if cu.get("config", {}).get("algorithm_id") == THUAT_TOAN and cu["config"].get("g3_sha256") == manifest["config"]["g3_sha256"]:
+        if cu.get("config_hash") == manifest["config_hash"]:  # cùng hash cấu hình: cùng G3, ngưỡng, chunk và nguồn
             return so
-        raise GhiDeCanonical(f"kho {kho} đã có canonical v{so} không phải oracle của G3 này; oracle không ghi đè canonical của lượt chính")
+        raise GhiDeCanonical(f"kho {kho} đã có canonical v{so} có hash cấu hình khác (không phải oracle y hệt cấu hình này); "
+                             "oracle không ghi đè canonical của lượt chính và không dùng lại bản oracle đã đổi ngưỡng, G3 hay chunk")
     so = 1
     thu_muc = goc / f"v{so}"
     thu_muc.mkdir(parents=True)
