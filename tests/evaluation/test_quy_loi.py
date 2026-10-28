@@ -266,3 +266,119 @@ def test_cua_so_thieu_duoc_bao_co_khi_hop_dong_co_ung_vien_ma_khong_co_cua_so():
     assert ket["meta"]["cua_so_thieu"] is True and 5 not in ket["meta"]["khong_ap"]
     assert dem(ket["rows"], "quy_loi.ly_do_6.nghiem") == 1    # chỉ còn cặp ứng viên G13>G14
     assert dem(ket["rows"], "quy_loi.ly_do_5.nghiem") == 2    # cạnh có nguồn trong cửa sổ (G15>G16) rơi về lý do 5 vì không biết cửa sổ
+
+
+# ---------------------------------------------------------------- ca nhỏ cho các chỗ hở (J6, J8, J9, J10, J12, J13)
+
+
+def mini(ma_vang, quan_he, hang, kn, dau, cac_canh=(), *, ban_do=None, cap_ung_vien=None):
+    """Thế giới nhỏ một chương c1. `kn`: danh sách khai_niem node; `cap_ung_vien` mặc định không có cặp nào và cửa sổ rỗng."""
+    hd = hop_dong(kn, list(cac_canh), dau, ban_do_danh_tinh=ban_do)
+    hd["cap_ung_vien"] = cap_ung_vien if cap_ung_vien is not None else {"cap": [], "cua_so_dinh_nghia": {}}
+    return hd, g3(S, [(m, "c1") for m in ma_vang]), g4(S, quan_he), can(S, hang)
+
+
+def ly_do_cua(ket):
+    return {(m["nguon"], m["dich"]): m["ly_do"] for m in ket["danh_sach"]}
+
+
+def test_tach_chi_tinh_node_trong_day_hoc_node_ngoai_day_khong_lam_thanh_ly_do_3():
+    # G1 có hai node căn nhưng chỉ a1 trong dãy (a2 hiện diện, ngoài dãy): không phải bị tách theo A4
+    hd, a, b, c = mini([g(1), g(2)], [(g(1), g(2))], [(g(1), "a1", "khop"), (g(1), "a2", "khop"), (g(2), "b", "khop")],
+                       [khai_niem("a1"), khai_niem("a2", trong_day_hoc=False), khai_niem("b")], ["b", "a1"])
+    ket = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=set(), co_danh_sach=True)
+    assert ly_do_cua(ket) == {(g(1), g(2)): 5}
+
+
+def test_cap_ung_vien_va_cua_so_ghi_ma_cu_van_tinh_la_da_xet_qua_ban_do_danh_tinh():
+    # mã cũ old_a, old_c đã gộp vào a, c; cặp ứng viên và cửa sổ vẫn ghi mã cũ: cạnh phải vào lý do 6, không phải 5
+    ban_do = {"old_a": "a", "old_c": "c"}
+    cap = {"cap": [{"trai": "old_a", "phai": "b", "nguon_de_cu": [], "quyet_dinh": "rejected", "nguong": None, "diem_ml": None}],
+           "cua_so_dinh_nghia": {"d": ["old_c"]}}
+    hd, a, b, c = mini([g(1), g(2), g(3), g(4)], [(g(1), g(2)), (g(3), g(4))],
+                       [(g(1), "old_a", "khop"), (g(2), "b", "khop"), (g(3), "old_c", "khop"), (g(4), "d", "khop")],
+                       [khai_niem("a"), khai_niem("b"), khai_niem("c"), khai_niem("d")], ["b", "a", "d", "c"], ban_do=ban_do, cap_ung_vien=cap)
+    ket = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=set(), co_danh_sach=True)
+    assert ly_do_cua(ket) == {(g(1), g(2)): 6, (g(3), g(4)): 6}
+
+
+def test_canh_may_dich_chua_can_hoac_can_vao_khai_niem_ngoai_g3_khong_vao_mau_so_va_khong_lam_hong():
+    x = ngoai("X", 9)
+    hd, a, b, cc = mini([g(1), g(2)], [(g(1), g(2))],
+                        [(g(1), "a", "khop"), (g(2), "b", "khop"), (x, "e", "khop")],
+                        [khai_niem("a"), khai_niem("b"), khai_niem("z"), khai_niem("e")], ["a", "b"],
+                        [canh("a", "z"), canh("a", "e")])      # z chưa căn; e căn vào nguồn ngoài sách
+    rows = quy_loi(hd, a, b, cc, tap="phat_trien")["rows"]
+    assert all(dem(rows, f"quy_loi.may.{m}.nghiem") == 0 for m in ("trong_vang", "dung_g5b", "nguoc_chieu", "bac_cau", "sai_han"))
+    assert dem(rows, "quy_loi.dung.nghiem") == 1
+
+
+def test_node_bi_loai_khong_hien_dien_nen_khai_niem_chi_co_node_bi_loai_la_ly_do_2():
+    hd, a, b, c = mini([g(1), g(2)], [(g(1), g(2))], [(g(1), "n1", "khop"), (g(2), "n2", "khop")],
+                       [khai_niem("n1", trong_day_hoc=False, bi_loai=True), khai_niem("n2")], ["n2"])
+    ket = quy_loi(hd, a, b, c, tap="phat_trien", muc_loi=set(), co_danh_sach=True)
+    assert ly_do_cua(ket) == {(g(1), g(2)): 2}
+
+
+# ---------------------------------------------------------------- lý do 1 từ A1/A2
+
+
+CAU_ALPHA, CAU_BETA, CAU_GAMMA = ("Khai niem alpha la mot doi tuong cua muc A.", "Khai niem beta la mot doi tuong khac.",
+                                  "Khai niem gamma duoc dinh nghia o day.")
+BANG_DONG = [{"id": "p1-0", "trang": 1, "text": "Muc A"}, {"id": "p1-1", "trang": 1, "text": CAU_ALPHA},
+             {"id": "p2-0", "trang": 2, "text": "Muc B"}, {"id": "p2-1", "trang": 2, "text": CAU_BETA},
+             {"id": "p3-0", "trang": 3, "text": "Muc C"}, {"id": "p3-1", "trang": 3, "text": CAU_GAMMA}]
+G1 = [{"id": f"H{i}", "dong": [f"p{i}-0"], "cap": 1, "cha": None, "vai_tro": "noi_dung"} for i in (1, 2, 3)]
+
+
+def tieu_de_he(*mau):
+    """mau: (id, mã dòng, vai trò)."""
+    return [{"id": i, "dong": [d], "cap": 1, "cha": None, "text": "t", "vai_tro": vt} for i, d, vt in mau]
+
+
+def khai_niem_g3():
+    ket = [("G-S-001", CAU_ALPHA, 1), ("G-S-002", CAU_BETA, 2), ("G-S-003", CAU_GAMMA, 3),
+           ("G-S-004", "Cau nay khong co tren trang nao ca xyzxyz qwe", 1), ("G-S-005", "", 1)]
+    return [{"ma": m, "dinh_nghia": {"cau": cau, "trang": t}} for m, cau, t in ket]
+
+
+def test_muc_loi_nhanh_cat_sai_muc_chi_do_lay_la_khong_khop_vai_tro_van_noi_dung():
+    from danhgia.cham.quy_loi import muc_loi_tu_a1a2
+    # hệ không có tiêu đề ở trang 3: câu gamma rơi vào mục S2 (đúng vai trò) mà vàng nói là H3 -> cắt sai
+    du_doan = {"headings": tieu_de_he(("S1", "p1-0", "noi_dung"), ("S2", "p2-0", "noi_dung"))}
+    loi, khong = muc_loi_tu_a1a2(khai_niem_g3(), G1, du_doan, BANG_DONG)
+    assert loi == {"G-S-003"} and khong == 1
+
+
+def test_muc_loi_nhanh_vai_tro_khac_noi_dung_mac_du_cat_dung():
+    from danhgia.cham.quy_loi import muc_loi_tu_a1a2
+    du_doan = {"headings": tieu_de_he(("S1", "p1-0", "noi_dung"), ("S2", "p2-0", "bai_tap"), ("S3", "p3-0", "noi_dung"))}
+    loi, khong = muc_loi_tu_a1a2(khai_niem_g3(), G1, du_doan, BANG_DONG)
+    assert loi == {"G-S-002"} and khong == 1
+
+
+def test_muc_loi_khai_niem_dung_va_khai_niem_khong_dinh_vi_khong_bi_tinh_loi():
+    from danhgia.cham.quy_loi import muc_loi_tu_a1a2
+    du_doan = {"headings": tieu_de_he(("S1", "p1-0", "noi_dung"), ("S2", "p2-0", "noi_dung"), ("S3", "p3-0", "noi_dung"))}
+    loi, khong = muc_loi_tu_a1a2(khai_niem_g3(), G1, du_doan, BANG_DONG)
+    assert loi == set() and khong == 1      # G-S-004 có câu không định vị được; G-S-005 không có câu nên không đếm
+
+
+def test_cli_g1_dong_tinh_ly_do_1_tren_tap_phat_trien(tmp_path, capsys):
+    from danhgia.__main__ import main
+    hd, a, b, c = the_gioi()
+    a["khai_niem"][0]["dinh_nghia"] = {"cau": CAU_GAMMA, "trang": 3}       # G-S-001: câu nằm trong mục hệ cắt sai
+    for k in a["khai_niem"][1:]:
+        k["dinh_nghia"] = {"cau": "", "trang": None}
+    hd["cau_truc"] = {"tieu_de": [{"ma": "S1", "chu": "Muc A", "cap": 1, "cha": None, "trang": 1, "ma_dong": None},
+                                  {"ma": "S2", "chu": "Muc B", "cap": 1, "cha": None, "trang": 2, "ma_dong": None}],
+                      "muc": [{"ma": "S1", "vai_tro": "noi_dung"}, {"ma": "S2", "vai_tro": "noi_dung"}], "doan_van": []}
+    manifest = {"schema": "danh-gia-sach-1", "ma_sach": S, "tap": "phat_trien"}
+    tham_so = ["--hop-dong", _tep(tmp_path, "hd.json", hd), "--g3", _tep(tmp_path, "g3.json", a), "--g4", _tep(tmp_path, "g4.json", b),
+               "--can", _tep(tmp_path, "can.json", c), "--manifest", _tep(tmp_path, "m.json", manifest),
+               "--g1", _tep(tmp_path, "g1.json", G1), "--dong", _tep(tmp_path, "dong.json", BANG_DONG)]
+    main(["quy-loi", *tham_so])
+    ra = capsys.readouterr().out
+    gia = {dong.split()[0]: dong.split()[1] for dong in ra.splitlines() if len(dong.split()) == 2}
+    assert gia["quy_loi.khai_niem_o_muc_loi"] == "1" and int(gia["quy_loi.ly_do_1.nghiem"]) == 1
+    assert int(gia["quy_loi.ly_do_2.nghiem"]) == 3      # G01>G02 đã chuyển sang lý do 1
