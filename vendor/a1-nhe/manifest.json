@@ -1,8 +1,26 @@
 {
-  "version": "r2-full-v1",
+  "version": "r2-full-v2-dg20",
   "research_fingerprint": "182b6bd62f6a91b4ea3202c260a24a82918f966b7b7b332a9e18c961cb2328b5",
   "models": {
-    "heading.joblib": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
-    "join.joblib": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+    "heading.joblib": "49f904eaf832d4685a3bb145ee509dd826d59d6cfb21f23f9cf1b3b6aa889088",
+    "join.joblib": "69b84b6d2e124cda26ca40186b1c0d74f11b8c022fe4ef40069ca518b45d2293"
+  },
+  "dg20": {
+    "nguon": "báo cáo DG-20, chọn lại num_leaves bằng LOBO-16 và luật một sai số chuẩn; kiểm tái tạo r2-full-v1 trùng SHA-256 trước khi đổi",
+    "heading": {
+      "num_leaves": 7,
+      "n_estimators": 343
+    },
+    "join": {
+      "num_leaves": 15,
+      "n_estimators": 126
+    },
+    "ban_truoc": {
+      "version": "r2-full-v1",
+      "models": {
+        "heading.joblib": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+        "join.joblib": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+      }
+    }
   }
 }
