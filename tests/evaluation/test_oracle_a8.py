@@ -358,3 +358,58 @@ def test_oracle_a8_hash_cau_hinh_gom_g3(sach, gia, chinh, tmp_path):
     d["khai_niem"][0]["dinh_nghia"]["trang"] += 1
     g3.write_text(json.dumps(d), encoding="utf-8")
     assert main(tl.lenh(sach, ra, "oracle-a8", "--tu-luot", str(chinh), "--g3", str(g3))) == 2  # đổi vàng giữa chừng bị từ chối
+
+
+# ---------- câu vàng có công thức, chunk giữ chỗ [formula] (bộ khớp mảnh của DG-10) ----------
+
+CHUNKS_CT = [
+    {"chunk_id": "k1", "page": 4, "order_index": 0, "role": "noi_dung",
+     "text": "Với độ tin cậy cho trước, ta tìm được số t từ công thức:\n[formula]\nKhi đó ta tính được độ chính xác ε của ước lượng p theo công thức:\n[formula]\n"
+             "Khoảng ước lượng của p có dạng:\n[formula]\n"},
+    {"chunk_id": "k2", "page": 4, "order_index": 1, "role": "noi_dung",
+     "text": "Ví dụ 1. Điều tra về tỉ lệ phế phẩm của một kho hàng. Khi đó ta tính được độ chính xác của ước lượng theo cách khác."},
+    {"chunk_id": "k3", "page": 4, "order_index": 2, "role": "noi_dung", "text": "Đoạn kết thúc ở cuối trang, câu định nghĩa vắt sang chunk"},
+    {"chunk_id": "k4", "page": 5, "order_index": 3, "role": "noi_dung", "text": "kế tiếp ở đầu trang sau và kết thúc tại đây."},
+]
+CAU_CT = "Khi đó ta tính được độ chính xác ε của ước lượng p theo công thức: ε = t_α √(f(1-f)/n)"
+
+
+def test_che_cong_thuc_tinh_tay():
+    from danhgia.oracle_a8.canonical import che_cong_thuc
+    assert che_cong_thuc(CAU_CT) == "Khi đó ta tính được độ chính xác [formula] của ước lượng [formula] theo công thức: [formula]"
+    assert che_cong_thuc("Mẫu là một phần của tổng thể") == "Mẫu là một phần của tổng thể"  # câu chữ không đổi
+    assert che_cong_thuc("N = [ t_α² f(1-f) / ε² ] + 1") == "[formula]"
+
+
+def test_cau_vang_co_cong_thuc_gan_dung_chunk_co_cho_giu_cho():
+    from danhgia.phieu.kiem import do_khop_cau
+    chunk, diem, ly_do = tim_chunk(CAU_CT, 4, CHUNKS_CT)
+    assert chunk["chunk_id"] == "k1" and diem >= 0.9 and ly_do == "ok"  # k2 cũng có đoạn "Khi đó ta tính được độ chính xác" nhưng ngắn hơn nhiều
+    # đối chứng độc lập: bộ khớp thường (không tách công thức) không đạt ngưỡng trên đúng chunk này
+    assert do_khop_cau(CAU_CT, CHUNKS_CT[0]["text"]) < 0.9
+
+
+def test_cau_vang_co_cong_thuc_vao_canonical_co_anchor_va_dem_la_co_chunk():
+    g3 = {**G3, "khai_niem": [kn("G-S-001", "Độ chính xác", "day_o_day", 4, CAU_CT)]}
+    payload, _, bao = dung_canonical(g3, CHUNKS_CT, doc_id="D", mau_manifest=MAU_MANIFEST, g3_sha256="s" * 64)
+    nut = payload["nodes"][0]
+    assert (bao["co_chunk"], bao["khong_co_chunk"]) == (1, 0) and nut["anchor"]["chunk_id"] == "k1"
+    assert CHUNKS_CT[0]["text"][nut["anchor"]["char_start"]:].startswith("Khi đó ta tính được độ chính xác")
+    assert kiem_canonical(payload, dung_canonical(g3, CHUNKS_CT, doc_id="D", mau_manifest=MAU_MANIFEST, g3_sha256="s" * 64)[1],
+                          {c["chunk_id"] for c in CHUNKS_CT}) == []
+
+
+def test_cau_toan_ky_hieu_khong_co_phan_chu_thi_khong_co_cau():
+    assert tim_chunk("ε = t_α √(f(1-f)/n)", 4, CHUNKS_CT)[2] == "khong_co_cau"
+
+
+def test_cau_vat_hai_chunk_ke_ca_hai_trang_gan_vao_chunk_dau():
+    cau = "Đoạn kết thúc ở cuối trang, câu định nghĩa vắt sang chunk kế tiếp ở đầu trang sau và kết thúc tại đây."
+    chunk, diem, ly_do = tim_chunk(cau, 4, CHUNKS_CT)
+    assert chunk["chunk_id"] == "k3" and ly_do == "ok_vat_chunk" and diem >= 0.9
+
+
+def test_cau_chu_co_nghia_khac_voi_cong_thuc_van_khong_khop():
+    # cùng khung "Khi đó ... công thức:" nhưng phần chữ khác hẳn: không được gắn vào k1 chỉ vì có chỗ công thức
+    cau = "Bây giờ ta xét hoàn toàn khác một bài toán kiểm định giả thiết: H0 : μ = μ0 , H1 : μ ≠ μ0"
+    assert tim_chunk(cau, 4, CHUNKS_CT)[0] is None

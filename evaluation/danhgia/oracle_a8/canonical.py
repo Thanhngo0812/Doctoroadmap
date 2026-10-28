@@ -3,7 +3,7 @@
 Mỗi khái niệm của kho chốt (`khai_niem`; `loai` và `tranh_chap` không vào) thành đúng một node:
 - tên, tên khác; `learnable = true`; trạng thái dạy theo ánh xạ ngược (`anh_xa`), gồm `chi_nhac` và `kien_thuc_nen` (tiên quyết tiềm năng);
 - câu định nghĩa gắn vào **chunk chứa câu**: tìm trong các chunk **cùng trang** vàng ghi, rồi chunk trang liền kề (lệch một trang, có cờ), bằng
-  `do_khop_cau` với ngưỡng `NGUONG_CAU`. Không tìm trong trang xa hơn: một chunk sai trang là neo sai, không phải neo gần đúng;
+  `diem_cau` của DG-10 (khớp mảnh, bỏ qua chỗ công thức) với ngưỡng nghiêm của thước truy nguyên; câu vắt hai chunk (kể cả hai trang) nối chunk kế. Không tìm trong trang xa hơn: một chunk sai trang là neo sai, không phải neo gần đúng;
 - node `taught`/`uncertain` có chunk: `anchor`, `teaching_chunk_ids`, `defining_chunk_ids`; node `mentioned_only`/`prior_knowledge`: không `anchor`,
   `defining_chunk_ids` là chunk nhắc, `teaching_chunk_ids` rỗng (đúng như node thật của A5);
 - không tìm được chunk (không có câu, không có trang, hay không khớp): node **vẫn vào canonical**, `anchor` và các danh sách chunk để trống,
@@ -14,15 +14,16 @@ from __future__ import annotations
 import difflib
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from danhgia.phieu.can import NGUONG_CAU
-from danhgia.phieu.kiem import do_khop_cau
+from danhgia.cham.khai_niem import NGUONG_TRUY_NGUYEN, diem_cau, manh_chu
 
 from .anh_xa import CO_NEO, sang_may
 
-THUAT_TOAN = "oracle-a8-g3-v1"
+THUAT_TOAN = "oracle-a8-g3-v2"
+NGUONG_CAU = NGUONG_TRUY_NGUYEN["nghiem"]  # ngưỡng nghiêm của thước truy nguyên (DG-10): oracle và thước dùng chung một bộ khớp
 SAU_TRANG_THAI = ("taught", "uncertain", "mentioned_only", "unchecked", "prior_knowledge", "not_subject_matter")
 KHOA_NUT = ("node_id", "name", "aliases", "anchor", "anchor_candidate_id", "defining_chunk_ids", "defining_chunk_ids_source",
             "description", "evidence", "first_mention_index", "first_order_index", "learnable", "members", "name_kind", "node_type",
@@ -40,31 +41,72 @@ def _ma(tien_to, ma):
     return tien_to + hashlib.sha256(ma.encode("utf-8")).hexdigest()[:24]
 
 
+_KY_HIEU_TOAN = re.compile(r"[=<>≤≥≠≈∈∉∑∏√∫±×÷∞∂∆∇^_/()\[\]{}|+*−]")
+_CHO_CONG_THUC = "[formula]"
+
+
+def che_cong_thuc(cau):
+    """Câu vàng gõ công thức bằng ký tự thật (`ε = t_α √(f(1-f)/n)`) còn chunk giữ chỗ `[formula]`. Thay mỗi đoạn liền kề các từ toán (có ký hiệu
+    toán, hoặc chỉ gồm chữ đơn như `p`, `ε`, `x̄`) bằng `[formula]`, để bộ khớp mảnh của DG-10 (`diem_cau`, tách câu ở chỗ giữ chỗ) khớp phần chữ
+    của câu với chunk và bỏ qua phần công thức. Chữ thường và số giữ nguyên."""
+    ra = []
+    for tu in str(cau).split():
+        chu = re.findall(r"[^\W\d_]+", tu)
+        la_toan = bool(_KY_HIEU_TOAN.search(tu)) or (bool(chu) and all(len(x) <= 1 for x in chu)) or (not chu and not any(c.isdigit() for c in tu))
+        if la_toan:
+            if not ra or ra[-1] != _CHO_CONG_THUC:
+                ra.append(_CHO_CONG_THUC)
+        else:
+            ra.append(tu)
+    return " ".join(ra)
+
+
 def tim_chunk(cau, trang, chunks, nguong=NGUONG_CAU):
-    """Trả `(chunk | None, điểm, lý do)`. Lý do: `ok`, `ok_lech_trang`, `khong_co_cau`, `khong_co_trang`, `khong_khop`."""
+    """Trả `(chunk | None, điểm, lý do)`. Lý do: `ok`, `ok_lech_trang` (cộng hậu tố `_vat_chunk` nếu câu vắt sang chunk kế),
+    `khong_co_cau`, `khong_co_trang`, `khong_khop`.
+
+    Chấm bằng `diem_cau` của DG-10 trên văn bản từng chunk (sau `che_cong_thuc`). Thứ tự: chunk cùng trang vàng ghi, điểm cao nhất, đạt ngưỡng;
+    không thì câu vắt sang chunk kế (nối hai chunk liền nhau, kể cả sang trang liền sau); rồi lặp lại cho trang liền kề. Không tìm ở trang xa hơn."""
     if not cau or not str(cau).strip():
         return None, 0.0, "khong_co_cau"
     if not isinstance(trang, int) or isinstance(trang, bool):
         return None, 0.0, "khong_co_trang"
+    chuan = che_cong_thuc(cau)
+    if not manh_chu(chuan):
+        return None, 0.0, "khong_co_cau"  # câu toàn ký hiệu: không có phần chữ để khớp
+    theo_thu_tu = sorted(chunks, key=lambda c: c["order_index"])
+    tiep = {c["chunk_id"]: n for c, n in zip(theo_thu_tu, theo_thu_tu[1:])}
     tot_nhat = 0.0
     for cac_trang, ly_do in (((trang,), "ok"), ((trang - 1, trang + 1), "ok_lech_trang")):
         ung = [c for c in chunks if c["page"] in cac_trang]
-        diem = [(do_khop_cau(cau, c["text"]), c.get("role") == "noi_dung", -c["order_index"], c) for c in ung]
-        if diem:
-            tot = max(diem, key=lambda d: d[:3])
-            tot_nhat = max(tot_nhat, tot[0])
-            if tot[0] >= nguong:
-                return tot[3], tot[0], ly_do
+        for hau_to, nhap in (("", lambda c: c["text"]),
+                             ("_vat_chunk", lambda c: c["text"] + " " + tiep[c["chunk_id"]]["text"] if c["chunk_id"] in tiep
+                              and tiep[c["chunk_id"]]["page"] in (c["page"], c["page"] + 1) else None)):
+            diem = []
+            for c in ung:
+                van_ban = nhap(c)
+                if van_ban is not None:
+                    diem.append((diem_cau(chuan, c["page"], {c["page"]: van_ban}), c.get("role") == "noi_dung", -c["order_index"], c))
+            if diem:
+                tot = max(diem, key=lambda d: d[:3])
+                tot_nhat = max(tot_nhat, tot[0])
+                if tot[0] >= nguong:
+                    return tot[3], tot[0], ly_do + hau_to
     return None, tot_nhat, "khong_khop"
 
 
 def _vi_tri_cau(cau, van_ban):
-    """(char_start, câu như trong chunk). Khớp nguyên văn thì lấy đúng đoạn; không thì lấy đầu khối khớp dài nhất."""
+    """(char_start, câu như trong chunk). Khớp nguyên văn thì lấy đúng đoạn; không thì bắt đầu từ mảnh chữ đầu của câu (sau `che_cong_thuc`),
+    rồi từ khối khớp dài nhất. Câu trả về không dài hơn phần còn lại của chunk."""
     cho = van_ban.find(cau)
     if cho >= 0:
         return cho, van_ban[cho:cho + len(cau)]
-    kq = difflib.SequenceMatcher(None, van_ban, cau, autojunk=False).find_longest_match(0, len(van_ban), 0, len(cau))
-    return max(0, kq.a - kq.b), cau
+    manh = manh_chu(che_cong_thuc(cau))
+    cho = van_ban.find(manh[0]) if manh else -1
+    if cho < 0:
+        kq = difflib.SequenceMatcher(None, van_ban, cau, autojunk=False).find_longest_match(0, len(van_ban), 0, len(cau))
+        cho = max(0, kq.a - kq.b)
+    return cho, van_ban[cho:cho + len(cau)] if van_ban[cho:cho + len(cau)].strip() else cau
 
 
 def dung_canonical(g3, chunks, *, doc_id, mau_manifest=None, g3_sha256, nguong=NGUONG_CAU):
@@ -111,7 +153,7 @@ def dung_canonical(g3, chunks, *, doc_id, mau_manifest=None, g3_sha256, nguong=N
                          "node_type": "concept", "description": None, "source_refs": []})
         dem["tong"] += 1
         dem["co_chunk" if chunk else "khong_co_chunk"] += 1
-        dem["trang_lech"] += ly_do == "ok_lech_trang"
+        dem["trang_lech"] += ly_do.startswith("ok_lech_trang")
         dem["theo_ly_do"][ly_do] = dem["theo_ly_do"].get(ly_do, 0) + 1
         dem["theo_trang_thai"][trang_thai] = dem["theo_trang_thai"].get(trang_thai, 0) + 1
         hang.append({"ma_g3": ma, "node_id": node_id, "trang_thai_vang": k["trang_thai"], "trang_thai_may": trang_thai,
