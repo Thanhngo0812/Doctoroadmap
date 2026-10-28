@@ -65,7 +65,7 @@ def main():
             actors[label]=Actor(account.id,'user',account.email_verified_at is not None,'active')
             with accounts.store.atomic(['account:'+account.id]):accounts.store.delete_account_sessions(account.id)
         catalog={}
-        for key,title in [('primary','Đại số tuyến tính'),('secondary','Ôn tập Đại số'),('full','Nhóm đã đủ 200 thành viên'),('cancel','Nhóm học cuối tuần'),('expired','Lời mời đã hết hạn')]:
+        for key,title in [('primary','Đại số tuyến tính'),('secondary','Ôn tập Đại số'),('full','Nhóm đã đủ 200 thành viên'),('cancel','Nhóm học cuối tuần'),('expired','Lời mời đã hết hạn'),('race_empty','Nhóm kiểm thứ tự lời mời')]:
             catalog[key]=courses.create_course(actors['owner'],doc_id='doc-1',title=title,graph_version=8,module_count=len(graph.modules))
         catalog['unverified']=courses.create_course(actors['unverified'],doc_id='doc-1',title='Khoá của Linh',graph_version=8,module_count=len(graph.modules))
         # Populate only this UUID database, retaining the actual 200-member production boundary.

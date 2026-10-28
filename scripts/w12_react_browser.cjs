@@ -132,7 +132,24 @@ async function main(){
    await owner.getByLabel('Email người nhận').fill('email-khong-hop-le');await owner.getByRole('button',{name:'Gửi lời mời',exact:true}).click();assert.equal(await owner.getByLabel('Email người nhận').getAttribute('aria-invalid'),'true');await capture('email-invalid',true);
    await receiver.setViewportSize({width,height:900});await receiver.goto(base+'/khoa-hoc');await theme(receiver,color,reduced);await receiver.getByRole('button',{name:'Chấp nhận lời mời vào Đại số tuyến tính'}).waitFor();learner=receiver;await capture('inbox-pending',true);
   }
-  stage='owner-create-deduplicate';await owner.getByLabel('Email người nhận').fill(' NEW-W12@example.invalid, new-w12@example.invalid\nsecond-new-w12@example.invalid');await owner.getByRole('button',{name:'Gửi lời mời',exact:true}).click();await owner.getByText(/Đã tạo 2 lời mời/).waitFor();
+  for(const key of ['primary','race_empty'])for(const reduced of [false,true]){
+   stage='serialized-get-'+key+(reduced?'-reduced':'');const email=stage+'@example.invalid',cid=ids[key],url=api+'/courses/'+cid+'/invitations';
+   let release,captured;const gate=new Promise(resolve=>{release=resolve;}),snapshot=new Promise(resolve=>{captured=resolve;});let posts=0;
+   const count=request=>{if(request.method()==='POST'&&request.url()===url)posts++;};owner.on('request',count);
+   await owner.route(url,async route=>{if(route.request().method()!=='GET')return route.continue();const response=await route.fetch();captured({status:response.status(),body:await response.json()});await gate;await route.fulfill({response});});
+   await owner.goto(base+'/khoa-hoc/'+cid);await theme(owner,reduced?'dark':'light',reduced);await owner.getByRole('button',{name:'Chia sẻ',exact:true}).click();await owner.getByRole('tab',{name:'Mời qua email'}).click();const old=await snapshot;
+   assert.equal(old.status,200);assert.ok(!old.body.items.some(i=>i.email===email));if(key==='race_empty'&&!reduced)assert.deepEqual(old.body.items,[]);
+   await owner.getByLabel('Email người nhận').fill(email);const send=owner.getByRole('button',{name:'Gửi lời mời',exact:true});assert.equal(await send.isDisabled(),true);
+   const box=await send.boundingBox();await owner.mouse.click(box.x+box.width/2,box.y+box.height/2);assert.equal(posts,0);assert.equal(await owner.getByLabel('Email người nhận').inputValue(),email);
+   assert.ok(!(await probe(stage+'-blocked')).invitations.some(i=>i.email_normalized===email));learner=owner;await capture(stage+'-loading',true);
+   release();await send.waitFor({state:'visible'});await owner.getByText('Đang tải lời mời…',{exact:true}).waitFor({state:'hidden'});assert.equal(await send.isEnabled(),true);await owner.unroute(url);
+   const responsePromise=owner.waitForResponse(r=>r.url()===url&&r.request().method()==='POST');await send.click();const response=await responsePromise;assert.equal(response.status(),200);const created=await response.json();
+   await owner.getByText(/Đã tạo 1 lời mời/).waitFor();const cancel=owner.getByRole('button',{name:'Huỷ lời mời cho '+email});await cancel.waitFor();assert.equal(await cancel.isEnabled(),true);assert.equal(posts,1);
+   assert.equal(await owner.getByText('Chưa có lời mời đang chờ.',{exact:true}).count(),0);const sql=await probe(stage+'-committed');assert.ok(sql.invitations.some(i=>i.id===created.items[0].id&&i.email_normalized===email&&i.status==='pending'));
+   await capture(stage+'-created',true);await owner.getByRole('button',{name:'Tải lại',exact:true}).click();await cancel.waitFor();await owner.getByText('Đang tải lời mời…',{exact:true}).waitFor({state:'hidden'});assert.equal(await cancel.isEnabled(),true);
+   audit.serializedReads??=[];audit.serializedReads.push({stage,cid,email,heldGet:old,postStatus:response.status(),post:created,posts,sqlPending:true,visibleAfterReload:true});owner.off('request',count);
+  }
+  stage='owner-create-deduplicate';await share(owner,ids.primary);await owner.getByLabel('Email người nhận').fill(' NEW-W12@example.invalid, new-w12@example.invalid\nsecond-new-w12@example.invalid');await owner.getByRole('button',{name:'Gửi lời mời',exact:true}).click();await owner.getByText(/Đã tạo 2 lời mời/).waitFor();
   if(!smoke)assert.equal(await owner.locator('.invitation-notice').evaluate(e=>getComputedStyle(e).animationName),'none');learner=owner;await capture('email-created',true);
   let state=await probe('after-dedup');assert.equal(state.invitations.filter(i=>i.email_normalized==='new-w12@example.invalid'&&i.course_id===ids.primary).length,1);
   const newInvite=state.invitations.find(i=>i.email_normalized==='new-w12@example.invalid'&&i.course_id===ids.primary);assert.equal(new Date(newInvite.expires_at)-new Date(newInvite.created_at),7*86400000);assert.equal(newInvite.hash_bytes,32);assert.equal(newInvite.invitee_account_id,null);

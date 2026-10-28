@@ -29,7 +29,7 @@ export function EmailInvitations({courseId}: {courseId: string}) {
     }finally{if(!controller.signal.aborted&&active.current===controller){active.current=null;setBusy(null);}}
   };
   const submit=(event:FormEvent)=>{
-    event.preventDefault();if(active.current)return;setFieldError(null);setNotice(null);setError(null);
+    event.preventDefault();if(loading||active.current)return;setFieldError(null);setNotice(null);setError(null);
     const parts=emails.split(/[,\n]/).map(value=>value.trim().toLowerCase()).filter(Boolean);
     if(parts.length>50){setFieldError('Tối đa 50 email mỗi lần, trước khi gộp email trùng.');return;}
     if(!parts.length||parts.some(value=>value.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))){setFieldError('Email chưa hợp lệ. Kiểm tra các địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng.');return;}
@@ -43,7 +43,7 @@ export function EmailInvitations({courseId}: {courseId: string}) {
       <textarea id="invitation-emails" className="invitation-field" value={emails} disabled={Boolean(busy)} aria-invalid={Boolean(fieldError)} aria-describedby={'invitation-email-hint'+(fieldError?' invitation-email-error':'')} onChange={event=>{setEmails(event.target.value);setFieldError(null);setError(null);setNotice(null);}} rows={3} placeholder={'ban@example.com,\nnhom@example.com'} autoComplete="off" spellCheck={false}/>
       <small id="invitation-email-hint">Dán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.</small>
       {fieldError&&<small className="invitation-error" id="invitation-email-error">{fieldError}</small>}
-      <button className="button button-primary" type="submit" disabled={Boolean(busy)}>{busy==='send'?'Đang tạo lời mời…':'Gửi lời mời'}</button>
+      <button className="button button-primary" type="submit" disabled={loading||Boolean(busy)}>{busy==='send'?'Đang tạo lời mời…':'Gửi lời mời'}</button>
     </form>
     {error&&<p className="invitation-error" role="alert">{error}{verify&&<> <Link to="/tai-khoan">Xác minh email</Link></>}</p>}
     {notice&&<p className="invitation-notice" role="status">{notice}</p>}

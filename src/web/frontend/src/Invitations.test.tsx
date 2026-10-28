@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
-import { AuthProvider } from './Auth';
+import { AuthProvider, useAuth } from './Auth';
+import { EmailInvitations } from './Invitations';
 import { ShareDialog } from './Sharing';
 const item={id:'inv-1',course_id:'course-1',course_title:'Đại số tuyến tính',email:'an@example.invalid',status:'pending',expires_at:'2026-11-03T08:00:00Z',created_at:'2026-10-27T08:00:00Z',responded_at:null};
 const identity={id:'an',email:'an@example.invalid',display_name:'An',role:'user',email_verified:true};
@@ -36,6 +37,44 @@ beforeEach(()=>{
  }));
 });
 afterEach(()=>{cleanup();Reflect.deleteProperty(document,'startViewTransition');vi.restoreAllMocks();vi.unstubAllGlobals();});
+it.each([{snapshot:[]},{snapshot:[item]}])('waits for the initial list before sending, then retains the canonical invitation ($snapshot.length initial items)',async({snapshot})=>{
+ const original=globalThis.fetch;let release!:(response:Response)=>void;
+ vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/invitations')&&(!init?.method||init.method==='GET')?new Promise<Response>(resolve=>{release=resolve;}):original(input,init)));
+ const user=userEvent.setup();render(share());await user.click(screen.getByRole('tab',{name:'Mời qua email'}));
+ await user.type(await screen.findByLabelText('Email người nhận'),'ban@example.invalid');const send=screen.getByRole('button',{name:'Gửi lời mời'});
+ expect(send).toBeDisabled();await user.click(send);expect(calls.filter(c=>c.method==='POST')).toHaveLength(0);
+ fireEvent.submit(send.closest('form')!);expect(calls.filter(c=>c.method==='POST')).toHaveLength(0);
+ await act(async()=>release(json({items:snapshot})));await waitFor(()=>expect(send).toBeEnabled());await user.click(send);
+ await screen.findByText(/Đã tạo 1 lời mời/);expect(screen.getByText('ban@example.invalid')).toBeVisible();expect(screen.getByRole('button',{name:'Huỷ lời mời cho ban@example.invalid'})).toBeEnabled();
+ expect(calls.filter(c=>c.method==='POST')).toHaveLength(1);expect(screen.queryByText('Chưa có lời mời đang chờ.')).not.toBeInTheDocument();expect(screen.queryByText('Đang tải lời mời…')).not.toBeInTheDocument();
+});
+it('keeps the draft on send failure, serializes a reload, and allows retry after a list error',async()=>{
+ const user=userEvent.setup();render(share());await user.click(screen.getByRole('tab',{name:'Mời qua email'}));await screen.findByText(item.email);
+ await user.type(screen.getByLabelText('Email người nhận'),'ban@example.invalid');failure='rate_limited';await user.click(screen.getByRole('button',{name:'Gửi lời mời'}));await screen.findByRole('alert');
+ expect(screen.getByLabelText('Email người nhận')).toHaveValue('ban@example.invalid');expect(screen.getByRole('button',{name:'Huỷ lời mời cho '+item.email})).toBeEnabled();
+ const original=globalThis.fetch;let release!:(response:Response)=>void;
+ vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/invitations')&&(!init?.method||init.method==='GET')?new Promise<Response>(resolve=>{release=resolve;}):original(input,init)));
+ await user.click(screen.getByRole('button',{name:'Tải lại',exact:true}));expect(screen.getByRole('button',{name:'Gửi lời mời'})).toBeDisabled();
+ await act(async()=>release(json({error:{code:'internal_error'}},500)));expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi phía máy chủ');
+ failure=null;await user.click(screen.getByRole('button',{name:'Gửi lời mời'}));await screen.findByText(/Đã tạo 1 lời mời/);expect(screen.getByRole('button',{name:'Huỷ lời mời cho ban@example.invalid'})).toBeEnabled();
+ expect(screen.queryByText('Đang tải lời mời…')).not.toBeInTheDocument();expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+});
+it('ignores the old course list after switching course and still allows a send in the new course',async()=>{
+ const original=globalThis.fetch;let release!:(response:Response)=>void;
+ vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/courses/course-1/invitations')&&(!init?.method||init.method==='GET')?new Promise<Response>(resolve=>{release=resolve;}):original(input,init)));
+ const user=userEvent.setup();const view=render(share());await user.click(screen.getByRole('tab',{name:'Mời qua email'}));await waitFor(()=>expect(release).toBeTypeOf('function'));
+ view.rerender(share('course-2'));await user.click(screen.getByRole('tab',{name:'Mời qua email'}));await screen.findByText(item.email);await act(async()=>release(json({items:[{...item,email:'old-course-private@example.invalid'}]})));
+ expect(screen.queryByText('old-course-private@example.invalid')).not.toBeInTheDocument();await user.type(screen.getByLabelText('Email người nhận'),'ban@example.invalid');await user.click(screen.getByRole('button',{name:'Gửi lời mời'}));
+ await screen.findByText(/Đã tạo 1 lời mời/);expect(calls.filter(c=>c.method==='POST').map(c=>c.url)).toEqual(['/api/v1/courses/course-2/invitations']);
+});
+function PrivateInvitations(){const auth=useAuth();return auth.account?<><button onClick={auth.clearSession}>Kết thúc phiên kiểm</button><EmailInvitations courseId="course-1"/></>:<p>Phiên đã kết thúc</p>;}
+it.each(['unmount','logout'])('does not render a delayed private list after %s',async mode=>{
+ const original=globalThis.fetch;let release!:(response:Response)=>void;
+ vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/invitations')&&(!init?.method||init.method==='GET')?new Promise<Response>(resolve=>{release=resolve;}):original(input,init)));
+ const user=userEvent.setup();const view=render(<MemoryRouter><AuthProvider><PrivateInvitations/></AuthProvider></MemoryRouter>);await waitFor(()=>expect(release).toBeTypeOf('function'));
+ if(mode==='unmount')view.unmount();else await user.click(screen.getByRole('button',{name:'Kết thúc phiên kiểm'}));
+ await act(async()=>release(json({items:[{...item,email:'old-session-private@example.invalid'}]})));expect(screen.queryByText('old-session-private@example.invalid')).not.toBeInTheDocument();expect(screen.queryByLabelText('Email người nhận')).not.toBeInTheDocument();expect(calls.filter(c=>c.method==='POST')).toHaveLength(0);
+});
 it('validates the email field and sends a deduplicated batch without owner or invitation token',async()=>{
  const user=userEvent.setup();render(share());await user.click(screen.getByRole('tab',{name:'Mời qua email'}));const field=await screen.findByLabelText('Email người nhận');
  await user.type(field,'not-an-email');await user.click(screen.getByRole('button',{name:'Gửi lời mời'}));expect(field).toHaveAttribute('aria-invalid','true');expect(calls.filter(c=>c.method==='POST')).toHaveLength(0);
