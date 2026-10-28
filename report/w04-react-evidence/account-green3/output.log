@@ -1,0 +1,21 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Account.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w04-react-evidence/account-green3.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/src/web/frontend
+
+ ✓ src/Account.test.tsx (9 tests) 7402ms
+   ✓ saves a trimmed display name through PATCH and updates the shared account without extra private fields 450ms
+   ✓ validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace 1484ms
+   ✓ wrong current password marks that field without logging out or clearing the typed new password 961ms
+   ✓ requires confirmation, clears secrets after successful change and keeps the current account 1730ms
+   ✓ does not retain password state or apply a delayed profile response after leaving the route 1408ms
+   ✓ a profile refresh from the old session cannot resurrect A after logout-all and login as B 868ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  17:59:06
+   Duration  10.14s (tests 74%, import 11%, environment 9%, transform 4%, setup 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/report/w04-react-evidence/account-green3.xml

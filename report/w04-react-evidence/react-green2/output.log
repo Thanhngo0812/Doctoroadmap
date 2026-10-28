@@ -1,0 +1,46 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Account.test.tsx src/App.test.tsx src/W03.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w04-react-evidence/react-green2.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/src/web/frontend
+
+ ✓ src/Account.test.tsx (9 tests) 6991ms
+   ✓ saves a trimmed display name through PATCH and updates the shared account without extra private fields 409ms
+   ✓ validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace 1265ms
+   ✓ wrong current password marks that field without logging out or clearing the typed new password 959ms
+   ✓ requires confirmation, clears secrets after successful change and keeps the current account 1351ms
+   ✓ does not retain password state or apply a delayed profile response after leaving the route 1904ms
+   ✓ a profile refresh from the old session cannot resurrect A after logout-all and login as B 689ms
+ ✓ src/App.test.tsx (24 tests) 10813ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 1406ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 839ms
+     ✓ keeps duplicate registration generic when no session is created 854ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 482ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 813ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 827ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 493ms
+     ✓ clears errors and private form state when leaving register 774ms
+     ✓ does not carry a late login failure into the registration form 572ms
+     ✓ keeps a success notification visible after login reaches courses 434ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 623ms
+     ✓ shows the actual password field message for body.password 805ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 724ms
+ ✓ src/W03.test.tsx (21 tests) 3425ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 506ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 400ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 892ms
+     ✓ keeps the reset form available after a retryable network failure 439ms
+
+ Test Files  3 passed (3)
+      Tests  54 passed (54)
+   Start at  17:54:04
+   Duration  29.96s (tests 73%, environment 12%, import 11%, setup 4%, transform 1%)
+
+    Isolate  3 workers spawned · ~1.35s startup each (spawn + environment, per file)
+             at least ~2.70s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-react/report/w04-react-evidence/react-green2.xml

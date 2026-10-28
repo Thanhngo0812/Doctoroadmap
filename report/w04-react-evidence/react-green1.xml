@@ -1,0 +1,1745 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="53" failures="1" errors="0" time="29.2187432">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-27T10:52:26.872Z" hostname="ADMIN" tests="8" failures="1" errors="0" skipped="0" time="8.7804897">
+        <testcase classname="src/Account.test.tsx" name="saves a trimmed display name through PATCH and updates the shared account without extra private fields" time="0.5400499">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace" time="2.3259201">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body.display_name to the actual field and keeps the form for correction" time="0.224837">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body to the actual field and keeps the form for correction" time="0.1711442">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="wrong current password marks that field without logging out or clearing the typed new password" time="1.5287004">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="requires confirmation, clears secrets after successful change and keeps the current account" time="2.3363012">
+            <failure message="Unable to find an element with the text: /Đã đổi mật khẩu/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;profile-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;profile-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;profile-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Tài khoản của bạn
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Thông tin cá nhân và bảo mật đăng nhập.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;profile-grid&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;profile-info-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-info-title&quot;
+              &gt;
+                Thông tin tài khoản
+              &lt;/h2&gt;
+              &lt;dl
+                class=&quot;profile-identity&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    an@example.invalid
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Trạng thái email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    Chưa xác minh
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+              &lt;/dl&gt;
+              &lt;div
+                class=&quot;profile-verification&quot;
+              &gt;
+                &lt;p&gt;
+                  Xác minh email để mời bạn qua email
+                &lt;/p&gt;
+                &lt;button
+                  class=&quot;profile-link&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Gửi lại thư xác minh
+                &lt;/button&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-display-name&quot;
+                    &gt;
+                      Tên hiển thị
+                    &lt;/label&gt;
+                    &lt;input
+                      aria-describedby=&quot;profile-name-hint&quot;
+                      aria-invalid=&quot;false&quot;
+                      autocomplete=&quot;name&quot;
+                      id=&quot;profile-display-name&quot;
+                      maxlength=&quot;256&quot;
+                      value=&quot;An&quot;
+                    /&gt;
+                    &lt;small
+                      id=&quot;profile-name-hint&quot;
+                    &gt;
+                      Từ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.
+                    &lt;/small&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Lưu thay đổi
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-password-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-password-title&quot;
+              &gt;
+                Đổi mật khẩu
+              &lt;/h2&gt;
+              &lt;p
+                class=&quot;profile-muted&quot;
+              &gt;
+                Sau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.
+              &lt;/p&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-current-password&quot;
+                    &gt;
+                      Mật khẩu hiện tại
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;current-password&quot;
+                        id=&quot;profile-current-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu hiện tại&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-new-password&quot;
+                    &gt;
+                      Mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-new-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;small
+                    class=&quot;profile-password-hint&quot;
+                    id=&quot;profile-password-hint&quot;
+                  &gt;
+                    Từ 8 đến 128 ký tự; tránh mật khẩu phổ biến.
+                  &lt;/small&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-confirmation&quot;
+                    &gt;
+                      Xác nhận mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-confirmation&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện xác nhận mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Đổi mật khẩu
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;profile-feedback success&quot;
+                    role=&quot;status&quot;
+                  &gt;
+                    Đã hoàn tất.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-sessions-title&quot;
+              class=&quot;profile-section profile-sessions&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h2
+                  id=&quot;profile-sessions-title&quot;
+                &gt;
+                  Phiên đăng nhập
+                &lt;/h2&gt;
+                &lt;p
+                  class=&quot;profile-muted&quot;
+                &gt;
+                  Đăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button profile-logout-all&quot;
+                type=&quot;button&quot;
+              &gt;
+                Đăng xuất khỏi mọi thiết bị
+              &lt;/button&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;profile-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;profile-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;profile-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Tài khoản của bạn
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Thông tin cá nhân và bảo mật đăng nhập.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;profile-grid&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;profile-info-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-info-title&quot;
+              &gt;
+                Thông tin tài khoản
+              &lt;/h2&gt;
+              &lt;dl
+                class=&quot;profile-identity&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    an@example.invalid
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Trạng thái email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    Chưa xác minh
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+              &lt;/dl&gt;
+              &lt;div
+                class=&quot;profile-verification&quot;
+              &gt;
+                &lt;p&gt;
+                  Xác minh email để mời bạn qua email
+                &lt;/p&gt;
+                &lt;button
+                  class=&quot;profile-link&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Gửi lại thư xác minh
+                &lt;/button&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-display-name&quot;
+                    &gt;
+                      Tên hiển thị
+                    &lt;/label&gt;
+                    &lt;input
+                      aria-describedby=&quot;profile-name-hint&quot;
+                      aria-invalid=&quot;false&quot;
+                      autocomplete=&quot;name&quot;
+                      id=&quot;profile-display-name&quot;
+                      maxlength=&quot;256&quot;
+                      value=&quot;An&quot;
+                    /&gt;
+                    &lt;small
+                      id=&quot;profile-name-hint&quot;
+                    &gt;
+                      Từ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.
+                    &lt;/small&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Lưu thay đổi
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-password-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-password-title&quot;
+              &gt;
+                Đổi mật khẩu
+              &lt;/h2&gt;
+              &lt;p
+                class=&quot;profile-muted&quot;
+              &gt;
+                Sau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.
+              &lt;/p&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-current-password&quot;
+                    &gt;
+                      Mật khẩu hiện tại
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;current-password&quot;
+                        id=&quot;profile-current-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu hiện tại&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-new-password&quot;
+                    &gt;
+                      Mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-new-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;small
+                    class=&quot;profile-password-hint&quot;
+                    id=&quot;profile-password-hint&quot;
+                  &gt;
+                    Từ 8 đến 128 ký tự; tránh mật khẩu phổ biến.
+                  &lt;/small&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-confirmation&quot;
+                    &gt;
+                      Xác nhận mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-confirmation&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện xác nhận mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Đổi mật khẩu
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;profile-feedback success&quot;
+                    role=&quot;status&quot;
+                  &gt;
+                    Đã hoàn tất.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-sessions-title&quot;
+              class=&quot;profile-section profile-sessions&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h2
+                  id=&quot;profile-sessions-title&quot;
+                &gt;
+                  Phiên đăng nhập
+                &lt;/h2&gt;
+                &lt;p
+                  class=&quot;profile-muted&quot;
+                &gt;
+                  Đăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button profile-logout-all&quot;
+                type=&quot;button&quot;
+              &gt;
+                Đăng xuất khỏi mọi thiết bị
+              &lt;/button&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: /Đã đổi mật khẩu/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;profile-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;profile-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;profile-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Tài khoản của bạn
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Thông tin cá nhân và bảo mật đăng nhập.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;profile-grid&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;profile-info-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-info-title&quot;
+              &gt;
+                Thông tin tài khoản
+              &lt;/h2&gt;
+              &lt;dl
+                class=&quot;profile-identity&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    an@example.invalid
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Trạng thái email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    Chưa xác minh
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+              &lt;/dl&gt;
+              &lt;div
+                class=&quot;profile-verification&quot;
+              &gt;
+                &lt;p&gt;
+                  Xác minh email để mời bạn qua email
+                &lt;/p&gt;
+                &lt;button
+                  class=&quot;profile-link&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Gửi lại thư xác minh
+                &lt;/button&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-display-name&quot;
+                    &gt;
+                      Tên hiển thị
+                    &lt;/label&gt;
+                    &lt;input
+                      aria-describedby=&quot;profile-name-hint&quot;
+                      aria-invalid=&quot;false&quot;
+                      autocomplete=&quot;name&quot;
+                      id=&quot;profile-display-name&quot;
+                      maxlength=&quot;256&quot;
+                      value=&quot;An&quot;
+                    /&gt;
+                    &lt;small
+                      id=&quot;profile-name-hint&quot;
+                    &gt;
+                      Từ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.
+                    &lt;/small&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Lưu thay đổi
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-password-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-password-title&quot;
+              &gt;
+                Đổi mật khẩu
+              &lt;/h2&gt;
+              &lt;p
+                class=&quot;profile-muted&quot;
+              &gt;
+                Sau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.
+              &lt;/p&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-current-password&quot;
+                    &gt;
+                      Mật khẩu hiện tại
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;current-password&quot;
+                        id=&quot;profile-current-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu hiện tại&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-new-password&quot;
+                    &gt;
+                      Mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-new-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;small
+                    class=&quot;profile-password-hint&quot;
+                    id=&quot;profile-password-hint&quot;
+                  &gt;
+                    Từ 8 đến 128 ký tự; tránh mật khẩu phổ biến.
+                  &lt;/small&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-confirmation&quot;
+                    &gt;
+                      Xác nhận mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-confirmation&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện xác nhận mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Đổi mật khẩu
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;profile-feedback success&quot;
+                    role=&quot;status&quot;
+                  &gt;
+                    Đã hoàn tất.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-sessions-title&quot;
+              class=&quot;profile-section profile-sessions&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h2
+                  id=&quot;profile-sessions-title&quot;
+                &gt;
+                  Phiên đăng nhập
+                &lt;/h2&gt;
+                &lt;p
+                  class=&quot;profile-muted&quot;
+                &gt;
+                  Đăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button profile-logout-all&quot;
+                type=&quot;button&quot;
+              &gt;
+                Đăng xuất khỏi mọi thiết bị
+              &lt;/button&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;profile-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;profile-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            ← Khoá học của tôi
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;profile-heading&quot;
+          &gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Tài khoản của bạn
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Thông tin cá nhân và bảo mật đăng nhập.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;div
+            class=&quot;profile-grid&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;profile-info-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-info-title&quot;
+              &gt;
+                Thông tin tài khoản
+              &lt;/h2&gt;
+              &lt;dl
+                class=&quot;profile-identity&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    an@example.invalid
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;dt&gt;
+                    Trạng thái email
+                  &lt;/dt&gt;
+                  &lt;dd&gt;
+                    Chưa xác minh
+                  &lt;/dd&gt;
+                &lt;/div&gt;
+              &lt;/dl&gt;
+              &lt;div
+                class=&quot;profile-verification&quot;
+              &gt;
+                &lt;p&gt;
+                  Xác minh email để mời bạn qua email
+                &lt;/p&gt;
+                &lt;button
+                  class=&quot;profile-link&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  Gửi lại thư xác minh
+                &lt;/button&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-display-name&quot;
+                    &gt;
+                      Tên hiển thị
+                    &lt;/label&gt;
+                    &lt;input
+                      aria-describedby=&quot;profile-name-hint&quot;
+                      aria-invalid=&quot;false&quot;
+                      autocomplete=&quot;name&quot;
+                      id=&quot;profile-display-name&quot;
+                      maxlength=&quot;256&quot;
+                      value=&quot;An&quot;
+                    /&gt;
+                    &lt;small
+                      id=&quot;profile-name-hint&quot;
+                    &gt;
+                      Từ 1 đến 60 ký tự, không tính khoảng trắng hai đầu.
+                    &lt;/small&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Lưu thay đổi
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                /&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-password-title&quot;
+              class=&quot;profile-section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;profile-password-title&quot;
+              &gt;
+                Đổi mật khẩu
+              &lt;/h2&gt;
+              &lt;p
+                class=&quot;profile-muted&quot;
+              &gt;
+                Sau khi đổi, bạn vẫn đăng nhập ở đây. Các phiên khác sẽ được đăng xuất.
+              &lt;/p&gt;
+              &lt;form
+                novalidate=&quot;&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-current-password&quot;
+                    &gt;
+                      Mật khẩu hiện tại
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;current-password&quot;
+                        id=&quot;profile-current-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu hiện tại&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-new-password&quot;
+                    &gt;
+                      Mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-new-password&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;small
+                    class=&quot;profile-password-hint&quot;
+                    id=&quot;profile-password-hint&quot;
+                  &gt;
+                    Từ 8 đến 128 ký tự; tránh mật khẩu phổ biến.
+                  &lt;/small&gt;
+                  &lt;div
+                    class=&quot;profile-field&quot;
+                  &gt;
+                    &lt;label
+                      for=&quot;profile-confirmation&quot;
+                    &gt;
+                      Xác nhận mật khẩu mới
+                    &lt;/label&gt;
+                    &lt;div
+                      class=&quot;profile-password&quot;
+                    &gt;
+                      &lt;input
+                        aria-describedby=&quot;profile-password-hint&quot;
+                        aria-invalid=&quot;false&quot;
+                        autocomplete=&quot;new-password&quot;
+                        id=&quot;profile-confirmation&quot;
+                        type=&quot;password&quot;
+                        value=&quot;&quot;
+                      /&gt;
+                      &lt;button
+                        aria-label=&quot;Hiện xác nhận mật khẩu mới&quot;
+                        aria-pressed=&quot;false&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Hiện
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Đổi mật khẩu
+                  &lt;/button&gt;
+                &lt;/fieldset&gt;
+                &lt;div
+                  aria-live=&quot;polite&quot;
+                  class=&quot;profile-feedback-slot&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;profile-feedback success&quot;
+                    role=&quot;status&quot;
+                  &gt;
+                    Đã hoàn tất.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/form&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;profile-sessions-title&quot;
+              class=&quot;profile-section profile-sessions&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h2
+                  id=&quot;profile-sessions-title&quot;
+                &gt;
+                  Phiên đăng nhập
+                &lt;/h2&gt;
+                &lt;p
+                  class=&quot;profile-muted&quot;
+                &gt;
+                  Đăng xuất khỏi tất cả thiết bị, kể cả thiết bị đang dùng.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button profile-logout-all&quot;
+                type=&quot;button&quot;
+              &gt;
+                Đăng xuất khỏi mọi thiết bị
+              &lt;/button&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:69:23
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="confirms logout-all before POST and safely removes the private page" time="0.2887603">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="does not retain password state or apply a delayed profile response after leaving the route" time="1.3630857">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-27T10:52:26.882Z" hostname="ADMIN" tests="24" failures="0" errors="0" skipped="0" time="14.6892037">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="1.2876287">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.1148257">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.0855597">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.083595">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.0804363">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on courses" time="1.1789243">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="1.2154422">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.796094">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.028924">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="1.2710993">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="1.1783399">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.1086979">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving login" time="0.7491861">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving register" time="1.3195651">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; does not carry a late login failure into the registration form" time="0.7635633">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; keeps a success notification visible after login reaches courses" time="0.6939931">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows inline errors for short invalid fields without submitting to the API" time="0.8331819">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for body.password" time="1.1009075">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for [ &apos;body&apos;, &apos;password&apos; ]" time="1.1237744">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is false" time="0.0655092">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is true" time="0.0614572">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion false" time="0.1911933">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion true" time="0.1512175">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; keeps the account visible and allows retry when logout fails" time="0.2035838">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W03.test.tsx" timestamp="2026-10-27T10:52:26.889Z" hostname="ADMIN" tests="21" failures="0" errors="0" skipped="0" time="5.7490498">
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the recovery header scoped and omits the redundant account eyebrow" time="0.1121087">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=false)" time="0.0307772">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=false)" time="0.0284799">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=true)" time="0.03413">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=true)" time="0.0289537">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows the verification reminder and resends with the in-memory CSRF token" time="0.1460943">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; does not verify on GET and confirms a fragment token only after a button press" time="0.0768043">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; captures a second verification token opened in the same tab after success" time="0.1986615">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; ignores a late response from the previous verification token" time="0.2238658">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; sends a generic password-reset request without revealing whether the email exists" time="0.4329143">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps recovery navigation pointed at the account for an authenticated user" time="0.0303383">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; uses the fragment token, resets without auto-login, and shows the success notice on login" time="0.7918956">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_expired by the token error type" time="0.0641829">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_used by the token error type" time="0.0767841">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_invalid by the token error type" time="0.065925">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; focuses the recovery heading and hides reset fields after a terminal token error" time="0.8062563">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; replaces a terminal reset link with a second link opened in the same tab" time="1.717165">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the reset form available after a retryable network failure" time="0.8399103">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows a missing-token state and does not send a request" time="0.0121318">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /xac-minh?utm=mail" time="0.0151939">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /dat-lai-mat-khau#token=" time="0.0143083">
+        </testcase>
+    </testsuite>
+</testsuites>
