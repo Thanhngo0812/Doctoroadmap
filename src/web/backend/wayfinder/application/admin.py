@@ -52,7 +52,10 @@ class AdminService:
                 raise AuthError('bootstrap_required' if protected is None else 'protected_admin',
                     'Cần xác lập định danh admin đầu tiên.' if protected is None else 'Không thể khoá hoặc hạ quyền admin đầu tiên.',
                     fields=[{'loc':field,'message':'Tài khoản được bảo vệ bởi chính sách admin đầu tiên.'} for field in blocked])
-            if target.role == 'admin' and changes.get('role', target.role) == 'user' and self.store.admin_count() <= 1:
+            was_active_admin = target.role == 'admin' and target.status == 'active'
+            will_be_active_admin = (changes.get('role', target.role) == 'admin'
+                                    and changes.get('status', target.status) == 'active')
+            if was_active_admin and not will_be_active_admin and self.store.admin_count() <= 1:
                 raise AuthError('conflict', 'Không thể hạ quyền quản trị viên cuối cùng.')
             now = self.clock.now()
             actual = {key:value for key,value in changes.items() if getattr(target,key) != value}
