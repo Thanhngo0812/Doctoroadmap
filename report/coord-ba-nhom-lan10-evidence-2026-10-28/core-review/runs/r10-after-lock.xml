@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.718" timestamp="2026-10-28T07:51:01.969018+07:00" hostname="ADMIN"><testcase classname="test_independent_admin" name="test_after_lock_recheck_prevents_stale_actor_write" time="0.351"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...d5587be', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x00000131F94EC400&gt;)
+
+    def test_after_lock_recheck_prevents_stale_actor_write(case):
+        rt = case
+        rt.store.after_lock = lambda conn: conn.execute(text("UPDATE account SET role='user' WHERE id=:id"),
+            {'id':rt.admin.user_id})
+        before = snapshot(rt)
+&gt;       with pytest.raises(AuthError) as caught:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+test_independent_admin.py:143: Failed</failure></testcase></testsuite></testsuites>

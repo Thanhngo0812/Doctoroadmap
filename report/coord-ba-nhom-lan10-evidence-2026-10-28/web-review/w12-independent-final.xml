@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="1" errors="0" time="0.6149959">
+    <testsuite name="src/ReviewW12.test.tsx" timestamp="2026-10-28T00:53:39.881Z" hostname="ADMIN" tests="4" failures="1" errors="0" skipped="0" time="0.6149959">
+        <testcase classname="src/ReviewW12.test.tsx" name="review regression: a list response started before POST cannot erase the newly created invitation" time="0.3914746">
+            <failure message="Unable to find an element with the text: new@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;section
+      aria-label=&quot;Mời qua email&quot;
+      class=&quot;email-invitations&quot;
+    &gt;
+      &lt;p
+        class=&quot;invitation-muted&quot;
+      &gt;
+        Tối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.
+      &lt;/p&gt;
+      &lt;form
+        novalidate=&quot;&quot;
+      &gt;
+        &lt;label
+          for=&quot;invitation-emails&quot;
+        &gt;
+          Email người nhận
+        &lt;/label&gt;
+        &lt;textarea
+          aria-describedby=&quot;invitation-email-hint&quot;
+          aria-invalid=&quot;false&quot;
+          autocomplete=&quot;off&quot;
+          class=&quot;invitation-field&quot;
+          id=&quot;invitation-emails&quot;
+          placeholder=&quot;ban@example.com,
+nhom@example.com&quot;
+          rows=&quot;3&quot;
+          spellcheck=&quot;false&quot;
+        /&gt;
+        &lt;small
+          id=&quot;invitation-email-hint&quot;
+        &gt;
+          Dán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.
+        &lt;/small&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Gửi lời mời
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;p
+        class=&quot;invitation-notice&quot;
+        role=&quot;status&quot;
+      &gt;
+        Đã tạo 1 lời mời và yêu cầu gửi thư. Người nhận cần chấp nhận trong ứng dụng.
+      &lt;/p&gt;
+      &lt;div
+        class=&quot;invitation-list-heading&quot;
+      &gt;
+        &lt;h3&gt;
+          Lời mời đang chờ
+        &lt;/h3&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Tải lại
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;p
+        class=&quot;invitation-muted&quot;
+      &gt;
+        Chưa có lời mời đang chờ.
+      &lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: new@example.invalid. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;section
+      aria-label=&quot;Mời qua email&quot;
+      class=&quot;email-invitations&quot;
+    &gt;
+      &lt;p
+        class=&quot;invitation-muted&quot;
+      &gt;
+        Tối đa 50 email/lần, 200 thư/ngày. Lời mời có hiệu lực 7 ngày.
+      &lt;/p&gt;
+      &lt;form
+        novalidate=&quot;&quot;
+      &gt;
+        &lt;label
+          for=&quot;invitation-emails&quot;
+        &gt;
+          Email người nhận
+        &lt;/label&gt;
+        &lt;textarea
+          aria-describedby=&quot;invitation-email-hint&quot;
+          aria-invalid=&quot;false&quot;
+          autocomplete=&quot;off&quot;
+          class=&quot;invitation-field&quot;
+          id=&quot;invitation-emails&quot;
+          placeholder=&quot;ban@example.com,
+nhom@example.com&quot;
+          rows=&quot;3&quot;
+          spellcheck=&quot;false&quot;
+        /&gt;
+        &lt;small
+          id=&quot;invitation-email-hint&quot;
+        &gt;
+          Dán email, cách nhau bằng dấu phẩy hoặc xuống dòng. Email trùng được gộp.
+        &lt;/small&gt;
+        &lt;button
+          class=&quot;button button-primary&quot;
+          type=&quot;submit&quot;
+        &gt;
+          Gửi lời mời
+        &lt;/button&gt;
+      &lt;/form&gt;
+      &lt;p
+        class=&quot;invitation-notice&quot;
+        role=&quot;status&quot;
+      &gt;
+        Đã tạo 1 lời mời và yêu cầu gửi thư. Người nhận cần chấp nhận trong ứng dụng.
+      &lt;/p&gt;
+      &lt;div
+        class=&quot;invitation-list-heading&quot;
+      &gt;
+        &lt;h3&gt;
+          Lời mời đang chờ
+        &lt;/h3&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Tải lại
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;p
+        class=&quot;invitation-muted&quot;
+      &gt;
+        Chưa có lời mời đang chờ.
+      &lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError ../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/ReviewW12.test.tsx:31:17
+            </failure>
+        </testcase>
+        <testcase classname="src/ReviewW12.test.tsx" name="review: exactly 50 distinct addresses reach the actual API contract once" time="0.1245878">
+        </testcase>
+        <testcase classname="src/ReviewW12.test.tsx" name="review: an unverified account makes no inbox request and exposes no accept control" time="0.0192539">
+        </testcase>
+        <testcase classname="src/ReviewW12.test.tsx" name="review: actual AuthPage removes raw fragment before any invitation API request" time="0.0761351">
+        </testcase>
+    </testsuite>
+</testsuites>

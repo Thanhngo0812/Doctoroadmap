@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="54" failures="0" errors="0" time="21.2295342">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-27T10:54:34.821Z" hostname="ADMIN" tests="9" failures="0" errors="0" skipped="0" time="6.9914889">
+        <testcase classname="src/Account.test.tsx" name="saves a trimmed display name through PATCH and updates the shared account without extra private fields" time="0.4092833">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace" time="1.2653024">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body.display_name to the actual field and keeps the form for correction" time="0.0995297">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body to the actual field and keeps the form for correction" time="0.1095117">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="wrong current password marks that field without logging out or clearing the typed new password" time="0.9594976">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="requires confirmation, clears secrets after successful change and keeps the current account" time="1.3505881">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="confirms logout-all before POST and safely removes the private page" time="0.2026379">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="does not retain password state or apply a delayed profile response after leaving the route" time="1.904264">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="a profile refresh from the old session cannot resurrect A after logout-all and login as B" time="0.6887625">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-27T10:54:34.829Z" hostname="ADMIN" tests="24" failures="0" errors="0" skipped="0" time="10.812896">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="1.4061739">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.1174476">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.1050279">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.0885669">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.059794">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on courses" time="0.8387628">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="0.8537415">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.4822777">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.0180836">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="0.8130373">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="0.8268792">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.0845125">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving login" time="0.4926296">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving register" time="0.7738565">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; does not carry a late login failure into the registration form" time="0.5715589">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; keeps a success notification visible after login reaches courses" time="0.4344136">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows inline errors for short invalid fields without submitting to the API" time="0.6225687">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for body.password" time="0.8052707">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for [ &apos;body&apos;, &apos;password&apos; ]" time="0.7244281">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is false" time="0.0595915">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is true" time="0.0577325">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion false" time="0.1817835">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion true" time="0.1492612">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; keeps the account visible and allows retry when logout fails" time="0.2407035">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W03.test.tsx" timestamp="2026-10-27T10:54:34.838Z" hostname="ADMIN" tests="21" failures="0" errors="0" skipped="0" time="3.4251493">
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the recovery header scoped and omits the redundant account eyebrow" time="0.157904">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=false)" time="0.0480886">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=false)" time="0.0350389">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=true)" time="0.038436">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=true)" time="0.049742">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows the verification reminder and resends with the in-memory CSRF token" time="0.1181047">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; does not verify on GET and confirms a fragment token only after a button press" time="0.0724306">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; captures a second verification token opened in the same tab after success" time="0.0882582">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; ignores a late response from the previous verification token" time="0.0905395">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; sends a generic password-reset request without revealing whether the email exists" time="0.2570273">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps recovery navigation pointed at the account for an authenticated user" time="0.0397568">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; uses the fragment token, resets without auto-login, and shows the success notice on login" time="0.5055227">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_expired by the token error type" time="0.0493988">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_used by the token error type" time="0.055206">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_invalid by the token error type" time="0.0414804">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; focuses the recovery heading and hides reset fields after a terminal token error" time="0.4001575">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; replaces a terminal reset link with a second link opened in the same tab" time="0.8923916">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the reset form available after a retryable network failure" time="0.439442">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows a missing-token state and does not send a request" time="0.0112541">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /xac-minh?utm=mail" time="0.0150506">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /dat-lai-mat-khau#token=" time="0.0169824">
+        </testcase>
+    </testsuite>
+</testsuites>

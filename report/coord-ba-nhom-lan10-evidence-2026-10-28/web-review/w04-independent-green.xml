@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="1" errors="0" time="0.1864531">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-28T00:48:59.778Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="src/Account.test.tsx" name="src/Account.test.tsx" time="0">
+            <failure message="Failed to resolve import &quot;rehype-katex&quot; from &quot;src/LectureMarkdown.tsx&quot;. Does the file exist?" type="Error">
+Error: Failed to resolve import &quot;rehype-katex&quot; from &quot;src/LectureMarkdown.tsx&quot;. Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w04-account-react/src/LectureMarkdown.tsx:5:24
+  3  |  import remarkMath from &quot;remark-math&quot;;
+  4  |  import remarkGfm from &quot;remark-gfm&quot;;
+  5  |  import rehypeKatex from &quot;rehype-katex&quot;;
+     |                           ^
+  6  |  import &quot;katex/dist/katex.min.css&quot;;
+  7  |  var _jsxFileName = &quot;C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w04-account-react/src/Lectu...
+ ❯ TransformPluginContext._formatLog ../node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error ../node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl ../node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ ../node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform ../node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform ../node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform ../node_modules/vite/dist/node/chunks/node.js:20184:26
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/ReviewW04.test.tsx" timestamp="2026-10-28T00:48:59.789Z" hostname="ADMIN" tests="3" failures="0" errors="0" skipped="0" time="0.1864531">
+        <testcase classname="src/ReviewW04.test.tsx" name="review: stale successful refresh cannot replace B identity or its CSRF header" time="0.1195681">
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: delayed profile PATCH from A cannot replace B identity or its CSRF header" time="0.0364139">
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: queued logout-all transition for A cannot clear the later B session" time="0.0266616">
+        </testcase>
+    </testsuite>
+</testsuites>
