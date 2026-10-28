@@ -54,7 +54,7 @@ it('keeps the draft on send failure, serializes a reload, and allows retry after
  expect(screen.getByLabelText('Email người nhận')).toHaveValue('ban@example.invalid');expect(screen.getByRole('button',{name:'Huỷ lời mời cho '+item.email})).toBeEnabled();
  const original=globalThis.fetch;let release!:(response:Response)=>void;
  vi.stubGlobal('fetch',vi.fn((input,init)=>String(input).endsWith('/invitations')&&(!init?.method||init.method==='GET')?new Promise<Response>(resolve=>{release=resolve;}):original(input,init)));
- await user.click(screen.getByRole('button',{name:'Tải lại',exact:true}));expect(screen.getByRole('button',{name:'Gửi lời mời'})).toBeDisabled();
+ await user.click(screen.getByRole('button',{name:'Tải lại'}));expect(screen.getByRole('button',{name:'Gửi lời mời'})).toBeDisabled();
  await act(async()=>release(json({error:{code:'internal_error'}},500)));expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi phía máy chủ');
  failure=null;await user.click(screen.getByRole('button',{name:'Gửi lời mời'}));await screen.findByText(/Đã tạo 1 lời mời/);expect(screen.getByRole('button',{name:'Huỷ lời mời cho ban@example.invalid'})).toBeEnabled();
  expect(screen.queryByText('Đang tải lời mời…')).not.toBeInTheDocument();expect(screen.queryByRole('alert')).not.toBeInTheDocument();
