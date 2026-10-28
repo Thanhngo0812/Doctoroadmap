@@ -14,6 +14,7 @@ from pathlib import Path
 
 from danhgia.hop_dong import LoiHopDong, kiem_hoac_loi
 from danhgia.hop_dong.luoc_do import TEN_LUOC_DO
+from danhgia.xuat.cua_so import cua_so_dinh_nghia, tham_so_cua_so
 
 KHOA_DINH_DANH = ("he", "bien_the", "luot_nhieu", "commit", "ngay_chay", "transport", "sha256_pdf", "so_trang")
 KHOA_GRAPH = ("nodes", "mentioned_nodes", "excluded_nodes", "requires_edges", "soft_backward_edges", "bypassed_edges",
@@ -122,7 +123,7 @@ def _canh(graph, chunks, loi, nguon_goc=None):
     return ket_qua
 
 
-def _cap_ung_vien(graph):
+def _cap_ung_vien(graph, cua_so=None):
     nhat_ky = {row["pair_id"]: row for row in graph["secondary_log"]}
     cap = []
     for cap_tho in graph["suspected_pairs"]:
@@ -133,7 +134,7 @@ def _cap_ung_vien(graph):
         cap.append({"trai": cap_tho["left"], "phai": cap_tho["right"], "nguon_de_cu": list(cap_tho.get("sources", [])),
                     "quyet_dinh": dong["status"] if dong is not None else "khong_co_trong_nhat_ky",
                     "nguong": dong.get("threshold") if dong is not None else None, "diem_ml": diem})
-    return {"cap": cap, "cua_so_dinh_nghia": None}
+    return {"cap": cap, "cua_so_dinh_nghia": cua_so}
 
 
 def _cau_truc(chunks_list, sections, loi, can_dong=None):
@@ -242,14 +243,20 @@ def xuat(kho, doc_id, phien_ban, *, dinh_danh, kho_pha_b=None, bang_dong=None):
         manifest_chunks = _doc(duong_chunks / "manifest.json")
         duong_cay = kho / "parse_tree" / doc_id / f"v{manifest_chunks['parse_version']}" / "tree.json"
         can_dong = _can_dong(_doc(duong_cay)["nodes"], sections, bang_dong)
+    cua_so = None
+    tham_so = tham_so_cua_so(kho, doc_id, phien_ban)
+    if tham_so is not None:   # cửa sổ dựng bằng hàm của pipeline với cấu hình của lượt chạy (DG-15)
+        cua_so = cua_so_dinh_nghia(graph["nodes"], list(graph["nodes"]) + list(graph.get("mentioned_nodes") or []), chunks_list,
+                                   truoc=tham_so[0], sau=tham_so[1])
     return xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, dinh_danh=dinh_danh, kho=kho,
-                           kho_pha_b=kho_pha_b, loi=loi, can_dong=can_dong)
+                           kho_pha_b=kho_pha_b, loi=loi, can_dong=can_dong, cua_so=cua_so)
 
 
 def xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, *, dinh_danh, kho=None, kho_pha_b=None,
-                    loi=None, chi_phi=None, nguon_goc_canh=None, can_dong=None):
+                    loi=None, chi_phi=None, nguon_goc_canh=None, can_dong=None, cua_so=None):
     """Dựng hợp đồng từ graph đã nạp (không đọc kho). Hệ chính đi qua `xuat`; bộ phát lại và baseline đưa graph tự dựng vào đây.
 
+    `cua_so` (tuỳ chọn): cửa sổ định nghĩa `{đích: [nguồn]}` (xem `xuat/cua_so.py`); không có thì ghi `null` và quy lỗi báo cờ thiếu cửa sổ.
     `chi_phi` (tuỳ chọn) thay phần đo của kho: hệ không chạy pipeline không có đo đạc để đọc. `nguon_goc_canh` ép nguồn gốc
     cạnh (baseline, oracle). `manifest` cần `config_hash` và `config.model_id`.
     """
@@ -277,7 +284,7 @@ def xuat_tu_du_lieu(doc_id, phien_ban, graph, manifest, chunks_list, sections, *
         "khai_niem": khai_niem,
         "ban_do_danh_tinh": dict(graph.get("identity_map") or {}),
         "canh": _canh(graph, chunks, loi, nguon_goc_canh),
-        "cap_ung_vien": _cap_ung_vien(graph),
+        "cap_ung_vien": _cap_ung_vien(graph, cua_so),
         "lo_trinh": {"day_hoc": list(graph["sequence"]),
                      "module": [{"ma": m["module_id"], "ten": m["title"], "thanh_vien": list(m["node_ids"])}
                                 for m in graph["modules"]]},
