@@ -2,6 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useLayoutEffect, use
 import { flushSync } from 'react-dom';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError, apiJson, setCsrfToken } from './api';
+import { AccountPage } from './Account';
+export { AccountPage } from './Account';
 
 export type Account = {
   id: string;
@@ -23,6 +25,8 @@ type AuthState = {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, displayName: string) => Promise<{ message: string; account: Account | null }>;
   logout: () => Promise<void>;
+  logoutAll: (signal: AbortSignal) => Promise<void>;
+  updateProfile: (displayName: string, signal: AbortSignal) => Promise<Account | null>;
   clearSession: () => void;
 };
 
@@ -52,6 +56,7 @@ function validSession(response: MeResponse): boolean {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
+  const epoch = useRef(0);
   const [status, setStatus] = useState<AuthState['status']>('loading');
   const [account, setAccount] = useState<Account | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -66,8 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [notice]);
 
   const refresh = useCallback(async () => {
+    const request = epoch.current;
     try {
       const response = await apiJson<MeResponse>('/api/v1/me');
+      if (request !== epoch.current) return null;
       if (!validSession(response)) throw new ApiError('internal_error');
       setCsrfToken(response.csrf_token);
       setAccount(response.account);
@@ -75,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setStatus('authenticated');
       return response.account;
     } catch (cause) {
+      if (request !== epoch.current) return null;
       setCsrfToken(null);
       setAccount(null);
       if (cause instanceof ApiError && cause.code === 'unauthenticated') {
@@ -91,12 +99,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => { void refresh().catch(() => undefined); }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
+    const request = ++epoch.current;
     setNotice(null);
     const response = await apiJson<MeResponse>('/api/v1/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+    if (request !== epoch.current) return;
     if (!validSession(response)) throw new ApiError('internal_error');
     setCsrfToken(response.csrf_token);
     setAccount(response.account);
@@ -106,24 +116,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(async (email: string, password: string, displayName: string) => {
+    const request = ++epoch.current;
     setNotice(null);
     const response = await apiJson<{ message: string }>('/api/v1/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, display_name: displayName }),
     });
+    if (request !== epoch.current) return { message: response.message, account: null };
     let account: Account | null = null;
     try { account = await refresh(); } catch { /* Keep the API's generic registration response visible. */ }
-    if (account) setNotice('Tạo tài khoản thành công.');
+    if (account && request === epoch.current) setNotice('Tạo tài khoản thành công.');
     return { message: response.message, account };
   }, [refresh]);
 
   const logout = useCallback(async () => {
+    const request = ++epoch.current;
     setNotice(null);
     try {
       await apiJson<{ message: string }>('/api/v1/auth/logout', { method: 'POST' });
     } catch (cause) {
-      if (cause instanceof ApiError && (cause.code === 'unauthenticated' || cause.code === 'account_disabled')) {
+      if (request === epoch.current && cause instanceof ApiError && (cause.code === 'unauthenticated' || cause.code === 'account_disabled')) {
         setCsrfToken(null);
         setAccount(null);
         setStatus('guest');
@@ -131,6 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw cause;
     }
     transitionAuth(() => {
+      if (request !== epoch.current) return;
       setCsrfToken(null);
       setAccount(null);
       setError(null);
@@ -141,13 +155,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [navigate]);
 
   const clearSession = useCallback(() => {
+    epoch.current++;
     setCsrfToken(null);
     setAccount(null);
     setError(null);
     setStatus('guest');
   }, []);
 
-  const value = useMemo(() => ({ status, account, notice, error, notify, clearNotice, refresh, login, register, logout, clearSession }), [status, account, notice, error, notify, clearNotice, refresh, login, register, logout, clearSession]);
+  const updateProfile = useCallback(async (displayName: string, signal: AbortSignal) => {
+    const request = ++epoch.current, owner = account?.id;
+    const response = await apiJson<MeResponse>('/api/v1/me', { method: 'PATCH', signal,
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ display_name: displayName }) });
+    if (signal.aborted || request !== epoch.current) return null;
+    if (!validSession(response) || response.account.id !== owner) throw new ApiError('internal_error');
+    setCsrfToken(response.csrf_token); setAccount(response.account);
+    return response.account;
+  }, [account?.id]);
+
+  const logoutAll = useCallback(async (signal: AbortSignal) => {
+    const request = ++epoch.current;
+    const result = await apiJson<{ message: string }>('/api/v1/auth/logout-all', { method: 'POST', signal });
+    if (signal.aborted || request !== epoch.current) return;
+    transitionAuth(() => {
+      if (signal.aborted || request !== epoch.current) return;
+      setCsrfToken(null); setAccount(null); setError(null); setStatus('guest');
+      setNotice(result.message); navigate('/dang-nhap', { replace: true });
+    });
+  }, [navigate]);
+
+  const value = useMemo(() => ({ status, account, notice, error, notify, clearNotice, refresh, login, register, logout, logoutAll, updateProfile, clearSession }), [status, account, notice, error, notify, clearNotice, refresh, login, register, logout, logoutAll, updateProfile, clearSession]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
@@ -174,55 +210,6 @@ export function RequireAccount({ theme, onToggleTheme, children }: { theme: 'lig
 export function LandingRoute({ children }: { children: ReactNode }) {
   const auth = useAuth();
   return auth.status === 'authenticated' ? <Navigate to="/khoa-hoc" replace /> : <>{children}</>;
-}
-
-export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark'; onToggleTheme: () => void }) {
-  const auth = useAuth();
-  const [logoutError, setLogoutError] = useState<string | null>(null);
-  const [signingOut, setSigningOut] = useState(false);
-  const [resending, setResending] = useState(false);
-  const [resendError, setResendError] = useState<string | null>(null);
-  const currentTheme = theme;
-  const signOut = async () => {
-    if (signingOut) return;
-    setSigningOut(true);
-    setLogoutError(null);
-    try { await auth.logout(); }
-    catch (cause) { if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession(); setLogoutError(userError(cause)); setSigningOut(false); }
-  };
-  const resendVerification = async () => {
-    setResending(true);
-    setResendError(null);
-    try {
-      const result = await apiJson<{ message: string }>('/api/v1/auth/resend-verification', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}',
-      });
-      auth.notify(result.message);
-    } catch (cause) { setResendError(userError(cause)); }
-    finally { setResending(false); }
-  };
-
-  if (auth.status === 'guest' || auth.status === 'loading') return <main className="auth-loading" role="status"><h1>Đang kiểm tra phiên đăng nhập…</h1></main>;
-  if (auth.status === 'error') return <main className="auth-loading"><h1>Chưa thể kiểm tra phiên</h1><p role="alert">{auth.error}</p><button className="button button-secondary" type="button" onClick={() => void auth.refresh().catch(() => undefined)}>Thử lại</button></main>;
-  return (
-    <>
-      <header className="site-header"><div className="header-inner">
-        <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={currentTheme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-        <div className="header-actions">
-          <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={currentTheme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{currentTheme === 'light' ? '◐' : '◑'}</button>
-          <details className="account-menu">
-            <summary><span className="account-menu-name">{auth.account?.display_name}</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
-            <div className="account-menu-panel">
-              <div className="account-menu-identity"><span className="account-menu-label">Tài khoản</span><span className="account-menu-email" title={auth.account?.email}>{auth.account?.email}</span></div>
-              <button type="button" disabled={signingOut} onClick={() => void signOut()}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 4H5v16h4M17 8l4 4-4 4M9 12h12" /></svg>{signingOut ? 'Đang đăng xuất…' : 'Đăng xuất'}</button>
-              {logoutError && <small role="alert">{logoutError}</small>}
-            </div>
-          </details>
-        </div>
-      </div></header>
-      <main className="account-page page-frame"><span className="section-kicker">TÀI KHOẢN WAYFINDER</span><h1>Tài khoản của bạn</h1><p>Xin chào, {auth.account?.display_name}. Bạn đã đăng nhập.</p>{!auth.account?.email_verified && <section className="verify-reminder" aria-labelledby="verify-reminder-title"><div><h2 id="verify-reminder-title">Xác minh email để mời bạn qua email</h2><p>Gửi lại liên kết xác minh đến {auth.account?.email}.</p></div><button className="button button-secondary" type="button" disabled={resending} onClick={() => void resendVerification()}>{resending ? 'Đang gửi…' : 'Gửi lại thư xác minh'}</button>{resendError && <p className="w03-feedback error" role="alert">{resendError}</p>}</section>}<div className="account-summary"><span>Email</span><strong>{auth.account?.email}</strong><span>Trạng thái email</span><strong>{auth.account?.email_verified ? 'Đã xác minh' : 'Chưa xác minh'}</strong></div></main>
-    </>
-  );
 }
 
 export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'register'; theme: 'light' | 'dark'; onToggleTheme: () => void }) {

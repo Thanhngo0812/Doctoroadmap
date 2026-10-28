@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="0.5739893">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-27T11:07:35.601Z" hostname="ADMIN" tests="10" failures="0" errors="0" skipped="9" time="0.5739893">
+        <testcase classname="src/Account.test.tsx" name="saves a trimmed display name through PATCH and updates the shared account without extra private fields" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body.display_name to the actual field and keeps the form for correction" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body to the actual field and keeps the form for correction" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="wrong current password marks that field without logging out or clearing the typed new password" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="requires confirmation, clears secrets after successful change and keeps the current account" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="confirms logout-all before POST and safely removes the private page" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="does not retain password state or apply a delayed profile response after leaving the route" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="a profile refresh from the old session cannot resurrect A after logout-all and login as B" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="finishes logout-all for the current session even if the profile unmounts before the view transition callback" time="0.5720151">
+        </testcase>
+    </testsuite>
+</testsuites>

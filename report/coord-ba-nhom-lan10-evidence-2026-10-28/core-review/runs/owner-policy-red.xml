@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.462" timestamp="2026-10-28T08:05:16.453234+07:00" hostname="ADMIN"><testcase classname="test_owner_policy" name="test_new_owner_policy_first_admin_cannot_be_disabled" time="0.243"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">case = namespace(engine=Engine(sqlite+pysqlite:///%3Amemory%3A), store=&lt;test_independent_admin.OfflineSQLStore object at 0x00...231bda5', role='user', email_verified=True, status='active'), seed=&lt;function case.&lt;locals&gt;.seed at 0x00000244F57CBC40&gt;)
+
+    def test_new_owner_policy_first_admin_cannot_be_disabled(case):
+        before = snapshot(case)
+&gt;       with pytest.raises(AuthError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+test_owner_policy.py:14: Failed</failure></testcase></testsuite></testsuites>

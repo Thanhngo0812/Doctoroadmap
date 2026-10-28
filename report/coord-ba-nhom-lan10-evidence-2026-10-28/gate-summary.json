@@ -1,0 +1,167 @@
+{
+  "candidate": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+  "main_received": "776f1f00b13726fcdc95f12bfd18a2b937bbd153",
+  "current_main": "776f1f00b13726fcdc95f12bfd18a2b937bbd153",
+  "gates": {
+    "full-web-final": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/coord-r10-full-web-final",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-tools-20261028\\runs\\full-web-final.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-web-final-20261028",
+        "commit": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+        "native_exit_code": 0,
+        "elapsed_seconds": 725.27
+      },
+      "tests": 3531,
+      "passed": 3527,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+          "message": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+          "message": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "message": {
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          }
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "message": {
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        }
+      ]
+    },
+    "react-web-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "test",
+          "--",
+          "--pool=threads",
+          "--maxWorkers=1",
+          "--reporter=default",
+          "--reporter=junit",
+          "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-tools-20261028\\runs\\react-web-final.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-web-final-20261028",
+        "commit": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+        "native_exit_code": 0,
+        "elapsed_seconds": 121.73
+      },
+      "tests": 239,
+      "passed": 239,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    },
+    "build-web-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-web-final-20261028",
+        "commit": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+        "native_exit_code": 0,
+        "elapsed_seconds": 4.62
+      }
+    },
+    "browser-w04-web-final": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w04_react_runtime.py"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r10-web-final-20261028",
+        "commit": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+        "native_exit_code": 0,
+        "elapsed_seconds": 108.56
+      }
+    }
+  },
+  "protected_tracked_files": 8,
+  "protected_untracked_w23_files": 8,
+  "browser": {
+    "source": "b766931a47503fa150734dfb5f5a9de8653b2b52",
+    "configurations": 12,
+    "screens": 38,
+    "axeRuns": 38,
+    "http": 70,
+    "sqlSnapshots": 29,
+    "consoleErrors": 92,
+    "pageErrors": 0,
+    "sessionProof": {
+      "passwordKeepsARevokesB": true,
+      "oldDeniedNewAccepted": true,
+      "logoutAllRevokesBoth": true,
+      "oldRefreshDoesNotResurrectA": true
+    },
+    "secretStorageClean": true,
+    "designFindings": [
+      {
+        "level": "WARN",
+        "id": "panel-void",
+        "width": 1280,
+        "message": "1 card(s) hold a blank band inside: 44px in \"Thông tin tài khoản\".",
+        "fix": "A card stretches to its neighbour only when it has content to fill. Keep a legend or a note directly under its chart (only an action or a total may sit at a stretched card's foot), let a short card keep its own height (align-items: start), and let a filtered block shrink to its rows."
+      }
+    ]
+  },
+  "owned_runtime_databases_absent": [
+    "wayfinder_w04_react_c1c416ee1e5a4479b2234df3516466cb",
+    "wayfinder_w04_react_bdc69716fdd14189ab32dc90f1c6bff5",
+    "wayfinder_w12_react_b786677559b54853927cec39fce856fa",
+    "wayfinder_w12_react_ac29e7a17f2a4e5994db601f09e5f71e"
+  ],
+  "ports_closed": {
+    "8024": true,
+    "8027": true
+  },
+  "w12_real_http_pg_regression_confirmed": true,
+  "new_provider_spend_usd": 0,
+  "included": [
+    "f52466dc092edb1bffa7bb4fe030d5482c4d5836"
+  ],
+  "held": [
+    "af2993a57ae4d9c023e0b77a5d6b699399753427",
+    "9cf405acbbf8838d05a17b4bb7936d171cb5afa5",
+    "24538ae0a658c6e7a7439a8cf3418373e53a7aa4"
+  ],
+  "owner_decision": {
+    "date": "2026-10-28",
+    "quote": "admin đầu tiên ko đc khóa hay gì",
+    "scope": "Protect permanent first/bootstrap admin from administrative disable, role demotion and account deletion; ordinary profile/password and auth security guards unchanged.",
+    "adr": "doc/adr/0030-bao-ve-tai-khoan-admin-dau-tien.md",
+    "adrSha256": "04e5b940edf372289e171c64ee5495676a411f762dc9201716856e603b942575",
+    "heldCore": "9cf405acbbf8838d05a17b4bb7936d171cb5afa5",
+    "source": "User reply to coordinator policy question during R10"
+  }
+}

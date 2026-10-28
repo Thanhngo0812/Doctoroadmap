@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="11.4210545">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-28T00:53:26.444Z" hostname="ADMIN" tests="10" failures="0" errors="0" skipped="0" time="11.213157">
+        <testcase classname="src/Account.test.tsx" name="saves a trimmed display name through PATCH and updates the shared account without extra private fields" time="0.9309029">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace" time="2.2298481">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body.display_name to the actual field and keeps the form for correction" time="0.1751167">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body to the actual field and keeps the form for correction" time="0.1601389">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="wrong current password marks that field without logging out or clearing the typed new password" time="1.4780293">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="requires confirmation, clears secrets after successful change and keeps the current account" time="2.4435116">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="confirms logout-all before POST and safely removes the private page" time="0.3029621">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="does not retain password state or apply a delayed profile response after leaving the route" time="1.9994483">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="a profile refresh from the old session cannot resurrect A after logout-all and login as B" time="1.1685715">
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="finishes logout-all for the current session even if the profile unmounts before the view transition callback" time="0.3216296">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/ReviewW04.test.tsx" timestamp="2026-10-28T00:53:26.450Z" hostname="ADMIN" tests="3" failures="0" errors="0" skipped="0" time="0.2078975">
+        <testcase classname="src/ReviewW04.test.tsx" name="review: stale successful refresh cannot replace B identity or its CSRF header" time="0.134907">
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: delayed profile PATCH from A cannot replace B identity or its CSRF header" time="0.0378015">
+        </testcase>
+        <testcase classname="src/ReviewW04.test.tsx" name="review: queued logout-all transition for A cannot clear the later B session" time="0.0319392">
+        </testcase>
+    </testsuite>
+</testsuites>

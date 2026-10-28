@@ -1,0 +1,5253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="8" errors="0" time="8.1764821">
+    <testsuite name="src/Account.test.tsx" timestamp="2026-10-27T10:47:44.898Z" hostname="ADMIN" tests="8" failures="8" errors="0" skipped="0" time="8.1764821">
+        <testcase classname="src/Account.test.tsx" name="saves a trimmed display name through PATCH and updates the shared account without extra private fields" time="1.0500358">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:41:63
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="validates name after trim, rejecting 61 but accepting 60 with surrounding whitespace" time="1.0273872">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:48:63
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body.display_name to the actual field and keeps the form for correction" time="1.0067874">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:55:63
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="maps server fields body to the actual field and keeps the form for correction" time="1.0163688">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:55:63
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="wrong current password marks that field without logging out or clearing the typed new password" time="1.0193182">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:59:97
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="requires confirmation, clears secrets after successful change and keeps the current account" time="1.0203249">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:65:52
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="confirms logout-all before POST and safely removes the private page" time="1.0205184">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:74:52
+            </failure>
+        </testcase>
+        <testcase classname="src/Account.test.tsx" name="does not retain password state or apply a delayed profile response after leaving the route" time="1.0137543">
+            <failure message="Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find a label with the text of: Tên hiển thị
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;button&gt;
+      Rời hồ sơ
+    &lt;/button&gt;
+    &lt;button&gt;
+      Mở hồ sơ
+    &lt;/button&gt;
+    &lt;header
+      class=&quot;site-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2024.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ tối&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◐
+          &lt;/button&gt;
+          &lt;details
+            class=&quot;account-menu&quot;
+          &gt;
+            &lt;summary&gt;
+              &lt;span
+                class=&quot;account-menu-name&quot;
+              &gt;
+                An
+              &lt;/span&gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                class=&quot;account-menu-chevron&quot;
+                fill=&quot;none&quot;
+                height=&quot;16&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.75&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;16&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m7 10 5 5 5-5&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/summary&gt;
+            &lt;div
+              class=&quot;account-menu-panel&quot;
+            &gt;
+              &lt;div
+                class=&quot;account-menu-identity&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;account-menu-email&quot;
+                  title=&quot;an@example.invalid&quot;
+                &gt;
+                  an@example.invalid
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;18&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;18&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M9 4H5v16h4M17 8l4 4-4 4M9 12h12&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Đăng xuất
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;account-page page-frame&quot;
+    &gt;
+      &lt;span
+        class=&quot;section-kicker&quot;
+      &gt;
+        TÀI KHOẢN WAYFINDER
+      &lt;/span&gt;
+      &lt;h1&gt;
+        Tài khoản của bạn
+      &lt;/h1&gt;
+      &lt;p&gt;
+        Xin chào, 
+        An
+        . Bạn đã đăng nhập.
+      &lt;/p&gt;
+      &lt;section
+        aria-labelledby=&quot;verify-reminder-title&quot;
+        class=&quot;verify-reminder&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h2
+            id=&quot;verify-reminder-title&quot;
+          &gt;
+            Xác minh email để mời bạn qua email
+          &lt;/h2&gt;
+          &lt;p&gt;
+            Gửi lại liên kết xác minh đến 
+            an@example.invalid
+            .
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button
+          class=&quot;button button-secondary&quot;
+          type=&quot;button&quot;
+        &gt;
+          Gửi lại thư xác minh
+        &lt;/button&gt;
+      &lt;/section&gt;
+      &lt;div
+        class=&quot;account-summary&quot;
+      &gt;
+        &lt;span&gt;
+          Email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          an@example.invalid
+        &lt;/strong&gt;
+        &lt;span&gt;
+          Trạng thái email
+        &lt;/span&gt;
+        &lt;strong&gt;
+          Chưa xác minh
+        &lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Account.test.tsx:81:63
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

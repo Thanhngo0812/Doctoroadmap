@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-28T00:49:05.508Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="src/Invitations.test.tsx" name="src/Invitations.test.tsx" time="0">
+            <failure message="Failed to resolve import &quot;remark-gfm&quot; from &quot;src/LectureMarkdown.tsx&quot;. Does the file exist?" type="Error">
+Error: Failed to resolve import &quot;remark-gfm&quot; from &quot;src/LectureMarkdown.tsx&quot;. Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r10-web-review-20261028/w12-invitations-react/src/LectureMarkdown.tsx:4:22
+  2  |  import { memo } from &quot;react&quot;;
+  3  |  import remarkMath from &quot;remark-math&quot;;
+  4  |  import remarkGfm from &quot;remark-gfm&quot;;
+     |                         ^
+  5  |  import rehypeKatex from &quot;rehype-katex&quot;;
+  6  |  import &quot;katex/dist/katex.min.css&quot;;
+ ❯ TransformPluginContext._formatLog ../node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error ../node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl ../node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ ../node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform ../node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform ../node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform ../node_modules/vite/dist/node/chunks/node.js:20184:26
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

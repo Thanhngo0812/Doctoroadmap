@@ -1,0 +1,41 @@
+{
+  "review": "R10 independent design evidence",
+  "main_pin": "776f1f00b13726fcdc95f12bfd18a2b937bbd153",
+  "design_pin": "24538ae0a658c6e7a7439a8cf3418373e53a7aa4",
+  "verdict": "request_changes",
+  "first_slice_accepted": false,
+  "whole_w23_accepted": false,
+  "whole_w23_status": "open",
+  "critical_count": 0,
+  "required_count": 4,
+  "findings": [
+    {"id":"D-R10-01","severity":"Required/P2","title":"Different frames and disclosure content are still called matched pairs","locations":["report/w23-doi-chieu-web-thuc-te-2026-10-27.md:14","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:38","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:39","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:50"]},
+    {"id":"D-R10-02","severity":"Required/P2","title":"HTML 27.19px target differs from React; HTML 6.77:1 contradicts AAA claim; no lag measurement","locations":["report/w23-doi-chieu-web-thuc-te-2026-10-27.md:38","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:39"]},
+    {"id":"D-R10-03","severity":"Required/P2","title":"Wrong W08 HTML source hash and incomplete capture/font receipts","locations":["report/w23-doi-chieu-web-thuc-te-2026-10-27.md:15","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:25","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:34","scripts/capture_w23_slice1.cjs:27"]},
+    {"id":"D-R10-04","severity":"Required/P2","title":"New handoff repeats stale W04 password policy and incomplete W12 privacy copy","locations":["report/w23-doi-chieu-web-thuc-te-2026-10-27.md:72","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:75","report/w23-doi-chieu-web-thuc-te-2026-10-27.md:76"]}
+  ],
+  "verification": {
+    "six_submitted_pngs_viewed": true,
+    "six_image_hashes_match_pin_and_root": true,
+    "three_react_images_exact_originals": true,
+    "react_images_recropped": false,
+    "new_react_capture": false,
+    "w10_reuse_diff_bytes": 0,
+    "w08_html_summary_height_px": 27.1875,
+    "w08_html_padding_click_opens": false,
+    "w08_html_summary_click_opens": true,
+    "w08_html_summary_contrast": 6.765701698019035,
+    "w10_html_tab_height_px": 44,
+    "w10_html_card_width_px": 332,
+    "offline_probe_exit_code": 0,
+    "offline_probe_named_assertions_passed": 3,
+    "original_html_font_load_state": "not recorded; offline reproduction is explicitly fallback",
+    "product_runtime_started": false,
+    "external_http_requests_aborted": true,
+    "product_or_worker_or_foreign_root_files_edited": false,
+    "external_cost_usd": 0
+  },
+  "owner_decision": "W10 three-tab catalog versus two-tab module remains an explicit proposal; not approved by reviewer",
+  "previous_acceptance_preserved": ["tokens/branding/math","D-R8-02 markup wiring guard","W10 frontend acceptance"],
+  "artifacts": ["review.md","evidence-inspection.json","html-probe.json","inspect_evidence.py","probe_html.cjs","reuse-1fc0f553.diff","reuse-b4136987.diff","offline-html-w08-folded.png","offline-html-w08-open.png","offline-html-w10-here.png"]
+}
