@@ -1,0 +1,79 @@
+FFF..                                                                    [100%]
+================================== FAILURES ===================================
+_ test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM account WHERE id=:uid] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6A3AF..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000001C6C35318A0>)
+statement = 'DELETE FROM account WHERE id=:uid'
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+        with pytest.raises(IntegrityError) as error:
+            with rt.engine.begin() as connection:
+                connection.execute(text(statement),{'uid':rt.owner.id,'other':other.id})
+>       assert 'protected_admin' in str(error.value.orig)
+E       assert 'protected_admin' in 'update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_fkey" on table "bootstrap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".'
+E        +  where 'update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_fkey" on table "bootstrap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".' = str(ForeignKeyViolation('update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_f...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".'))
+E        +    where ForeignKeyViolation('update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_f...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') = IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates foreign key constrai...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".').orig
+E        +      where IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates foreign key constrai...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') = <ExceptionInfo IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates forei...nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') tblen=10>.value
+
+src\web\backend\tests\test_w17_first_admin.py:124: AssertionError
+_ test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6C37C..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000001C6C38D6480>)
+statement = "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid"
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+>       with pytest.raises(IntegrityError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'sqlalchemy.exc.IntegrityError'>
+
+src\web\backend\tests\test_w17_first_admin.py:121: Failed
+_ test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6C3AD..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000001C6C3BD8EA0>)
+statement = "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid"
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+>       with pytest.raises(IntegrityError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'sqlalchemy.exc.IntegrityError'>
+
+src\web\backend\tests\test_w17_first_admin.py:121: Failed
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-first-admin-evidence\runs\policy-mutation-account-db-guard.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM account WHERE id=:uid]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid]
+3 failed, 2 passed, 66 deselected, 1 warning in 6.88s

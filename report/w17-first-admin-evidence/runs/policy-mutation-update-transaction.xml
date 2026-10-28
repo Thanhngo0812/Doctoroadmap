@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.634" timestamp="2026-10-28T10:40:52.003500+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_update_and_audit_rollback_on_audit_failure" time="2.083"><failure message="AssertionError: assert [{'build_mont...: 'disabled'}] == [{'build_mont...s': 'active'}]&#10;  &#10;  At index 0 diff: {'status': 'disabled', 'role': 'admin', 'build_monthly_max': 7} != {'status': 'active', 'role': 'user', 'build_monthly_max': None}&#10;  Use -v to get more diff">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001D9D1BD..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001D9F15F16C0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D9D1667C20&gt;
+
+    def test_update_and_audit_rollback_on_audit_failure(admin_case, monkeypatch):
+        rt = admin_case
+        store = rt.services.admin.store
+        def fail(event):
+            raise RuntimeError('synthetic audit write failure')
+        monkeypatch.setattr(store, 'append_audit', fail)
+        before = sql(rt, 'SELECT status,role,build_monthly_max FROM account WHERE id=:uid',uid=rt.learner.id)
+        response = patch(rt, {'status':'disabled','role':'admin','build_monthly_max':7})
+        assert response.status_code == 500
+&gt;       assert sql(rt, 'SELECT status,role,build_monthly_max FROM account WHERE id=:uid',uid=rt.learner.id) == before
+E       AssertionError: assert [{'build_mont...: 'disabled'}] == [{'build_mont...s': 'active'}]
+E
+E         At index 0 diff: {'status': 'disabled', 'role': 'admin', 'build_monthly_max': 7} != {'status': 'active', 'role': 'user', 'build_monthly_max': None}
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w17_admin.py:210: AssertionError</failure></testcase></testsuite></testsuites>
