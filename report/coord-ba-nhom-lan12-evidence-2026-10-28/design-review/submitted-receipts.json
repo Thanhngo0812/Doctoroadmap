@@ -1,0 +1,696 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-28T06:29:43.560Z",
+    "generator": "scripts/capture_w23_slice1_fixed.cjs",
+    "designPin": "60412c87df1b684c97e6148d1f88f578d5202322",
+    "mainPin": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+    "worktree": "tmp/w23-paired-web-evidence",
+    "branch": "work/w23-paired-web-evidence",
+    "cwd": "tmp/w23-paired-web-evidence",
+    "command": "node scripts/capture_w23_slice1_fixed.cjs",
+    "nativeEnvironment": "Windows x64 / Node v24.11.1 / Chromium (Playwright)",
+    "note": "Slice 1 verifiable receipts with decoupled floating CSS rectangles and decoded PNG dimensions, plus explicit narrow leaf-source reuse proofs."
+  },
+  "sources": {
+    "tokens": {
+      "path": "design/tokens/tokens.css",
+      "gitBlobSha256": "5ce8eafee0b298032b57e3d4b2afb41a28850b6c30dd9b1413414192284834c3",
+      "rawSha256": "d1efab8bae8f72344bb9e4b29697bc150b53bf098543e4b96e50b7357761b590"
+    },
+    "w08Html": {
+      "path": "design/preview/w08_lecture_screens.html",
+      "gitBlobSha256": "ef89ee7e58fde9ca8eed7bf0a580cb79ab75958dec55e5a62be0b2fcac9f2fe7",
+      "rawSha256": "066de4625bb71316916da7dee7f06ffb636897c32d619c0cde395c79a3987a13"
+    },
+    "w10Html": {
+      "path": "design/preview/w10_quiz_screens.html",
+      "gitBlobSha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+      "rawSha256": "f2dea29c39708a24cf72e4617731e8d7dea588d4d2d6fc2aa75c4087d89ca989"
+    }
+  },
+  "leafReuseProofs": {
+    "w08SelfCheck": {
+      "componentPath": "src/web/frontend/src/Learning.tsx",
+      "stylePath": "src/web/frontend/src/learning.css",
+      "historicalSourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+      "currentMainCommit": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+      "leafJsxDiffBytes": 0,
+      "leafCssDiffBytes": 0,
+      "leafJsxLines": "lines 117-120 in Learning.tsx",
+      "leafCssLines": "lines 62-64 in learning.css",
+      "wholeFileDiffNote": "Learning.tsx added AssistantDock and ContentLibrary below Lesson; onAsk callback added to Lesson. Neither change touches or alters the DOM subtree, state, or styling of .lecture-self-check.",
+      "leafSourceValid": true
+    },
+    "w10DocumentLibrary": {
+      "componentPath": "src/web/frontend/src/ContentLibrary.tsx",
+      "stylePath": "src/web/frontend/src/content.css",
+      "historicalSourceCommit": "aaf68eb6795c929169e5212a05093d8d817c76e3",
+      "currentMainCommit": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+      "leafJsxDiffBytes": 0,
+      "leafCssDiffBytes": 0,
+      "leafJsxLines": "lines 45-50 in ContentLibrary.tsx",
+      "leafCssLines": "lines 45-62 in content.css",
+      "wholeFileDiffNote": "ContentLibrary.tsx added <UsageLimits usage={usage.value} /> between header and filters. Filter buttons, tab switching logic, and card list markup/styles are 100% identical with 0 bytes diff.",
+      "leafSourceValid": true
+    }
+  },
+  "pairs": [
+    {
+      "id": "W-08-self-check",
+      "title": "W-08 Self-Check Disclosure (Folded vs Open)",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "theme": "dark",
+      "reducedMotion": "reduce",
+      "htmlSource": {
+        "file": "design/preview/w08_lecture_screens.html",
+        "url": "file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w23-paired-web-evidence/design/preview/w08_lecture_screens.html",
+        "rawSha256": "066de4625bb71316916da7dee7f06ffb636897c32d619c0cde395c79a3987a13",
+        "gitBlobSha256": "ef89ee7e58fde9ca8eed7bf0a580cb79ab75958dec55e5a62be0b2fcac9f2fe7",
+        "paddingClickOpened": false,
+        "summaryClickOpened": true
+      },
+      "reactSource": {
+        "label": "historical-runtime-original",
+        "originalCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+        "currentMainCommit": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+        "narrowReuseValid": true,
+        "runtimeUrl": "http://127.0.0.1:8018/courses/c1/modules/m1/lectures/n1",
+        "foldedOriginal": "report/w08-evidence/browser-required3-20261024/ready-1280-dark-reduced.png",
+        "foldedOriginalSha256": "03d4b9f9e0c4f040c7924d934654cb029514ca63fdfdf340e734aeda21097e5e",
+        "foldedOriginalDimensions": [
+          1280,
+          2380
+        ],
+        "openOriginal": "report/w08-evidence/browser-required3-20261024/self-check-open-1280-dark-reduced.png",
+        "openOriginalSha256": "e50ac7e32b5fcab31f207f6f190066fb7544fea458d6f5c6ebff8a9b03fc32ca",
+        "openOriginalDimensions": [
+          1280,
+          2572
+        ],
+        "note": "Prerequisite panel was expanded in historical open original; container crop excludes prerequisite state discrepancy."
+      },
+      "folded": {
+        "htmlImage": {
+          "path": "report/w23-evidence/w08/html-w08-self-check-folded-1280-dark-reduced.png",
+          "status": "canonical-reused-from-24538ae0",
+          "sha256": "508c15af5d5ca0138c0ca01bdf934bfceb9db616edd88b40f492325690f380ae",
+          "bytes": 7709,
+          "decodedPngDimensions": [
+            808,
+            62
+          ],
+          "elementBoundingRect": {
+            "x": 236,
+            "y": 419.140625,
+            "width": 808,
+            "height": 61.1875
+          }
+        },
+        "reactCroppedImage": {
+          "path": "report/w23-evidence/w08/react-w08-self-check-folded-crop.png",
+          "status": "historical-runtime-crop",
+          "sha256": "676626eff3200b96f2eaf6d83eac21c1be98589f5109634f27211c116396b87b",
+          "bytes": 10730,
+          "decodedPngDimensions": [
+            680,
+            164
+          ],
+          "cropRect": {
+            "x": 446,
+            "y": 1064,
+            "width": 680,
+            "height": 164
+          }
+        },
+        "htmlMetrics": {
+          "summary": {
+            "text": "💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim?",
+            "elementBoundingRect": {
+              "x": 253,
+              "y": 436.140625,
+              "width": 774,
+              "height": 27.1875
+            },
+            "documentRect": {
+              "x": 253,
+              "y": 1593.140625,
+              "width": 774,
+              "height": 27.1875
+            },
+            "css": {
+              "display": "list-item",
+              "minHeight": "0px",
+              "padding": "0px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "27.2px",
+              "color": "rgb(41, 169, 255)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "0px"
+            },
+            "effectiveBackgroundHex": "#161b22",
+            "foregroundHex": "#29a9ff",
+            "contrast": 6.765701698019035
+          },
+          "detail": {
+            "text": "💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim? Đáp án giải thích: Khi nhịp tim tăng cao, thời gian thì tâm trương bị rút ngắn đáng kể so với thì tâm thu. Vì dòng máu vành tưới cơ tim chủ yếu diễn ra ở thì tâm trương, sự rút ngắn này làm giảm tưới máu cơ tim, đặc biệt là vùng dưới nội tâm mạc.",
+            "elementBoundingRect": {
+              "x": 236,
+              "y": 419.140625,
+              "width": 808,
+              "height": 61.1875
+            },
+            "documentRect": {
+              "x": 236,
+              "y": 1576.140625,
+              "width": 808,
+              "height": 61.1875
+            },
+            "css": {
+              "display": "block",
+              "minHeight": "0px",
+              "padding": "16px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "27.2px",
+              "color": "rgb(232, 237, 242)",
+              "backgroundColor": "rgb(22, 27, 34)",
+              "borderRadius": "10px"
+            },
+            "effectiveBackgroundHex": "#161b22",
+            "foregroundHex": "#e8edf2",
+            "contrast": 14.684675188963288
+          },
+          "font": {
+            "document": {
+              "status": "loaded",
+              "beVietnamCheck": true,
+              "faces": [
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                }
+              ]
+            },
+            "platformFonts": [
+              {
+                "familyName": "Be Vietnam Pro",
+                "postScriptName": "BeVietnamPro-Regular",
+                "isCustomFont": true,
+                "glyphCount": 78
+              },
+              {
+                "familyName": "Segoe UI Emoji",
+                "postScriptName": "SegoeUIEmoji",
+                "isCustomFont": false,
+                "glyphCount": 1
+              }
+            ]
+          }
+        },
+        "reactActualMetrics": {
+          "clickableSummaryTarget": {
+            "minHeight": "44px",
+            "measuredHeight": 44,
+            "display": "flex",
+            "alignItems": "center",
+            "cursor": "pointer"
+          },
+          "heading": {
+            "text": "Tự kiểm tra",
+            "tag": "h2",
+            "fontSize": "20px",
+            "fontWeight": 700
+          },
+          "question": {
+            "text": "Tổng hai nửa bằng bao nhiêu?",
+            "position": "outside details",
+            "fontSize": "16px"
+          },
+          "summaryText": {
+            "text": "Xem đáp án",
+            "markerIcon": "none"
+          },
+          "uxClassification": "Allowed UX difference requiring owner decision (Option 4)"
+        }
+      },
+      "open": {
+        "htmlImage": {
+          "path": "report/w23-evidence/w08/html-w08-self-check-open-1280-dark-reduced.png",
+          "status": "canonical-reused-from-24538ae0",
+          "sha256": "0f9922365c2ada53e8cc21f8745e3009b311eb1796364edf7c5c9809436268d6",
+          "bytes": 23442,
+          "decodedPngDimensions": [
+            808,
+            154
+          ],
+          "elementBoundingRect": {
+            "x": 236,
+            "y": 419.140625,
+            "width": 808,
+            "height": 153.578125
+          }
+        },
+        "reactCroppedImage": {
+          "path": "report/w23-evidence/w08/react-w08-self-check-open-crop.png",
+          "status": "historical-runtime-crop",
+          "sha256": "ceade2b5587a5e13ca69bff291ccc0c71720f00eb6d15e1919254ecf0955a305",
+          "bytes": 12773,
+          "decodedPngDimensions": [
+            680,
+            206
+          ],
+          "cropRect": {
+            "x": 446,
+            "y": 1214,
+            "width": 680,
+            "height": 206
+          }
+        },
+        "htmlMetrics": {
+          "summary": {
+            "text": "💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim?",
+            "elementBoundingRect": {
+              "x": 253,
+              "y": 436.140625,
+              "width": 774,
+              "height": 27.1875
+            },
+            "documentRect": {
+              "x": 253,
+              "y": 1593.140625,
+              "width": 774,
+              "height": 27.1875
+            },
+            "css": {
+              "display": "list-item",
+              "minHeight": "0px",
+              "padding": "0px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "27.2px",
+              "color": "rgb(41, 169, 255)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "0px"
+            },
+            "effectiveBackgroundHex": "#161b22",
+            "foregroundHex": "#29a9ff",
+            "contrast": 6.765701698019035
+          },
+          "detail": {
+            "text": "💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim? Đáp án giải thích: Khi nhịp tim tăng cao, thời gian thì tâm trương bị rút ngắn đáng kể so với thì tâm thu. Vì dòng máu vành tưới cơ tim chủ yếu diễn ra ở thì tâm trương, sự rút ngắn này làm giảm tưới máu cơ tim, đặc biệt là vùng dưới nội tâm mạc.",
+            "elementBoundingRect": {
+              "x": 236,
+              "y": 419.140625,
+              "width": 808,
+              "height": 153.578125
+            },
+            "documentRect": {
+              "x": 236,
+              "y": 1576.140625,
+              "width": 808,
+              "height": 153.578125
+            },
+            "css": {
+              "display": "block",
+              "minHeight": "0px",
+              "padding": "16px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "27.2px",
+              "color": "rgb(232, 237, 242)",
+              "backgroundColor": "rgb(22, 27, 34)",
+              "borderRadius": "10px"
+            },
+            "effectiveBackgroundHex": "#161b22",
+            "foregroundHex": "#e8edf2",
+            "contrast": 14.684675188963288
+          }
+        },
+        "reactActualMetrics": {
+          "answerRevealed": {
+            "text": "Bằng 1.",
+            "color": "#e8edf2",
+            "fontSize": "16px"
+          },
+          "htmlAnswerRevealed": "Detailed cardiology mechanism paragraph",
+          "uxClassification": "Allowed UX difference requiring owner decision (Option 4)"
+        }
+      }
+    },
+    {
+      "id": "W-10-document-library",
+      "title": "W-10 Document Library \"Tạo ở đây\" Filter",
+      "viewport": {
+        "width": 390,
+        "height": 900,
+        "dpr": 1
+      },
+      "theme": "light",
+      "reducedMotion": "no-preference",
+      "htmlSource": {
+        "file": "design/preview/w10_quiz_screens.html",
+        "url": "file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w23-paired-web-evidence/design/preview/w10_quiz_screens.html",
+        "rawSha256": "f2dea29c39708a24cf72e4617731e8d7dea588d4d2d6fc2aa75c4087d89ca989",
+        "gitBlobSha256": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf"
+      },
+      "reactSource": {
+        "label": "historical-runtime-original",
+        "originalCommit": "1fc0f553bec808241388b722fa2c10a1c6ead33d",
+        "acceptedCommitReuse": "aaf68eb6795c929169e5212a05093d8d817c76e3",
+        "currentMainCommit": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+        "narrowReuseValid": true,
+        "diffBytesToAccepted": 0,
+        "runtimeUrl": "http://127.0.0.1:8020/courses/c1/modules/m1",
+        "originalImage": "report/w10-r7-evidence/browser-r7-main/library-here-390-light.png",
+        "originalSha256": "2827d5d8009c6a3b52467b7236850bc2b5378e264f7974bb90e2a5069a417d5d",
+        "originalDimensions": [
+          390,
+          900
+        ]
+      },
+      "evidence": {
+        "htmlImage": {
+          "path": "report/w23-evidence/w10/html-w10-library-here-390-light.png",
+          "status": "canonical-reused-from-24538ae0",
+          "sha256": "df3317df87aeed222b7e23caba9eef57a5a1f7c14565768609a1b92a51daf677",
+          "bytes": 58515,
+          "decodedPngDimensions": [
+            366,
+            808
+          ],
+          "elementBoundingRect": {
+            "x": 12,
+            "y": 92.984375,
+            "width": 366,
+            "height": 807
+          }
+        },
+        "reactCroppedImage": {
+          "path": "report/w23-evidence/w10/react-w10-library-here-crop.png",
+          "status": "historical-runtime-crop",
+          "sha256": "0df8dd7d3320bcfa34f44476c0a53fe9ea513121489e632fc4874655a76f8126",
+          "bytes": 40594,
+          "decodedPngDimensions": [
+            366,
+            478
+          ],
+          "cropRect": {
+            "x": 12,
+            "y": 72,
+            "width": 366,
+            "height": 478
+          }
+        },
+        "htmlMetrics": {
+          "section": {
+            "text": "📚 Thư viện tài liệu 5. Trạng thái: Thư viện tài liệu học tập (Lọc Tạo ở đây / Tạo ở nơi khác) Lọc theo nhóm home_scope (Pha B2 mục 4: here / elsewhere độc lập với origin) Tất cả (4) Tạo ở đây (Module này - 2) Tạo ở nơi khác (Khác - 2) Trợ lý chat (assistant) Tạo tại Module 1 (here) Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước Khởi tạo từ Trợ lý chat tại Module 1 • 940 từ • 3 trích dẫn nguồn 👁️ Xem 📥 Tải .md Nút giao diện (button) Tạo từ Lộ trình chung (elsewhere) Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành Khởi tạo từ Nút tạo tài liệu ở Lộ trình chung về Module 1 & 2 • 1.250 từ • 2 trích dẫn nguồn 👁️ Xem 📥 Tải .md Nút giao diện (button) Tạo tại Module 1 (here) Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất Khởi tạo từ Nút tạo tài liệu tại Module 1 • 820 từ • 1 trích dẫn nguồn 👁️ Xem 📥 Tải .md Trợ lý chat (assistant) Tạo từ Module 2 (elsewhere) Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương Khởi tạo từ Trợ lý chat tại Module 2 liên quan đến Module 1 • 1.100 từ • 2 trích dẫn nguồn 👁️ Xem 📥 Tải .md",
+            "elementBoundingRect": {
+              "x": 12,
+              "y": 92.984375,
+              "width": 366,
+              "height": 807
+            },
+            "documentRect": {
+              "x": 12,
+              "y": 5086.984375,
+              "width": 366,
+              "height": 807
+            },
+            "css": {
+              "display": "block",
+              "minHeight": "auto",
+              "padding": "16px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "24px",
+              "color": "rgb(18, 22, 27)",
+              "backgroundColor": "rgb(255, 255, 255)",
+              "borderRadius": "14px"
+            },
+            "effectiveBackgroundHex": "#ffffff",
+            "foregroundHex": "#12161b",
+            "contrast": 18.16122341387992
+          },
+          "tab": {
+            "text": "Tạo ở đây (Module này - 2)",
+            "elementBoundingRect": {
+              "x": 130.90625,
+              "y": 286.984375,
+              "width": 203.484375,
+              "height": 44
+            },
+            "documentRect": {
+              "x": 130.90625,
+              "y": 5280.984375,
+              "width": 203.484375,
+              "height": 44
+            },
+            "css": {
+              "display": "block",
+              "minHeight": "44px",
+              "padding": "0px 16px",
+              "fontFamily": "Arial",
+              "fontSize": "14px",
+              "fontWeight": "400",
+              "lineHeight": "normal",
+              "color": "rgb(255, 255, 255)",
+              "backgroundColor": "rgb(10, 106, 179)",
+              "borderRadius": "10px"
+            },
+            "effectiveBackgroundHex": "#0a6ab3",
+            "foregroundHex": "#ffffff",
+            "contrast": 5.636896441072005
+          },
+          "card": {
+            "text": "Trợ lý chat (assistant) Tạo tại Module 1 (here) Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước Khởi tạo từ Trợ lý chat tại Module 1 • 940 từ • 3 trích dẫn nguồn 👁️ Xem 📥 Tải .md",
+            "elementBoundingRect": {
+              "x": 29,
+              "y": 398.984375,
+              "width": 332,
+              "height": 236
+            },
+            "documentRect": {
+              "x": 29,
+              "y": 5392.984375,
+              "width": 332,
+              "height": 236
+            },
+            "css": {
+              "display": "flex",
+              "minHeight": "auto",
+              "padding": "16px",
+              "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+              "fontSize": "16px",
+              "fontWeight": "400",
+              "lineHeight": "24px",
+              "color": "rgb(18, 22, 27)",
+              "backgroundColor": "rgb(255, 255, 255)",
+              "borderRadius": "10px"
+            },
+            "effectiveBackgroundHex": "#ffffff",
+            "foregroundHex": "#12161b",
+            "contrast": 18.16122341387992
+          },
+          "font": {
+            "document": {
+              "status": "loaded",
+              "beVietnamCheck": true,
+              "faces": [
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "unloaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Be Vietnam Pro",
+                  "status": "loaded"
+                }
+              ]
+            },
+            "platformFonts": [
+              {
+                "familyName": "Arial",
+                "postScriptName": "ArialMT",
+                "isCustomFont": false,
+                "glyphCount": 26
+              }
+            ]
+          }
+        },
+        "reactActualMetrics": {
+          "tabs": "2 contextual tabs: \"Tạo ở đây (2)\" and \"Tạo ở nơi khác (2)\"",
+          "tabTarget": {
+            "minHeight": "44px",
+            "measuredHeight": 44,
+            "padding": "8px 12px",
+            "borderRadius": "6px"
+          },
+          "cards": {
+            "count": 2,
+            "width": 332,
+            "padding": 16
+          },
+          "uxClassification": "Allowed UX difference requiring owner decision (Option 4)"
+        }
+      }
+    }
+  ],
+  "offlineFallbackAudit": {
+    "note": "Verified in isolated headless Chromium with all external HTTP(S) aborted (no Google Fonts download).",
+    "w08SummaryFontFallback": {
+      "document": {
+        "status": "loaded",
+        "beVietnamCheck": true,
+        "faces": []
+      },
+      "platformFonts": [
+        {
+          "familyName": "Segoe UI Emoji",
+          "postScriptName": "SegoeUIEmoji",
+          "isCustomFont": false,
+          "glyphCount": 1
+        },
+        {
+          "familyName": "Segoe UI",
+          "postScriptName": "SegoeUI",
+          "isCustomFont": false,
+          "glyphCount": 78
+        }
+      ]
+    },
+    "w08FallbackPlatformFonts": [
+      {
+        "familyName": "Segoe UI Emoji",
+        "postScriptName": "SegoeUIEmoji",
+        "isCustomFont": false,
+        "glyphCount": 1
+      },
+      {
+        "familyName": "Segoe UI",
+        "postScriptName": "SegoeUI",
+        "isCustomFont": false,
+        "glyphCount": 78
+      }
+    ],
+    "documentFontsStatus": "loaded",
+    "loadedFacesCount": 0,
+    "explanation": "When external font download is blocked, Chromium falls back to Segoe UI (system font) and faces array is empty; this is expected behavior in an isolated sandbox and does not alter element bounding boxes or interaction logic."
+  }
+}

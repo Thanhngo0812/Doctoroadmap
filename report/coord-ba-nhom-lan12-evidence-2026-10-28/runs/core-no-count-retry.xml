@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="8" time="27.639" timestamp="2026-10-28T19:12:55.192495+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-False]" time="5.682" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-True]" time="2.604" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-False]" time="2.801" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-True]" time="2.567" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_bootstrap_protection_remains_a_separate_control" time="2.688" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_transition_does_not_query_last_active_admin_count" time="2.896" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_active_admin_removal_retains_count_guard_and_atomic_refusal" time="1.904"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000018F2F84..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000018F2F66F600&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018F311C60F0&gt;
+
+    def test_active_admin_removal_retains_count_guard_and_atomic_refusal(admin_case,monkeypatch):
+        rt=admin_case
+        later=rt.user(True)
+        before=snapshot(rt,later.id)
+        queried=[]
+        def last_active_count():
+            queried.append(True)
+            return 1  # Application port boundary: prove the fallback guard still refuses a last-active result.
+        monkeypatch.setattr(rt.services.admin.store,'admin_count',last_active_count)
+&gt;       with pytest.raises(AuthError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w17_r11.py:78: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_demotion_audit_failure_rolls_back_all_fields_and_preserves_registry" time="2.359" /></testsuite></testsuites>

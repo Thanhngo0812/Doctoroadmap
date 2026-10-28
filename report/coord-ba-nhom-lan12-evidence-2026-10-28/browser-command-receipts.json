@@ -1,0 +1,28 @@
+{
+  "source": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+  "runs": [
+    {
+      "run": "browser-coord-r12-current",
+      "script": "tmp/coord-r12-tools-20261028/react_measure_runtime.py",
+      "env": {
+        "W10_EVIDENCE_RUN": "browser-coord-r12-current"
+      },
+      "nativeExitCode": 0,
+      "fontPolicy": "Block all external HTTP(S)",
+      "elapsedSeconds": null
+    },
+    {
+      "run": "browser-coord-r12-current-fonts",
+      "script": "tmp/coord-r12-tools-20261028/react_measure_fonts_runtime.py",
+      "env": {
+        "W10_EVIDENCE_RUN": "browser-coord-r12-current-fonts"
+      },
+      "nativeExitCode": 0,
+      "fontPolicy": "Permit local app and Google font assets only",
+      "elapsedSeconds": null
+    }
+  ],
+  "receiptOrigin": "exec_command session final native exit0 corroborated by browserExitCode0/runtime cleanup; outer elapsed duration not separately captured",
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+  "newPaidProviderCostUsd": 0
+}

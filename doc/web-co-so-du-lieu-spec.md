@@ -76,7 +76,7 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 
 **`account`**
 
-**Ràng buộc bảo vệ admin đầu tiên, 2026-10-28:** giữ định danh bootstrap bền vững, không suy từ role/status/created_at hiện hành hoặc danh sách lọc. Không cho khoá quản trị, hạ quyền hoặc xoá tài khoản đó. Thiết kế lưu định danh/migration DB đã có do bản sửa W-17.1 đề xuất và nghiệm thu trước áp dụng; chưa tự thêm cột hoặc chuyển DB dùng chung trong lần điều phối. [ADR 0030](adr/0030-bao-ve-tai-khoan-admin-dau-tien.md).
+**Ràng buộc bảo vệ admin đầu tiên, 2026-10-28:** giữ định danh bootstrap bền vững, không suy từ role/status/created_at hiện hành hoặc danh sách lọc. Không cho khoá quản trị, hạ quyền hoặc xoá tài khoản đó. Backend W-17.1 đã được nhận lần12: registry bootstrap_admin do migration w17_0009 nối w12_0008 tạo; không thêm cờ client tự ghi vào account. Chưa áp migration hoặc gán UUID lên DB dùng chung trong lượt nghiệm thu. [ADR 0030](adr/0030-bao-ve-tai-khoan-admin-dau-tien.md).
 
 | cột | kiểu | ràng buộc |
 |---|---|---|
@@ -90,6 +90,18 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 | `email_verified_at` | timestamptz | null khi chưa xác minh |
 | `build_monthly_max` | integer | null thì dùng `WebSettings.build_monthly_max` |
 | `created_at`, `updated_at`, `last_login_at` | timestamptz | |
+
+**`bootstrap_admin`** — định danh admin đầu tiên, W-17.1/ADR0030
+
+| cột | kiểu | ràng buộc |
+|---|---|---|
+| `singleton` | boolean | PRIMARY KEY, CHECK(singleton); tối đa một hàng true |
+| `account_id` | uuid | NOT NULL, UNIQUE, FK account ON DELETE RESTRICT |
+| `established_at` | timestamptz | NOT NULL |
+
+Trigger chỉ cho INSERT một admin active; sau xác lập không UPDATE/DELETE registry. Trigger account từ chối khoá/hạ quyền/đổi ID/xoá tài khoản được bảo vệ, kể cả caller SQL bỏ qua service. Bootstrap mới tạo account/registry/audit cùng transaction và dùng lock admin:users; thêm admin sau không thay UUID.
+
+DB cũ sau migration có registry rỗng: không đoán người đầu tiên từ role/status/created_at hiện tại. Trước vận hành cần backup và đối chiếu hồ sơ bootstrap, rồi operator dùng CLI `protect-first-admin --account-id <UUID đã xác minh>` một lần; replay cùng UUID không ghi audit trùng, đổi UUID bị chặn. Khi chưa xác lập, DTO is_first_admin=null và các thao tác nguy hiểm bị bootstrap_required; profile/password và truy vấn không phá quyền vẫn chạy. Không có HTTP API để client gán định danh. Đây là quy trình chuyển DB cần thực hiện trong cửa operator riêng, chưa thực hiện trên DB dùng chung.
 
 **`auth_session`**
 
