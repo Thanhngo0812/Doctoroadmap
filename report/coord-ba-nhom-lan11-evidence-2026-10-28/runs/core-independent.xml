@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="8.939" timestamp="2026-10-28T12:55:15.345061+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_coord_r11_probe" name="test_disabled_later_admin_can_be_demoted_without_removing_active_admin" time="4.400"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;conflict&quot;,&quot;message&quot;:&quot;Không thể hạ quyền quản trị viên cuối cùng.&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 409 == 200&#10; +  where 409 = &lt;Response [409 Conflict]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000132EBD6..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000132FE857060&gt;)
+
+    def test_disabled_later_admin_can_be_demoted_without_removing_active_admin(admin_case):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        assert rt.services.admin.store.admin_count()==1
+        response=patch(rt,{'role':'user','build_monthly_max':7},target=later)
+        proof={'response_status':response.status_code,'response':response.json(),'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),'first_admin_id':rt.services.admin.store.first_admin_id(),'owner_id':rt.owner.id,'later_id':later.id}
+        Path(r'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r11-tools-20261028/core-probe-proof.json').write_text(json.dumps(proof,indent=2,default=str))
+&gt;       assert response.status_code==200, response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = &lt;Response [409 Conflict]&gt;.status_code
+
+src\web\backend\tests\test_coord_r11_probe.py:13: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_new_owner_policy_first_admin_cannot_be_disabled" time="1.290" /></testsuite></testsuites>

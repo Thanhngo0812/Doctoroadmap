@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="19" failures="3" errors="0" time="6.3858227">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-28T05:58:02.379Z" hostname="ADMIN" tests="19" failures="3" errors="0" skipped="0" time="6.3858227">
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (0 initial items)" time="0.5991989">
+            <failure message="expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;
+ ❯ src/Invitations.test.tsx:45:15
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (1 initial items)" time="0.4388027">
+            <failure message="expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;
+ ❯ src/Invitations.test.tsx:45:15
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="keeps the draft on send failure, serializes a reload, and allows retry after a list error" time="0.5424902">
+            <failure message="expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  class=&quot;button button-primary&quot;
+  type=&quot;submit&quot;
+/&gt;
+ ❯ src/Invitations.test.tsx:57:120
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores the old course list after switching course and still allows a send in the new course" time="0.5101843">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after unmount" time="0.0611307">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after logout" time="0.1389334">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.4343147">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.2190498">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.1350159">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.4704122">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.449461">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.108803">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.1397589">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0197761">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.5014492">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.179702">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.1870743">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.1391358">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.1081532">
+        </testcase>
+    </testsuite>
+</testsuites>
