@@ -229,6 +229,8 @@ Có hai lưu ý về thước:
   lộ trình và thứ tự mục lục, đo bằng Kendall τ [2], chỉ dùng để chẩn đoán, vì mục lục không phải đáp án của thứ tự học tốt nhất.
 - Người gán chỉ ghi các cặp có quan hệ, nên một cạnh máy đưa ra mà vàng không có chưa chắc đã sai. Vì vậy độ chính xác được báo hai cách:
   so với vàng, là cận dưới; và theo phán mù của người gán trên các cạnh ngoài vàng (lớp G5), như cách cuộc thi TExEval-2 chấm quan hệ mới [8].
+  Mỗi hệ có tối đa 100 cạnh ngoài vàng được phán mỗi cuốn. Tỉ lệ đúng trên mẫu đó được suy ra cho mọi cạnh ngoài vàng, kèm khoảng tin cậy
+  Wilson. Cạnh nào thiếu câu định nghĩa thì không đưa được lên phiếu, nên nhóm báo thêm một cận dưới, coi mọi cạnh như vậy là sai.
 
 ## 8. So với cái gì
 
@@ -358,11 +360,19 @@ không được kết luận là hơn.
 
 Có bốn biện pháp chống việc chỉnh luật sau khi đã thấy kết quả:
 - **Giao thức viết trước** [20]: thước chính, cách ghép, cách tính khoảng tin cậy, các phép kiểm định được ghi vào một tệp có ngày và mã
-  băm trước khi chạy tập thử.
+  băm trước khi chạy tập thử (`evaluation/giao-thuc/dang-ky-truoc.md`). Tệp cũng ghi các ngưỡng khớp câu, luật ghép khái niệm, cách
+  hiểu trạng thái dạy, số lượt nhiễu, lời nhắc B5 nguyên văn, luật xử lý tranh chấp, thứ tự cắt việc khi trễ lịch, và kết quả mô phỏng
+  cỡ hiệu ứng nhỏ nhất phát hiện được. Mọi lượt chạy tập thử mang mã băm của tệp này; công cụ chạy từ chối tập thử khi thiếu mã băm hoặc khi
+  tệp còn ô chưa điền.
 - **Đóng băng:** vàng chốt ngày 06/11; mã nguồn và cấu hình hệ chốt ngày 07/11; tập thử chỉ chạy sau đó, đúng một lần.
-- **Mù:** người gán không thấy đầu ra của hệ; người phán không biết đầu ra thuộc hệ nào. Phiếu phán có trộn câu đối chứng (cạnh vàng, cặp
-  ngẫu nhiên) để đo độ khắt khe của chính người phán. Phần chấm lộ trình theo các khuyến nghị đánh giá người của [9]: hai người phán mọi
-  mục, thang 7 mức có lời neo, xáo thứ tự trình bày, và báo như một nghiên cứu thăm dò.
+- **Mù:** người gán không thấy đầu ra của hệ; người phán không biết đầu ra thuộc hệ nào. Phiếu phán có trộn câu đối chứng để đo độ khắt
+  khe của chính người phán, gồm hai loại:
+  - cạnh vàng của chính người đó trước hội ý;
+  - cặp ngẫu nhiên cùng chương, không có quan hệ trực tiếp hay gián tiếp trong vàng.
+
+  Câu đối chứng có cùng cột và cùng định dạng với cạnh máy, không có câu bằng chứng của cạnh. Phần chấm lộ trình theo các khuyến nghị đánh
+  giá người của [9]: hai người phán mọi mục, thang 7 mức có lời neo, xáo thứ tự trình bày, so cặp theo vòng tròn giữa ba hệ, và báo như một
+  nghiên cứu thăm dò.
 - **Minh bạch:** mọi thay đổi sau khi thấy số được báo riêng là phân tích hậu kiểm.
 
 ## 10. Lỗi đến từ đâu
@@ -451,15 +461,20 @@ Bảng 11. Thí nghiệm bỏ hoặc thay bộ phận
 | tắt R17 | — | — |
 | tắt gán vai trò vùng A2 (nếu chạy) | — | — |
 | tắt lọc trạng thái dạy A5 (nếu chạy) | — | — |
+| hồi quy logistic thay LightGBM (A1 và bước phụ A8) | — | — |
+| cross-encoder thay LightGBM ở bước phụ A8 | — | — |
 | oracle A8 (khái niệm vàng) | — | — |
 | oracle A10 (quan hệ vàng) | — | — |
 
 Bảng 12. Đánh giá của người học (sinh viên chấm lộ trình, mù tên hệ)
 
-| Tiêu chí | Hệ chính | B1 mục lục |
-|---|---|---|
-| Điểm rubric trung bình (thang 7) | — | — |
-| Tỉ lệ được chọn khi so cặp | — | — |
+| Tiêu chí | Hệ chính | B1 mục lục | B5 mô hình đọc thẳng |
+|---|---|---|---|
+| Điểm rubric trung bình (thang 7) | — | — | — |
+| Tỉ lệ thắng khi so cặp (tính trên các cặp có hệ đó) | — | — | — |
+
+Ba hệ được so theo vòng tròn: hệ chính với B1, hệ chính với B5, B1 với B5. Mỗi hệ xuất hiện số lần như nhau, nên người chấm không thể đoán
+hệ chính là lộ trình chung có mặt ở mọi cặp. Kết quả là nghiên cứu thăm dò, báo kèm khoảng tin cậy.
 
 ## 14. Giới hạn
 
