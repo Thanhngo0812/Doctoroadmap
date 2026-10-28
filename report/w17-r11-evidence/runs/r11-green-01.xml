@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="8" time="10.841" timestamp="2026-10-28T13:26:20.041315+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-False]" time="2.307" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-True]" time="1.032"><failure message="AssertionError: assert ['admin_user_...role_changed'] == ['admin_user_...user_enabled']&#10;  &#10;  At index 1 diff: 'admin_user_enabled' != 'admin_user_role_changed'&#10;  Use -v to get more diff">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C1490F..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001C1491CDBC0&gt;)
+enable = True, quota = False
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+        assert response.status_code==200,response.text
+        assert response.json()['role']=='user' and response.json()['is_first_admin'] is False
+        assert sql(rt,'SELECT role,status,build_monthly_max FROM account WHERE id=:id',id=later.id)==[{
+            'role':'user','status':'active' if enable else 'disabled','build_monthly_max':7 if quota else None}]
+        assert sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')==registry
+        assert snapshot(rt,rt.owner.id)['account']==owner
+        assert rt.services.admin.store.admin_count()==1
+        assert sql(rt,'SELECT id FROM auth_session WHERE account_id=:id',id=later.id)==[]
+        assert later.client.get('/api/v1/me').status_code==401
+        assert rt.owner.client.get('/api/v1/me').status_code==200
+        audits=sql(rt,"SELECT id,action,actor_id,target_id,meta FROM audit_event WHERE action LIKE 'admin_user_%' ORDER BY id")
+        expected=['admin_user_disabled','admin_user_role_changed']
+        if enable: expected.append('admin_user_enabled')
+        if quota: expected.append('admin_user_quota_changed')
+&gt;       assert [row['action'] for row in audits]==expected
+E       AssertionError: assert ['admin_user_...role_changed'] == ['admin_user_...user_enabled']
+E
+E         At index 1 diff: 'admin_user_enabled' != 'admin_user_role_changed'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w17_r11.py:40: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-False]" time="1.273" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-True]" time="0.927"><failure message="AssertionError: assert ['admin_user_...uota_changed'] == ['admin_user_...uota_changed']&#10;  &#10;  At index 1 diff: 'admin_user_enabled' != 'admin_user_role_changed'&#10;  Use -v to get more diff">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C1496A..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001C14980A980&gt;)
+enable = True, quota = True
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+        assert response.status_code==200,response.text
+        assert response.json()['role']=='user' and response.json()['is_first_admin'] is False
+        assert sql(rt,'SELECT role,status,build_monthly_max FROM account WHERE id=:id',id=later.id)==[{
+            'role':'user','status':'active' if enable else 'disabled','build_monthly_max':7 if quota else None}]
+        assert sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')==registry
+        assert snapshot(rt,rt.owner.id)['account']==owner
+        assert rt.services.admin.store.admin_count()==1
+        assert sql(rt,'SELECT id FROM auth_session WHERE account_id=:id',id=later.id)==[]
+        assert later.client.get('/api/v1/me').status_code==401
+        assert rt.owner.client.get('/api/v1/me').status_code==200
+        audits=sql(rt,"SELECT id,action,actor_id,target_id,meta FROM audit_event WHERE action LIKE 'admin_user_%' ORDER BY id")
+        expected=['admin_user_disabled','admin_user_role_changed']
+        if enable: expected.append('admin_user_enabled')
+        if quota: expected.append('admin_user_quota_changed')
+&gt;       assert [row['action'] for row in audits]==expected
+E       AssertionError: assert ['admin_user_...uota_changed'] == ['admin_user_...uota_changed']
+E
+E         At index 1 diff: 'admin_user_enabled' != 'admin_user_role_changed'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w17_r11.py:40: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_r11" name="test_bootstrap_protection_remains_a_separate_control" time="1.020" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_transition_does_not_query_last_active_admin_count" time="1.117" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_active_admin_removal_retains_count_guard_and_atomic_refusal" time="0.720" /><testcase classname="src.web.backend.tests.test_w17_r11" name="test_disabled_demotion_audit_failure_rolls_back_all_fields_and_preserves_registry" time="0.977" /></testsuite></testsuites>

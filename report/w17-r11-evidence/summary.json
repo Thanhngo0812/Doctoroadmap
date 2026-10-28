@@ -1,0 +1,81 @@
+{
+  "milestone": "W17.1 CORE-R11-01 disabled-admin demotion repair",
+  "tested_source_head": "e7d54a1a7969715012c099cc0d7f028f48038c41",
+  "received_main": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+  "observed_main": "b2fedda1f4453fc79880f1203cfa70e07aa67db1",
+  "repair_commit": "68663726fa2342e5d155dc4fe9552bbdaa34297d",
+  "prior_delivery_accepted": false,
+  "branch": "work/w17-admin-users-backend",
+  "red": {
+    "head": "862dd805180201647cd6a3dda54c2083073d1e84",
+    "assertion_failures": 4,
+    "protected_control_passed": 1,
+    "setup_errors": 0
+  },
+  "new_regression_cases": 8,
+  "all_w17_cases": 79,
+  "mutations": {
+    "caught": 2,
+    "total": 2,
+    "setup_errors": 0,
+    "restored_sha": true
+  },
+  "postgres": {
+    "native_exit": 0,
+    "passed": 3626,
+    "skipped": [
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+        "classname": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+        "classname": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+        "classname": "tests.unit.application.test_phase_b_sa55_runner",
+        "type": "pytest.xfail",
+        "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+      },
+      {
+        "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+        "classname": "src.web.backend.tests.test_media_store",
+        "type": "pytest.skip",
+        "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+      }
+    ],
+    "skipped_count": 3,
+    "xfailed_count": 1,
+    "seconds": 897.837385892868
+  },
+  "react": {
+    "native_exit": 0,
+    "passed": 259,
+    "files": 20,
+    "seconds": 143.60361289978027
+  },
+  "build": {
+    "native_exit": 0,
+    "seconds": 3.672469139099121
+  },
+  "old_manifest_rows_verified_worktree": 380,
+  "old_manifest_rows_verified_git_blob": 380,
+  "new_migrations": 0,
+  "migration_head": "w17_0009",
+  "down_revision": "w12_0008",
+  "new_spend_usd": 0,
+  "shared_db_migrated": false,
+  "shared_db_identity_assigned": false,
+  "real_mail_sent": 0,
+  "provider_calls": 0,
+  "backend_ready": true,
+  "w17_complete": false,
+  "w17_2_started": false,
+  "merged_main": false,
+  "pushed": false
+}
