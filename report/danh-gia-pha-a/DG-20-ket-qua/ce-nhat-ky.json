@@ -1,0 +1,186 @@
+{
+ "nep": {
+  "0": {
+   "dong_hoc": 29027,
+   "dong_ngoai_mau": 6175,
+   "cuon_ngoai_mau": [
+    "d01-02",
+    "d01-11",
+    "d01-15",
+    "d01-16"
+   ],
+   "epoch": [
+    {
+     "epoch": 1,
+     "loss": 0.8817,
+     "hoc_giay": 811,
+     "doan_giay": 51,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 2,
+     "loss": 0.7414,
+     "hoc_giay": 906,
+     "doan_giay": 49,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 3,
+     "loss": 0.6248,
+     "hoc_giay": 885,
+     "doan_giay": 48,
+     "bo_nho_dinh_gib": 2.96
+    }
+   ]
+  },
+  "1": {
+   "dong_hoc": 27496,
+   "dong_ngoai_mau": 7706,
+   "cuon_ngoai_mau": [
+    "d01-01",
+    "d01-07",
+    "d01-12",
+    "d01-13"
+   ],
+   "epoch": [
+    {
+     "epoch": 1,
+     "loss": 0.8759,
+     "hoc_giay": 829,
+     "doan_giay": 59,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 2,
+     "loss": 0.7159,
+     "hoc_giay": 834,
+     "doan_giay": 57,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 3,
+     "loss": 0.589,
+     "hoc_giay": 810,
+     "doan_giay": 56,
+     "bo_nho_dinh_gib": 2.96
+    }
+   ]
+  },
+  "2": {
+   "dong_hoc": 24205,
+   "dong_ngoai_mau": 10997,
+   "cuon_ngoai_mau": [
+    "d01-04",
+    "d01-08",
+    "d01-09",
+    "d01-14"
+   ],
+   "epoch": [
+    {
+     "epoch": 1,
+     "loss": 0.8944,
+     "hoc_giay": 711,
+     "doan_giay": 81,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 2,
+     "loss": 0.7389,
+     "hoc_giay": 701,
+     "doan_giay": 81,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 3,
+     "loss": 0.6117,
+     "hoc_giay": 699,
+     "doan_giay": 81,
+     "bo_nho_dinh_gib": 2.96
+    }
+   ]
+  },
+  "3": {
+   "dong_hoc": 24878,
+   "dong_ngoai_mau": 10324,
+   "cuon_ngoai_mau": [
+    "d01-03",
+    "d01-05",
+    "d01-06",
+    "d01-10"
+   ],
+   "epoch": [
+    {
+     "epoch": 1,
+     "loss": 0.88,
+     "hoc_giay": 720,
+     "doan_giay": 76,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 2,
+     "loss": 0.7389,
+     "hoc_giay": 715,
+     "doan_giay": 75,
+     "bo_nho_dinh_gib": 2.96
+    },
+    {
+     "epoch": 3,
+     "loss": 0.6221,
+     "hoc_giay": 715,
+     "doan_giay": 77,
+     "bo_nho_dinh_gib": 2.96
+    }
+   ]
+  }
+ },
+ "tham_so": {
+  "du_lieu": "/home/ncthanh/dg20/du-lieu",
+  "chia": "/home/ncthanh/dg20/chia-4-phan.json",
+  "ra": "/home/ncthanh/dg20/ket-qua",
+  "luot": "e5-dg20",
+  "mo_hinh": "intfloat/multilingual-e5-base",
+  "do_dai": 256,
+  "toi_da_a": 64,
+  "lo": 8,
+  "tich_luy": 4,
+  "lr": 3e-05,
+  "epoch": 3,
+  "warmup": 0.06,
+  "nep": "",
+  "luu_mo_hinh_nep": 0,
+  "thu_nho": false,
+  "checkpointing": false
+ },
+ "may": "NVIDIA GeForce RTX 3050 Laptop GPU",
+ "torch": "2.14.1+cu130",
+ "chia": [
+  [
+   "d01-02",
+   "d01-11",
+   "d01-15",
+   "d01-16"
+  ],
+  [
+   "d01-01",
+   "d01-07",
+   "d01-12",
+   "d01-13"
+  ],
+  [
+   "d01-04",
+   "d01-08",
+   "d01-09",
+   "d01-14"
+  ],
+  [
+   "d01-03",
+   "d01-05",
+   "d01-06",
+   "d01-10"
+  ]
+ ],
+ "dong": 35202,
+ "ma_hoa_giay": 8.9,
+ "do_dai_trung_vi": 222,
+ "do_dai_p90": 253
+}
