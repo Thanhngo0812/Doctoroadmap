@@ -57,7 +57,7 @@ class RegistrationResult:
 
 AuthErrorCode = Literal[
     "validation", "invalid_credentials", "rate_limited", "unauthenticated", "account_disabled", "conflict",
-    "link_invalid",
+    "link_invalid", "protected_admin", "bootstrap_required",
 ]
 
 
@@ -402,14 +402,35 @@ class AccountService:
         )
         password_hash = self.hasher.hash(password)
         duplicate = False
-        with self.store.atomic([f"account:{normalized}"]):
+        with self.store.atomic(['admin:users', f"account:{normalized}"]):
+            first_admin = self.store.first_admin_id()
+            if first_admin is None and self.store.has_admins():
+                raise AuthError('bootstrap_required', 'Cần xác lập admin đầu tiên từ hồ sơ bootstrap trước khi tạo thêm admin.')
             if not self.store.create_account(account, password_hash):
                 duplicate = True
             else:
+                if first_admin is None:
+                    self.store.establish_first_admin(account.id, now)
                 self.store.append_audit(AuditEvent(now, account.id, "admin_account_created", "account", account.id))
         if duplicate:
             raise AuthError("conflict", "Tài khoản đã tồn tại.")
         return account
+
+    def assign_first_admin(self, account_id: str) -> None:
+        """Trusted local operator only: explicitly reconcile a legacy bootstrap identity."""
+        with self.store.atomic(['admin:users', f'account:{account_id}']):
+            current = self.store.first_admin_id()
+            if current == account_id:
+                return
+            if current is not None:
+                raise AuthError('protected_admin', 'Định danh admin đầu tiên đã được xác lập và không thể thay đổi.')
+            account = self.store.get_account(account_id)
+            if account is None or account.role != 'admin' or account.status != 'active':
+                raise AuthError('validation', 'Cần UUID admin đang hoạt động đã được đối chiếu hồ sơ bootstrap.',
+                    fields=[{'loc':'account_id','message':'Không phải admin đang hoạt động.'}])
+            now = self.clock.now()
+            self.store.establish_first_admin(account_id, now)
+            self.store.append_audit(AuditEvent(now, None, 'bootstrap_admin_assigned', 'account', account_id))
 
     def _validated_identity(self, email: str, password: str, display_name: str) -> tuple[str, str]:
         original = email.strip() if isinstance(email, str) else ""

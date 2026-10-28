@@ -1,0 +1,93 @@
+FFFFF                                                                    [100%]
+================================== FAILURES ===================================
+______________ test_users_public_projection_search_and_demo_null ______________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000017063E5..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000001707ED93F60>)
+
+    def test_users_public_projection_search_and_demo_null(admin_case):
+        rt = admin_case
+        rt.services.courses.create_course(rt.learner.actor, doc_id='w17-' + uuid4().hex,
+            title='Private course', graph_version=1, module_count=1)
+        response = rt.owner.client.get('/api/v1/admin/users', params={'email': rt.learner.email.upper()})
+>       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w17_admin.py:105: AssertionError
+__________ test_disable_revokes_two_cookies_enable_never_resurrects ___________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001706190..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000170042C8680>)
+
+    def test_disable_revokes_two_cookies_enable_never_resurrects(admin_case):
+        rt = admin_case
+        second = TestClient(rt.app, base_url=ORIGIN)
+        try:
+            assert second.post('/api/v1/auth/login', headers={'Origin': ORIGIN},
+                json={'email': rt.learner.email, 'password': PASSWORD}).status_code == 200
+            assert len(sql(rt, 'SELECT id FROM auth_session WHERE account_id=:uid', uid=rt.learner.id)) == 2
+            response = patch(rt, {'status': 'disabled'})
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E           assert 404 == 200
+E            +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w17_admin.py:124: AssertionError
+_______________________ test_last_admin_demote_rejected _______________________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001700446..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000170045C5F80>)
+
+    def test_last_admin_demote_rejected(admin_case):
+        rt = admin_case
+        # The session database is shared by tests: make this fixture's owner the only admin.
+        with rt.engine.begin() as connection:
+            connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id<>:uid"), {'uid':rt.owner.id})
+        response = patch(rt, {'role': 'user'}, target=rt.owner)
+>       assert response.status_code == 409 and response.json()['error']['code'] == 'conflict'
+E       assert (404 == 409)
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w17_admin.py:147: AssertionError
+______________ test_all_admin_routes_require_admin_and_no_store _______________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000001700478..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000170048A7880>)
+
+    def test_all_admin_routes_require_admin_and_no_store(admin_case):
+        rt = admin_case
+        routes = [(route, method) for route in rt.app.routes for method in getattr(route, 'methods', ())
+            if route.path.startswith('/api/v1/admin/') and method not in {'OPTIONS', 'HEAD'}]
+>       assert {route.path for route, _ in routes} >= {'/api/v1/admin/users', '/api/v1/admin/users/{uid}', '/api/v1/admin/audit'}
+E       AssertionError: assert set() >= {'/api/v1/adm.../users/{uid}'}
+E
+E         Extra items in the right set:
+E         '/api/v1/admin/users/{uid}'
+E         '/api/v1/admin/audit'
+E         '/api/v1/admin/users'
+
+src\web\backend\tests\test_w17_admin.py:155: AssertionError
+_______________ test_update_and_audit_rollback_on_audit_failure _______________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000170049F..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000170046C58A0>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017004947380>
+
+    def test_update_and_audit_rollback_on_audit_failure(admin_case, monkeypatch):
+        rt = admin_case
+>       store = rt.services.admin.store
+                ^^^^^^^^^^^^^^^^^
+E       AttributeError: 'WebServices' object has no attribute 'admin'
+
+src\web\backend\tests\test_w17_admin.py:170: AttributeError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-evidence\runs\red-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_admin.py::test_users_public_projection_search_and_demo_null
+FAILED src/web/backend/tests/test_w17_admin.py::test_disable_revokes_two_cookies_enable_never_resurrects
+FAILED src/web/backend/tests/test_w17_admin.py::test_last_admin_demote_rejected
+FAILED src/web/backend/tests/test_w17_admin.py::test_all_admin_routes_require_admin_and_no_store
+FAILED src/web/backend/tests/test_w17_admin.py::test_update_and_audit_rollback_on_audit_failure
+5 failed, 1 warning in 10.98s

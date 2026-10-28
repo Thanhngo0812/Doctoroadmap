@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="9.974" timestamp="2026-10-28T10:39:32.348769+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-True]" time="2.495"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;66499817583e4f0a9bb0600ebb7ffdcc&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A41E4..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A61841760&gt;)
+self_action = True, changes = {'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"66499817583e4f0a9bb0600ebb7ffdcc"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-False]" time="0.967"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;84122c89ba67487f9d84f05a42763539&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A61D1..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A61E7B6A0&gt;)
+self_action = False, changes = {'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"84122c89ba67487f9d84f05a42763539"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-True]" time="0.969"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;07589a78659d439ba29f1255d4661403&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A6210..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A617BB880&gt;)
+self_action = True, changes = {'role': 'user'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"07589a78659d439ba29f1255d4661403"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-False]" time="0.901"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;5dd24a3f9210495c8802cebdbc588486&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A622A..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A62403380&gt;)
+self_action = False, changes = {'role': 'user'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"5dd24a3f9210495c8802cebdbc588486"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-True]" time="0.903"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;679a9485e58d40bca2515da1672bf1c6&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A6268..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A627E54E0&gt;)
+self_action = True
+changes = {'build_monthly_max': 11, 'role': 'user', 'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"679a9485e58d40bca2515da1672bf1c6"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-False]" time="0.983"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;74771a5f4b1d43269bdf30d6f50a0833&quot;}}&#10;assert (500 == 409)&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A62A3..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000023A624CE020&gt;)
+self_action = False
+changes = {'build_monthly_max': 11, 'role': 'user', 'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+&gt;       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"74771a5f4b1d43269bdf30d6f50a0833"}}
+E       assert (500 == 409)
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError</failure></testcase></testsuite></testsuites>

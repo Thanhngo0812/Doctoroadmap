@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="5" time="6.884" timestamp="2026-10-28T10:40:18.221392+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM account WHERE id=:uid]" time="1.908"><failure message="assert 'protected_admin' in 'update or delete on table &quot;account&quot; violates foreign key constraint &quot;bootstrap_admin_account_id_fkey&quot; on table &quot;bootstrap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.'&#10; +  where 'update or delete on table &quot;account&quot; violates foreign key constraint &quot;bootstrap_admin_account_id_fkey&quot; on table &quot;bootstrap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.' = str(ForeignKeyViolation('update or delete on table &quot;account&quot; violates foreign key constraint &quot;bootstrap_admin_account_id_f...ap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.'))&#10; +    where ForeignKeyViolation('update or delete on table &quot;account&quot; violates foreign key constraint &quot;bootstrap_admin_account_id_f...ap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.') = IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table &quot;account&quot; violates foreign key constrai...ap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.').orig&#10; +      where IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table &quot;account&quot; violates foreign key constrai...ap_admin&quot;\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.') = &lt;ExceptionInfo IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table &quot;account&quot; violates forei...nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table &quot;bootstrap_admin&quot;.') tblen=10&gt;.value">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6A3AF..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001C6C35318A0&gt;)
+statement = 'DELETE FROM account WHERE id=:uid'
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+        with pytest.raises(IntegrityError) as error:
+            with rt.engine.begin() as connection:
+                connection.execute(text(statement),{'uid':rt.owner.id,'other':other.id})
+&gt;       assert 'protected_admin' in str(error.value.orig)
+E       assert 'protected_admin' in 'update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_fkey" on table "bootstrap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".'
+E        +  where 'update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_fkey" on table "bootstrap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".' = str(ForeignKeyViolation('update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_f...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".'))
+E        +    where ForeignKeyViolation('update or delete on table "account" violates foreign key constraint "bootstrap_admin_account_id_f...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') = IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates foreign key constrai...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".').orig
+E        +      where IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates foreign key constrai...ap_admin"\nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') = &lt;ExceptionInfo IntegrityError('(psycopg.errors.ForeignKeyViolation) update or delete on table "account" violates forei...nDETAIL:  Key (id)=(cc893c17-43d5-47a7-ae5f-6b20305560bc) is still referenced from table "bootstrap_admin".') tblen=10&gt;.value
+
+src\web\backend\tests\test_w17_first_admin.py:124: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid]" time="0.872"><failure message="Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6C37C..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001C6C38D6480&gt;)
+statement = "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid"
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+&gt;       with pytest.raises(IntegrityError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;
+
+src\web\backend\tests\test_w17_first_admin.py:121: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid]" time="0.773"><failure message="Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001C6C3AD..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001C6C3BD8EA0&gt;)
+statement = "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid"
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+&gt;       with pytest.raises(IntegrityError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;
+
+src\web\backend\tests\test_w17_first_admin.py:121: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM bootstrap_admin WHERE account_id=:uid]" time="0.845" /><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid]" time="0.900" /></testsuite></testsuites>

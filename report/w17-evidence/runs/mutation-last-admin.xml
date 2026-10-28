@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.158" timestamp="2026-10-27T23:00:06.130065+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_last_admin_demote_rejected" time="1.675"><failure message="assert (200 == 409)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002129D8E..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000212BD4C54E0&gt;)
+
+    def test_last_admin_demote_rejected(admin_case):
+        rt = admin_case
+        # The session database is shared by tests: make this fixture's owner the only admin.
+        with rt.engine.begin() as connection:
+            connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id&lt;&gt;:uid"), {'uid':rt.owner.id})
+        response = patch(rt, {'role': 'user'}, target=rt.owner)
+&gt;       assert response.status_code == 409 and response.json()['error']['code'] == 'conflict'
+E       assert (200 == 409)
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w17_admin.py:150: AssertionError</failure></testcase></testsuite></testsuites>

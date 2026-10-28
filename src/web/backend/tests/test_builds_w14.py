@@ -363,7 +363,8 @@ def test_migration_has_one_successor_and_source_build_foreign_keys(builds):
     config=Config()
     config.set_main_option('script_location',str(Path(__file__).parents[1]/'wayfinder/migrations'))
     scripts=ScriptDirectory.from_config(config)
-    assert scripts.get_heads()==['w12_0008']
+    assert scripts.get_heads()==['w17_0009']
+    assert scripts.get_revision('w17_0009').down_revision=='w12_0008'
     assert scripts.get_revision('w12_0008').down_revision=='w11_0007'
     assert scripts.get_revision('w11_0007').down_revision=='w14_0006'
     assert scripts.get_revision('w14_0006').down_revision=='w06_0005'

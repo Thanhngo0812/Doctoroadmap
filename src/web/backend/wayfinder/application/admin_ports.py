@@ -1,0 +1,19 @@
+from datetime import datetime
+from typing import Protocol
+
+from wayfinder.application.auth_ports import AuthStore
+from wayfinder.domain.auth import Account
+
+
+class AdminStore(AuthStore, Protocol):
+    def list_users(self, *, email: str, role: str | None, status: str | None,
+                   limit: int, offset: int, now: datetime, default_max: int | None) -> dict: ...
+
+    def user_summary(self, uid: str, now: datetime, default_max: int | None) -> dict: ...
+
+    def admin_count(self) -> int: ...
+
+    def update_user(self, uid: str, changes: dict, at: datetime) -> Account: ...
+
+    def list_audit(self, *, actor_id: str | None, action: str | None, since: datetime | None,
+                   until: datetime | None, limit: int, offset: int) -> dict: ...

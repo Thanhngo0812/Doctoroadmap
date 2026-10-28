@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.664" timestamp="2026-10-28T10:40:06.352905+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_legacy_upgrade_requires_explicit_uuid_without_guessing_and_atomic_assignment" time="1.081"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">empty_postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_base_test_0f8689f845254799b3afbacd0b235832
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015DE4E87CB0&gt;
+
+    def test_legacy_upgrade_requires_explicit_uuid_without_guessing_and_atomic_assignment(empty_postgres_database_url,monkeypatch):
+        from wayfinder.composition import compose_account_service
+        from wayfinder.settings import WebSettings
+        upgrade_database(empty_postgres_database_url,'w12_0008')
+        engine=create_database_engine(empty_postgres_database_url)
+        first,older,later=[str(uuid4()) for _ in range(3)]
+        try:
+            with engine.begin() as connection:
+                for uid,role,age in ((older,'user',100),(first,'admin',50),(later,'admin',10)):
+                    connection.execute(text("""INSERT INTO account(id,email,email_normalized,password_hash,display_name,role,status,created_at,updated_at)
+                        VALUES(:id,:email,:email,'synthetic-hash','Synthetic',:role,'active',now()-make_interval(days=&gt;:age),now())"""),
+                        {'id':uid,'email':uid+'@example.vn','role':role,'age':age})
+            upgrade_database(empty_postgres_database_url)
+            service=compose_account_service(WebSettings(_env_file=None),engine,mailer=SimpleNamespace(send=lambda **k:None))
+            assert service.store.first_admin_id() is None
+            from wayfinder.application.admin import AdminService
+            from wayfinder.infrastructure.admin_store import PostgresAdminStore
+            legacy_admin=AdminService(PostgresAdminStore(engine),settings=WebSettings(_env_file=None),clock=service.clock)
+            actor=Actor(first,'admin',True,'active')
+            assert legacy_admin.list_users(actor)['items'][0]['is_first_admin'] is None
+            with pytest.raises(AuthError) as error:
+                legacy_admin.update_user(actor,later,{'status':'disabled','build_monthly_max':4})
+            assert error.value.code=='bootstrap_required'
+&gt;           with pytest.raises(AuthError) as error:
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w17_first_admin.py:236: Failed</failure></testcase></testsuite></testsuites>

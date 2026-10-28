@@ -33,6 +33,9 @@ def main(argv=None) -> int:
     commands.add_parser("media-smoke")
     create_admin = commands.add_parser("create-admin")
     create_admin.add_argument("--email", required=True)
+    protect_admin = commands.add_parser('protect-first-admin', help='One-time legacy bootstrap reconciliation by trusted operator')
+    from uuid import UUID
+    protect_admin.add_argument('--account-id', required=True, type=UUID)
     seed = commands.add_parser("seed-samples")
     seed.add_argument("--admin-email", required=True)
     seed.add_argument("--doc-id", action="append", dest="doc_ids")
@@ -93,7 +96,7 @@ def main(argv=None) -> int:
             if health is not None:
                 health.close()
 
-    if args.command == "create-admin":
+    if args.command in {"create-admin", "protect-first-admin"}:
         if not settings.database_url:
             print("Thiếu WAYFINDER_DATABASE_URL.", file=sys.stderr)
             return 2
@@ -105,8 +108,11 @@ def main(argv=None) -> int:
         try:
             health = DatabaseHealth(settings.database_url)
             account_service = compose_account_service(settings, health.engine)
-            password = getpass.getpass("Mật khẩu quản trị: ")
-            account_service.create_admin(args.email, password)
+            if args.command == 'protect-first-admin':
+                account_service.assign_first_admin(str(args.account_id))
+            else:
+                password = getpass.getpass("Mật khẩu quản trị: ")
+                account_service.create_admin(args.email, password)
         except AuthError as error:
             print(error.message, file=sys.stderr)
             return 1
@@ -116,7 +122,7 @@ def main(argv=None) -> int:
         finally:
             if health is not None:
                 health.close()
-        print("Tài khoản quản trị đã được tạo.")
+        print("Đã xác lập admin đầu tiên." if args.command=='protect-first-admin' else "Tài khoản quản trị đã được tạo.")
         return 0
 
     if args.command == "worker":
