@@ -102,6 +102,7 @@ def test_auth_schema_has_required_tables_constraints_and_indexes(auth_database):
         "rate_limit_event",
         "audit_event",
         "email_token",
+        "bootstrap_admin",
     }
     assert inspector.get_unique_constraints("account", schema=schema)
     assert inspector.get_unique_constraints("auth_session", schema=schema)

@@ -1,0 +1,41 @@
+{
+  "source": "Independent PostgreSQL connection; synthetic accounts; no provider spend",
+  "accounts": [
+    {
+      "id": "78bcb9ef-7d97-4901-a2a8-a3377385d86f",
+      "role": "admin",
+      "status": "active",
+      "build_monthly_max": null
+    },
+    {
+      "id": "78fe5c5a-a2ca-4836-aef2-08581532998c",
+      "role": "user",
+      "status": "active",
+      "build_monthly_max": null
+    }
+  ],
+  "sessions": [
+    {
+      "account_id": "78bcb9ef-7d97-4901-a2a8-a3377385d86f",
+      "sessions": 1
+    },
+    {
+      "account_id": "78fe5c5a-a2ca-4836-aef2-08581532998c",
+      "sessions": 1
+    }
+  ],
+  "audit": [
+    {
+      "action": "admin_account_created",
+      "target_kind": "account",
+      "target_id": "78bcb9ef-7d97-4901-a2a8-a3377385d86f",
+      "ip": null
+    },
+    {
+      "action": "login_ok",
+      "target_kind": "account",
+      "target_id": "78bcb9ef-7d97-4901-a2a8-a3377385d86f",
+      "ip": null
+    }
+  ]
+}

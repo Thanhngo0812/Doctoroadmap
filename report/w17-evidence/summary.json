@@ -1,0 +1,70 @@
+{
+  "milestone": "W-17.1 backend users and audit",
+  "branch": "work/w17-admin-users-backend",
+  "tested_source_head": "8a8a46cb1e7eef2c95daddbe6cc36192b5aeff20",
+  "received_main": "530a8c9f5109bac549b224f17ffee727d2767c07",
+  "observed_main": "530a8c9f5109bac549b224f17ffee727d2767c07",
+  "implementation_commit": "7722a78bf80f1305ae19645b799d4bb23862f7b1",
+  "postgres": {
+    "passed": 3481,
+    "skipped": [
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+        "class": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+        "class": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+        "class": "tests.unit.application.test_phase_b_sa55_runner",
+        "type": "pytest.xfail",
+        "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+      },
+      {
+        "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+        "class": "src.web.backend.tests.test_media_store",
+        "type": "pytest.skip",
+        "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+      }
+    ],
+    "failed": 0,
+    "native_exit": 0,
+    "seconds": 703.475831747055
+  },
+  "focused_w17_cases": 48,
+  "mutations_caught": 11,
+  "mutations_total": 11,
+  "react": {
+    "native_exit": 0,
+    "seconds": 119.15991997718811,
+    "passed": 229,
+    "files": 18
+  },
+  "build": {
+    "native_exit": 0,
+    "seconds": 3.2133536338806152
+  },
+  "new_migrations": 0,
+  "migration_head": "w12_0008",
+  "openapi_operations": 63,
+  "new_spend_usd": 0,
+  "real_mail_sent": 0,
+  "external_provider_calls": 0,
+  "backend_ready": true,
+  "w17_complete": false,
+  "merged_main": false,
+  "pushed": false,
+  "deferred": [
+    "W17 React",
+    "W17.2 builds/sample courses",
+    "W17.3 spend/validation/Cloudinary fake-only tests",
+    "Optional W12 post-commit verification callback failure handling"
+  ],
+  "last_admin_disabled": "Allowed status transition; role-count demotion guard includes disabled admins; active-admin preservation policy is a proposal only"
+}

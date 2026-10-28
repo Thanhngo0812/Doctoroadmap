@@ -380,7 +380,7 @@ def test_pg_rollback_on_audit_failure(invited, monkeypatch, operation):
 
 def test_schema_pending_unique_hash_and_head(invited):
     rt = invited
-    assert sql(rt, 'SELECT version_num FROM alembic_version') == [{'version_num': 'w12_0008'}]
+    assert sql(rt, 'SELECT version_num FROM alembic_version') == [{'version_num': 'w17_0009'}]
     assert set(c['name'] for c in inspect(rt.engine).get_columns('invitation')) == {
         'id','course_id','email_normalized','invitee_account_id','invited_by','token_hash','status','expires_at','created_at','responded_at'}
     identity = iid(send(rt))

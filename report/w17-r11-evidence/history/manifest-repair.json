@@ -1,0 +1,34 @@
+{
+  "prior_delivery": "862dd805",
+  "rows_verified": 380,
+  "changes": [
+    {
+      "path": "report/w17-first-admin-evidence/redactions.json",
+      "old_entry": {
+        "path": "report/w17-first-admin-evidence/redactions.json",
+        "bytes": 172,
+        "sha256": "966e3ac7f77a9a556795373e9174e73191a8f73c62995b4b5d06a745238f978d"
+      },
+      "old_worktree_bytes": 172,
+      "old_git_blob_bytes": 168,
+      "old_git_blob_sha256": "7688e3a7c11f9baf480aa000615017b3dae9df5df084164534ca8cc5b517a979",
+      "new_bytes": 168,
+      "new_sha256": "7688e3a7c11f9baf480aa000615017b3dae9df5df084164534ca8cc5b517a979"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/packaging-note.json",
+      "old_entry": {
+        "path": "report/w17-first-admin-evidence/packaging-note.json",
+        "bytes": 244,
+        "sha256": "756cf1b854ea70b2e52b8174c75c7983d7da770d11de702f8aa0b23d9a5e1fe5"
+      },
+      "old_worktree_bytes": 244,
+      "old_git_blob_bytes": 237,
+      "old_git_blob_sha256": "2bcddedbc40c0cad34829ed0c3db24426569b3333db91bb964a6d07a3b295d7b",
+      "new_bytes": 237,
+      "new_sha256": "2bcddedbc40c0cad34829ed0c3db24426569b3333db91bb964a6d07a3b295d7b"
+    }
+  ],
+  "cause": "Two write_text outputs had CRLF byte hashes while Git stored normalized LF; normalize bytes before hashing",
+  "artifact_content_semantics_unchanged": true
+}

@@ -77,6 +77,22 @@ class PostgresAuthStore:
                 .values(last_login_at=at, updated_at=at)
             )
 
+    def first_admin_id(self) -> str | None:
+        table = self._table('bootstrap_admin')
+        with self._use_connection() as connection:
+            value = connection.scalar(select(table.c.account_id).where(table.c.singleton))
+            return str(value) if value is not None else None
+
+    def has_admins(self) -> bool:
+        table = self._table('account')
+        with self._use_connection() as connection:
+            return connection.scalar(select(table.c.id).where(table.c.role=='admin').limit(1)) is not None
+
+    def establish_first_admin(self, account_id, at):
+        with self._use_connection(write=True) as connection:
+            connection.execute(insert(self._table('bootstrap_admin')).values(
+                singleton=True, account_id=account_id, established_at=at))
+
     def update_profile(self, account_id: str, display_name: str, at) -> Account:
         table = self._table("account")
         with self._use_connection(write=True) as connection:

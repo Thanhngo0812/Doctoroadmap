@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_new_owner_policy_first_admin_cannot_be_disabled _____________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000229A801..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000229C7A74EA0>)
+
+    def test_new_owner_policy_first_admin_cannot_be_disabled(admin_case):
+        rt = admin_case
+        before = sql(rt, 'SELECT role,status,build_monthly_max,updated_at FROM account WHERE id=:id', id=rt.owner.id)
+        sessions = sql(rt, 'SELECT id FROM auth_session WHERE account_id=:id ORDER BY id', id=rt.owner.id)
+        audit = sql(rt, 'SELECT id FROM audit_event WHERE actor_id=:id ORDER BY id', id=rt.owner.id)
+        response = patch(rt, {'status':'disabled','build_monthly_max':7}, target=rt.owner)
+>       assert response.status_code == 409 and response.json()['error']['code'] == 'protected_admin', response.text
+E       AssertionError: {"id":"2aa1fdf9-fb03-4ffc-a596-34b877384743","email":"f46a668463224843bc31fad82a1428e6@example.vn","display_name":"Quản trị viên","role":"admin","status":"disabled","email_verified_at":"2026-01-01T00:00:00Z","created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":7,"builds_this_month":{"used":0,"max":7,"resets_at":"2026-02-01T00:00:00+07:00"}}
+E       assert (200 == 409)
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:11: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-first-admin-evidence\runs\policy-red-02.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_new_owner_policy_first_admin_cannot_be_disabled
+1 failed, 1 warning in 19.92s
