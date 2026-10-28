@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="2" errors="1" time="6.8022242">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-28T04:18:38.428Z" hostname="ADMIN" tests="16" failures="2" errors="0" skipped="0" time="6.8022242">
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (undefined)" time="0.5275297">
+            <failure message="Cannot read properties of undefined (reading &apos;length&apos;)" type="TypeError">
+TypeError: Cannot read properties of undefined (reading &apos;length&apos;)
+ ❯ EmailInvitations src/Invitations.tsx:51:60
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation ({&quot;id&quot;:&quot;inv-1&quot;,&quot;course_id&quot;:&quot;course-1&quot;,&quot;course_title&quot;:&quot;Đại số tuyến tính&quot;,&quot;email&quot;:&quot;an@example.invalid&quot;,&quot;status&quot;:&quot;pending&quot;,&quot;expires_at&quot;:&quot;2026-11-03T08:00:00Z&quot;,&quot;created_at&quot;:&quot;2026-10-27T08:00:00Z&quot;,&quot;responded_at&quot;:null})" time="1.5723999">
+            <system-err>
+An error occurred in the &lt;EmailInvitations&gt; component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+            </system-err>
+            <failure message="Unable to find an element with the text: /Đã tạo 1 lời mời/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div /&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div /&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: /Đã tạo 1 lời mời/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div /&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div /&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Invitations.test.tsx:47:15
+            </failure>
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="keeps the draft on send failure, serializes a reload, and allows retry after a list error" time="0.6570703">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.4354637">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.221757">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.1071899">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.4699344">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.4822749">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.088617">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.1585056">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0209577">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.5002033">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.1647187">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.1846076">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.112394">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.0965176">
+        </testcase>
+    </testsuite>
+    <testsuite name="vitest unhandled errors" timestamp="2026-10-28T04:18:38.440Z" hostname="ADMIN" tests="1" failures="0" errors="1" skipped="0" time="0">
+        <testcase classname="vitest unhandled errors" name="Uncaught Exception: current.filter is not a function or its return value is not iterable" time="0">
+            <error message="current.filter is not a function or its return value is not iterable" type="TypeError">
+TypeError: current.filter is not a function or its return value is not iterable
+ ❯ src/Invitations.tsx:37:48
+ ❯ basicStateReducer node_modules/react-dom/cjs/react-dom-client.development.js:8317:45
+ ❯ updateReducerImpl node_modules/react-dom/cjs/react-dom-client.development.js:8430:17
+ ❯ updateReducer node_modules/react-dom/cjs/react-dom-client.development.js:8350:14
+ ❯ Object.useState node_modules/react-dom/cjs/react-dom-client.development.js:29181:18
+ ❯ process.env.NODE_ENV.exports.useState node_modules/react/cjs/react.development.js:1309:34
+ ❯ EmailInvitations src/Invitations.tsx:13:26
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+
+This error originated in &quot;src/Invitations.test.tsx&quot; test file. It doesn&apos;t mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was &quot;waits for the initial list before sending, then retains the canonical invitation ({&quot;id&quot;:&quot;inv-1&quot;,&quot;course_id&quot;:&quot;course-1&quot;,&quot;course_title&quot;:&quot;Đại số tuyến tính&quot;,&quot;email&quot;:&quot;an@example.invalid&quot;,&quot;status&quot;:&quot;pending&quot;,&quot;expires_at&quot;:&quot;2026-11-03T08:00:00Z&quot;,&quot;created_at&quot;:&quot;2026-10-27T08:00:00Z&quot;,&quot;responded_at&quot;:null})&quot;. This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+            </error>
+        </testcase>
+    </testsuite>
+</testsuites>

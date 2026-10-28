@@ -1,0 +1,94 @@
+{
+  "sourceCommit": "a594a4699008665ab8e2aa572cb6f7c90944137a",
+  "main": "26d43b83ba0d3f265f28ea7d3220f924ba96a97d",
+  "gates": {
+    "r10-gate-python-final": {
+      "commit": "a594a4699008665ab8e2aa572cb6f7c90944137a",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/cong-w12-r10-final",
+        "--junitxml=report/w12-react-evidence/r10-gate-python-final.xml"
+      ],
+      "nativeExitCode": 0,
+      "seconds": 943.09,
+      "junit": {
+        "tests": 3531,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      }
+    },
+    "r10-gate-react-final2": {
+      "commit": "a594a4699008665ab8e2aa572cb6f7c90944137a",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=../../../report/w12-react-evidence/r10-gate-react-final2.xml"
+      ],
+      "nativeExitCode": 0,
+      "seconds": 208.8,
+      "junit": {
+        "tests": 259,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "r10-gate-build-final2": {
+      "commit": "a594a4699008665ab8e2aa572cb6f7c90944137a",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "nativeExitCode": 0,
+      "seconds": 6.23
+    },
+    "r10-gate-browser-final": {
+      "commit": "a594a4699008665ab8e2aa572cb6f7c90944137a",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w12_react_runtime.py"
+      ],
+      "nativeExitCode": 0,
+      "seconds": 167.52
+    }
+  },
+  "browser": {
+    "configurations": 12,
+    "images": 49,
+    "axe": 49,
+    "violations": 0,
+    "http": 256,
+    "serializedReads": 4,
+    "sqlStages": 15,
+    "liveFonts": {
+      "fonts": [
+        {
+          "familyName": "Be Vietnam Pro",
+          "postScriptName": "BeVietnamPro-Bold",
+          "isCustomFont": true,
+          "glyphCount": 16
+        }
+      ]
+    },
+    "pageErrors": [],
+    "tokenLeaks": []
+  },
+  "externalCostUsd": 0
+}
