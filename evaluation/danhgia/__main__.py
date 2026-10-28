@@ -17,6 +17,7 @@ _LENH = {
     "can-khai-niem": "danhgia.can.lenh",
     "thuoc-khai-niem": "danhgia.cham.lenh_khai_niem",
     "cham-a1a2": "danhgia.cham.lenh_a1a2",
+    "phieu-g5": "danhgia.g5.lenh",
     "b5": "danhgia.xuat.b5.lenh",
     "baseline": "danhgia.xuat.baseline.lenh",
     "phat-lai": "danhgia.phat_lai.lenh",
