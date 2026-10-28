@@ -197,8 +197,14 @@ def test_ma_ngau_nhien_khong_lo_thu_tu_theo_he_va_khong_chua_ten_he():
         ma = [h["ma"] for h in hang]
         assert ma == sorted(ma) and not any(he in m for m in ma for he in HE)
         he_theo_ma = [next(iter(h["canh"])) for h in hang if h["loai"] == "may"]
-        khong_xep_theo_he += he_theo_ma != sorted(he_theo_ma)
+        khong_xep_theo_he += he_theo_ma != ["chinh"] * 20 + ["b1"] * 20
     assert khong_xep_theo_he >= 9                                             # hàng của hệ đầu không luôn đứng trước
+
+
+def test_ma_khong_chua_ten_he_ke_ca_khi_ten_he_la_tien_to_cua_ma():
+    hang = chon.dung_phieu_b(hang_may_gia(24), G3, G4, G4_THO["S1"], seed=1, nguoi="S1", cam=["b00", "b01", "b02"])
+    ma = [h["ma"] for h in hang]
+    assert len(set(ma)) == len(ma) and not any(c in m for m in ma for c in ("b00", "b01", "b02"))
 
 
 def test_cap_so_sanh_trai_phai_xao_tat_dinh_theo_seed():
@@ -242,6 +248,22 @@ def test_phieu_khong_lo_ten_he_hay_loai_dong(tmp_path):
         for tu in ("chinh", "doi_chung", "loai", "may:", "seed"):
             assert not any(tu in t for t in tho_thap), tu
         assert any("cuong do" in c for c in cac)                              # văn bản vẫn có mặt
+
+
+def test_trang_thai_chuan_bi_dung_vang_tho_tung_nguoi_qua_nhieu_seed():
+    ten = {x["ma"]: x["ten"] for x in G3["khai_niem"]}
+    cap = lambda q: (q["nguon"]["ngoai"]["ten"] if isinstance(q["nguon"], dict) else ten[q["nguon"]], ten[q["dich"]])  # noqa: E731
+    tho = {n: {cap(q) for q in g["quan_he"]} for n, g in G4_THO.items()}
+    chinh = {("Cao do", "Truong do"), ("Truong do", "Cuong do"), ("Nhip", "Phach")}
+    ngoai_hoi_y = set()
+    for seed in range(1, 12):
+        tt = tt_mau(seed)
+        for nguoi in ("S1", "S2"):
+            vang = {(h["nguon"], h["dich"]) for h in tt["nguoi"][nguoi]["b"] if h["loai"] == "doi_chung_vang"}
+            assert vang and vang <= tho[nguoi], (seed, nguoi, vang)
+            if nguoi == "S1":
+                ngoai_hoi_y |= vang - chinh
+    assert ngoai_hoi_y                                                           # câu đối chứng không bị giới hạn trong G4 chính (hội ý)
 
 
 def test_phieu_moi_nguoi_rieng_dung_cau_doi_chung_cua_nguoi_do():
