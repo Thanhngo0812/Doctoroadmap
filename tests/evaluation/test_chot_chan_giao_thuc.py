@@ -89,6 +89,14 @@ def test_tap_la_bat_buoc_va_phai_hop_le(thu, gia, tmp_path):
     khong_dung_gi(gia, ra)
 
 
+
+def test_manifest_thieu_tap_bi_tu_choi_khong_coi_la_phat_trien():
+    from danhgia.giao_thuc import LoiGiaoThuc, kiem_giao_thuc
+    with pytest.raises(LoiGiaoThuc):
+        kiem_giao_thuc({"ma_sach": "x"}, None)
+    assert kiem_giao_thuc({"ma_sach": "x", "tap": "phat_trien"}, None) is None
+
+
 # ---------------------------------------------------------------- hợp lệ: SHA vào bản ghi và vào hash cấu hình
 
 
@@ -243,3 +251,11 @@ def test_b5_qua_lenh_luot_tren_tap_thu_chuyen_giao_thuc_xuong_lenh_b5(sach_b5, g
     ban = ban_ghi.doc(ra)
     assert ban["sha256_giao_thuc"] == sha(GIAO_THUC_CHOT) and ban_ghi.da_xong(ban)
     assert main(lenh(s, tmp_path / "b5khong", "b5a")) == 2
+
+
+def test_b5_hash_cau_hinh_doi_theo_giao_thuc_va_giu_nguyen_khi_khong_co():
+    from danhgia.xuat.b5 import lenh as b5
+    khong = b5._hash_cau_hinh("a", 1)
+    assert b5._hash_cau_hinh("a", 1, None) == khong
+    a, b = b5._hash_cau_hinh("a", 1, "0" * 64), b5._hash_cau_hinh("a", 1, "1" * 64)
+    assert len({khong, a, b}) == 3
