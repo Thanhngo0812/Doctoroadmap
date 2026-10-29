@@ -9,6 +9,7 @@ Lỗi là `LoiGiaoThuc` (một `ValueError`); thông báo chỉ nêu lý do, kh�
 from __future__ import annotations
 
 import hashlib
+import unicodedata
 from pathlib import Path
 
 from danhgia.bo_sach import TAP
@@ -34,7 +35,7 @@ def kiem_giao_thuc(manifest, duong):
     except OSError as loi:
         raise LoiGiaoThuc(f"không đọc được tệp giao thức ({type(loi).__name__})") from loi
     if tap == "thu":
-        van_ban = noi_dung.decode("utf-8", errors="replace")
+        van_ban = unicodedata.normalize("NFC", noi_dung.decode("utf-8", errors="replace"))
         con = [d for d in DAU_HIEU_CHUA_CHOT if d in van_ban]
         if con:
             raise LoiGiaoThuc(f"giao thức chưa chốt: còn chữ {', '.join(con)}")

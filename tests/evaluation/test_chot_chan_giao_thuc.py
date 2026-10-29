@@ -60,6 +60,15 @@ def test_giao_thuc_con_cho_hay_nhap_bi_tu_choi(chu, thu, gia, tmp_path, capsys):
     khong_dung_gi(gia, ra)
 
 
+def test_giao_thuc_con_cho_viet_dang_nfd_van_bi_tu_choi(thu, gia, tmp_path):
+    import unicodedata
+    tep = tmp_path / "dk-0.md"
+    tep.write_text(unicodedata.normalize("NFD", "# Giao thức\n\nô CHỜ\n"), encoding="utf-8")
+    ra = tmp_path / "luot"
+    assert main(lenh(thu, ra, "chinh", "--giao-thuc", str(tep), co_vang=True)) == 2
+    khong_dung_gi(gia, ra)
+
+
 def test_giao_thuc_khong_ton_tai_bi_tu_choi(thu, gia, tmp_path):
     ra = tmp_path / "luot"
     assert main(lenh(thu, ra, "chinh", "--giao-thuc", str(tmp_path / "khong-co.md"), co_vang=True)) == 2
