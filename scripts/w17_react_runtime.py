@@ -16,7 +16,7 @@ from wayfinder.api.app import create_app
 from wayfinder.api.auth import get_actor
 from wayfinder.api.errors import WebError
 from wayfinder.application.admin import AdminService
-from wayfinder.composition import WebServices,compose_account_service,compose_course_services
+from wayfinder.composition import WebServices,compose_account_service,compose_course_services,compose_sharing_service
 from wayfinder.domain.auth import Actor
 from wayfinder.fakes.mail import FakeMailer
 from wayfinder.infrastructure.admin_store import PostgresAdminStore
@@ -58,7 +58,9 @@ def main():
    with accounts.store.atomic(['account:'+result.session.account.id]):accounts.store.delete_account_sessions(result.session.account.id)
   service=AdminService(PostgresAdminStore(engine),settings=settings,clock=clock)
   phase=PostgresPhaseBStore(engine);courses,gateway=compose_course_services(settings,engine,phase,clock=clock,model=None)
-  app=create_app(settings,WebServices(health_check=lambda:'ok',accounts=accounts,courses=courses,learning=gateway,phase_b_store=phase,admin=service))
+  sharing=compose_sharing_service(settings,engine,clock=clock,graph_loader=courses.gateway.graph_loader,mailer=accounts.mailer)
+  accounts.on_email_verified=sharing.attach_verified_invitations
+  app=create_app(settings,WebServices(health_check=lambda:'ok',accounts=accounts,courses=courses,learning=gateway,sharing=sharing,phase_b_store=phase,admin=service))
   def observer(actor=Depends(get_actor)):
    if actor.user_id!=ids['observer']:raise WebError('not_found','Không tìm thấy')
   def probe():
