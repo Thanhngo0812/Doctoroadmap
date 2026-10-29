@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Literal
 from threading import RLock, Thread
 import logging
@@ -181,6 +181,7 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
         def graph_loader(doc_id, version):
             return load_learning_graph(JsonArtifactStore(settings.artifact_root), doc_id, version)
     runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock,
+                                settings=replace(BSettings(), learner_daily_max_usd=settings.learner_daily_max_usd),
                                 page_images=ArtifactPageImages(settings.artifact_root),
                                 artifacts=JsonArtifactStore(settings.artifact_root) if embedding is not None else None,
                                 model_for=model_for)

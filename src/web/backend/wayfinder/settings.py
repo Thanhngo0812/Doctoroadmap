@@ -32,6 +32,7 @@ class WebSettings(BaseSettings):
     vi_min_diacritic_ratio: float | None = Field(default=None, ge=0, le=1)
     build_monthly_max: int | None = Field(default=None, gt=0)
     system_daily_build_max_usd: float | None = Field(default=None, gt=0)
+    learner_daily_max_usd: float = Field(default=1.0, gt=0)
     env: Literal["dev", "prod"] = "dev"
     smtp_host: str = "smtp.gmail.com"
     smtp_port: int = Field(default=587, gt=0)

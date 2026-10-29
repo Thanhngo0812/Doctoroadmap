@@ -83,10 +83,12 @@ class PostgresBuildStore(PostgresCourseStore):
             for row in rows:
                 self.execute("UPDATE course SET status='failed',updated_at=:now WHERE build_id=:id",{'id':row['id'],'now':now})
 
+    def spent_today(self,now):
+        return self.one("SELECT coalesce(sum(cost_usd),0) AS total FROM usage_ledger WHERE purpose='build' AND created_at>=:start",{'start':day_start(now)})['total']
+
     def cap_reached(self,now,maximum):
         if maximum is None: return False
-        total=self.one("SELECT coalesce(sum(cost_usd),0) AS total FROM usage_ledger WHERE purpose='build' AND created_at>=:start",{'start':day_start(now)})['total']
-        return total>=Decimal(str(maximum))
+        return self.spent_today(now)>=Decimal(str(maximum))
 
     def claim(self,worker,now,settings):
         self.expire(now)
