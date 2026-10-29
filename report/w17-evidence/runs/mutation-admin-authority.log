@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______________ test_all_admin_routes_require_admin_and_no_store _______________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000026EEBCE..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000026EFF829440>)
+
+    def test_all_admin_routes_require_admin_and_no_store(admin_case):
+>       assert_admin_routes_protected(admin_case)
+
+src\web\backend\tests\test_w17_admin.py:180:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rt = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000026EEBCE..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000026EFF829440>)
+
+    def assert_admin_routes_protected(rt):
+        routes = list(admin_routes(rt.app))
+        assert {route.path for route, _ in routes} >= {'/api/v1/admin/users', '/api/v1/admin/users/{uid}', '/api/v1/admin/audit'}
+        with TestClient(rt.app, base_url=ORIGIN) as guest:
+            for route, method in routes:
+                path = route.path.replace('{uid}', rt.learner.id)
+                body = {'status':'disabled'} if method == 'PATCH' else None
+                for client, extra, status, code in ((rt.learner.client, headers(rt.learner),403,'forbidden'),
+                    (guest, {'Origin':ORIGIN},401 if method=='GET' else 403,'unauthenticated' if method=='GET' else 'csrf_failed')):
+                    response = client.request(method,path,headers=extra,json=body)
+>                   assert response.status_code == status, response.text
+E                   AssertionError: {"items":[{"id":"47d8f847-5d39-4074-8ec7-50433afce6ea","email":"2a684548cb0e4b5287d2c5b5ce8df657@example.vn","display_name":"Quản trị viên","role":"admin","status":"active","email_verified_at":"2026-01-01T00:00:00Z","created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":null,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-02-01T00:00:00+07:00"}},{"id":"6d1f4ebb-f2b9-4439-ae27-00f415c964cf","email":"36c25dde64634b72a9a3e0c76505ffcf@example.vn","display_name":"Người học","role":"user","status":"active","email_verified_at":null,"created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":null,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-02-01T00:00:00+07:00"}}],"total":2,"limit":50,"offset":0}
+E                   assert 200 == 403
+E                    +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_w17_admin.py:174: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-evidence\runs\mutation-admin-authority.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_admin.py::test_all_admin_routes_require_admin_and_no_store
+1 failed, 47 deselected, 1 warning in 2.95s

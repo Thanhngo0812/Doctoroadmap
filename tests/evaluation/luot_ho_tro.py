@@ -35,6 +35,7 @@ class GiaPipeline:
         self.lenh = []                  # (argv, env) của mọi lệnh đã nhận
         self.hong_o = None              # tên bước sẽ ném NganGiua một lần
         self.so_dong_pha_b = 1
+        self.canonical_luc_roadmap = []  # mỗi lần roadmap: các algorithm_id canonical có trong kho lúc đó
 
     def __call__(self, argv, env):
         kho = Path(env["DOC2ROADMAP_ARTIFACT_DIR"])
@@ -53,6 +54,9 @@ class GiaPipeline:
         elif buoc == "a4":
             chep_neu_thieu(KHO_MAU / "canonical", kho / "canonical")
         elif buoc == "roadmap":
+            thu = kho / "canonical" / DOC
+            self.canonical_luc_roadmap.append(sorted(json.loads((p / "manifest.json").read_text(encoding="utf-8")).get("config", {}).get("algorithm_id", "")
+                                                     for p in thu.iterdir() if (p / "manifest.json").exists()) if thu.exists() else [])
             chep_neu_thieu(KHO_MAU / "graph", kho / "graph")
             chep_neu_thieu(KHO_MAU / "canonical", kho / "canonical")
             chep_neu_thieu(KHO_MAU / "chunks", kho / "chunks")

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.529" timestamp="2026-10-27T23:00:37.093588+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta" time="1.913"><failure message="assert ('W17_PRIVATE...ENT_SENTINEL' not in '{&quot;items&quot;: [...&quot;offset&quot;: 0}'&#10;  &#10;  'W17_PRIVATE_AUDIT_CONTENT_SENTINEL' is contained here:&#10;  ?         --------------                                     ^^^^^^^^^^^^^^^^^^                                     ^^^&#10;    {&quot;chat&quot;: &quot;W17_PRIVATE_AUDIT_CONTENT_SENTINEL&quot;}, &quot;token&quot;: &quot;W17_PRIVATE_AUDIT_CONTENT_SENTINEL&quot;, &quot;password_hash&quot;: &quot;W17_PRIVATE_AUDIT_CONTENT_SENTINEL&quot;}}, {&quot;id&quot;: 5, &quot;at&quot;: &quot;2026-01-01 00:00:00+00:00&quot;, &quot;actor_id&quot;: &quot;cbba66f6-a7a9-4406-85fe-199934c1f27a&quot;, &quot;action&quot;: &quot;password_changed&quot;, &quot;target_kind&quot;: &quot;account&quot;, &quot;target_id&quot;: &quot;cbba66f6-a7a9-4406-85fe-199934c1f27a&quot;, &quot;ip&quot;: &quot;127.0.0.1&quot;, &quot;meta&quot;: {&quot;extra&quot;: {&quot;cha...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show)">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000179CA7E..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000179EA3C94E0&gt;)
+
+    def test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta(admin_case):
+        from wayfinder.application.auth_ports import AuditEvent
+        rt=admin_case
+        start=rt.clock.now()
+        marker='W17_PRIVATE_AUDIT_CONTENT_SENTINEL'
+        for seconds in (-1,0,59,60):
+            rt.services.accounts.store.append_audit(AuditEvent(start+timedelta(seconds=seconds),rt.learner.id,
+                'password_changed','account',rt.learner.id,'127.0.0.1',{'password_hash':marker,'token':marker,'extra':{'chat':marker}}))
+        params={'actor_id':rt.learner.id,'action':'password_changed','since':start.isoformat(),
+            'until':(start+timedelta(minutes=1)).isoformat(),'limit':1}
+        first=rt.owner.client.get('/api/v1/admin/audit',params=params)
+        assert first.status_code==200,first.text
+        assert first.json()['total']==2 and len(first.json()['items'])==1
+        second=rt.owner.client.get('/api/v1/admin/audit',params={**params,'offset':1})
+        assert second.json()['items'][0]['id']!=first.json()['items'][0]['id']
+        assert marker not in first.text+second.text and 'meta' not in first.text
+        assert set(first.json()['items'][0])=={'id','at','actor_id','action','target_kind','target_id','ip'}
+        assert first.json()['items'][0]['ip']=='127.0.0.1'
+        direct=rt.services.admin.list_audit(rt.owner.actor,actor_id=rt.learner.id,action='password_changed',
+            since=start,until=start+timedelta(minutes=1))
+&gt;       assert marker not in json.dumps(direct,default=str) and all('meta' not in row for row in direct['items'])
+E       assert ('W17_PRIVATE...ENT_SENTINEL' not in '{"items": [..."offset": 0}'
+E
+E         'W17_PRIVATE_AUDIT_CONTENT_SENTINEL' is contained here:
+E         ?         --------------                                     ^^^^^^^^^^^^^^^^^^                                     ^^^
+E           {"chat": "W17_PRIVATE_AUDIT_CONTENT_SENTINEL"}, "token": "W17_PRIVATE_AUDIT_CONTENT_SENTINEL", "password_hash": "W17_PRIVATE_AUDIT_CONTENT_SENTINEL"}}, {"id": 5, "at": "2026-01-01 00:00:00+00:00", "actor_id": "cbba66f6-a7a9-4406-85fe-199934c1f27a", "action": "password_changed", "target_kind": "account", "target_id": "cbba66f6-a7a9-4406-85fe-199934c1f27a", "ip": "127.0.0.1", "meta": {"extra": {"cha...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show)
+
+src\web\backend\tests\test_w17_admin.py:353: AssertionError</failure></testcase></testsuite></testsuites>

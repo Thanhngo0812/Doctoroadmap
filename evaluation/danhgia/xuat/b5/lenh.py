@@ -1,6 +1,9 @@
 """Lệnh con `b5` của `python -m danhgia`.
 
-  python -m danhgia b5 --manifest M --pdf P --che-do a|b (--bien-the K | --seed S) --ra DIR [--dry-run] [--allow-spend]
+  python -m danhgia b5 --manifest M --pdf P --che-do a|b (--bien-the K | --seed S) --ra DIR [--dry-run] [--allow-spend] [--giao-thuc DK.md]
+
+Tập thử (`manifest.tap == "thu"`): bắt buộc `--giao-thuc` (tệp đã chốt, không còn chữ CHỜ hay NHÁP), kiểm trước khi tạo `--ra` hay đọc PDF; SHA-256 của nó
+vào hash cấu hình và vào `-luot.json` / `dry-run.json`.
 
 Không có `--dry-run` thì bắt buộc `--allow-spend`; thiếu cờ này thì không dựng khách mô hình, không mở kết nối nào.
 Ra: `b5{a|b}-k{K}.json` (hợp đồng), `b5{a|b}-k{K}-luot.json` (phản hồi thô, usage, cờ, báo cáo), hoặc `dry-run.json`.
@@ -15,6 +18,7 @@ from datetime import date
 from pathlib import Path
 
 from danhgia.bo_sach import kiem_manifest
+from danhgia.giao_thuc import LoiGiaoThuc, kiem_giao_thuc
 from danhgia.ten import chuan_hoa
 
 from . import chuyen as chuyen_mod
@@ -31,6 +35,7 @@ def them_lenh(parser):
     parser.add_argument("--ra", required=True)
     parser.add_argument("--dry-run", action="store_true", help="không gọi mạng; ghi dry-run.json")
     parser.add_argument("--allow-spend", action="store_true", help="bắt buộc khi không dry-run (lượt có tiền)")
+    parser.add_argument("--giao-thuc", default=None, help="tệp giao thức đăng ký trước đã chốt (bắt buộc với tập thử)")
     parser.add_argument("--commit", default=None)
     parser.add_argument("--ngay-chay", default=None)
     parser.set_defaults(chay=chay)
@@ -65,10 +70,12 @@ def _du_toan(manifest, doc_trang, k):
                        "khái niệm các chương trước. Đầu ra tính ở trần nên usd_toi_da là cận trên, không phải số kỳ vọng."}
 
 
-def _hash_cau_hinh(che_do, k):
+def _hash_cau_hinh(che_do, k, sha_giao_thuc=None):
     tep = loi_nhac.DUONG_MAC_DINH.read_bytes()
     goc = {"loi_nhac_sha256": hashlib.sha256(tep).hexdigest(), "che_do": che_do, "bien_the": k, "mo_hinh": goi.MO_HINH,
            "temperature": 0, "tran_token_ra": goi.TRAN_TOKEN_RA}
+    if sha_giao_thuc is not None:    # chỉ khi có: lượt không giao thức giữ nguyên hash như trước
+        goc["giao_thuc_sha256"] = sha_giao_thuc
     return hashlib.sha256(json.dumps(goc, sort_keys=True).encode()).hexdigest()[:16]
 
 
@@ -83,6 +90,11 @@ def chay(args):
     if loi:
         print("manifest không hợp lệ: " + "; ".join(loi), file=sys.stderr)
         return 2
+    try:
+        sha_giao_thuc = kiem_giao_thuc(manifest, getattr(args, "giao_thuc", None))
+    except LoiGiaoThuc as loi_gt:
+        print(f"từ chối: {loi_gt}", file=sys.stderr)
+        return 2
     sha = hashlib.sha256(Path(args.pdf).read_bytes()).hexdigest()
     if sha != manifest["pdf_sha256"]:
         print("sha256 của PDF khác manifest; từ chối chạy", file=sys.stderr)
@@ -95,6 +107,7 @@ def chay(args):
     ra = Path(args.ra)
     if args.dry_run:
         bao = _du_toan(manifest, doc_trang, k)
+        bao["sha256_giao_thuc"] = sha_giao_thuc
         ra.mkdir(parents=True, exist_ok=True)
         _ghi(ra / "dry-run.json", bao)
         print(json.dumps(bao, ensure_ascii=False, indent=1))
@@ -115,7 +128,8 @@ def chay(args):
         l = goi.chay_luot(khach, he_thong, loi_nhac.nguoi_dung(p["text"], truoc), luoc_do)
         luots.append(chuyen_mod.LuotCuaChuong(p["ma"], p["dau"], p["cuoi"], l))
         ban_ghi.append(_ban_ghi_luot(p["ma"], p["dau"], p["cuoi"], l))
-        _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "luot": ban_ghi, "bao_cao": None})  # lưu dần
+        _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "sha256_giao_thuc": sha_giao_thuc, "luot": ban_ghi,
+                                                "bao_cao": None})  # lưu dần
         if l.ok:
             for kn in l.du_lieu["khai_niem"]:
                 khoa = chuan_hoa(kn["ten"])
@@ -126,16 +140,16 @@ def chay(args):
         hop_dong, bao_cao = chuyen_mod.chuyen(
             luots, manifest=manifest, doc_trang=doc_trang, che_do=che_do, k=k, commit=args.commit or _commit_hien_tai(),
             ngay_chay=args.ngay_chay or date.today().isoformat(), transport=transport, mo_hinh=goi.MO_HINH,
-            hash_cau_hinh=_hash_cau_hinh(che_do, k))
+            hash_cau_hinh=_hash_cau_hinh(che_do, k, sha_giao_thuc))
     except chuyen_mod.KhongCoLuotNaoThanhCong as ngoai_le:
         bao_cao = {"so_luot": len(luots), "so_luot_ok": 0, "cat_vi_tran": any(l.luot.cat_vi_tran for l in luots),
                    "luot_that_bai": [{"nhan": l.nhan, "cat_vi_tran": l.luot.cat_vi_tran, "loi": l.luot.loi} for l in luots],
                    "ly_do": str(ngoai_le)}
-        _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "luot": ban_ghi, "bao_cao": bao_cao})
+        _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "sha256_giao_thuc": sha_giao_thuc, "luot": ban_ghi, "bao_cao": bao_cao})
         print("không có lượt nào thành công; không ghi hợp đồng", file=sys.stderr)
         return 1
     _ghi(ra / f"{tien_to}.json", hop_dong)
-    _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "luot": ban_ghi, "bao_cao": bao_cao})
+    _ghi(ra / f"{tien_to}-luot.json", {"che_do": che_do, "bien_the": k, "sha256_giao_thuc": sha_giao_thuc, "luot": ban_ghi, "bao_cao": bao_cao})
     so_kn, so_canh = len(hop_dong["khai_niem"]), len(hop_dong["canh"])
     print(f"đã ghi {tien_to}.json: {so_kn} khái niệm, {so_canh} cạnh, {bao_cao['so_luot_ok']}/{bao_cao['so_luot']} lượt ok")
     return 0 if bao_cao["so_luot_ok"] == bao_cao["so_luot"] else 1

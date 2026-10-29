@@ -10,7 +10,8 @@ gọi mô hình, không nhập `doc2roadmap`. Văn bản sách vào dưới dạ
 - `a5.cau_neo_dung.*`: cặp (khái niệm vàng, node hiện diện) căn mà khái niệm vàng có câu định nghĩa; tử là câu neo trùng câu vàng (cùng trang, độ giống >= ngưỡng).
   `a5.cau_neo_cung_trang.*` (mức nới): hoặc câu neo ở cùng trang với câu định nghĩa. Hợp đồng chỉ mang trang và mã chunk của câu neo, không mang khoảng chunk
   của câu vàng, nên "cùng chunk" của spec được xấp xỉ bằng cùng trang.
-  `a5.trang_thai_chinh_xac.*` (trên phần không `uncertain`), `a5.trang_thai_phu.*` (độ phủ), `a5.nham.<vàng>.<máy>.*` (ma trận bốn trạng thái vàng x sáu trạng thái máy).
+  `a5.trang_thai_chinh_xac.*` (trên phần không `uncertain`), `a5.trang_thai_phu.*` (độ phủ); khái niệm vàng tranh chấp (`trang_thai` null) ra khỏi hai mẫu số này và được đếm
+  riêng ở `a5.trang_thai_vang_tranh_chap.*` (mọi khái niệm tranh chấp của chương, kể cả chưa căn), `a5.nham.<vàng>.<máy>.*` (ma trận bốn trạng thái vàng x sáu trạng thái máy).
   Ánh xạ sáu máy sang bốn vàng đọc từ tệp giao thức (`doc_anh_xa`): giá trị `null` là không quyết định (ra khỏi mẫu số độ chính xác), danh sách là các
   trạng thái vàng được coi là đúng (danh sách rỗng: không bao giờ đúng).
 - `truy_nguyen.*` (chương `toan_sach`; mức `nghiem`/`noi` là hai ngưỡng khớp mờ, không phải mức căn): câu neo và câu bằng chứng của cạnh khớp mờ trong văn bản trang; câu
@@ -121,10 +122,14 @@ def cham_khai_niem(hd, g3, g4, can, van_ban, anh_xa, *, ma_sach=None, nguong_cau
                 cung_trang += bool(khop or cung)
             rows.append(dong.ti_le(he, ma_sach, chuong, f"a5.cau_neo_dung.{muc}", dung, len(co_cau)))
             rows.append(dong.ti_le(he, ma_sach, chuong, f"a5.cau_neo_cung_trang.{muc}", cung_trang, len(co_cau)))
-            quyet = [(m, n) for m, n in cap if ax[hien[n]["trang_thai_day"]] is not None]
+            # khái niệm vàng tranh chấp (`trang_thai` null sau hội ý) không có đáp án để so: ra khỏi cả hai mẫu số, đếm riêng (giao thức mục 10)
+            co_dap_an = [(m, n) for m, n in cap if vang[m]["trang_thai"] is not None]
+            quyet = [(m, n) for m, n in co_dap_an if ax[hien[n]["trang_thai_day"]] is not None]
             rows.append(dong.ti_le(he, ma_sach, chuong, f"a5.trang_thai_chinh_xac.{muc}",
                                    sum(vang[m]["trang_thai"] in ax[hien[n]["trang_thai_day"]] for m, n in quyet), len(quyet)))
-            rows.append(dong.ti_le(he, ma_sach, chuong, f"a5.trang_thai_phu.{muc}", len(quyet), len(cap)))
+            rows.append(dong.ti_le(he, ma_sach, chuong, f"a5.trang_thai_phu.{muc}", len(quyet), len(co_dap_an)))
+            rows.append(dong.dem(he, ma_sach, chuong, f"a5.trang_thai_vang_tranh_chap.{muc}",
+                                 sum(vang[m]["trang_thai"] is None for m in ma_c)))
             dem_nham = {}
             for m, n in cap:
                 khoa = (vang[m]["trang_thai"], hien[n]["trang_thai_day"])

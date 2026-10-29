@@ -164,6 +164,8 @@ def kiem_phieu(duong_dan: str | Path, manifest: dict, trang_text: Callable[[int]
                 "trang_thai": trang_thai, "dinh_nghia": {"trang": so, "cau": cau},
                 "khong_chac": kc == "có", "ghi_chu": ghi_chu,
             })
+    if not kq.loi and not khai_niem:
+        kq.loi.append(Loi("phieu_rong", "phiếu không có khái niệm nào (phiếu trắng hay nộp nhầm tệp)"))
     if not kq.loi:
         kq.du_lieu = {"schema": g3.SCHEMA, "ma_sach": meta["ma_sach"], "nguoi_gan": meta.get("nguoi_gan", ""),
                       "phien_ban_huong_dan": meta.get("phien_ban_huong_dan", ""), "khai_niem": khai_niem, "tranh_chap": []}

@@ -30,6 +30,7 @@ class WebServices:
     learning: object | None = None
     sharing: object | None = None
     builds: object | None = None
+    admin: object | None = None
 
 
 def validate_vertex_auth(project: str, location: str) -> None:
@@ -142,9 +143,15 @@ def compose_services(
     builds = compose_build_service(settings, database_engine, media=build_media, clock=clock, core_settings=core) if database_engine is not None else None
     if courses is not None:
         courses.build_service = builds
+    admin = None
+    if database_engine is not None:
+        from doc2roadmap.application.phase_b.clock import SystemClock
+        from wayfinder.application.admin import AdminService
+        from wayfinder.infrastructure.admin_store import PostgresAdminStore
+        admin = AdminService(PostgresAdminStore(database_engine), settings=settings, clock=clock or SystemClock())
     return WebServices(health_check=health_check, close=close_services, model=model,
                        embedding=embedding, accounts=accounts, phase_b_store=phase_b_store,
-                       courses=courses, learning=learning, sharing=sharing, builds=builds)
+                       courses=courses, learning=learning, sharing=sharing, builds=builds, admin=admin)
 
 
 def compose_build_service(settings, engine, *, media=None, clock=None, core_settings=None):

@@ -16,19 +16,21 @@ from datetime import date
 from pathlib import Path
 from types import SimpleNamespace
 
+from danhgia.giao_thuc import kiem_giao_thuc
+
 from . import ban_ghi, thu_muc, uoc_chi
 from .chay_cli import chay_cli_that
 
-BIEN_THE = ("chinh", "xao-k", "docling", "pass-phu-llm", "tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10",
+BIEN_THE = ("chinh", "xao-k", "docling", "pass-phu-llm", "oracle-a8", "tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10",
             "b1", "b2", "b3", "b4", "b5a", "b5b")
 SINH = ("chinh", "docling")
-DUNG_LAI = ("xao-k", "pass-phu-llm")
+DUNG_LAI = ("xao-k", "pass-phu-llm", "oracle-a8")
 PHAT_LAI = ("tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10")
 BASELINE = ("b1", "b2", "b3", "b4")
 B5 = ("b5a", "b5b")
 BUOC_TRA_TIEN = {"label-roles", "a3", "a4", "roadmap", "b5"}
 MO_HINH = "gemini-3.1-flash-lite"
-HE = {"chinh": "chinh", "xao-k": "xao", "docling": "docling", "pass-phu-llm": "pass_phu_llm"}
+HE = {"chinh": "chinh", "xao-k": "xao", "docling": "docling", "pass-phu-llm": "pass_phu_llm", "oracle-a8": "oracle_a8"}
 
 
 class LoiBuoc(RuntimeError):
@@ -58,6 +60,7 @@ class NguCanh:
     allow_spend: bool = False
     dry_run: bool = False
     kho_chung: tuple = ()
+    giao_thuc: Path | None = None
 
     @property
     def doc_id(self):
@@ -72,6 +75,8 @@ def _sha256(duong):
 def ten_buoc(nc: NguCanh) -> list[str]:
     if nc.bien_the in SINH:
         buoc = ["ingest", "label-roles", "a3", "a4", "roadmap", "pha-b-rieng", "xuat"]
+    elif nc.bien_the == "oracle-a8":
+        buoc = ["chep-thuong-nguon", "dung-oracle", "roadmap", "pha-b-rieng", "xuat"]
     elif nc.bien_the in DUNG_LAI:
         buoc = ["chep-thuong-nguon", "roadmap", "pha-b-rieng", "xuat"]
     elif nc.bien_the in PHAT_LAI:
@@ -131,8 +136,10 @@ class Luot:
     # ---------- bản ghi ----------
     def _khoi_dong(self):
         nc = self.nc
-        self.thu_muc.mkdir(parents=True, exist_ok=True)
+        sha_giao_thuc = kiem_giao_thuc(nc.manifest, nc.giao_thuc)   # trước mọi thao tác: chưa tạo thư mục, chưa đọc lượt nguồn
         tu_luot = None
+        if nc.bien_the == "oracle-a8" and nc.g3 is None:
+            raise ValueError("oracle-a8 cần --g3 (kho chốt G3 của cuốn)")
         if nc.bien_the in (*DUNG_LAI, *PHAT_LAI, *BASELINE):
             if nc.tu_luot is None:
                 raise ValueError(f"biến thể {nc.bien_the} cần --tu-luot (thư mục lượt chính đã xong)")
@@ -141,12 +148,15 @@ class Luot:
                 raise ValueError("lượt chính chưa xong (bản ghi thiếu hay còn bước chưa xong); không dùng làm thượng nguồn")
             if goc["sha256_pdf"] != _sha256(nc.pdf):
                 raise ValueError("lượt chính chạy trên PDF khác")
+            if nc.manifest["tap"] == "thu" and goc.get("sha256_giao_thuc") != sha_giao_thuc:
+                raise ValueError("giao thức của lượt nguồn khác giao thức của lượt này; biến thể dùng lại thượng nguồn trên tập thử phải cùng SHA")
             tu_luot = goc["hash_cau_hinh"]
             self.nguon = Path(nc.tu_luot).resolve() / thu_muc.KHO
+        self.thu_muc.mkdir(parents=True, exist_ok=True)   # sau mọi kiểm tra đầu vào: lượt bị từ chối không để lại thư mục
         moi = ban_ghi.moi(ma_luot=self.thu_muc.name, bien_the=nc.bien_the, ma_sach=nc.manifest["ma_sach"], doc_id=nc.doc_id,
                           sha256_pdf=_sha256(nc.pdf), commit=nc.commit, mo_hinh=MO_HINH, transport=nc.transport, seed=nc.seed,
                           k=nc.k, luot_nhieu=nc.luot_nhieu, ngay=nc.ngay, cau_hinh=self.cau_hinh(), tu_luot=tu_luot,
-                          ten_buoc=ten_buoc(nc))
+                          ten_buoc=ten_buoc(nc), sha256_giao_thuc=sha_giao_thuc, tap=nc.manifest["tap"])
         cu = ban_ghi.doc(self.thu_muc)
         if cu is None:
             if nc.bien_the not in B5:
@@ -201,11 +211,39 @@ class Luot:
         nc = self.nc
         den = {"xao-k": "mentions", "pass-phu-llm": "pass-chinh"}.get(nc.bien_the)
         den_graph = thu_muc.phien_ban_cat(self.nguon, nc.doc_id, den) if den else None
-        danh_sach = thu_muc.danh_sach_chep(self.nguon, nc.doc_id, den_graph=den_graph)
+        if nc.bien_the == "oracle-a8":  # tới A3: không canonical, không graph (oracle thay canonical, roadmap dựng lại từ clusters)
+            danh_sach = thu_muc.danh_sach_chep(self.nguon, nc.doc_id, den_graph=0, nhanh_chep=("parse", "chunks", "candidates", "retrieval"))
+        else:
+            danh_sach = thu_muc.danh_sach_chep(self.nguon, nc.doc_id, den_graph=den_graph)
         self.kho.mkdir(parents=True, exist_ok=True)
         so = thu_muc.chep_thuong_nguon(self.nguon, self.kho, danh_sach)
         self.ban["ket_qua"].update({"da_chep": sorted(t for t in danh_sach if t.endswith("manifest.json")), "so_tep_chep": so,
                                     "cat_den_graph": den_graph})
+
+    def _b_dung_oracle(self):
+        from danhgia.oracle_a8 import dung_canonical, ghi_canonical, kiem_canonical
+        nc = self.nc
+        g3 = _doc_json(nc.g3)
+        goc_canonical = self.nguon / "canonical" / nc.doc_id
+        co = sorted(int(p.name[1:]) for p in goc_canonical.iterdir() if p.name[1:].isdigit()) if goc_canonical.exists() else []
+        mau = _doc_json(goc_canonical / f"v{co[-1]}" / "manifest.json") if co else {}
+        chunks_version = mau.get("config", {}).get("anchor_chunks_version")
+        thu_muc_chunks = self.kho / "chunks" / nc.doc_id
+        if chunks_version is None:
+            ban = sorted(int(p.name[1:]) for p in thu_muc_chunks.iterdir() if p.name[1:].isdigit())
+            chunks_version = ban[-1]
+        chunks = _doc_json(thu_muc_chunks / f"v{chunks_version}" / "chunks.json")
+        payload, manifest, bao_cao = dung_canonical(g3, chunks, doc_id=nc.doc_id, mau_manifest=mau, g3_sha256=_sha256(nc.g3))
+        loi = kiem_canonical(payload, manifest, {c["chunk_id"] for c in chunks})
+        if loi:
+            raise LoiBuoc("canonical oracle không qua kiểm lược đồ: " + "; ".join(loi[:5]))
+        so = ghi_canonical(self.kho, nc.doc_id, payload, manifest)
+        _ghi_json(self.thu_muc / "oracle-a8-bao-cao.json", bao_cao)
+        self.ban["ket_qua"]["oracle_a8"] = {"canonical_version": so, "g3_sha256": bao_cao["g3_sha256"], "so_khai_niem": bao_cao["tong"],
+                                            "co_chunk": bao_cao["co_chunk"], "khong_co_chunk": bao_cao["khong_co_chunk"],
+                                            "trang_lech": bao_cao["trang_lech"], "theo_ly_do": bao_cao["theo_ly_do"],
+                                            "theo_trang_thai": bao_cao["theo_trang_thai"],
+                                            "khong_co_chunk_ma_g3": bao_cao["khong_co_chunk_ma_g3"]}
 
     def _b_pha_b(self):
         nguon = self.kho / "phase_b" / "live.json"
@@ -222,7 +260,7 @@ class Luot:
 
     def _dinh_danh(self):
         nc = self.nc
-        return {"he": HE[nc.bien_the], "bien_the": {"chinh": "mac_dinh", "docling": "a1-docling", "pass-phu-llm": "pass-phu-llm",
+        return {"he": HE[nc.bien_the], "bien_the": {"chinh": "mac_dinh", "docling": "a1-docling", "pass-phu-llm": "pass-phu-llm", "oracle-a8": "oracle-a8-g3",
                                                     "xao-k": f"xao-seed{nc.seed}"}[nc.bien_the],
                 "luot_nhieu": nc.luot_nhieu, "commit": nc.commit, "ngay_chay": nc.ngay, "transport": nc.transport,
                 "sha256_pdf": _sha256(nc.pdf), "so_trang": nc.manifest["so_trang"]}
@@ -271,7 +309,7 @@ class Luot:
         ra = self.thu_muc / "b5"
         ma = b5.chay(SimpleNamespace(manifest=nc.manifest_path, pdf=str(nc.pdf), che_do=nc.bien_the[-1], bien_the=nc.bien_the_b5,
                                      seed=None, ra=str(ra), dry_run=False, allow_spend=nc.allow_spend, commit=nc.commit,
-                                     ngay_chay=nc.ngay))
+                                     ngay_chay=nc.ngay, giao_thuc=str(nc.giao_thuc) if nc.giao_thuc else None))
         hd = ra / f"b5{nc.bien_the[-1]}-k{nc.bien_the_b5}.json"
         if ma != 0 or not hd.exists():
             raise LoiBuoc(f"B5 thoát mã {ma}; hợp đồng {'có' if hd.exists() else 'không có'}")
@@ -286,7 +324,7 @@ class Luot:
 
     def _hanh_dong(self):
         return {"ingest": self._b_ingest, "label-roles": self._b_label_roles, "a3": self._b_a3, "a4": self._b_a4,
-                "roadmap": self._b_roadmap, "chep-thuong-nguon": self._b_chep, "pha-b-rieng": self._b_pha_b, "xuat": self._b_xuat,
+                "roadmap": self._b_roadmap, "chep-thuong-nguon": self._b_chep, "dung-oracle": self._b_dung_oracle, "pha-b-rieng": self._b_pha_b, "xuat": self._b_xuat,
                 "phat-lai": self._b_phat_lai, "baseline": self._b_baseline, "b5": self._b_b5, "cham": self._b_cham}
 
     # ---------- sổ chi, dry-run ----------

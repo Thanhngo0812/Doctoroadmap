@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.165" timestamp="2026-10-27T23:00:12.237955+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_two_postgres_runtimes_cannot_demote_both_last_admins" time="1.746"><failure message="AssertionError: assert ['changed', 'changed'] == ['changed', 'conflict']&#10;  &#10;  At index 1 diff: 'changed' != 'conflict'&#10;  Use -v to get more diff">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000024438A1..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000244586394E0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000024438631B20&gt;
+
+    def test_two_postgres_runtimes_cannot_demote_both_last_admins(admin_case,monkeypatch):
+        from wayfinder.application.admin import AdminService
+        from wayfinder.infrastructure.admin_store import PostgresAdminStore
+        from wayfinder.infrastructure.database import create_database_engine
+        rt=admin_case
+        second=rt.user(True)
+        with rt.engine.begin() as connection:
+            connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id NOT IN (:a,:b)"),{'a':rt.owner.id,'b':second.id})
+        engine=create_database_engine(rt.engine.url)
+        other=AdminService(PostgresAdminStore(engine),settings=rt.settings,clock=rt.clock)
+        services=[rt.services.admin,other]
+        for service in services:
+            original=service.store.admin_count
+            def slow_count(original=original):
+                value=original()
+                sleep(.2)  # Both unprotected transactions would read two admins before either update.
+                return value
+            monkeypatch.setattr(service.store,'admin_count',slow_count)
+        barrier=Barrier(2)
+        def demote(pair):
+            service,user=pair
+            barrier.wait(5)
+            try:
+                service.update_user(user.actor,user.id,{'role':'user'})
+                return 'changed'
+            except AuthError as error:
+                return error.code
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results=list(pool.map(demote,zip(services,[rt.owner,second])))
+&gt;           assert sorted(results)==['changed','conflict']
+E           AssertionError: assert ['changed', 'changed'] == ['changed', 'conflict']
+E
+E             At index 1 diff: 'changed' != 'conflict'
+E             Use -v to get more diff
+
+src\web\backend\tests\test_w17_admin.py:287: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,5 +1,6 @@
 from sqlalchemy import (
     BigInteger,
+    Boolean,
     CheckConstraint,
     Column,
     DateTime,
@@ -37,6 +38,14 @@ def auth_metadata(schema: str | None = None) -> MetaData:
         CheckConstraint("role IN ('user', 'admin')", name="ck_account_role"),
         CheckConstraint("status IN ('active', 'disabled')", name="ck_account_status"),
         CheckConstraint("length(display_name) BETWEEN 1 AND 60", name="ck_account_display_name"),
+        schema=schema,
+    )
+    Table(
+        "bootstrap_admin", metadata,
+        Column("singleton", Boolean, primary_key=True),
+        Column("account_id", UUID(as_uuid=False), ForeignKey(f"{schema + '.' if schema else ''}account.id", ondelete="RESTRICT"), nullable=False, unique=True),
+        Column("established_at", DateTime(timezone=True), nullable=False),
+        CheckConstraint("singleton", name="bootstrap_admin_singleton_check"),
         schema=schema,
     )
     Table(

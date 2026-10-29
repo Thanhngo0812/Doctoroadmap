@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="19.921" timestamp="2026-10-28T10:28:15.952931+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_new_owner_policy_first_admin_cannot_be_disabled" time="9.728"><failure message="AssertionError: {&quot;id&quot;:&quot;2aa1fdf9-fb03-4ffc-a596-34b877384743&quot;,&quot;email&quot;:&quot;f46a668463224843bc31fad82a1428e6@example.vn&quot;,&quot;display_name&quot;:&quot;Quản trị viên&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;status&quot;:&quot;disabled&quot;,&quot;email_verified_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;created_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;last_login_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;owned_courses&quot;:0,&quot;build_monthly_max&quot;:7,&quot;builds_this_month&quot;:{&quot;used&quot;:0,&quot;max&quot;:7,&quot;resets_at&quot;:&quot;2026-02-01T00:00:00+07:00&quot;}}&#10;assert (200 == 409)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000229A801..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000229C7A74EA0&gt;)
+
+    def test_new_owner_policy_first_admin_cannot_be_disabled(admin_case):
+        rt = admin_case
+        before = sql(rt, 'SELECT role,status,build_monthly_max,updated_at FROM account WHERE id=:id', id=rt.owner.id)
+        sessions = sql(rt, 'SELECT id FROM auth_session WHERE account_id=:id ORDER BY id', id=rt.owner.id)
+        audit = sql(rt, 'SELECT id FROM audit_event WHERE actor_id=:id ORDER BY id', id=rt.owner.id)
+        response = patch(rt, {'status':'disabled','build_monthly_max':7}, target=rt.owner)
+&gt;       assert response.status_code == 409 and response.json()['error']['code'] == 'protected_admin', response.text
+E       AssertionError: {"id":"2aa1fdf9-fb03-4ffc-a596-34b877384743","email":"f46a668463224843bc31fad82a1428e6@example.vn","display_name":"Quản trị viên","role":"admin","status":"disabled","email_verified_at":"2026-01-01T00:00:00Z","created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":7,"builds_this_month":{"used":0,"max":7,"resets_at":"2026-02-01T00:00:00+07:00"}}
+E       assert (200 == 409)
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:11: AssertionError</failure></testcase></testsuite></testsuites>

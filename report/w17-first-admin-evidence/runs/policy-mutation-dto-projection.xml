@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.420" timestamp="2026-10-28T10:41:05.131070+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_real_response_dtos_strip_repository_extras_at_every_level" time="1.814"><failure message="assert (200 == 200 and 'W17_DTO_SECRET' not in '{&quot;items&quot;:[{...DTO_SECRET&quot;}'&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code&#10;  &#10;  'W17_DTO_SECRET' is contained here:&#10;    &quot;answer&quot;:&quot;W17_DTO_SECRET&quot;}},&quot;password_hash&quot;:&quot;W17_DTO_SECRET&quot;}],&quot;total&quot;:1,&quot;limit&quot;:50,&quot;offset&quot;:0,&quot;private_extra&quot;:&quot;W17_DTO_SECRET&quot;}&#10;  ?           ++++++++++++++)">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000020C72EE..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000020C7E921760&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000020C72977B00&gt;
+
+    def test_real_response_dtos_strip_repository_extras_at_every_level(admin_case,monkeypatch):
+        rt=admin_case
+        users=rt.services.admin.list_users(rt.owner.actor,email=rt.learner.email)
+        users['private_extra']='W17_DTO_SECRET'
+        users['items'][0]['password_hash']='W17_DTO_SECRET'
+        users['items'][0]['builds_this_month']['extra']={'answer':'W17_DTO_SECRET'}
+        monkeypatch.setattr(rt.services.admin,'list_users',lambda *a,**k:users)
+        response=rt.owner.client.get('/api/v1/admin/users')
+&gt;       assert response.status_code==200 and 'W17_DTO_SECRET' not in response.text
+E       assert (200 == 200 and 'W17_DTO_SECRET' not in '{"items":[{...DTO_SECRET"}'
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+E
+E         'W17_DTO_SECRET' is contained here:
+E           "answer":"W17_DTO_SECRET"}},"password_hash":"W17_DTO_SECRET"}],"total":1,"limit":50,"offset":0,"private_extra":"W17_DTO_SECRET"}
+E         ?           ++++++++++++++)
+
+src\web\backend\tests\test_w17_admin.py:399: AssertionError</failure></testcase></testsuite></testsuites>
