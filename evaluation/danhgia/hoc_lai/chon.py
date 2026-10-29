@@ -45,3 +45,18 @@ def chon_mot_se(ap):
     nguong = tb[tot] - se
     chon = min(la for la in tb if tb[la] >= nguong - EPS)
     return {"chon": chon, "tot_nhat": tot, "ap_tot_nhat": tb[tot], "se": se, "so_cuon_hop_le": len(hop_le), "nguong": nguong, "ap_trung_binh": tb}
+
+
+def chon_c_nhieu_nhat(c_theo_lan):
+    """Vé DG-21: `C` được chọn **nhiều nhất** qua các lần chia LOBO; hoà thì lấy `C` nhỏ hơn.
+
+    `c_theo_lan`: dãy `C` mà từng lần chia đã chọn. Trả {"chon", "dem": {C: số lần}, "hoa": các C cùng số lần cao nhất}.
+    """
+    dem = {}
+    for c in c_theo_lan:
+        dem[float(c)] = dem.get(float(c), 0) + 1
+    if not dem:
+        raise ValueError("không có lần chia nào để chọn C")
+    cao = max(dem.values())
+    hoa = sorted(c for c, n in dem.items() if n == cao)
+    return {"chon": hoa[0], "dem": dict(sorted(dem.items())), "hoa": hoa}

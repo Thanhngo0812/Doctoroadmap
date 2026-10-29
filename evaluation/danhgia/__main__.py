@@ -26,6 +26,9 @@ _LENH = {
     "luot": "danhgia.luot.lenh",
     "bang-hinh": "danhgia.bao_cao.lenh_bang_hinh",
     "datasheet": "danhgia.bao_cao.lenh_datasheet",
+    "pass-phu-thay": "danhgia.phat_lai.lenh_pass_phu",
+    "cap-ce": "danhgia.phat_lai.lenh_cap_ce",
+    "a1-logistic": "danhgia.xuat.lenh_a1_logistic",
 }
 
 

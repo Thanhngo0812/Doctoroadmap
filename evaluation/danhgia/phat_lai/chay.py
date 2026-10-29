@@ -69,10 +69,16 @@ def tat_r17():
         build_roadmap.soften_backward_edges = goc
 
 
-def phat_lai(goc_kho, doc, phien_ban, *, bo_pass_chinh=False, bo_pass_phu=False, tat_luat_r17=False, canh_thay=None):
-    """Chạy lại từ A9 (hoặc từ A10 nếu `canh_thay`). `canh_thay`: danh sách cạnh cứng thay toàn bộ `requires_edges` (oracle, B1, B2)."""
-    if canh_thay is not None and (bo_pass_chinh or bo_pass_phu):
-        raise LoiPhatLai("canh_thay thay mọi cạnh, không kết hợp với bỏ pass chính hay pass phụ")
+def phat_lai(goc_kho, doc, phien_ban, *, bo_pass_chinh=False, bo_pass_phu=False, tat_luat_r17=False, canh_thay=None, phu_thay=None):
+    """Chạy lại từ A9 (hoặc từ A10 nếu `canh_thay`). `canh_thay`: danh sách cạnh cứng thay toàn bộ `requires_edges` (oracle, B1, B2).
+
+    `phu_thay` (vé DG-21): dict các khoá của đồ thị edges do một bộ chấm pass phụ khác sinh ra (`secondary_edges`, `secondary_log`...), đè lên đồ thị edges
+    đã lưu trước khi chạy A9; pass chính giữ nguyên.
+    """
+    if canh_thay is not None and (bo_pass_chinh or bo_pass_phu or phu_thay is not None):
+        raise LoiPhatLai("canh_thay thay mọi cạnh, không kết hợp với bỏ pass chính, bỏ pass phụ hay thay pass phụ")
+    if phu_thay is not None and bo_pass_phu:
+        raise LoiPhatLai("phu_thay đã thay pass phụ, không kết hợp với bỏ pass phụ")
     kho = KhoPhatLai(goc_kho)
     chuoi = tim_chuoi(kho, doc, phien_ban)
     if canh_thay is None:
@@ -81,6 +87,8 @@ def phat_lai(goc_kho, doc, phien_ban, *, bo_pass_chinh=False, bo_pass_phu=False,
             du_lieu["main_edges"] = []
         if bo_pass_phu:
             du_lieu["secondary_edges"] = []
+        if phu_thay is not None:
+            du_lieu.update(phu_thay)
         thuong_nguon = SimpleNamespace(payload=du_lieu, version=chuoi.canh.version, manifest=chuoi.canh.manifest, path=None)
         da_xac_nhan, _ = ValidateGraph(kho).execute(doc, upstream=thuong_nguon)
         mo_hinh = MoHinhDaGhi(chuoi.nhan.manifest["config"]["model_id"],
