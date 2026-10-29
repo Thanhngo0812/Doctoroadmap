@@ -1,0 +1,53 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r13-acceptance-20261029/src/web/frontend
+
+ ❯ src/Admin.test.tsx (22 tests | 1 failed) 11057ms
+   ✓ loads the server user page with only the two delivered admin destinations and real counts 971ms
+   ✓ sends email/role/status filtering to the server and resets paging 647ms
+   ✓ uses the server first-admin flag even when the protected row is not first; quota null means inherited 270ms
+   × allows enable plus demote of a disabled later admin, confirms and submits only changed fields 814ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 499ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 570ms
+   ✓ keeps an unsuccessful mutation visible and maps conflict without claiming success 634ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 528ms
+   ✓ renders public audit fields and server filters without rendering raw extra metadata 842ms
+   ✓ blocks a regular account without requesting an admin list 66ms
+   ✓ removes admin data when the live server returns forbidden 91ms
+   ✓ removes admin data when the live server returns unauthenticated 97ms
+   ✓ ignores a delayed PATCH after closing its dialog 821ms
+   ✓ does not apply an older list after a newer filter result 394ms
+   ✓ discards a delayed list after the identity changes to a different user 153ms
+   ✓ discards a delayed list after the identity changes to a different admin 172ms
+   ✓ rejects invalid quota locally, keeps a network-failed draft and retries a canonical update 918ms
+   ✓ a failed list is not an empty result and can be retried 163ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another user 550ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another admin 559ms
+   ✓ keeps keyboard focus on the completion message while the changed row is reloaded 425ms
+   ✓ clears the previous completion before editing the same account again and focuses the next completion 866ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  13:49:17
+   Duration  17.92s (tests 63%, import 14%, environment 14%, transform 5%, setup 4%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r13-acceptance-20261029/report/coord-r13-evidence-2026-10-29/mutations/thua-truong.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Admin.test.tsx > allows enable plus demote of a disabled later admin, confirms and submits only changed fields
+AssertionError: expected { Object (role, status, ...) } to deeply equal { role: 'user', status: 'active' }
+
+- Expected
++ Received
+
+  {
++   "build_monthly_max": null,
+    "role": "user",
+    "status": "active",
+  }
+
+ ❯ src/Admin.test.tsx:54:130
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

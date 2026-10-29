@@ -32,6 +32,9 @@ DA_KIEM_BI_MAT = {
     "cham-a1a2": "tests.evaluation.test_cong_allowlist:test_cham_a1a2_khong_lo_bi_mat",
     "cham": "tests.evaluation.test_cong_allowlist:test_cham_khong_lo_bi_mat",
     "kiem": "tests.evaluation.test_cong_allowlist:test_kiem_khong_lo_bi_mat",
+    "pass-phu-thay": "tests.evaluation.test_bien_the_dg21:test_lenh_moi_khong_lo_bi_mat_len_man_hinh",
+    "cap-ce": "tests.evaluation.test_bien_the_dg21:test_lenh_moi_khong_lo_bi_mat_len_man_hinh",
+    "a1-logistic": "tests.evaluation.test_bien_the_dg21:test_a1_logistic_khong_lo_bi_mat_len_man_hinh",
 }
 KHONG_NHAN_DU_LIEU_TAP_THU = {}
 CHUA_KIEM_BI_MAT = {

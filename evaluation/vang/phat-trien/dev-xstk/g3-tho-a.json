@@ -1,0 +1,945 @@
+{
+  "schema": "danh-gia-g3-1",
+  "ma_sach": "dev-xstk",
+  "nguoi_gan": "toan-a",
+  "phien_ban_huong_dan": "g3-1",
+  "khai_niem": [
+    {
+      "ma": "m2-1-001",
+      "chuong": "m2-1",
+      "ten": "Ước lượng điểm",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 21,
+        "cau": "Nếu ta ước lượng θ bằng cách gán cho nó một số thực thì cách ước lượng này được gọi là ước lượng điểm."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa bắt đầu ở cuối trang 21 sang đầu trang 22; mục kế tiếp cũng trình bày 'Ước lượng điểm – Phương pháp hàm ước lượng' và nêu ở trang 22: 'Ước lượng điểm của số đặc trưng θ là số thực g vừa tính được.'"
+    },
+    {
+      "ma": "m2-1-002",
+      "chuong": "m2-1",
+      "ten": "Ước lượng khoảng",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Nếu ta ước lượng θ bằng cách gán cho nó một khoảng số thực có thể chứa được θ thì cách ước lượng này được gọi là ước lượng khoảng."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Mục dưới cũng trình bày 'Ước lượng khoảng – Phương pháp khoảng tin cậy'."
+    },
+    {
+      "ma": "m2-1-003",
+      "chuong": "m2-1",
+      "ten": "Phương pháp hàm ước lượng",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Để ước lượng số đặc trưng θ của dấu hiệu X , ta chọn thống kê G = G(X1, X2, … , Xn) của mẫu tổng quát (X1, X2, … , Xn)."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Quy trình chọn hàm ước lượng G từ mẫu tổng quát rồi tính g = G(x1, x2, … , xn) trên mẫu cụ thể để làm ước lượng điểm cho θ."
+    },
+    {
+      "ma": "m2-1-004",
+      "chuong": "m2-1",
+      "ten": "Hàm ước lượng",
+      "ten_khac": [
+        "thống kê G"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Thống kê G được gọi là hàm ước lượng của θ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: G = G(X1, X2, … , Xn)."
+    },
+    {
+      "ma": "m2-1-005",
+      "chuong": "m2-1",
+      "ten": "Trung bình mẫu tổng quát",
+      "ten_khac": [
+        "trung bình mẫu"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Các thống kê X̄, S², F được gọi lần lượt là trung bình mẫu, phương sai mẫu hiệu chỉnh, tỉ lệ mẫu tổng quát và đó là các đại lượng ngẫu nhiên."
+      },
+      "khong_chac": true,
+      "ghi_chu": "Ký hiệu: X̄ = (X1 + X2 + ... + Xn)/n. Đã được giới thiệu ở §1 (trang 4 PDF) nhưng được định nghĩa lại tại mục 2.1 (trang 22) như hàm ước lượng của μ."
+    },
+    {
+      "ma": "m2-1-006",
+      "chuong": "m2-1",
+      "ten": "Phương sai mẫu hiệu chỉnh tổng quát",
+      "ten_khac": [
+        "phương sai mẫu hiệu chỉnh"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Các thống kê X̄, S², F được gọi lần lượt là trung bình mẫu, phương sai mẫu hiệu chỉnh, tỉ lệ mẫu tổng quát và đó là các đại lượng ngẫu nhiên."
+      },
+      "khong_chac": true,
+      "ghi_chu": "Ký hiệu: S² = [(X1 - X̄)² + (X2 - X̄)² + ... + (Xn - X̄)²]/(n - 1). Đã được giới thiệu ở §1 (trang 4 PDF) nhưng được định nghĩa lại tại mục 2.1 (trang 22) như hàm ước lượng của σ²."
+    },
+    {
+      "ma": "m2-1-007",
+      "chuong": "m2-1",
+      "ten": "Tỉ lệ mẫu tổng quát",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Các thống kê X̄, S², F được gọi lần lượt là trung bình mẫu, phương sai mẫu hiệu chỉnh, tỉ lệ mẫu tổng quát và đó là các đại lượng ngẫu nhiên."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: F = (X1 + X2 + ... + Xn)/n (khi ước lượng tỉ lệ tổng thể p)."
+    },
+    {
+      "ma": "m2-1-008",
+      "chuong": "m2-1",
+      "ten": "Ước lượng không chệch",
+      "ten_khac": [
+        "ước lượng điểm không chệch"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Thống kê G được gọi là ước lượng không chệch của số đặc trưng θ nếu M(G) = θ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Tính chất: M(G – θ) = 0 (sai số trung bình bằng không). X̄, S², F lần lượt là ước lượng không chệch của μ, σ², p; với mẫu cụ thể, x̄, s², f là ước lượng điểm không chệch của μ, σ², p."
+    },
+    {
+      "ma": "m2-1-009",
+      "chuong": "m2-1",
+      "ten": "Phương pháp khoảng tin cậy",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 22,
+        "cau": "Để ước lượng số đặc trưng θ của dấu hiệu X , ta chọn thống kê G = G(X1, X2, … , Xn , θ) của mẫu tổng quát (X1, X2, … , Xn)."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phần trình bày phương pháp bắt đầu ở cuối trang 22 và nối tiếp sang trang 23."
+    },
+    {
+      "ma": "m2-1-010",
+      "chuong": "m2-1",
+      "ten": "Tổng thể",
+      "ten_khac": [
+        "đám đông"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Khi nghiên cứu một vấn đề nào đó đối với các phần tử của một tập hợp thì, tập hợp, có các phần tử là đối tượng ta nghiên cứu, được gọi là tổng thể."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Dạy ở mục 1.1 (trang 1 PDF). Cần để hiểu các số đặc trưng của tổng thể."
+    },
+    {
+      "ma": "m2-1-011",
+      "chuong": "m2-1",
+      "ten": "Số đặc trưng của tổng thể",
+      "ten_khac": [
+        "số đặc trưng θ"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tỷ lệ tổng thể, trung bình tổng thể, phương sai tổng thể được gọi là các số đặc trưng của tổng thể."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu chung trong mục 2.1 là θ. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-012",
+      "chuong": "m2-1",
+      "ten": "Tỉ lệ tổng thể",
+      "ten_khac": [
+        "tỷ lệ tổng thể"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi tỷ số này là tỷ lệ tổng thể, ký hiệu là p."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: p. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-013",
+      "chuong": "m2-1",
+      "ten": "Trung bình tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: μ. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-014",
+      "chuong": "m2-1",
+      "ten": "Phương sai tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: σ². Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-015",
+      "chuong": "m2-1",
+      "ten": "Mẫu",
+      "ten_khac": [
+        "mẫu của tổng thể"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-016",
+      "chuong": "m2-1",
+      "ten": "Kích thước mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: n. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-1-017",
+      "chuong": "m2-1",
+      "ten": "Phương pháp mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 2,
+        "cau": "Phương pháp lấy mẫu, sau đó khai thác thông tin trên mẫu, cuối cùng suy rộng kết quả cho tổng thể được gọi là phương pháp mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Dạy ở mục 1.1 (cuối trang 1 sang trang 2 PDF)."
+    },
+    {
+      "ma": "m2-1-018",
+      "chuong": "m2-1",
+      "ten": "Mẫu tổng quát",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 2,
+        "cau": "Khi đó đại lượng ngẫu nhiên n-chiều (X1, X2, … , Xn) được gọi là mẫu tổng quát."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: (X1, X2, … , Xn). Dạy ở mục 1.2 (trang 2 PDF)."
+    },
+    {
+      "ma": "m2-1-019",
+      "chuong": "m2-1",
+      "ten": "Mẫu cụ thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 2,
+        "cau": "Mỗi giá trị có thể nhận (x1, x2, … , xn) của mẫu tổng quát (X1, X2, … , Xn) được gọi là một mẫu cụ thể."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: (x1, x2, … , xn). Dạy ở mục 1.2 (trang 2 PDF)."
+    },
+    {
+      "ma": "m2-1-020",
+      "chuong": "m2-1",
+      "ten": "Tỉ lệ mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Tỉ lệ mẫu của mẫu định tính có kích thước n, trong đó có m phần tử có tính chất A, là một số được ký hiệu và xác định như sau: f = m/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: f. Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-1-021",
+      "chuong": "m2-1",
+      "ten": "Trung bình mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Trung bình mẫu của mẫu định lượng (x1, x2, … , xn) là một số được ký hiệu và xác định như sau: x̄ = (x1 + x2 + ... + xn)/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: x̄ (của mẫu cụ thể). Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-1-022",
+      "chuong": "m2-1",
+      "ten": "Phương sai mẫu hiệu chỉnh",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Với phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s² (hay xσ_{n-1}²) , độ lệch mẫu được ký hiệu là ŝ (hay xσ_n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay xσ_{n-1}) và được xác định như sau: s² = (n/(n-1))ŝ²"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: s² (của mẫu cụ thể). Dạy ở mục 1.3 (trang 3–4 PDF)."
+    },
+    {
+      "ma": "m2-1-023",
+      "chuong": "m2-1",
+      "ten": "Đại lượng ngẫu nhiên",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Dạy ở chương trước của giáo trình Xác suất Thống kê (ngoài tệp PDF Chương 3); cần để hiểu mẫu tổng quát và thống kê G."
+    },
+    {
+      "ma": "m2-1-024",
+      "chuong": "m2-1",
+      "ten": "Kỳ vọng",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: M(X), M(G). Dạy ở chương trước của giáo trình (ngoài tệp PDF Chương 3); cần để hiểu định nghĩa ước lượng không chệch M(G) = θ."
+    },
+    {
+      "ma": "m2-2-001",
+      "chuong": "m2-2",
+      "ten": "Khoảng tin cậy",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khi đó khoảng ngẫu nhiên (G1, G2) được gọi là khoảng tin cậy của θ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: (G1, G2), thỏa mãn P(G1 ≤ θ ≤ G2) = 1 – α (thuộc phần tiếp theo của mục 2.1 ở đầu trang 23)."
+    },
+    {
+      "ma": "m2-2-002",
+      "chuong": "m2-2",
+      "ten": "Độ tin cậy của ước lượng",
+      "ten_khac": [
+        "độ tin cậy"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Số thực 1 – α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai lầm của ước lượng."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: 1 – α."
+    },
+    {
+      "ma": "m2-2-003",
+      "chuong": "m2-2",
+      "ten": "Xác suất mắc sai lầm của ước lượng",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Số thực 1 – α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai lầm của ước lượng."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: α (thường lấy α ≤ 0,05)."
+    },
+    {
+      "ma": "m2-2-004",
+      "chuong": "m2-2",
+      "ten": "Khoảng ước lượng",
+      "ten_khac": [
+        "khoảng ước lượng của các số đặc trưng tổng thể"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khoảng số thực (θ1, θ2) được gọi là khoảng ước lượng của θ với độ tin cậy 1 – α."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: (θ1, θ2), trong đó θ1 = G1(x1, x2, … , xn) và θ2 = G2(x1, x2, … , xn)."
+    },
+    {
+      "ma": "m2-2-005",
+      "chuong": "m2-2",
+      "ten": "Khoảng ước lượng của tỉ lệ tổng thể",
+      "ten_khac": [
+        "khoảng ước lượng của p"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khoảng ước lượng của p có dạng: p ∈ (f – ε ; f + ε) hay f – ε < p < f + ε"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Áp dụng cho mẫu kích thước n ≥ 30, tỉ lệ mẫu f, độ tin cậy 1 – α, với 1 – α = 2φ(t_α) và ε = t_α √(f(1-f)/n)."
+    },
+    {
+      "ma": "m2-2-006",
+      "chuong": "m2-2",
+      "ten": "Độ chính xác của ước lượng",
+      "ten_khac": [
+        "độ chính xác"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khi đó ta tính được độ chính xác ε của ước lượng p theo công thức: ε = t_α √(f(1-f)/n)"
+      },
+      "khong_chac": true,
+      "ghi_chu": "Ký hiệu: ε. Ở trang 23 nêu công thức cho ước lượng tỉ lệ p; ở trang 25 nêu công thức cho ước lượng trung bình μ: ε = t_α (s/√n) (hoặc ε = t_α (σ/√n) khi biết phương sai tổng thể σ²)."
+    },
+    {
+      "ma": "m2-2-007",
+      "chuong": "m2-2",
+      "ten": "Khoảng ước lượng của trung bình tổng thể",
+      "ten_khac": [
+        "khoảng ước lượng của μ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 25,
+        "cau": "Khoảng ước lượng của μ có dạng: μ ∈ (x̄ – ε ; x̄ + ε) hay x̄ – ε < μ < x̄ + ε"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Gồm 2 trường hợp tìm t_α: (1) n ≥ 30: 1 – α = 2φ(t_α); (2) n < 30 và X có phân phối chuẩn: t_α = t_α(n – 1) tra bảng Student. Nếu biết phương sai tổng thể σ² thì thay s bằng σ."
+    },
+    {
+      "ma": "m2-2-008",
+      "chuong": "m2-2",
+      "ten": "Khoảng ước lượng của phương sai tổng thể",
+      "ten_khac": [
+        "khoảng ước lượng của σ²"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 29,
+        "cau": "Trường hợp1. Giả thiết bài toán cho trung bình tổng thể μ Khoảng ước lượng của σ² trong trường hợp này có dạng: ( ∑_{i=1}^k n_i(x_i - μ)² / χ²_{α/2}(n) ; ∑_{i=1}^k n_i(x_i - μ)² / χ²_{1-α/2}(n) )"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Đề mục ở cuối trang 28, nội dung giải ở trang 29. Trường hợp 2 (không cho μ): ((n – 1)s² / χ²_{α/2}(n – 1) ; (n – 1)s² / χ²_{1-α/2}(n – 1))."
+    },
+    {
+      "ma": "m2-2-009",
+      "chuong": "m2-2",
+      "ten": "Tỉ lệ tổng thể",
+      "ten_khac": [
+        "tỷ lệ tổng thể"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi tỷ số này là tỷ lệ tổng thể, ký hiệu là p."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: p. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-2-010",
+      "chuong": "m2-2",
+      "ten": "Trung bình tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: μ. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-2-011",
+      "chuong": "m2-2",
+      "ten": "Phương sai tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: σ². Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-2-012",
+      "chuong": "m2-2",
+      "ten": "Kích thước mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: n. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-2-013",
+      "chuong": "m2-2",
+      "ten": "Tỉ lệ mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Tỉ lệ mẫu của mẫu định tính có kích thước n, trong đó có m phần tử có tính chất A, là một số được ký hiệu và xác định như sau: f = m/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: f. Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-2-014",
+      "chuong": "m2-2",
+      "ten": "Trung bình mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Trung bình mẫu của mẫu định lượng (x1, x2, … , xn) là một số được ký hiệu và xác định như sau: x̄ = (x1 + x2 + ... + xn)/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: x̄. Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-2-015",
+      "chuong": "m2-2",
+      "ten": "Phương sai mẫu hiệu chỉnh",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Với phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s² (hay xσ_{n-1}²) , độ lệch mẫu được ký hiệu là ŝ (hay xσ_n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay xσ_{n-1}) và được xác định như sau: s² = (n/(n-1))ŝ²"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: s². Dạy ở mục 1.3 (trang 3–4 PDF); dùng trong công thức khoảng ước lượng của σ² khi chưa biết μ."
+    },
+    {
+      "ma": "m2-2-016",
+      "chuong": "m2-2",
+      "ten": "Độ lệch mẫu hiệu chỉnh",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Với phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s² (hay xσ_{n-1}²) , độ lệch mẫu được ký hiệu là ŝ (hay xσ_n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay xσ_{n-1}) và được xác định như sau: s = √s²"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: s. Dạy ở mục 1.3 (trang 3–4 PDF); cần để tính khoảng ước lượng của trung bình tổng thể μ."
+    },
+    {
+      "ma": "m2-2-017",
+      "chuong": "m2-2",
+      "ten": "Phân phối chuẩn",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: X ~ N(μ ; σ²). Dạy ở chương trước của sách; cần để xác định điều kiện ước lượng trung bình và phương sai tổng thể."
+    },
+    {
+      "ma": "m2-2-018",
+      "chuong": "m2-2",
+      "ten": "Phân phối Student",
+      "ten_khac": [
+        "phân phối Student với k bậc tự do"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu giá trị tới hạn: t_α(k) với k = n – 1 bậc tự do (tra bảng phụ lục 5)."
+    },
+    {
+      "ma": "m2-2-019",
+      "chuong": "m2-2",
+      "ten": "Phân phối χ²",
+      "ten_khac": [
+        "phân phối χ² với k bậc tự do"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu giá trị tới hạn: χ²_α(k) (tra bảng phụ lục 4)."
+    },
+    {
+      "ma": "m2-3-001",
+      "chuong": "m2-3",
+      "ten": "Xác định độ tin cậy trong ước lượng",
+      "ten_khac": [
+        "bài toán tìm độ tin cậy"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 30,
+        "cau": "Bây giờ ta sẽ xét hai bài toán ngược: Bài toán tìm độ tin cậy khi giả thiết cho mẫu và độ chính xác (hay khoảng ước lượng) và bài toán tìm kích thước mẫu khi giả thiết cho độ tin cậy và độ chính xác của ước lượng."
+      },
+      "khong_chac": true,
+      "ghi_chu": "Đề mục 2.3 giải thích mối quan hệ giữa 3 thành phần (mẫu, độ tin cậy, độ chính xác) và phân biệt bài toán thuận với hai bài toán ngược."
+    },
+    {
+      "ma": "m2-3-002",
+      "chuong": "m2-3",
+      "ten": "Xác định độ tin cậy trong ước lượng tỉ lệ",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 30,
+        "cau": "Từ công thức tìm độ chính xác trong ước lượng tỉ lệ p ta có: ε = t_α √(f(1-f)/n) ⇒ t_α = ε √(n/(f(1-f)))"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Sau khi tính t_α, tra bảng phụ lục 2 tìm φ(t_α) rồi tính độ tin cậy theo công thức 1 – α = 2φ(t_α)."
+    },
+    {
+      "ma": "m2-3-003",
+      "chuong": "m2-3",
+      "ten": "Xác định độ tin cậy trong ước lượng trung bình",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 31,
+        "cau": "Từ công thức tìm độ chính xác trong ước lượng trung bình μ ta có: ε = t_α (s/√n) ⇒ t_α = ε (√n/s)"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Nếu n ≥ 30 thì 1 – α = 2φ(t_α); nếu n < 30 thì tra bảng phụ lục 5 tìm α sao cho t_α(n – 1) = t_α rồi suy ra 1 – α. Chú ý (trang 32): nếu biết phương sai tổng thể σ² của phân phối chuẩn thì thay s bằng σ."
+    },
+    {
+      "ma": "m2-3-004",
+      "chuong": "m2-3",
+      "ten": "Độ tin cậy của ước lượng",
+      "ten_khac": [
+        "độ tin cậy"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Số thực 1 – α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai lầm của ước lượng."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: 1 – α. Dạy ở mục 2.1 (trang 23 PDF)."
+    },
+    {
+      "ma": "m2-3-005",
+      "chuong": "m2-3",
+      "ten": "Độ chính xác của ước lượng",
+      "ten_khac": [
+        "độ chính xác"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khi đó ta tính được độ chính xác ε của ước lượng p theo công thức: ε = t_α √(f(1-f)/n)"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: ε. Dạy ở mục 2.2 (trang 23, 25 PDF)."
+    },
+    {
+      "ma": "m2-3-006",
+      "chuong": "m2-3",
+      "ten": "Tỉ lệ tổng thể",
+      "ten_khac": [
+        "tỷ lệ tổng thể"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi tỷ số này là tỷ lệ tổng thể, ký hiệu là p."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: p. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-3-007",
+      "chuong": "m2-3",
+      "ten": "Trung bình tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: μ. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-3-008",
+      "chuong": "m2-3",
+      "ten": "Phương sai tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: σ². Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-3-009",
+      "chuong": "m2-3",
+      "ten": "Kích thước mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: n. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-3-010",
+      "chuong": "m2-3",
+      "ten": "Tỉ lệ mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Tỉ lệ mẫu của mẫu định tính có kích thước n, trong đó có m phần tử có tính chất A, là một số được ký hiệu và xác định như sau: f = m/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: f. Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-3-011",
+      "chuong": "m2-3",
+      "ten": "Độ lệch mẫu hiệu chỉnh",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Với phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s² (hay xσ_{n-1}²) , độ lệch mẫu được ký hiệu là ŝ (hay xσ_n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay xσ_{n-1}) và được xác định như sau: s = √s²"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: s. Dạy ở mục 1.3 (trang 3–4 PDF)."
+    },
+    {
+      "ma": "m2-3-012",
+      "chuong": "m2-3",
+      "ten": "Phân phối chuẩn",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: X ~ N(μ ; σ²). Dạy ở chương trước của sách."
+    },
+    {
+      "ma": "m2-3-013",
+      "chuong": "m2-3",
+      "ten": "Phân phối Student",
+      "ten_khac": [
+        "phân phối Student với k bậc tự do"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu giá trị tới hạn: t_α(n – 1) (tra bảng phụ lục 5)."
+    },
+    {
+      "ma": "m2-4-001",
+      "chuong": "m2-4",
+      "ten": "Xác định kích thước mẫu trong ước lượng",
+      "ten_khac": [
+        "bài toán tìm kích thước mẫu"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 33,
+        "cau": "Dưới đây ta sẽ xét cách tìm kích thước mẫu để có ước lượng p hay μ với độ tin cậy và độ chính xác cho trước."
+      },
+      "khong_chac": true,
+      "ghi_chu": "Đề mục 2.4 giới thiệu bài toán tìm kích thước mẫu N khi biết độ tin cậy 1 – α và độ chính xác ε."
+    },
+    {
+      "ma": "m2-4-002",
+      "chuong": "m2-4",
+      "ten": "Xác định kích thước mẫu trong ước lượng tỉ lệ",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 33,
+        "cau": "Khi đó N được tính theo công thức: N = [ t_α² f(1-f) / ε² ] + 1"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Trong đó t_α suy ra từ độ tin cậy 1 – α = 2φ(t_α), f là tỉ lệ mẫu của mẫu cho trước, [x] là phần nguyên."
+    },
+    {
+      "ma": "m2-4-003",
+      "chuong": "m2-4",
+      "ten": "Xác định kích thước mẫu trong ước lượng trung bình",
+      "ten_khac": [],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 34,
+        "cau": "Khi đó n được tính theo công thức: N = [ t_α² s² / ε² ] + 1"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Trong đó t_α suy ra từ 1 – α = 2φ(t_α). Chú ý: nếu dấu hiệu X có phân phối chuẩn với phương sai σ² đã biết thì thay s² bằng σ²: N = [ t_α² σ² / ε² ] + 1 (như trình bày tiếp ở trang 34–35)."
+    },
+    {
+      "ma": "m2-4-004",
+      "chuong": "m2-4",
+      "ten": "Độ tin cậy của ước lượng",
+      "ten_khac": [
+        "độ tin cậy"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Số thực 1 – α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai lầm của ước lượng."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: 1 – α. Dạy ở mục 2.1 (trang 23 PDF)."
+    },
+    {
+      "ma": "m2-4-005",
+      "chuong": "m2-4",
+      "ten": "Độ chính xác của ước lượng",
+      "ten_khac": [
+        "độ chính xác"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 23,
+        "cau": "Khi đó ta tính được độ chính xác ε của ước lượng p theo công thức: ε = t_α √(f(1-f)/n)"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: ε. Dạy ở mục 2.2 (trang 23, 25 PDF)."
+    },
+    {
+      "ma": "m2-4-006",
+      "chuong": "m2-4",
+      "ten": "Kích thước mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Tập hợp gồm n phần tử được chọn từ tổng thể để nghiên cứu vấn đề của tổng thể được gọi là một mẫu của tổng thể, n được gọi là kích thước mẫu."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: n, N. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-4-007",
+      "chuong": "m2-4",
+      "ten": "Tỉ lệ tổng thể",
+      "ten_khac": [
+        "tỷ lệ tổng thể"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi tỷ số này là tỷ lệ tổng thể, ký hiệu là p."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: p. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-4-008",
+      "chuong": "m2-4",
+      "ten": "Trung bình tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: μ. Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-4-009",
+      "chuong": "m2-4",
+      "ten": "Phương sai tổng thể",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 1,
+        "cau": "Người ta gọi kỳ vọng M(X) là trung bình tổng thể, ký hiệu là μ và phương sai D(X) là phương sai tổng thể, ký hiệu là σ²."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: σ². Dạy ở mục 1.1 (trang 1 PDF)."
+    },
+    {
+      "ma": "m2-4-010",
+      "chuong": "m2-4",
+      "ten": "Tỉ lệ mẫu",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Tỉ lệ mẫu của mẫu định tính có kích thước n, trong đó có m phần tử có tính chất A, là một số được ký hiệu và xác định như sau: f = m/n"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: f. Dạy ở mục 1.3 (trang 3 PDF)."
+    },
+    {
+      "ma": "m2-4-011",
+      "chuong": "m2-4",
+      "ten": "Phương sai mẫu hiệu chỉnh",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 3,
+        "cau": "Với phương sai mẫu, ta còn có các số đặc trưng liên quan như phương sai mẫu hiệu chỉnh được ký hiệu là s² (hay xσ_{n-1}²) , độ lệch mẫu được ký hiệu là ŝ (hay xσ_n) , độ lệch mẫu hiệu chỉnh được kí hiệu là s (hay xσ_{n-1}) và được xác định như sau: s² = (n/(n-1))ŝ²"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: s². Dạy ở mục 1.3 (trang 3–4 PDF)."
+    },
+    {
+      "ma": "m2-4-012",
+      "chuong": "m2-4",
+      "ten": "Phân phối chuẩn",
+      "ten_khac": [],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": null,
+        "cau": ""
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ký hiệu: X ~ N(μ ; σ²). Dạy ở chương trước của sách."
+    }
+  ],
+  "tranh_chap": []
+}
