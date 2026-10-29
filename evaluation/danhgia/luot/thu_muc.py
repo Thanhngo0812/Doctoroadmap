@@ -71,11 +71,11 @@ def phien_ban_cat(kho: Path, doc_id: str, den: str) -> int:
     return max(ban)
 
 
-def danh_sach_chep(kho: Path, doc_id: str, *, den_graph: int | None) -> list[str]:
+def danh_sach_chep(kho: Path, doc_id: str, *, den_graph: int | None, nhanh_chep=NHANH_THUONG_NGUON) -> list[str]:
     """Danh sách tệp (đường dẫn tương đối) của thượng nguồn: các nhánh chung của tài liệu, graph tới `den_graph` (None: mọi
     phiên bản), và `type_registry.json` nếu có. Không có tệp nào của Pha B hay của sổ build."""
     kho, ket_qua = Path(kho), []
-    for nhanh in NHANH_THUONG_NGUON:
+    for nhanh in nhanh_chep:
         goc = kho / nhanh / doc_id
         if goc.exists():
             ket_qua += [p.relative_to(kho).as_posix() for p in sorted(goc.rglob("*")) if p.is_file()]
