@@ -1,0 +1,824 @@
+{
+  "schema": "danh-gia-g3-1",
+  "ma_sach": "dev-doc-1",
+  "nguoi_gan": "toan-b",
+  "phien_ban_huong_dan": "g3-2",
+  "khai_niem": [
+    {
+      "ma": "m3-1-001",
+      "chuong": "m3-1",
+      "ten": "Không gian véc tơ",
+      "ten_khac": [
+        "K-không gian véc tơ",
+        "không gian vectơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "Tập hợp V ̸= ∅ được gọi là một không gian véc tơ trên K nếu nó được trang bị hai phép toán, gồm"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 1 trên trường K với 8 tiên đề."
+    },
+    {
+      "ma": "m3-1-002",
+      "chuong": "m3-1",
+      "ten": "Phép cộng véc tơ",
+      "ten_khac": [
+        "phép cộng"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "(a) Phép cộng véc tơ: + : V × V → V, (α, β) 7→ α + β"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phép toán hai ngôi nội bộ trên V thỏa mãn (V1)-(V4)."
+    },
+    {
+      "ma": "m3-1-003",
+      "chuong": "m3-1",
+      "ten": "Phép nhân véc tơ với vô hướng",
+      "ten_khac": [
+        "phép nhân ngoài"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "(b) Phép nhân véc tơ với vô hướng: · : K × V → V, (k, α) 7→ kα"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phép toán ngoài giữa trường K và không gian V thỏa mãn (V5)-(V8)."
+    },
+    {
+      "ma": "m3-1-004",
+      "chuong": "m3-1",
+      "ten": "Véc tơ",
+      "ten_khac": [
+        "phần tử của không gian véc tơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "Các phần tử của V được gọi là các véc tơ, các phần tử của K được gọi là các vô hướng, θ được gọi là phần tử trung hòa, α ′ được gọi là phần tử đối của α."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Các phần tử thuộc tập hợp V."
+    },
+    {
+      "ma": "m3-1-005",
+      "chuong": "m3-1",
+      "ten": "Vô hướng",
+      "ten_khac": [
+        "phần tử của trường"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "các phần tử của K được gọi là các vô hướng, θ được gọi là phần tử trung hòa, α ′ được gọi là phần tử đối của α."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Các phần tử thuộc trường K."
+    },
+    {
+      "ma": "m3-1-006",
+      "chuong": "m3-1",
+      "ten": "Phần tử trung hòa",
+      "ten_khac": [
+        "véc tơ không",
+        "θ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "θ được gọi là phần tử trung hòa, α ′ được gọi là phần tử đối của α."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phần tử thỏa mãn tiên đề (V2): theta + alpha = alpha + theta = alpha."
+    },
+    {
+      "ma": "m3-1-007",
+      "chuong": "m3-1",
+      "ten": "Phần tử đối",
+      "ten_khac": [
+        "véc tơ đối",
+        "−α"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 43,
+        "cau": "α ′ được gọi là phần tử đối của α."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phần tử thỏa mãn tiên đề (V3): alpha + alpha' = alpha' + alpha = theta."
+    },
+    {
+      "ma": "m3-1-008",
+      "chuong": "m3-1",
+      "ten": "Không gian véc tơ thực",
+      "ten_khac": [
+        "không gian vectơ thực"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 44,
+        "cau": "Khi K = R, V được gọi là một không gian véc tơ thực."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Không gian véc tơ trên trường số thực R."
+    },
+    {
+      "ma": "m3-1-009",
+      "chuong": "m3-1",
+      "ten": "Không gian véc tơ phức",
+      "ten_khac": [
+        "không gian vectơ phức"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 44,
+        "cau": "Khi K = C, V được gọi là một không gian véc tơ phức."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Không gian véc tơ trên trường số phức C."
+    },
+    {
+      "ma": "m3-1-010",
+      "chuong": "m3-1",
+      "ten": "Véc tơ n thành phần",
+      "ten_khac": [
+        "bộ n số thực có thứ tự"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 44,
+        "cau": "Xét R n là tập hợp mà mỗi phần tử là một bộ n số thực có thứ tự (x1, x2, . . . , xn), còn gọi là một véc tơ n thành phần."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Phần tử của không gian R^n."
+    },
+    {
+      "ma": "m3-1-011",
+      "chuong": "m3-1",
+      "ten": "Véc tơ không",
+      "ten_khac": [
+        "phần tử trung hòa",
+        "θ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 44,
+        "cau": "(1) Phần tử trung hòa θ ∈ V là duy nhất. Nó được gọi là véc tơ không."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Tính chất duy nhất của phần tử trung hòa trong không gian véc tơ."
+    },
+    {
+      "ma": "m3-1-012",
+      "chuong": "m3-1",
+      "ten": "Phép trừ véc tơ",
+      "ten_khac": [
+        "hiệu hai véc tơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 44,
+        "cau": "Ta định nghĩa: α − β = α + (−β)."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Cộng véc tơ alpha với véc tơ đối của beta."
+    },
+    {
+      "ma": "m3-1-013",
+      "chuong": "m3-1",
+      "ten": "Quy tắc giản ước",
+      "ten_khac": [
+        "luật giản ước"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "(3) Ta có các quy tắc giản ước và chuyển vế: ∀α, β, γ ∈ V α + γ = β + γ ⇒ α = β, α + β = γ ⇒ α = γ − β. ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "alpha + gamma = beta + gamma suy ra alpha = beta."
+    },
+    {
+      "ma": "m3-1-014",
+      "chuong": "m3-1",
+      "ten": "Quy tắc chuyển vế",
+      "ten_khac": [
+        "luật chuyển vế"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "α + β = γ ⇒ α = γ − β. ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Chuyển véc tơ qua vế kia đổi dấu thành véc tơ đối."
+    },
+    {
+      "ma": "m3-1-015",
+      "chuong": "m3-1",
+      "ten": "Trường",
+      "ten_khac": [
+        "field",
+        "K"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 15,
+        "cau": "✷ Định nghĩa 7. Một vành giao hoán, có đơn vị 1 ̸= 0 sao cho mọi phần tử khác 0 trong nó đều khả nghịch được gọi là một trường."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 1 (p. 15), nền tảng cấu trúc vô hướng của không gian véc tơ."
+    },
+    {
+      "ma": "m3-1-016",
+      "chuong": "m3-1",
+      "ten": "Nhóm abel",
+      "ten_khac": [
+        "nhóm giao hoán"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 14,
+        "cau": "Nếu phép toán ◦ có tính giao hoán, tức là x ◦ y = y ◦ x, ∀x, y ∈ G, thì G được gọi là một nhóm giao hoán (hay abel)."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 1 (p. 14); tập V cùng phép cộng lập thành nhóm abel."
+    },
+    {
+      "ma": "m3-1-017",
+      "chuong": "m3-1",
+      "ten": "Ánh xạ",
+      "ten_khac": [
+        "mapping"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 13,
+        "cau": "Một ánh xạ f từ X vào Y là một quy tắc đặt tương ứng mỗi phần tử x ∈ X với một phần tử xác định y = f(x) ∈ Y ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 1 (p. 13), dùng định nghĩa các phép toán trên V."
+    },
+    {
+      "ma": "m3-1-018",
+      "chuong": "m3-1",
+      "ten": "Tập hợp",
+      "ten_khac": [
+        "tập"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 10,
+        "cau": "Một tập hợp là một sự quần tụ các đối tượng có cùng một thuộc tính nào đó; những đối tượng này gọi là các phần tử của tập hợp đó."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 1 (p. 10)."
+    },
+    {
+      "ma": "m3-2-001",
+      "chuong": "m3-2",
+      "ten": "Tổ hợp tuyến tính",
+      "ten_khac": [
+        "linear combination"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "Một tổ hợp tuyến tính của các véc tơ α1, . . . , αn ∈ V là một biểu thức dạng"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Biểu thức dạng c1*alpha1 + ... + cn*alphan."
+    },
+    {
+      "ma": "m3-2-002",
+      "chuong": "m3-2",
+      "ten": "Biểu diễn tuyến tính",
+      "ten_khac": [
+        "biểu thị tuyến tính",
+        "linear representation"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "Đẳng thức đó được gọi là một biểu diễn tuyến tính của α qua các véc tơ α1, . . . , αn."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Đẳng thức alpha = c1*alpha1 + ... + cn*alphan."
+    },
+    {
+      "ma": "m3-2-003",
+      "chuong": "m3-2",
+      "ten": "Véc tơ biểu diễn tuyến tính được",
+      "ten_khac": [
+        "biểu thị tuyến tính được"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "Khi có đẳng thức đó, ta nói α biểu diễn tuyến tính được qua α1, . . . , αn."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Tồn tại các hệ số c_i sao cho alpha là tổ hợp tuyến tính của hệ."
+    },
+    {
+      "ma": "m3-2-004",
+      "chuong": "m3-2",
+      "ten": "Hệ véc tơ biểu diễn tuyến tính được",
+      "ten_khac": [
+        "biểu diễn tuyến tính được qua hệ véc tơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 45,
+        "cau": "Ta nói hệ {α1, . . . , αn} biểu diễn tuyến tính được qua hệ {β1, . . . , βm} nếu mỗi véc tơ αi , 1 ≤ i ≤ n, biểu diễn tuyến tính được qua {β1, . . . , βm}."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Mỗi véc tơ của hệ thứ nhất đều biểu diễn tuyến tính được qua hệ thứ hai."
+    },
+    {
+      "ma": "m3-2-005",
+      "chuong": "m3-2",
+      "ten": "Hệ véc tơ độc lập tuyến tính",
+      "ten_khac": [
+        "độc lập tuyến tính",
+        "linearly independent"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 46,
+        "cau": "Hệ {α1, . . . , αn} được gọi là độc lập tuyến tính nếu hệ thức c1α1 + · · · + cnαn = θ chỉ xảy ra khi c1 = · · · = cn = 0."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 3(a)."
+    },
+    {
+      "ma": "m3-2-006",
+      "chuong": "m3-2",
+      "ten": "Hệ véc tơ phụ thuộc tuyến tính",
+      "ten_khac": [
+        "phụ thuộc tuyến tính",
+        "linearly dependent"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 46,
+        "cau": "(b) Hệ {α1, . . . , αn} được gọi là phụ thuộc tuyến tính nếu nó không độc lập tuyến tính."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 3(b)."
+    },
+    {
+      "ma": "m3-2-007",
+      "chuong": "m3-2",
+      "ten": "Các véc tơ độc lập tuyến tính",
+      "ten_khac": [
+        "véc tơ độc lập tuyến tính"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 46,
+        "cau": "Nếu hệ {α1, . . . , αn} độc lập (hoặc phụ thuộc) tuyến tính, ta cũng nói các véc tơ α1, . . . , αn độc lập (hoặc phụ thuộc) tuyến tính."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Quy ước gọi cho các véc tơ trong hệ."
+    },
+    {
+      "ma": "m3-2-008",
+      "chuong": "m3-2",
+      "ten": "Điều kiện phụ thuộc tuyến tính của hệ một véc tơ",
+      "ten_khac": [
+        "tính chất hệ một véc tơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 47,
+        "cau": "(1) Hệ một véc tơ (α) phụ thuộc tuyến tính nếu và chỉ nếu α = θ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Hệ {alpha} phụ thuộc tuyến tính khi và chỉ khi alpha là véc tơ không."
+    },
+    {
+      "ma": "m3-2-009",
+      "chuong": "m3-2",
+      "ten": "Điều kiện phụ thuộc tuyến tính của hệ nhiều hơn một véc tơ",
+      "ten_khac": [
+        "tính chất hệ phụ thuộc tuyến tính"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 47,
+        "cau": "(2) Với n > 1, hệ {α1, . . . , αn} phụ thuộc tuyến tính nếu và chỉ nếu một véc tơ nào đó của hệ biểu thị tuyến tính được qua các véc tơ còn lại của hệ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Tồn tại ít nhất một véc tơ là tổ hợp tuyến tính của các véc tơ còn lại."
+    },
+    {
+      "ma": "m3-2-010",
+      "chuong": "m3-2",
+      "ten": "Tính chất hệ véc tơ chứa véc tơ không",
+      "ten_khac": [
+        "hệ chứa véc tơ không"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 47,
+        "cau": "▽ Hệ quả 1. Mọi hệ véc tơ có chứa θ là hệ phụ thuộc tuyến tính."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Hệ quả 1 của Tính chất 2."
+    },
+    {
+      "ma": "m3-2-011",
+      "chuong": "m3-2",
+      "ten": "Điều kiện phụ thuộc tuyến tính khi thêm một véc tơ",
+      "ten_khac": [
+        "tính chất thêm véc tơ vào hệ độc lập"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 48,
+        "cau": "(3) Giả sử hệ {α1, . . . , αn} độc lập tuyến tính. Khi đó hệ {α1, . . . , αn, β} phụ thuộc tuyến tính nếu và chỉ nếu β biểu diễn tuyến tính được qua {α1, . . . , αn}."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Tính chất 3 của độc lập/phụ thuộc tuyến tính."
+    },
+    {
+      "ma": "m3-2-012",
+      "chuong": "m3-2",
+      "ten": "Tính duy nhất của biểu diễn tuyến tính",
+      "ten_khac": [
+        "tính duy nhất của biểu thị tuyến tính"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 48,
+        "cau": "Trong trường hợp đó, biểu diễn tuyến tính này là duy nhất."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Biểu diễn tuyến tính của beta qua hệ độc lập tuyến tính là duy nhất."
+    },
+    {
+      "ma": "m3-2-013",
+      "chuong": "m3-2",
+      "ten": "Hệ phương trình tuyến tính thuần nhất",
+      "ten_khac": [
+        "hệ thuần nhất"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 37,
+        "cau": "2.5.6 Hệ phương trình tuyến tính thuần nhất"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 2 (p. 37), công cụ xét độc lập tuyến tính."
+    },
+    {
+      "ma": "m3-2-014",
+      "chuong": "m3-2",
+      "ten": "Định thức của ma trận",
+      "ten_khac": [
+        "định thức",
+        "determinant",
+        "det(A)"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 21,
+        "cau": "✷ Định nghĩa 9. Định thức của ma trận A là một số, ký hiệu là det(A) hoặc |A|, được định nghĩa như sau:"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 2 (p. 21), dùng kiểm tra nghiệm tầm thường."
+    },
+    {
+      "ma": "m3-2-015",
+      "chuong": "m3-2",
+      "ten": "Hạng của ma trận",
+      "ten_khac": [
+        "rank",
+        "(A)"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 30,
+        "cau": "✷ Định nghĩa 12. Hạng của ma trận A là cấp cao nhất của định thức con khác không của ma trận A, ký hiệu ρ(A)"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 2 (p. 30 / in p. 31), dùng xét tính biểu diễn tuyến tính được."
+    },
+    {
+      "ma": "m3-3-001",
+      "chuong": "m3-3",
+      "ten": "Hệ sinh",
+      "ten_khac": [
+        "tập sinh",
+        "spanning set"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 48,
+        "cau": "✷ Định nghĩa 4. (a) Một hệ véc tơ của V được gọi là một hệ sinh của V nếu mọi véc tơ của V đều biểu diễn tuyến tính được qua hệ đó."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 4(a)."
+    },
+    {
+      "ma": "m3-3-002",
+      "chuong": "m3-3",
+      "ten": "Cơ sở",
+      "ten_khac": [
+        "cơ sở của không gian véc tơ",
+        "basis"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 48,
+        "cau": "(b) Một hệ véc tơ của V được gọi là một cơ sở của V nếu mọi véc tơ của V đều biểu diễn tuyến tính duy nhất qua hệ đó."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 4(b)."
+    },
+    {
+      "ma": "m3-3-003",
+      "chuong": "m3-3",
+      "ten": "Hệ véc tơ độc lập tuyến tính cực đại",
+      "ten_khac": [
+        "độc lập tuyến tính cực đại"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 49,
+        "cau": "Một hệ véc tơ của không gian V được gọi là độc lập tuyến tính cực đại nếu nó độc lập tuyến tính và nếu thêm bất kỳ véc tơ nào của V vào hệ đó thì hệ mới thu được trở thành phụ thuộc tuyến tính."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Đặc trưng tương đương của cơ sở."
+    },
+    {
+      "ma": "m3-3-004",
+      "chuong": "m3-3",
+      "ten": "Định lý tương đương của cơ sở",
+      "ten_khac": [
+        "các khẳng định tương đương của cơ sở"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 49,
+        "cau": "△ Định lý 1. Cho hệ hữu hạn các véc tơ S = {α1, . . . , αn} của V . Khi đó các khẳng định sau đây là tương đương:"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Cơ sở tương đương hệ sinh độc lập tuyến tính và hệ độc lập tuyến tính cực đại."
+    },
+    {
+      "ma": "m3-3-005",
+      "chuong": "m3-3",
+      "ten": "Không gian véc tơ hữu hạn sinh",
+      "ten_khac": [
+        "hữu hạn sinh"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 49,
+        "cau": "✷ Định nghĩa 5. Không gian véc tơ V được gọi là hữu hạn sinh nếu nó có một hệ sinh gồm hữu hạn phần tử."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 5."
+    },
+    {
+      "ma": "m3-3-006",
+      "chuong": "m3-3",
+      "ten": "Số chiều của không gian véc tơ",
+      "ten_khac": [
+        "chiều của không gian véc tơ",
+        "dim V",
+        "dimension"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 49,
+        "cau": "✷ Định nghĩa 6. (a) Số phần tử của mỗi cơ sở của không gian véc tơ hữu hạn sinh V ̸= {θ} được gọi là số chiều của V và được ký hiệu là dim V . Nếu V = {θ} ta quy ước dim V = 0."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 6(a)."
+    },
+    {
+      "ma": "m3-3-007",
+      "chuong": "m3-3",
+      "ten": "Không gian véc tơ vô hạn chiều",
+      "ten_khac": [
+        "vô hạn chiều"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 49,
+        "cau": "(b) Nếu V không có một cơ sở nào gồm hữu hạn phần tử thì nó được gọi là một không gian véc tơ vô hạn chiều."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 6(b)."
+    },
+    {
+      "ma": "m3-3-008",
+      "chuong": "m3-3",
+      "ten": "Bổ đề về số véc tơ của hệ độc lập tuyến tính và hệ sinh",
+      "ten_khac": [
+        "bổ đề so sánh số véc tơ"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 50,
+        "cau": "⊙ Bổ đề Trong không gian véc tơ V , giả sử hệ véc tơ S = {α1, . . . , αr} độc lập tuyến tính, T = {β1, . . . , βs} là một hệ sinh. Khi đó r ≤ s."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Số véc tơ độc lập tuyến tính luôn không vượt quá số véc tơ của hệ sinh."
+    },
+    {
+      "ma": "m3-3-009",
+      "chuong": "m3-3",
+      "ten": "Định lý về số phần tử của các cơ sở",
+      "ten_khac": [
+        "tính duy nhất của số chiều"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 50,
+        "cau": "△ Định lý 2. Giả sử V ̸= {θ} là một không gian hữu hạn sinh. Khi đó V có một cơ sở gồm hữu hạn phần tử. Hơn nữa mọi cơ sở của V đều có số phần tử bằng nhau."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định lý 2."
+    },
+    {
+      "ma": "m3-3-010",
+      "chuong": "m3-3",
+      "ten": "Cơ sở chính tắc của Rn",
+      "ten_khac": [
+        "cơ sở chính tắc của R^n"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 51,
+        "cau": "Vậy dim R n = n và B là một cơ sở. B được gọi là cơ sở chính tắc của không gian R n ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Hệ B = {e1, ..., en} với e_i là các véc tơ đơn vị."
+    },
+    {
+      "ma": "m3-3-011",
+      "chuong": "m3-3",
+      "ten": "Cơ sở chính tắc của Pn[x]",
+      "ten_khac": [
+        "cơ sở chính tắc của không gian đa thức"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 51,
+        "cau": "Vậy dim Pn[x] = n+ 1 và B là một cơ sở. B được gọi là cơ sở chính tắc của không gian Pn[x]."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Hệ B = {1, x, x^2, ..., x^n} có n+1 phần tử."
+    },
+    {
+      "ma": "m3-3-012",
+      "chuong": "m3-3",
+      "ten": "Định lý bổ sung cơ sở",
+      "ten_khac": [
+        "bổ sung thành cơ sở"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 51,
+        "cau": "△ Định lý 3. Giả sử V là một không gian véc tơ hữu hạn sinh. Mọi hệ độc lập tuyến tính trong V đều có thể bổ sung để trở thành một cơ sở của V . Nếu dim V = n, thì mọi hệ độc lập tuyến tính gồm n véc tơ của V đều là một cơ sở."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định lý 3."
+    },
+    {
+      "ma": "m3-3-013",
+      "chuong": "m3-3",
+      "ten": "Tọa độ của véc tơ trong cơ sở",
+      "ten_khac": [
+        "tọa độ",
+        "coordinates"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 52,
+        "cau": "Định nghĩa 7 (Tọa độ). Bộ giá trị (c1, . . . , cn) xác định bởi điều kiện α = ∑ciαi được gọi là tọa độ của véc tơ α trong cơ sở S, ci được gọi là tọa độ thứ i của α trong cơ sở đó."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa 7."
+    },
+    {
+      "ma": "m3-3-014",
+      "chuong": "m3-3",
+      "ten": "Véc tơ tọa độ",
+      "ten_khac": [
+        "(α)S"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 52,
+        "cau": "Véc tơ (α)S = (c1, . . . , cn) là một véc tơ trong R n và được gọi là véc tơ tọa độ của α đối với cơ sở S."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Véc tơ dòng trong R^n."
+    },
+    {
+      "ma": "m3-3-015",
+      "chuong": "m3-3",
+      "ten": "Ma trận tọa độ",
+      "ten_khac": [
+        "[α]S"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 52,
+        "cau": "Véc tơ (α)S viết ở dạng cột dẫn đến ma trận [α]S = (c1, . . . , cn) t là một ma trận cỡ n × 1 và được gọi là ma trận tọa độ của α đối với cơ sở S."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ma trận cột cỡ n x 1."
+    },
+    {
+      "ma": "m3-3-016",
+      "chuong": "m3-3",
+      "ten": "Bài toán đổi cơ sở",
+      "ten_khac": [
+        "đổi cơ sở"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 53,
+        "cau": "3.3.1 Bài toán đổi cơ sở"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Mục 3.3.1 (p. 53)."
+    },
+    {
+      "ma": "m3-3-017",
+      "chuong": "m3-3",
+      "ten": "Ma trận chuyển cơ sở",
+      "ten_khac": [
+        "ma trận chuyển cơ sở từ S sang T",
+        "PS→T",
+        "transition matrix"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 53,
+        "cau": "Ma trận P thỏa mãn (3.2) được gọi là ma trận chuyển cơ sở từ S sang T, thường ký hiệu là PS→T ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Ma trận P có các cột là ma trận tọa độ của các véc tơ cơ sở mới trong cơ sở cũ."
+    },
+    {
+      "ma": "m3-3-018",
+      "chuong": "m3-3",
+      "ten": "Tính chất của ma trận chuyển cơ sở",
+      "ten_khac": [
+        "tính khả đảo của ma trận chuyển cơ sở"
+      ],
+      "trang_thai": "day_o_day",
+      "dinh_nghia": {
+        "trang": 53,
+        "cau": "△ Định lý 4. Nếu P là ma trận chuyển cơ sở từ S sang T thì (a) P khả đảo, tức là det P ̸= 0. (b) P −1 là ma trận chuyển cơ sở từ T sang S, tức là: [α]T = P −1 [α]S"
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định lý 4."
+    },
+    {
+      "ma": "m3-3-019",
+      "chuong": "m3-3",
+      "ten": "Ma trận khả đảo",
+      "ten_khac": [
+        "khả đảo",
+        "invertible matrix"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 25,
+        "cau": "✷ Định nghĩa 10. Cho A là ma trận vuông cấp n. Nếu có ma trận B vuông cùng cấp sao cho: AB = BA = In thì nói A khả đảo và gọi B là ma trận nghịch đảo của A."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 2 (p. 25)."
+    },
+    {
+      "ma": "m3-3-020",
+      "chuong": "m3-3",
+      "ten": "Ma trận nghịch đảo",
+      "ten_khac": [
+        "inverse matrix",
+        "A^-1"
+      ],
+      "trang_thai": "chi_nhac",
+      "dinh_nghia": {
+        "trang": 25,
+        "cau": "Ký hiệu ma trận nghịch đảo của A là A−1 ."
+      },
+      "khong_chac": false,
+      "ghi_chu": "Định nghĩa ở Chương 2 (p. 25)."
+    }
+  ],
+  "tranh_chap": []
+}
