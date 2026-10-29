@@ -23,6 +23,9 @@ giao diện, worker dựng sách, PostgreSQL, sáu khoá mẫu.
   `GOOGLE_APPLICATION_CREDENTIALS`). `.env` gốc chỉ phục vụ CLI dựng/đánh giá, không đưa vào gói. Bản trong gói rút còn các khoá phải điền: mật khẩu
   PostgreSQL, Gmail, project Vertex (hoặc khoá Developer API nếu lúc đó đã đổi); khoá còn lại để mặc định hoặc do lệnh bật tự đặt (URL, đường dẫn
   artifact tương đối). README hướng dẫn đăng nhập Vertex bằng `gcloud auth application-default login`.
+  **Bẫy phải kiểm:** `Settings` lõi (`src/doc2roadmap/config.py`) còn tự đọc `.env` ở thư mục đang đứng. Trên máy này lệnh chạy từ gốc repo nên
+  `.env` gốc lặng lẽ cấp các khoá `DOC2ROADMAP_*` không có trong `src/web/.env` (model, tham số). Trước khi gói, so từng khoá `.env` gốc với mặc định
+  trong mã; khoá nào khác mặc định mà web cần thì chuyển vào `.env.example` của gói, để máy khác chạy giống máy này.
 - `README.md` tiếng Việt, từng bước cho người không rành: cài gì, điền gì, bấm gì, mở địa chỉ nào, dừng thế nào, lỗi hay gặp.
 
 ## Không được có
