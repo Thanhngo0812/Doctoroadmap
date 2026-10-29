@@ -52,7 +52,7 @@ function AdminWorkspace({audit}:{audit:boolean}){
    {error&&<p className="admin-error" role="alert">{error}</p>}{notice&&<p ref={noticeRef} tabIndex={-1} className="admin-success" role="status">{notice}</p>}
    {loading?<div className="admin-loading" role="status">Đang tải {audit?'nhật ký':'người dùng'}…</div>:data&&<>
     <p className="admin-result-count">{count(data.total)} {audit?'thao tác':'người dùng'}</p>
-    {!data.items.length?<div className="admin-empty"><h2>Chưa có kết quả</h2><p>{params.size?'Thử thay đổi hoặc xoá bộ lọc.':'Dữ liệu sẽ xuất hiện tại đây khi có.'}</p></div>:audit?<AuditTable items={events!.items}/>:<UserTable items={users!.items} edit={setEditor}/>}
+    {!data.items.length?<div className="admin-empty"><h2>Chưa có kết quả</h2><p>{params.size?'Thử thay đổi hoặc xoá bộ lọc.':'Dữ liệu sẽ xuất hiện tại đây khi có.'}</p></div>:audit?<AuditTable items={events!.items}/>:<UserTable items={users!.items} edit={row=>{setNotice(null);setEditor(row);}}/>}
     <nav className="admin-pagination" aria-label="Phân trang"><span>{data.items.length?count(data.offset+1)+'–'+count(data.offset+data.items.length):'0'} / {count(data.total)}</span><div><button className="button button-secondary" aria-label="Trang trước" disabled={data.offset===0||Boolean(editor)} onClick={()=>page(Math.max(0,data.offset-data.limit))}>Trước</button><button className="button button-secondary" aria-label="Trang sau" disabled={data.offset+data.limit>=data.total||data.offset+data.limit>100000||Boolean(editor)} onClick={()=>page(data.offset+data.limit)}>Sau</button></div></nav>
    </>}
   </section>

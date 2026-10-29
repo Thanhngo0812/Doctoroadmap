@@ -109,3 +109,8 @@ it('keeps keyboard focus on the completion message while the changed row is relo
  const user=userEvent.setup();app();await screen.findByText(later.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));
  const notice=await screen.findByText('Đã cập nhật tài khoản '+later.email+'.');await waitFor(()=>expect(notice).toHaveFocus());expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
+it('clears the previous completion before editing the same account again and focuses the next completion',async()=>{
+ const user=userEvent.setup();app();await screen.findByText(later.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));await waitFor(()=>expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+ await user.click(await screen.findByRole('button',{name:'Chỉnh sửa '+later.email}));expect(screen.queryByText('Đã cập nhật tài khoản '+later.email+'.')).not.toBeInTheDocument();
+ await user.clear(screen.getByLabelText('Lượt dựng mỗi tháng'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'8');await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));const notice=await screen.findByText('Đã cập nhật tài khoản '+later.email+'.');await waitFor(()=>expect(notice).toHaveFocus());
+});
