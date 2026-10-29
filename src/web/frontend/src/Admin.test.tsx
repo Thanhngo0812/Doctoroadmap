@@ -67,7 +67,24 @@ it('blocks a regular account without requesting an admin list',async()=>{
  identity={...identity!,role:'user'};app();expect(await screen.findByText('Bạn không có quyền quản trị.')).toBeVisible();expect(calls.filter(c=>c.url.includes('/admin/'))).toHaveLength(0);
 });
 it.each(['forbidden','unauthenticated'])('removes admin data when the live server returns %s',async code=>{
- failure=code;app();if(code==='forbidden')expect(await screen.findByText('Bạn không có quyền quản trị.')).toBeVisible();else expect(await screen.findByRole('heading',{name:/Đăng nhập WayFinder/})).toBeVisible();expect(screen.queryByText(later.email)).not.toBeInTheDocument();
+ failure=code;app();if(code==='forbidden'){expect(await screen.findByText('Bạn không có quyền quản trị.')).toBeVisible();
+  // The message alone also appears as a list error; the Denied screen is the one with a way out and no admin controls left.
+  expect(screen.getByRole('link',{name:'Về khoá học của tôi'})).toBeVisible();expect(screen.queryByRole('button',{name:'Tải lại'})).not.toBeInTheDocument();expect(screen.queryByRole('button',{name:'Áp dụng bộ lọc'})).not.toBeInTheDocument();}
+ else expect(await screen.findByRole('heading',{name:/Đăng nhập WayFinder/})).toBeVisible();expect(screen.queryByText(later.email)).not.toBeInTheDocument();
+});
+it('drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden',async()=>{
+ const user=userEvent.setup();app();await screen.findByText(later.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');
+ const original=globalThis.fetch;vi.stubGlobal('fetch',vi.fn((input,init)=>init?.method==='PATCH'?Promise.resolve(json({error:{code:'forbidden',message:'Thao tác bị từ chối.'}},403)):original(input,init)));
+ await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));
+ expect(await screen.findByRole('link',{name:'Về khoá học của tôi'})).toBeVisible();expect(screen.queryByRole('dialog')).not.toBeInTheDocument();expect(screen.queryByRole('table')).not.toBeInTheDocument();
+ expect(screen.queryByText(later.email)).not.toBeInTheDocument();expect(screen.queryByText(first.email)).not.toBeInTheDocument();expect(screen.queryByRole('button',{name:'Tải lại'})).not.toBeInTheDocument();expect(screen.queryByRole('button',{name:'Áp dụng bộ lọc'})).not.toBeInTheDocument();
+});
+it('sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time',async()=>{
+ const user=userEvent.setup();app('/admin/nhat-ky');await screen.findByRole('cell',{name:'Khoá tài khoản'});
+ fireEvent.change(screen.getByLabelText('Từ (giờ Việt Nam)'),{target:{value:'2026-10-29T10:00'}});fireEvent.change(screen.getByLabelText('Đến, không gồm (giờ Việt Nam)'),{target:{value:'2026-10-30T00:30'}});await user.click(screen.getByRole('button',{name:'Áp dụng bộ lọc'}));
+ await waitFor(()=>expect(calls.some(c=>new URL(c.url,'http://localhost').searchParams.get('since')==='2026-10-29T03:00:00.000Z'&&new URL(c.url,'http://localhost').searchParams.get('until')==='2026-10-29T17:30:00.000Z')).toBe(true));
+ cleanup();app('/admin/nhat-ky?since=2026-10-29T03:00:00.000Z&until=2026-10-29T17:30:00.000Z');await screen.findByRole('cell',{name:'Khoá tài khoản'});
+ expect(screen.getByLabelText('Từ (giờ Việt Nam)')).toHaveValue('2026-10-29T10:00');expect(screen.getByLabelText('Đến, không gồm (giờ Việt Nam)')).toHaveValue('2026-10-30T00:30');
 });
 it('ignores a delayed PATCH after closing its dialog',async()=>{
  const user=userEvent.setup();app();await screen.findByText(first.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');holdPatch=true;await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));await waitFor(()=>expect(releasePatch).toBeTypeOf('function'));
