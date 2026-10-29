@@ -99,3 +99,9 @@ it('a failed list is not an empty result and can be retried',async()=>{
  const original=globalThis.fetch;let broken=true;vi.stubGlobal('fetch',vi.fn((input,init)=>broken&&String(input).includes('/admin/users?')?Promise.reject(new TypeError('offline')):original(input,init)));
  const user=userEvent.setup();app();await screen.findByRole('alert');expect(screen.queryByText('Chưa có kết quả')).not.toBeInTheDocument();broken=false;await user.click(screen.getByRole('button',{name:'Tải lại'}));expect(await screen.findByText(later.email)).toBeVisible();
 });
+it.each(['user','admin'])('discards an old PATCH success/finally when the current identity becomes another %s',async role=>{
+ const user=userEvent.setup();render(<MemoryRouter initialEntries={['/admin/nguoi-dung']}><AuthProvider><SwitchIdentity/><AdminPage theme="light" onToggleTheme={()=>{}}/></AuthProvider></MemoryRouter>);
+ await screen.findByText(later.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');holdPatch=true;await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));await waitFor(()=>expect(calls.filter(c=>c.method==='PATCH')).toHaveLength(1));
+ identity={...identity!,id:'new-account',role};rows=[{...later,email:'NEW_ACCOUNT_VISIBLE@example.invalid'}];await user.click(screen.getByRole('button',{name:'Nhận phiên kiểm mới'}));if(role==='admin')await screen.findByText('NEW_ACCOUNT_VISIBLE@example.invalid');else await screen.findByText('Bạn không có quyền quản trị.');
+ await act(async()=>releasePatch(json({...later,email:'OLD_PATCH_PRIVATE@example.invalid'})));expect(screen.queryByText(/OLD_PATCH_PRIVATE|Đã cập nhật tài khoản/)).not.toBeInTheDocument();expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
