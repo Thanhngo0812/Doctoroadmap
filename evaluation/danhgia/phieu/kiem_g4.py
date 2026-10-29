@@ -144,6 +144,8 @@ def kiem_phieu_g4(duong_dan: str | Path, manifest: dict, kho: dict, trang_text: 
                 "ma": ma, "chuong": ch, "dich": dich, "nguon": ngoai, "loai": loai,
                 "bang_chung": {"trang": bc_so, "cau": bc_cau}, "khong_chac": kc == "có", "ghi_chu": _chuoi(ghi_chu),
             })
+    if not kq.loi and not quan_he:
+        kq.loi.append(Loi("phieu_rong", "phiếu không có quan hệ nào (phiếu trắng hay nộp nhầm tệp)"))
     if not kq.loi:
         kq.du_lieu = {"schema": g4.SCHEMA, "ma_sach": meta["ma_sach"], "nguoi_gan": meta.get("nguoi_gan", ""),
                       "kho_chot_sha256": meta["kho_chot_sha256"], "quan_he": quan_he}

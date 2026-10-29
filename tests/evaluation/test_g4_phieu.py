@@ -62,6 +62,12 @@ def kiem(p, manifest, kho, trang_g4, **kw):
     return kiem_phieu_g4(p, manifest, kho, trang_g4, **kw)
 
 
+def test_phieu_trang_khong_quan_he_nao_la_loi(tmp_path, manifest, kho, trang_g4):
+    # 29/10: phiếu G3 trắng từng lọt qua bộ kiểm; G4 chặn cùng cách
+    kq = kiem(sinh(tmp_path, manifest, kho), manifest, kho, trang_g4)
+    assert [l.ma_loi for l in kq.loi] == ["phieu_rong"] and kq.du_lieu is None
+
+
 # --- sinh phiếu ---
 
 def test_phieu_co_huong_dan_sheet_chuong_cot_ma_an_va_bang_tra_kho(tmp_path, manifest, kho):
