@@ -135,8 +135,10 @@ Mọi so sánh khác chỉ mô tả, báo cỡ hiệu ứng và CI. Thứ tự b
 - **Khoảng tin cậy:** bootstrap phân cấp (lấy lại cuốn có hoàn lại, rồi chương trong cuốn), 10.000 vòng, khoảng phân vị 95%.
 - **Sign test theo cuốn:** nhị thức chính xác. Với 8 cuốn, chỉ 8/8 cùng chiều mới cho p < 0,05.
 - **Luật nhiễu:** chênh giữa hai hệ nhỏ hơn dải nhiễu K lượt của hệ chính thì không tuyên bố hệ nào hơn, dù p nhỏ.
-- **G5:** precision hiệu chỉnh kèm CI Wilson trên tỉ lệ mẫu. Báo thêm cận dưới coi cạnh thiếu trường là sai. Likert báo trung bình và Krippendorff α thứ bậc.
-  So sánh cặp là vòng tròn đủ cặp giữa các hệ có lộ trình, báo thăm dò.
+- **G5:** phán tối đa 100 cạnh ngoài vàng mỗi hệ mỗi cuốn (chủ dự án chốt 29/10, chấp nhận khối lượng phán lớn) và tối đa 60 khái niệm (a) mỗi cuốn.
+  - Precision hiệu chỉnh kèm CI Wilson trên tỉ lệ mẫu; báo thêm cận dưới coi cạnh thiếu trường là sai.
+  - Likert báo trung bình và Krippendorff α thứ bậc.
+  - So sánh cặp là vòng tròn đủ cặp giữa các hệ có lộ trình, báo thăm dò.
 
 ## 10. Luật tranh chấp và vàng thiếu
 

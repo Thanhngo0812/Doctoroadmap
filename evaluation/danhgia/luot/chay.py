@@ -16,6 +16,8 @@ from datetime import date
 from pathlib import Path
 from types import SimpleNamespace
 
+from danhgia.giao_thuc import kiem_giao_thuc
+
 from . import ban_ghi, thu_muc, uoc_chi
 from .chay_cli import chay_cli_that
 
@@ -58,6 +60,7 @@ class NguCanh:
     allow_spend: bool = False
     dry_run: bool = False
     kho_chung: tuple = ()
+    giao_thuc: Path | None = None
 
     @property
     def doc_id(self):
@@ -133,7 +136,7 @@ class Luot:
     # ---------- bản ghi ----------
     def _khoi_dong(self):
         nc = self.nc
-        self.thu_muc.mkdir(parents=True, exist_ok=True)
+        sha_giao_thuc = kiem_giao_thuc(nc.manifest, nc.giao_thuc)   # trước mọi thao tác: chưa tạo thư mục, chưa đọc lượt nguồn
         tu_luot = None
         if nc.bien_the == "oracle-a8" and nc.g3 is None:
             raise ValueError("oracle-a8 cần --g3 (kho chốt G3 của cuốn)")
@@ -145,12 +148,15 @@ class Luot:
                 raise ValueError("lượt chính chưa xong (bản ghi thiếu hay còn bước chưa xong); không dùng làm thượng nguồn")
             if goc["sha256_pdf"] != _sha256(nc.pdf):
                 raise ValueError("lượt chính chạy trên PDF khác")
+            if nc.manifest["tap"] == "thu" and goc.get("sha256_giao_thuc") != sha_giao_thuc:
+                raise ValueError("giao thức của lượt nguồn khác giao thức của lượt này; biến thể dùng lại thượng nguồn trên tập thử phải cùng SHA")
             tu_luot = goc["hash_cau_hinh"]
             self.nguon = Path(nc.tu_luot).resolve() / thu_muc.KHO
+        self.thu_muc.mkdir(parents=True, exist_ok=True)   # sau mọi kiểm tra đầu vào: lượt bị từ chối không để lại thư mục
         moi = ban_ghi.moi(ma_luot=self.thu_muc.name, bien_the=nc.bien_the, ma_sach=nc.manifest["ma_sach"], doc_id=nc.doc_id,
                           sha256_pdf=_sha256(nc.pdf), commit=nc.commit, mo_hinh=MO_HINH, transport=nc.transport, seed=nc.seed,
                           k=nc.k, luot_nhieu=nc.luot_nhieu, ngay=nc.ngay, cau_hinh=self.cau_hinh(), tu_luot=tu_luot,
-                          ten_buoc=ten_buoc(nc))
+                          ten_buoc=ten_buoc(nc), sha256_giao_thuc=sha_giao_thuc, tap=nc.manifest["tap"])
         cu = ban_ghi.doc(self.thu_muc)
         if cu is None:
             if nc.bien_the not in B5:
@@ -303,7 +309,7 @@ class Luot:
         ra = self.thu_muc / "b5"
         ma = b5.chay(SimpleNamespace(manifest=nc.manifest_path, pdf=str(nc.pdf), che_do=nc.bien_the[-1], bien_the=nc.bien_the_b5,
                                      seed=None, ra=str(ra), dry_run=False, allow_spend=nc.allow_spend, commit=nc.commit,
-                                     ngay_chay=nc.ngay))
+                                     ngay_chay=nc.ngay, giao_thuc=str(nc.giao_thuc) if nc.giao_thuc else None))
         hd = ra / f"b5{nc.bien_the[-1]}-k{nc.bien_the_b5}.json"
         if ma != 0 or not hd.exists():
             raise LoiBuoc(f"B5 thoát mã {ma}; hợp đồng {'có' if hd.exists() else 'không có'}")
