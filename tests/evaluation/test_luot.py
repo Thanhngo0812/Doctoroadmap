@@ -781,3 +781,12 @@ def test_ghi_ban_ghi_bao_loi_khi_tep_bi_khoa_mai(tmp_path, monkeypatch):
     monkeypatch.setattr(ban_ghi.time, "sleep", lambda _: None)
     with pytest.raises(PermissionError):
         ban_ghi.ghi(tmp_path, {"schema": ban_ghi.SCHEMA})
+
+
+def test_ban_ghi_chap_nhan_tu_choi_cua_san_pham_nhung_khong_trang_thai_la(chinh):
+    ban = ban_ghi.doc(chinh)
+    ban["buoc"][0]["trang_thai"] = "tu_choi_chu_loi"
+    assert ban_ghi.kiem(ban) == [] and not ban_ghi.da_xong(ban)      # hợp lệ nhưng chưa xong
+    for la in ("hu", "tu_choi", "xong_roi"):
+        ban["buoc"][0]["trang_thai"] = la
+        assert any("buoc[0]" in dong for dong in ban_ghi.kiem(ban)), la
