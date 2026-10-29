@@ -189,8 +189,8 @@ def test_duong_vong_chu_vao_hash_cau_hinh(sach, gia, tmp_path):
     ha, hb = ban_ghi.doc(a), ban_ghi.doc(b)
     assert ha["hash_cau_hinh"] != hb["hash_cau_hinh"]
     # cờ tự nó (lý do giữ nguyên) cũng đổi hash: hai cấu hình chỉ khác `duong_vong_chu`
-    cau = dict(hb["cau_hinh"])
-    cau["duong_vong_chu"] = False
+    cau = {k: v for k, v in hb["cau_hinh"].items() if k != "duong_vong_chu"}
+    assert "duong_vong_chu" in hb["cau_hinh"]
     kwargs = dict(bien_the="chinh", doc_id=DOC, sha256_pdf=hb["sha256_pdf"], commit=hb["commit"], mo_hinh=hb["mo_hinh"], transport=hb["transport"],
                   seed=None, k=None, luot_nhieu=0, tu_luot=None, ten_buoc=[b_["ten"] for b_ in hb["buoc"]])
     assert hb["hash_cau_hinh"] == ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(cau_hinh=hb["cau_hinh"], **kwargs))
@@ -255,6 +255,76 @@ def test_docling_la_ablation_doi_bo_doc_o_read_con_lai_la_buoc_san_pham(sach, gi
     assert main(lenh(sach, tmp_path / "dl", "docling")) == 0
     assert gia.chi_tiet[0] == ("read", {"a1": "docling", "ly_do": None})
     assert [a[0] for a, _ in gia.lenh] == ["read", "label-roles", "a3", "canonical", "roadmap"]
+
+
+# ---------- bọc DocumentPipeline: từ chối và đường vòng ----------
+
+class _TomTat:
+    chunk_version, parse_version, chunk_count = 4, 2, 7
+
+
+class _IngestGia:
+    def __init__(self, canh_bao=()):
+        self.goi, self.canh_bao = [], list(canh_bao)
+
+    def execute(self, noi_dung, ten, doc_id, **kw):
+        self.goi.append(kw)
+        return _TomTat()
+
+
+class _PipelineSanPhamGia:
+    """Chỉ đủ cho `DuongSanPham.read`: ghi lại việc `read` sản phẩm có được gọi không."""
+
+    def __init__(self, canh_bao=(), tu_choi=None):
+        from types import SimpleNamespace
+        self.ingest, self.goi_read, self.tu_choi = _IngestGia(canh_bao), 0, tu_choi
+        self.settings = SimpleNamespace(max_tokens=1, max_table_tokens=1, hard_cap_tokens=1, target_tokens=1, sentence_overlap=0)
+        canh_bao_ = list(canh_bao)
+        self.store = SimpleNamespace(load_chunks=lambda doc, v: SimpleNamespace(
+            manifest={"text_quality": {"warnings": canh_bao_}}, result=SimpleNamespace(doc_id=doc)), load_parse=lambda *a: (_ for _ in ()).throw(FileNotFoundError()))
+
+    def read(self, pdf, doc_id):
+        from doc2roadmap.application.ports.build import BuildRejected
+        self.goi_read += 1
+        if self.tu_choi:
+            raise BuildRejected("chu_loi", self.tu_choi)
+        return {"chunks_version": 1}
+
+
+def _duong_san_pham(pl, tmp_path):
+    from danhgia.luot.san_pham import DuongSanPham
+    d = DuongSanPham.__new__(DuongSanPham)
+    d.env, d.pipeline = {}, pl
+    (tmp_path / "s.pdf").write_bytes(b"%PDF")
+    return d, tmp_path / "s.pdf"
+
+
+def test_read_san_pham_doi_build_rejected_thanh_tu_choi(tmp_path):
+    from danhgia.luot.ban_ghi import TuChoi
+    pl = _PipelineSanPhamGia(tu_choi="Trang có chất lượng chữ chưa đạt: 3")
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    with pytest.raises(TuChoi) as e:
+        d.read(pdf, "D")
+    assert (e.value.ma, pl.goi_read, pl.ingest.goi) == ("chu_loi", 1, [])   # đi đúng DocumentPipeline.read, không qua ingest riêng
+
+
+def test_read_san_pham_co_ly_do_la_duong_vong_khong_qua_read_cua_san_pham(tmp_path):
+    pl = _PipelineSanPhamGia(tu_choi="Trang có chất lượng chữ chưa đạt: 3")
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    kq = d.read(pdf, "D", ly_do="đã xem trang 3")
+    assert pl.goi_read == 0 and pl.ingest.goi[0]["quality_reason"] == "đã xem trang 3" and kq["chunks_version"] == 4
+
+
+def test_read_docling_khong_ly_do_van_chiu_cong_chu_cua_san_pham(tmp_path):
+    from danhgia.luot.ban_ghi import TuChoi
+    pl = _PipelineSanPhamGia(canh_bao=["Trang có chất lượng chữ chưa đạt: 3"])
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    with pytest.raises(TuChoi):
+        d.read(pdf, "D", a1="docling")
+    assert pl.goi_read == 0 and "quality_reason" not in pl.ingest.goi[0]
+    sach_sach = _PipelineSanPhamGia()
+    d2, pdf2 = _duong_san_pham(sach_sach, tmp_path)
+    assert d2.read(pdf2, "D", a1="docling")["chunks_version"] == 4
 
 
 # ---------- tích hợp: bước read của luot = DocumentPipeline.read ----------
