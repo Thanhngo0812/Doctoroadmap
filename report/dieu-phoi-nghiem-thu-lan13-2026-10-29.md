@@ -1,5 +1,10 @@
 # Nghiệm thu lần 13 — React W-17.1 Người dùng/Nhật ký, 2026-10-29
 
+**Cập nhật sau sửa — đạt, đã ghép local `e4465b4c`, chưa push.** Subagent web sửa ở `b1b699ca` (chỉ `Admin.test.tsx` và báo cáo; `Admin.tsx`
+giữ SHA `ce6da3df…`). Báo cáo sạch dấu. Bản ghép thử `6dfbb3ba` (nhánh + main `f71b694c`): build đạt, **React 283/283**; hai phép phá từng sống sót
+nay đều bị bắt (`mui-gio` bởi test múi giờ mới; `patch-403-giu-du-lieu` bởi test PATCH 403 mới và test GET 403 đã sửa), nên bộ phá Claude 8/8.
+`ghep_guard.sh` in GUARD OK. Bằng chứng ở `coord-r13-evidence-2026-10-29/sau-sua/`. Optional ô khoá chế độ tối chưa sửa. Toàn W-17 vẫn mở.
+
 **Người nghiệm thu:** Claude (điều phối từ 2026-10-29, thay Codex). **Kết quả: chưa đạt, chưa ghép.** Mã React đúng ở mọi chỗ đã soát; còn ba Required
 về hồ sơ và test (WEB-R13-01…03), giao subagent web sửa trên cùng nhánh. Chi nhà cung cấp 0 USD, chỉ commit local, chưa push.
 

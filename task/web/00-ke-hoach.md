@@ -1,7 +1,7 @@
 # Web WayFinder — kế hoạch vé
 
 **Mới nhất — 2026-10-29:** Claude điều phối thay Codex; ba subagent (web, lõi, thiết kế) làm thay ba nhóm, luật chung giữ nguyên. Lời giao lần 12 chỉ
-tới nhóm web: React W-17.1 `b75e611b` nghiệm thu lần 13 chưa đạt (WEB-R13-01…03, subagent web đang sửa). Thứ tự subagent: web sửa → lõi W-26 máy chủ demo → lõi W-17.2 → thiết kế D-R12-01.
+tới nhóm web: React W-17.1 đạt sau sửa, ghép local `e4465b4c`. Thứ tự subagent: lõi W-26 máy chủ demo (đang làm) → lõi W-17.2 → thiết kế D-R12-01.
 [Bàn giao điều phối](../../report/handoff-dieu-phoi-2026-10-18.md) mục 2.
 
 **Mới nhất — nghiệm thu lần 12, 2026-10-28:** nhận **backend W-17.1 a07bff3f**, ghép **local 4e6f33cb**, chưa push. Candidate 34c1712f trên main 35f15fa3: **3696 Python/0 fail/3 skip/1 xfail, 259 React/build**; 81 ca W-17/probe độc lập xanh, hai mutation bị bắt. CORE-R11-01 đóng; định danh admin đầu tiên và guard admin active được giữ. Web vẫn ở W-12 đã nhận, chưa có bàn giao React W-17.1 mới; nay được mở Người dùng/Nhật ký. Lõi sang W-17.2 metadata bản dựng/khoá mẫu. W-23 f9705f42 giữ nhánh vì D-R12-01 số đo React ghi sẵn, đã có ảnh/JSON đo thật của điều phối để sửa. Chưa áp migration/CLI vào DB dùng chung. 0 USD mới, Vertex, không Cloud/dọn dữ liệu; chỉ commit local. [Biên bản lần 12](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan12-2026-10-28.md), [lời giao lần 12](../../report/lenh-giao-viec-ba-nhom-lan12-2026-10-28.md); chưa gửi phiên bên ngoài.
@@ -120,7 +120,7 @@ còn đổi; nhóm web đã được báo.
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
 | [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14/SA-62 đã đạt | đạt có ghi chú efed8db · ghép local 7f54b14; dựng thật/đo chi/core retry; billing demo chưa đối soát, không nhận production SMTP/media; [lần6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | đạt toàn vé, React 6ee15386 + backend d1bf42b; ghép local 1513ac7f |
-| [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | backend W-17.1 a07bff3f đạt, ghép local 4e6f33cb; React Người dùng/Nhật ký bàn giao b75e611b (hồ sơ af461e8a), chờ nghiệm thu; backend W-17.2 chưa giao; toàn vé còn mở |
+| [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | backend W-17.1 a07bff3f đạt, ghép local 4e6f33cb; React Người dùng/Nhật ký đạt lần 13 (b75e611b + sửa b1b699ca), ghép local e4465b4c; backend W-17.2 chưa giao; toàn vé còn mở |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |

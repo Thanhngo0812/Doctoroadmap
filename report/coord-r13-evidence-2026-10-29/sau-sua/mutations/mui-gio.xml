@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="1" errors="0" time="8.2164435">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T09:30:50.219Z" hostname="ADMIN" tests="24" failures="1" errors="0" skipped="0" time="8.2164435">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.4588061">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.3703939">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.1557548">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.4038892">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.3505716">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.3942726">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.3838855">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.2967729">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.6375838">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0171031">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.0569552">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.0394496">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden" time="0.2970923">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time" time="1.1415131">
+            <failure message="expected false to be true // Object.is equality
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;courses-shell&quot;
+      &gt;
+        &lt;a
+          class=&quot;skip-link&quot;
+          href=&quot;#courses-main&quot;
+        &gt;
+          Đến nội dung chính
+        &lt;/a&gt;
+        &lt;header
+          class=&quot;courses-header&quot;
+        &gt;
+          &lt;div
+            class=&quot;header-inner&quot;
+          &gt;
+            &lt;a
+              aria-label=&quot;WayFinder, về khoá học&quot;
+              class=&quot;brand-link&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              &lt;img
+                alt=&quot;WayFinder&quot;
+                src=&quot;/assets/Artboard%2024.png&quot;
+              /&gt;
+            &lt;/a&gt;
+            &lt;div
+              class=&quot;header-actions&quot;
+            &gt;
+              &lt;a
+                class=&quot;button button-primary courses-upload&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/tai-len&quot;
+              &gt;
+                Tải tài liệu
+              &lt;/a&gt;
+              &lt;button
+                aria-label=&quot;Bật chế độ tối&quot;
+                class=&quot;icon-button theme-toggle&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;20&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.5&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;20&quot;
+                &gt;
+                  &lt;circle
+                    cx=&quot;12&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;8&quot;
+                  /&gt;
+                  &lt;path
+                    d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                    fill=&quot;currentColor&quot;
+                    stroke=&quot;none&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;details
+                class=&quot;account-menu&quot;
+              &gt;
+                &lt;summary
+                  aria-label=&quot;Tài khoản của Mai&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;account-menu-name&quot;
+                  &gt;
+                    Mai
+                  &lt;/span&gt;
+                  &lt;span
+                    class=&quot;courses-account-label&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/span&gt;
+                  &lt;svg
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;account-menu-chevron&quot;
+                    fill=&quot;none&quot;
+                    height=&quot;16&quot;
+                    stroke=&quot;currentColor&quot;
+                    stroke-width=&quot;1.75&quot;
+                    viewBox=&quot;0 0 24 24&quot;
+                    width=&quot;16&quot;
+                  &gt;
+                    &lt;path
+                      d=&quot;m7 10 5 5 5-5&quot;
+                    /&gt;
+                  &lt;/svg&gt;
+                &lt;/summary&gt;
+                &lt;div
+                  class=&quot;account-menu-panel&quot;
+                &gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/tai-khoan&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/a&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/muc-dung&quot;
+                  &gt;
+                    Mức dùng
+                  &lt;/a&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/admin/nguoi-dung&quot;
+                  &gt;
+                    Quản trị
+                  &lt;/a&gt;
+                  &lt;a
+                    class=&quot;courses-menu-upload&quot;
+                    data-discover=&quot;true&quot;
+                    href=&quot;/tai-len&quot;
+                  &gt;
+                    Tải tài liệu
+                  &lt;/a&gt;
+                  &lt;button
+                    type=&quot;button&quot;
+                  &gt;
+                    Đăng xuất
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/details&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/header&gt;
+        &lt;main
+          class=&quot;courses-page page-frame&quot;
+          id=&quot;courses-main&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          &lt;div
+            class=&quot;admin-layout&quot;
+          &gt;
+            &lt;aside
+              class=&quot;admin-nav&quot;
+            &gt;
+              &lt;span&gt;
+                Quản trị WayFinder
+              &lt;/span&gt;
+              &lt;nav
+                aria-label=&quot;Quản trị&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Người dùng
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nhat-ky&quot;
+                &gt;
+                  Nhật ký
+                &lt;/a&gt;
+              &lt;/nav&gt;
+              &lt;p&gt;
+                Chỉ dữ liệu tài khoản và nhật ký thao tác.
+              &lt;/p&gt;
+            &lt;/aside&gt;
+            &lt;section
+              aria-labelledby=&quot;admin-title&quot;
+              class=&quot;admin-sheet&quot;
+            &gt;
+              &lt;header
+                class=&quot;admin-heading&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;h1
+                    id=&quot;admin-title&quot;
+                  &gt;
+                    Nhật ký
+                  &lt;/h1&gt;
+                  &lt;p&gt;
+                    Theo dõi thao tác và đối tượng thay đổi.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+                &lt;button
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Tải lại
+                &lt;/button&gt;
+              &lt;/header&gt;
+              &lt;form
+                class=&quot;admin-filters&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;label&gt;
+                    Người thực hiện (ID)
+                    &lt;input
+                      autocomplete=&quot;off&quot;
+                      name=&quot;actor_id&quot;
+                      value=&quot;&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;label
+                    for=&quot;admin-action-filter&quot;
+                  &gt;
+                    Loại thao tác
+                    &lt;input
+                      id=&quot;admin-action-filter&quot;
+                      list=&quot;admin-actions&quot;
+                      maxlength=&quot;80&quot;
+                      name=&quot;action&quot;
+                      value=&quot;&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;datalist
+                    id=&quot;admin-actions&quot;
+                  &gt;
+                    &lt;option
+                      value=&quot;admin_user_disabled&quot;
+                    &gt;
+                      Khoá tài khoản
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_enabled&quot;
+                    &gt;
+                      Mở tài khoản
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_role_changed&quot;
+                    &gt;
+                      Đổi vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_quota_changed&quot;
+                    &gt;
+                      Đổi hạn mức dựng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_account_created&quot;
+                    &gt;
+                      Tạo tài khoản quản trị
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;bootstrap_admin_assigned&quot;
+                    &gt;
+                      Xác lập admin đầu tiên
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;login_success&quot;
+                    &gt;
+                      Đăng nhập thành công
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;logout_all&quot;
+                    &gt;
+                      Đăng xuất mọi phiên
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;password_changed&quot;
+                    &gt;
+                      Đổi mật khẩu
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;profile_updated&quot;
+                    &gt;
+                      Đổi hồ sơ
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_sent&quot;
+                    &gt;
+                      Tạo lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_accepted&quot;
+                    &gt;
+                      Chấp nhận lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_declined&quot;
+                    &gt;
+                      Từ chối lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_cancelled&quot;
+                    &gt;
+                      Huỷ lời mời
+                    &lt;/option&gt;
+                  &lt;/datalist&gt;
+                  &lt;label&gt;
+                    Từ (giờ Việt Nam)
+                    &lt;input
+                      name=&quot;since&quot;
+                      type=&quot;datetime-local&quot;
+                      value=&quot;2026-10-29T17:00&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;label&gt;
+                    Đến, không gồm (giờ Việt Nam)
+                    &lt;input
+                      name=&quot;until&quot;
+                      type=&quot;datetime-local&quot;
+                      value=&quot;2026-10-30T07:30&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;div
+                    class=&quot;admin-filter-actions&quot;
+                  &gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;submit&quot;
+                    &gt;
+                      Áp dụng bộ lọc
+                    &lt;/button&gt;
+                    &lt;button
+                      class=&quot;button button-secondary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Xoá lọc
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/fieldset&gt;
+              &lt;/form&gt;
+              &lt;p
+                class=&quot;admin-result-count&quot;
+              &gt;
+                1
+                 
+                thao tác
+              &lt;/p&gt;
+              &lt;div
+                aria-label=&quot;Bảng nhật ký thao tác&quot;
+                class=&quot;admin-audit-scroll&quot;
+                role=&quot;region&quot;
+                tabindex=&quot;0&quot;
+              &gt;
+                &lt;table
+                  class=&quot;admin-table&quot;
+                &gt;
+                  &lt;caption
+                    class=&quot;sr-only&quot;
+                  &gt;
+                    Nhật ký — thời gian Việt Nam
+                  &lt;/caption&gt;
+                  &lt;thead&gt;
+                    &lt;tr&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Thời gian Việt Nam
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Thao tác
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Người thực hiện
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Đối tượng
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        IP
+                      &lt;/th&gt;
+                    &lt;/tr&gt;
+                  &lt;/thead&gt;
+                  &lt;tbody&gt;
+                    &lt;tr&gt;
+                      &lt;td
+                        class=&quot;admin-date&quot;
+                      &gt;
+                        15:00 29/10/26
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        Khoá tài khoản
+                      &lt;/td&gt;
+                      &lt;td
+                        class=&quot;admin-id&quot;
+                      &gt;
+                        admin-a
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        &lt;span&gt;
+                          Tài khoản
+                        &lt;/span&gt;
+                        &lt;small
+                          class=&quot;admin-id&quot;
+                        &gt;
+                          admin-b
+                        &lt;/small&gt;
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        127.0.0.1
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                  &lt;/tbody&gt;
+                &lt;/table&gt;
+              &lt;/div&gt;
+              &lt;nav
+                aria-label=&quot;Phân trang&quot;
+                class=&quot;admin-pagination&quot;
+              &gt;
+                &lt;span&gt;
+                  1–1
+                   / 
+                  1
+                &lt;/span&gt;
+                &lt;div&gt;
+                  &lt;button
+                    aria-label=&quot;Trang trước&quot;
+                    class=&quot;button button-secondary&quot;
+                    disabled=&quot;&quot;
+                  &gt;
+                    Trước
+                  &lt;/button&gt;
+                  &lt;button
+                    aria-label=&quot;Trang sau&quot;
+                    class=&quot;button button-secondary&quot;
+                    disabled=&quot;&quot;
+                  &gt;
+                    Sau
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/nav&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="AssertionError">
+AssertionError: expected false to be true // Object.is equality
+
+Ignored nodes: comments, script, style
+&lt;html
+  data-theme=&quot;light&quot;
+&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;courses-shell&quot;
+      &gt;
+        &lt;a
+          class=&quot;skip-link&quot;
+          href=&quot;#courses-main&quot;
+        &gt;
+          Đến nội dung chính
+        &lt;/a&gt;
+        &lt;header
+          class=&quot;courses-header&quot;
+        &gt;
+          &lt;div
+            class=&quot;header-inner&quot;
+          &gt;
+            &lt;a
+              aria-label=&quot;WayFinder, về khoá học&quot;
+              class=&quot;brand-link&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc&quot;
+            &gt;
+              &lt;img
+                alt=&quot;WayFinder&quot;
+                src=&quot;/assets/Artboard%2024.png&quot;
+              /&gt;
+            &lt;/a&gt;
+            &lt;div
+              class=&quot;header-actions&quot;
+            &gt;
+              &lt;a
+                class=&quot;button button-primary courses-upload&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/tai-len&quot;
+              &gt;
+                Tải tài liệu
+              &lt;/a&gt;
+              &lt;button
+                aria-label=&quot;Bật chế độ tối&quot;
+                class=&quot;icon-button theme-toggle&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;20&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.5&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;20&quot;
+                &gt;
+                  &lt;circle
+                    cx=&quot;12&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;8&quot;
+                  /&gt;
+                  &lt;path
+                    d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                    fill=&quot;currentColor&quot;
+                    stroke=&quot;none&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;details
+                class=&quot;account-menu&quot;
+              &gt;
+                &lt;summary
+                  aria-label=&quot;Tài khoản của Mai&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;account-menu-name&quot;
+                  &gt;
+                    Mai
+                  &lt;/span&gt;
+                  &lt;span
+                    class=&quot;courses-account-label&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/span&gt;
+                  &lt;svg
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;account-menu-chevron&quot;
+                    fill=&quot;none&quot;
+                    height=&quot;16&quot;
+                    stroke=&quot;currentColor&quot;
+                    stroke-width=&quot;1.75&quot;
+                    viewBox=&quot;0 0 24 24&quot;
+                    width=&quot;16&quot;
+                  &gt;
+                    &lt;path
+                      d=&quot;m7 10 5 5 5-5&quot;
+                    /&gt;
+                  &lt;/svg&gt;
+                &lt;/summary&gt;
+                &lt;div
+                  class=&quot;account-menu-panel&quot;
+                &gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/tai-khoan&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/a&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/muc-dung&quot;
+                  &gt;
+                    Mức dùng
+                  &lt;/a&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/admin/nguoi-dung&quot;
+                  &gt;
+                    Quản trị
+                  &lt;/a&gt;
+                  &lt;a
+                    class=&quot;courses-menu-upload&quot;
+                    data-discover=&quot;true&quot;
+                    href=&quot;/tai-len&quot;
+                  &gt;
+                    Tải tài liệu
+                  &lt;/a&gt;
+                  &lt;button
+                    type=&quot;button&quot;
+                  &gt;
+                    Đăng xuất
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/details&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/header&gt;
+        &lt;main
+          class=&quot;courses-page page-frame&quot;
+          id=&quot;courses-main&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          &lt;div
+            class=&quot;admin-layout&quot;
+          &gt;
+            &lt;aside
+              class=&quot;admin-nav&quot;
+            &gt;
+              &lt;span&gt;
+                Quản trị WayFinder
+              &lt;/span&gt;
+              &lt;nav
+                aria-label=&quot;Quản trị&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Người dùng
+                &lt;/a&gt;
+                &lt;a
+                  aria-current=&quot;page&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nhat-ky&quot;
+                &gt;
+                  Nhật ký
+                &lt;/a&gt;
+              &lt;/nav&gt;
+              &lt;p&gt;
+                Chỉ dữ liệu tài khoản và nhật ký thao tác.
+              &lt;/p&gt;
+            &lt;/aside&gt;
+            &lt;section
+              aria-labelledby=&quot;admin-title&quot;
+              class=&quot;admin-sheet&quot;
+            &gt;
+              &lt;header
+                class=&quot;admin-heading&quot;
+              &gt;
+                &lt;div&gt;
+                  &lt;h1
+                    id=&quot;admin-title&quot;
+                  &gt;
+                    Nhật ký
+                  &lt;/h1&gt;
+                  &lt;p&gt;
+                    Theo dõi thao tác và đối tượng thay đổi.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+                &lt;button
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Tải lại
+                &lt;/button&gt;
+              &lt;/header&gt;
+              &lt;form
+                class=&quot;admin-filters&quot;
+              &gt;
+                &lt;fieldset&gt;
+                  &lt;label&gt;
+                    Người thực hiện (ID)
+                    &lt;input
+                      autocomplete=&quot;off&quot;
+                      name=&quot;actor_id&quot;
+                      value=&quot;&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;label
+                    for=&quot;admin-action-filter&quot;
+                  &gt;
+                    Loại thao tác
+                    &lt;input
+                      id=&quot;admin-action-filter&quot;
+                      list=&quot;admin-actions&quot;
+                      maxlength=&quot;80&quot;
+                      name=&quot;action&quot;
+                      value=&quot;&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;datalist
+                    id=&quot;admin-actions&quot;
+                  &gt;
+                    &lt;option
+                      value=&quot;admin_user_disabled&quot;
+                    &gt;
+                      Khoá tài khoản
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_enabled&quot;
+                    &gt;
+                      Mở tài khoản
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_role_changed&quot;
+                    &gt;
+                      Đổi vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_user_quota_changed&quot;
+                    &gt;
+                      Đổi hạn mức dựng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin_account_created&quot;
+                    &gt;
+                      Tạo tài khoản quản trị
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;bootstrap_admin_assigned&quot;
+                    &gt;
+                      Xác lập admin đầu tiên
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;login_success&quot;
+                    &gt;
+                      Đăng nhập thành công
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;logout_all&quot;
+                    &gt;
+                      Đăng xuất mọi phiên
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;password_changed&quot;
+                    &gt;
+                      Đổi mật khẩu
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;profile_updated&quot;
+                    &gt;
+                      Đổi hồ sơ
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_sent&quot;
+                    &gt;
+                      Tạo lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_accepted&quot;
+                    &gt;
+                      Chấp nhận lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_declined&quot;
+                    &gt;
+                      Từ chối lời mời
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;invitation_cancelled&quot;
+                    &gt;
+                      Huỷ lời mời
+                    &lt;/option&gt;
+                  &lt;/datalist&gt;
+                  &lt;label&gt;
+                    Từ (giờ Việt Nam)
+                    &lt;input
+                      name=&quot;since&quot;
+                      type=&quot;datetime-local&quot;
+                      value=&quot;2026-10-29T17:00&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;label&gt;
+                    Đến, không gồm (giờ Việt Nam)
+                    &lt;input
+                      name=&quot;until&quot;
+                      type=&quot;datetime-local&quot;
+                      value=&quot;2026-10-30T07:30&quot;
+                    /&gt;
+                  &lt;/label&gt;
+                  &lt;div
+                    class=&quot;admin-filter-actions&quot;
+                  &gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;submit&quot;
+                    &gt;
+                      Áp dụng bộ lọc
+                    &lt;/button&gt;
+                    &lt;button
+                      class=&quot;button button-secondary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Xoá lọc
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/fieldset&gt;
+              &lt;/form&gt;
+              &lt;p
+                class=&quot;admin-result-count&quot;
+              &gt;
+                1
+                 
+                thao tác
+              &lt;/p&gt;
+              &lt;div
+                aria-label=&quot;Bảng nhật ký thao tác&quot;
+                class=&quot;admin-audit-scroll&quot;
+                role=&quot;region&quot;
+                tabindex=&quot;0&quot;
+              &gt;
+                &lt;table
+                  class=&quot;admin-table&quot;
+                &gt;
+                  &lt;caption
+                    class=&quot;sr-only&quot;
+                  &gt;
+                    Nhật ký — thời gian Việt Nam
+                  &lt;/caption&gt;
+                  &lt;thead&gt;
+                    &lt;tr&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Thời gian Việt Nam
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Thao tác
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Người thực hiện
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        Đối tượng
+                      &lt;/th&gt;
+                      &lt;th
+                        scope=&quot;col&quot;
+                      &gt;
+                        IP
+                      &lt;/th&gt;
+                    &lt;/tr&gt;
+                  &lt;/thead&gt;
+                  &lt;tbody&gt;
+                    &lt;tr&gt;
+                      &lt;td
+                        class=&quot;admin-date&quot;
+                      &gt;
+                        15:00 29/10/26
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        Khoá tài khoản
+                      &lt;/td&gt;
+                      &lt;td
+                        class=&quot;admin-id&quot;
+                      &gt;
+                        admin-a
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        &lt;span&gt;
+                          Tài khoản
+                        &lt;/span&gt;
+                        &lt;small
+                          class=&quot;admin-id&quot;
+                        &gt;
+                          admin-b
+                        &lt;/small&gt;
+                      &lt;/td&gt;
+                      &lt;td&gt;
+                        127.0.0.1
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                  &lt;/tbody&gt;
+                &lt;/table&gt;
+              &lt;/div&gt;
+              &lt;nav
+                aria-label=&quot;Phân trang&quot;
+                class=&quot;admin-pagination&quot;
+              &gt;
+                &lt;span&gt;
+                  1–1
+                   / 
+                  1
+                &lt;/span&gt;
+                &lt;div&gt;
+                  &lt;button
+                    aria-label=&quot;Trang trước&quot;
+                    class=&quot;button button-secondary&quot;
+                    disabled=&quot;&quot;
+                  &gt;
+                    Trước
+                  &lt;/button&gt;
+                  &lt;button
+                    aria-label=&quot;Trang sau&quot;
+                    class=&quot;button button-secondary&quot;
+                    disabled=&quot;&quot;
+                  &gt;
+                    Sau
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/nav&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/Admin.test.tsx:85:222
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.3247542">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.2952181">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1351802">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1411303">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.6591789">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.0922066">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.3708457">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.3579538">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps keyboard focus on the completion message while the changed row is reloaded" time="0.3143136">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="clears the previous completion before editing the same account again and focuses the next completion" time="0.5190324">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -530,6 +530,8 @@ web (ví dụ phần web gửi kèm `focus_node_id` ở W-09) thì hai bên th�
 
 ## 10. Nhật ký điều phối
 
+**2026-10-29 — nghiệm thu lần 13, Claude:** React W-17.1 chưa đạt lần đầu (WEB-R13-01…03), subagent web sửa `b1b699ca`; đạt, ghép local `e4465b4c` (283 React/build, bộ phá 8/8, cổng rút gọn theo chủ dự án). Chủ dự án bỏ W-21, demo chỉ chạy local; mở vé W-26 máy chủ demo chạy thật (3 USD/cuốn, 10 USD/ngày, học 3 USD/người/ngày, mọi tài khoản dựng được), giao subagent lõi. 0 USD, chưa push.
+
 **2026-10-29 — Claude tiếp nhận điều phối:** Codex thôi; lời giao lần 12 chỉ tới nhóm web, nhóm web đã bàn giao React W-17.1 (`b75e611b`, hồ sơ
 `af461e8a`), chờ Claude nghiệm thu. W-17.2 lõi và D-R12-01 thiết kế chưa giao, sẽ giao subagent. Chưa chạy cổng (phiên Pha A đang chạy test, RAM thấp),
 0 USD, chưa push.

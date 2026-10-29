@@ -1,0 +1,2991 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="2" errors="0" time="8.0173318">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T09:31:04.002Z" hostname="ADMIN" tests="24" failures="2" errors="0" skipped="0" time="8.0173318">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.5608613">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.4511554">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.1618402">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.4025233">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.3635335">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.3501687">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.3147335">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.3254423">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.6135455">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0169356">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.0957668">
+            <failure message="Unable to find an accessible element with the role &quot;link&quot; and name &quot;Về khoá học của tôi&quot;
+
+Here are the accessible roles:
+
+  link:
+
+  Name &quot;Đến nội dung chính&quot;:
+  &lt;a
+    class=&quot;skip-link&quot;
+    href=&quot;#courses-main&quot;
+  /&gt;
+
+  Name &quot;WayFinder, về khoá học&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về khoá học&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;button button-primary courses-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-khoan&quot;
+  /&gt;
+
+  Name &quot;Mức dùng&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/muc-dung&quot;
+  /&gt;
+
+  Name &quot;Quản trị&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nguoi-dung&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;courses-menu-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Người dùng&quot;:
+  &lt;a
+    aria-current=&quot;page&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nguoi-dung&quot;
+  /&gt;
+
+  Name &quot;Nhật ký&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nhat-ky&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;courses-header&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;admin-heading&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng xuất&quot;:
+  &lt;button
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tải lại&quot;:
+  &lt;button
+    class=&quot;button button-secondary&quot;
+  /&gt;
+
+  Name &quot;Áp dụng bộ lọc&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  Name &quot;Xoá lọc&quot;:
+  &lt;button
+    class=&quot;button button-secondary&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  --------------------------------------------------
+  group:
+
+  Name &quot;&quot;:
+  &lt;details
+    class=&quot;account-menu&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;fieldset /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;courses-page page-frame&quot;
+    id=&quot;courses-main&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  complementary:
+
+  Name &quot;&quot;:
+  &lt;aside
+    class=&quot;admin-nav&quot;
+  /&gt;
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Quản trị&quot;:
+  &lt;nav
+    aria-label=&quot;Quản trị&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Người dùng&quot;:
+  &lt;section
+    aria-labelledby=&quot;admin-title&quot;
+    class=&quot;admin-sheet&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Người dùng&quot;:
+  &lt;h1
+    id=&quot;admin-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  searchbox:
+
+  Name &quot;Tìm theo email&quot;:
+  &lt;input
+    maxlength=&quot;254&quot;
+    name=&quot;email&quot;
+    placeholder=&quot;Nhập một phần email&quot;
+    type=&quot;search&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Lọc vai trò&quot;:
+  &lt;select
+    name=&quot;role&quot;
+  /&gt;
+
+  Name &quot;Lọc trạng thái&quot;:
+  &lt;select
+    name=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;Tất cả vai trò&quot;:
+  &lt;option
+    selected=&quot;&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  Name &quot;Người dùng&quot;:
+  &lt;option
+    value=&quot;user&quot;
+  /&gt;
+
+  Name &quot;Quản trị viên&quot;:
+  &lt;option
+    value=&quot;admin&quot;
+  /&gt;
+
+  Name &quot;Tất cả trạng thái&quot;:
+  &lt;option
+    selected=&quot;&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  Name &quot;Đang hoạt động&quot;:
+  &lt;option
+    value=&quot;active&quot;
+  /&gt;
+
+  Name &quot;Đã khoá&quot;:
+  &lt;option
+    value=&quot;disabled&quot;
+  /&gt;
+
+  --------------------------------------------------
+  alert:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;admin-error&quot;
+    role=&quot;alert&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;link&quot; and name &quot;Về khoá học của tôi&quot;
+
+Here are the accessible roles:
+
+  link:
+
+  Name &quot;Đến nội dung chính&quot;:
+  &lt;a
+    class=&quot;skip-link&quot;
+    href=&quot;#courses-main&quot;
+  /&gt;
+
+  Name &quot;WayFinder, về khoá học&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về khoá học&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;button button-primary courses-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-khoan&quot;
+  /&gt;
+
+  Name &quot;Mức dùng&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/muc-dung&quot;
+  /&gt;
+
+  Name &quot;Quản trị&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nguoi-dung&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;courses-menu-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Người dùng&quot;:
+  &lt;a
+    aria-current=&quot;page&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nguoi-dung&quot;
+  /&gt;
+
+  Name &quot;Nhật ký&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/admin/nhat-ky&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;courses-header&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;admin-heading&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng xuất&quot;:
+  &lt;button
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Tải lại&quot;:
+  &lt;button
+    class=&quot;button button-secondary&quot;
+  /&gt;
+
+  Name &quot;Áp dụng bộ lọc&quot;:
+  &lt;button
+    class=&quot;button button-primary&quot;
+    type=&quot;submit&quot;
+  /&gt;
+
+  Name &quot;Xoá lọc&quot;:
+  &lt;button
+    class=&quot;button button-secondary&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  --------------------------------------------------
+  group:
+
+  Name &quot;&quot;:
+  &lt;details
+    class=&quot;account-menu&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;fieldset /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;courses-page page-frame&quot;
+    id=&quot;courses-main&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  complementary:
+
+  Name &quot;&quot;:
+  &lt;aside
+    class=&quot;admin-nav&quot;
+  /&gt;
+
+  --------------------------------------------------
+  navigation:
+
+  Name &quot;Quản trị&quot;:
+  &lt;nav
+    aria-label=&quot;Quản trị&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Người dùng&quot;:
+  &lt;section
+    aria-labelledby=&quot;admin-title&quot;
+    class=&quot;admin-sheet&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Người dùng&quot;:
+  &lt;h1
+    id=&quot;admin-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  searchbox:
+
+  Name &quot;Tìm theo email&quot;:
+  &lt;input
+    maxlength=&quot;254&quot;
+    name=&quot;email&quot;
+    placeholder=&quot;Nhập một phần email&quot;
+    type=&quot;search&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  --------------------------------------------------
+  combobox:
+
+  Name &quot;Lọc vai trò&quot;:
+  &lt;select
+    name=&quot;role&quot;
+  /&gt;
+
+  Name &quot;Lọc trạng thái&quot;:
+  &lt;select
+    name=&quot;status&quot;
+  /&gt;
+
+  --------------------------------------------------
+  option:
+
+  Name &quot;Tất cả vai trò&quot;:
+  &lt;option
+    selected=&quot;&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  Name &quot;Người dùng&quot;:
+  &lt;option
+    value=&quot;user&quot;
+  /&gt;
+
+  Name &quot;Quản trị viên&quot;:
+  &lt;option
+    value=&quot;admin&quot;
+  /&gt;
+
+  Name &quot;Tất cả trạng thái&quot;:
+  &lt;option
+    selected=&quot;&quot;
+    value=&quot;&quot;
+  /&gt;
+
+  Name &quot;Đang hoạt động&quot;:
+  &lt;option
+    value=&quot;active&quot;
+  /&gt;
+
+  Name &quot;Đã khoá&quot;:
+  &lt;option
+    value=&quot;disabled&quot;
+  /&gt;
+
+  --------------------------------------------------
+  alert:
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;admin-error&quot;
+    role=&quot;alert&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Admin.test.tsx:72:17
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.0419647">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden" time="1.2733669">
+            <failure message="Unable to find role=&quot;link&quot; and name &quot;Về khoá học của tôi&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;admin-result-count&quot;
+            &gt;
+              41
+               
+              người dùng
+            &lt;/p&gt;
+            &lt;table
+              class=&quot;admin-table admin-users&quot;
+            &gt;
+              &lt;caption
+                class=&quot;sr-only&quot;
+              &gt;
+                Tài khoản người dùng
+              &lt;/caption&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Quyền truy cập
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Khoá sở hữu
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Lượt dựng tháng
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;sr-only&quot;
+                    &gt;
+                      Thao tác
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Bình
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      binh@example.invalid
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status is-disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa binh@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Mai
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      mai@example.invalid
+                    &lt;/span&gt;
+                    &lt;small
+                      class=&quot;admin-protected&quot;
+                    &gt;
+                      Admin đầu tiên
+                    &lt;/small&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status &quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa mai@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;nav
+              aria-label=&quot;Phân trang&quot;
+              class=&quot;admin-pagination&quot;
+            &gt;
+              &lt;span&gt;
+                1–2
+                 / 
+                41
+              &lt;/span&gt;
+              &lt;div&gt;
+                &lt;button
+                  aria-label=&quot;Trang trước&quot;
+                  class=&quot;button button-secondary&quot;
+                  disabled=&quot;&quot;
+                &gt;
+                  Trước
+                &lt;/button&gt;
+                &lt;button
+                  aria-label=&quot;Trang sau&quot;
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Sau
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/nav&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;admin-result-count&quot;
+            &gt;
+              41
+               
+              người dùng
+            &lt;/p&gt;
+            &lt;table
+              class=&quot;admin-table admin-users&quot;
+            &gt;
+              &lt;caption
+                class=&quot;sr-only&quot;
+              &gt;
+                Tài khoản người dùng
+              &lt;/caption&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Quyền truy cập
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Khoá sở hữu
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Lượt dựng tháng
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;sr-only&quot;
+                    &gt;
+                      Thao tác
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Bình
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      binh@example.invalid
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status is-disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa binh@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Mai
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      mai@example.invalid
+                    &lt;/span&gt;
+                    &lt;small
+                      class=&quot;admin-protected&quot;
+                    &gt;
+                      Admin đầu tiên
+                    &lt;/small&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status &quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa mai@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;nav
+              aria-label=&quot;Phân trang&quot;
+              class=&quot;admin-pagination&quot;
+            &gt;
+              &lt;span&gt;
+                1–2
+                 / 
+                41
+              &lt;/span&gt;
+              &lt;div&gt;
+                &lt;button
+                  aria-label=&quot;Trang trước&quot;
+                  class=&quot;button button-secondary&quot;
+                  disabled=&quot;&quot;
+                &gt;
+                  Trước
+                &lt;/button&gt;
+                &lt;button
+                  aria-label=&quot;Trang sau&quot;
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Sau
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/nav&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;link&quot; and name &quot;Về khoá học của tôi&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;admin-result-count&quot;
+            &gt;
+              41
+               
+              người dùng
+            &lt;/p&gt;
+            &lt;table
+              class=&quot;admin-table admin-users&quot;
+            &gt;
+              &lt;caption
+                class=&quot;sr-only&quot;
+              &gt;
+                Tài khoản người dùng
+              &lt;/caption&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Quyền truy cập
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Khoá sở hữu
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Lượt dựng tháng
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;sr-only&quot;
+                    &gt;
+                      Thao tác
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Bình
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      binh@example.invalid
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status is-disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa binh@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Mai
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      mai@example.invalid
+                    &lt;/span&gt;
+                    &lt;small
+                      class=&quot;admin-protected&quot;
+                    &gt;
+                      Admin đầu tiên
+                    &lt;/small&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status &quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa mai@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;nav
+              aria-label=&quot;Phân trang&quot;
+              class=&quot;admin-pagination&quot;
+            &gt;
+              &lt;span&gt;
+                1–2
+                 / 
+                41
+              &lt;/span&gt;
+              &lt;div&gt;
+                &lt;button
+                  aria-label=&quot;Trang trước&quot;
+                  class=&quot;button button-secondary&quot;
+                  disabled=&quot;&quot;
+                &gt;
+                  Trước
+                &lt;/button&gt;
+                &lt;button
+                  aria-label=&quot;Trang sau&quot;
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Sau
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/nav&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Mai&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Mai
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/muc-dung&quot;
+                &gt;
+                  Mức dùng
+                &lt;/a&gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/admin/nguoi-dung&quot;
+                &gt;
+                  Quản trị
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;admin-layout&quot;
+        &gt;
+          &lt;aside
+            class=&quot;admin-nav&quot;
+          &gt;
+            &lt;span&gt;
+              Quản trị WayFinder
+            &lt;/span&gt;
+            &lt;nav
+              aria-label=&quot;Quản trị&quot;
+            &gt;
+              &lt;a
+                aria-current=&quot;page&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nguoi-dung&quot;
+              &gt;
+                Người dùng
+              &lt;/a&gt;
+              &lt;a
+                data-discover=&quot;true&quot;
+                href=&quot;/admin/nhat-ky&quot;
+              &gt;
+                Nhật ký
+              &lt;/a&gt;
+            &lt;/nav&gt;
+            &lt;p&gt;
+              Chỉ dữ liệu tài khoản và nhật ký thao tác.
+            &lt;/p&gt;
+          &lt;/aside&gt;
+          &lt;section
+            aria-labelledby=&quot;admin-title&quot;
+            class=&quot;admin-sheet&quot;
+          &gt;
+            &lt;header
+              class=&quot;admin-heading&quot;
+            &gt;
+              &lt;div&gt;
+                &lt;h1
+                  id=&quot;admin-title&quot;
+                &gt;
+                  Người dùng
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.
+                &lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                class=&quot;button button-secondary&quot;
+              &gt;
+                Tải lại
+              &lt;/button&gt;
+            &lt;/header&gt;
+            &lt;form
+              class=&quot;admin-filters&quot;
+            &gt;
+              &lt;fieldset&gt;
+                &lt;label&gt;
+                  Tìm theo email
+                  &lt;input
+                    maxlength=&quot;254&quot;
+                    name=&quot;email&quot;
+                    placeholder=&quot;Nhập một phần email&quot;
+                    type=&quot;search&quot;
+                    value=&quot;&quot;
+                  /&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc vai trò
+                  &lt;select
+                    name=&quot;role&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả vai trò
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;user&quot;
+                    &gt;
+                      Người dùng
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;admin&quot;
+                    &gt;
+                      Quản trị viên
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;label&gt;
+                  Lọc trạng thái
+                  &lt;select
+                    name=&quot;status&quot;
+                  &gt;
+                    &lt;option
+                      selected=&quot;&quot;
+                      value=&quot;&quot;
+                    &gt;
+                      Tất cả trạng thái
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;active&quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/option&gt;
+                    &lt;option
+                      value=&quot;disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/label&gt;
+                &lt;div
+                  class=&quot;admin-filter-actions&quot;
+                &gt;
+                  &lt;button
+                    class=&quot;button button-primary&quot;
+                    type=&quot;submit&quot;
+                  &gt;
+                    Áp dụng bộ lọc
+                  &lt;/button&gt;
+                  &lt;button
+                    class=&quot;button button-secondary&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Xoá lọc
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/fieldset&gt;
+            &lt;/form&gt;
+            &lt;p
+              class=&quot;admin-error&quot;
+              role=&quot;alert&quot;
+            &gt;
+              Bạn không có quyền quản trị.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;admin-result-count&quot;
+            &gt;
+              41
+               
+              người dùng
+            &lt;/p&gt;
+            &lt;table
+              class=&quot;admin-table admin-users&quot;
+            &gt;
+              &lt;caption
+                class=&quot;sr-only&quot;
+              &gt;
+                Tài khoản người dùng
+              &lt;/caption&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Tài khoản
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    Quyền truy cập
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Khoá sở hữu
+                  &lt;/th&gt;
+                  &lt;th
+                    class=&quot;admin-number&quot;
+                    scope=&quot;col&quot;
+                  &gt;
+                    Lượt dựng tháng
+                  &lt;/th&gt;
+                  &lt;th
+                    scope=&quot;col&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;sr-only&quot;
+                    &gt;
+                      Thao tác
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Bình
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      binh@example.invalid
+                    &lt;/span&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status is-disabled&quot;
+                    &gt;
+                      Đã khoá
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa binh@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;th
+                    scope=&quot;row&quot;
+                  &gt;
+                    &lt;strong&gt;
+                      Mai
+                    &lt;/strong&gt;
+                    &lt;span&gt;
+                      mai@example.invalid
+                    &lt;/span&gt;
+                    &lt;small
+                      class=&quot;admin-protected&quot;
+                    &gt;
+                      Admin đầu tiên
+                    &lt;/small&gt;
+                  &lt;/th&gt;
+                  &lt;td
+                    data-label=&quot;Quyền truy cập&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;admin-status &quot;
+                    &gt;
+                      Đang hoạt động
+                    &lt;/span&gt;
+                    &lt;small&gt;
+                      Quản trị viên
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Khoá sở hữu&quot;
+                  &gt;
+                    2
+                  &lt;/td&gt;
+                  &lt;td
+                    class=&quot;admin-number&quot;
+                    data-label=&quot;Lượt dựng tháng&quot;
+                  &gt;
+                    0
+                     / 
+                    Không giới hạn
+                    &lt;small&gt;
+                      Hạn mức chung
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                    &lt;button
+                      aria-label=&quot;Chỉnh sửa mai@example.invalid&quot;
+                      class=&quot;button button-secondary&quot;
+                    &gt;
+                      Chỉnh sửa
+                    &lt;/button&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;nav
+              aria-label=&quot;Phân trang&quot;
+              class=&quot;admin-pagination&quot;
+            &gt;
+              &lt;span&gt;
+                1–2
+                 / 
+                41
+              &lt;/span&gt;
+              &lt;div&gt;
+                &lt;button
+                  aria-label=&quot;Trang trước&quot;
+                  class=&quot;button button-secondary&quot;
+                  disabled=&quot;&quot;
+                &gt;
+                  Trước
+                &lt;/button&gt;
+                &lt;button
+                  aria-label=&quot;Trang sau&quot;
+                  class=&quot;button button-secondary&quot;
+                &gt;
+                  Sau
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/nav&gt;
+          &lt;/section&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Admin.test.tsx:79:22
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time" time="0.1965198">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.2993257">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.2612266">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1343069">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1252972">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.5244768">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.0672848">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.3574838">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.3292567">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps keyboard focus on the completion message while the changed row is reloaded" time="0.2630777">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="clears the previous completion before editing the same account again and focuses the next completion" time="0.4844015">
+        </testcase>
+    </testsuite>
+</testsuites>

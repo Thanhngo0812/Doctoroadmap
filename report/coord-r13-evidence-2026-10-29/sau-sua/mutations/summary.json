@@ -1,0 +1,24 @@
+{
+ "source_sha256": "c58b80677c0d436a8af1a85fefc98a32183dd9b5876ca4b331739dacc8f74ab1",
+ "results": [
+  {
+   "mutant": "mui-gio",
+   "native": 1,
+   "failed_cases": [
+    "sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time"
+   ],
+   "error_tags": 0,
+   "verdict": "bat"
+  },
+  {
+   "mutant": "patch-403-giu-du-lieu",
+   "native": 1,
+   "failed_cases": [
+    "removes admin data when the live server returns forbidden",
+    "drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden"
+   ],
+   "error_tags": 0,
+   "verdict": "bat"
+  }
+ ]
+}
