@@ -127,3 +127,17 @@ def test_kiem_hoac_loi_gom_moi_loi_vao_mot_ngoai_le():
     with pytest.raises(LoiHopDong) as ngoai_le:
         kiem_hoac_loi(hd)
     assert len(ngoai_le.value.args[0]) >= 2
+
+
+def test_duong_vong_chu_la_khoa_tuy_chon_cua_dinh_danh():
+    # DG-08b: hợp đồng cũ (không có khoá) vẫn hợp lệ; có khoá thì phải là bool; khoá lạ khác vẫn bị từ chối
+    hd = hop_le()
+    assert "duong_vong_chu" not in hd["dinh_danh"] and kiem(hd) == []
+    for gia_tri in (True, False):
+        hd["dinh_danh"]["duong_vong_chu"] = gia_tri
+        assert kiem(hd) == []
+    hd["dinh_danh"]["duong_vong_chu"] = "co"
+    co_loi(hd, "duong_vong_chu")
+    del hd["dinh_danh"]["duong_vong_chu"]
+    hd["dinh_danh"]["khoa_la"] = 1
+    co_loi(hd, "khoa_la")

@@ -58,7 +58,7 @@ def du_toan(bien_the, so_chunk, *, ty_le_dich=1.0, k=1):
     - `xao-k`: K lần (pass chính + nhãn/tên module); clusters, mentions và A3, A4 dùng lại thượng nguồn của lượt chính;
     - `pass-phu-llm`: pass phụ LLM trên phần đích của chương bốc + nhãn/tên module.
     """
-    if bien_the in ("chinh", "docling"):
+    if bien_the in ("chinh", "chinh-vong-chu", "docling"):
         hang = [khoan(t, so_chunk) for t in ("label-roles", "a3", "a4", "embedding", "pass-chinh", "nhan-va-ten-module")]
     elif bien_the == "xao-k":
         hang = [khoan(t, so_chunk, he_so=k) for t in ("pass-chinh", "nhan-va-ten-module")]

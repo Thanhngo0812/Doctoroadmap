@@ -10,5 +10,5 @@ Một lệnh `python -m danhgia luot` chạy một biến thể trên một cu�
     DIR/hop-dong.json       hợp đồng `danh-gia-xuat-1` (kèm giây chạy, giây chờ embedding nếu có)
     DIR/bang-diem.json      bảng điểm (khi có vàng)
 
-Chỉ `chay_cli.py`, `so_chi.py` và `uoc_chi.py` nhập mã pipeline; phần còn lại là điều phối thuần.
+Chỉ `chay_cli.py`, `san_pham.py`, `so_chi.py` và `uoc_chi.py` nhập mã pipeline (`san_pham.py`: đường `DocumentPipeline` của sản phẩm); phần còn lại là điều phối thuần.
 """
