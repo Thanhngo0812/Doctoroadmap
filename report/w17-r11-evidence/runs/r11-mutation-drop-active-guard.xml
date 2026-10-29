@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.146" timestamp="2026-10-28T13:27:50.187634+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_r11" name="test_active_admin_removal_retains_count_guard_and_atomic_refusal" time="1.833"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001E96033..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001E97FE24400&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E95FE2DDF0&gt;
+
+    def test_active_admin_removal_retains_count_guard_and_atomic_refusal(admin_case,monkeypatch):
+        rt=admin_case
+        later=rt.user(True)
+        before=snapshot(rt,later.id)
+        queried=[]
+        def last_active_count():
+            queried.append(True)
+            return 1  # Application port boundary: prove the fallback guard still refuses a last-active result.
+        monkeypatch.setattr(rt.services.admin.store,'admin_count',last_active_count)
+&gt;       with pytest.raises(AuthError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w17_r11.py:78: Failed</failure></testcase></testsuite></testsuites>

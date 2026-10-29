@@ -1,0 +1,31 @@
+{
+  "tested_source_head": "847cfe94be63f62e9a680cb409e414c19297d1ff",
+  "fixture_accounts_only": true,
+  "clock": "FakeClock",
+  "provider_spend_usd": 0,
+  "real_mail_sent": 0,
+  "examples_from_different_test_cases": true,
+  "http_json": [
+    "users",
+    "disable",
+    "patch-quota",
+    "audit",
+    "validation",
+    "forbidden",
+    "last-admin-conflict",
+    "last-admin-protected",
+    "protected-first-admin"
+  ],
+  "service_projection": [
+    "first-admin-user",
+    "older-promoted-user"
+  ],
+  "independent_sql": [
+    "audit-sql",
+    "concurrent-demotion",
+    "bootstrap-race",
+    "legacy-assignment"
+  ],
+  "shared_database_migrated": false,
+  "legacy_identity_assigned_to_shared_db": false
+}

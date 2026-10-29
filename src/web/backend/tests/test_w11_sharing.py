@@ -312,7 +312,7 @@ def sharing_pg(postgres_database_url):
 
     engine = create_database_engine(postgres_database_url)
     with engine.connect() as connection:
-        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == 'w12_0008'
+        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == 'w17_0009'
         assert connection.scalar(text("SELECT to_regclass('public.share_link')")) == 'share_link'
     settings = WebSettings(_env_file=None, frontend_dist=Path("missing"), public_base_url="https://learn.example.vn")
     clock = Clock()

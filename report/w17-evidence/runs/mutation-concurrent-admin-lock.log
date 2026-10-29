@@ -1,0 +1,54 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_two_postgres_runtimes_cannot_demote_both_last_admins __________
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000024438A1..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000244586394E0>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024438631B20>
+
+    def test_two_postgres_runtimes_cannot_demote_both_last_admins(admin_case,monkeypatch):
+        from wayfinder.application.admin import AdminService
+        from wayfinder.infrastructure.admin_store import PostgresAdminStore
+        from wayfinder.infrastructure.database import create_database_engine
+        rt=admin_case
+        second=rt.user(True)
+        with rt.engine.begin() as connection:
+            connection.execute(text("UPDATE account SET role='user' WHERE role='admin' AND id NOT IN (:a,:b)"),{'a':rt.owner.id,'b':second.id})
+        engine=create_database_engine(rt.engine.url)
+        other=AdminService(PostgresAdminStore(engine),settings=rt.settings,clock=rt.clock)
+        services=[rt.services.admin,other]
+        for service in services:
+            original=service.store.admin_count
+            def slow_count(original=original):
+                value=original()
+                sleep(.2)  # Both unprotected transactions would read two admins before either update.
+                return value
+            monkeypatch.setattr(service.store,'admin_count',slow_count)
+        barrier=Barrier(2)
+        def demote(pair):
+            service,user=pair
+            barrier.wait(5)
+            try:
+                service.update_user(user.actor,user.id,{'role':'user'})
+                return 'changed'
+            except AuthError as error:
+                return error.code
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results=list(pool.map(demote,zip(services,[rt.owner,second])))
+>           assert sorted(results)==['changed','conflict']
+E           AssertionError: assert ['changed', 'changed'] == ['changed', 'conflict']
+E
+E             At index 1 diff: 'changed' != 'conflict'
+E             Use -v to get more diff
+
+src\web\backend\tests\test_w17_admin.py:287: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-evidence\runs\mutation-concurrent-admin-lock.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_admin.py::test_two_postgres_runtimes_cannot_demote_both_last_admins
+1 failed, 47 deselected, 1 warning in 3.16s

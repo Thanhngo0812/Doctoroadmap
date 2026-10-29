@@ -1,12 +1,16 @@
 # W-17 — Quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký
 
+**Nghiệm thu lần 12, 2026-10-28: nhận mốc backend W-17.1 a07bff3f, ghép local 4e6f33cb, chưa push.** CORE-R11-01 đóng: admin đã disabled có thể hạ role/user hoặc enable+demote mà không làm mất admin active. 81 ca W-17/probe xanh; bản cũ 2 assertion đỏ, phá guard 6/1 assertion đỏ, không setup error. Cổng 34c1712f: 3696 Python/259 React/build. Ba API Người dùng/Nhật ký, registry bootstrap và migration w17_0009 đã nhận; DB dùng chung chưa migration/gán UUID. Mở React W-17.1 và backend W-17.2 metadata/mẫu song song; toàn W-17 vẫn mở. [Biên bản](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan12-2026-10-28.md), [lời giao](../../report/lenh-giao-viec-ba-nhom-lan12-2026-10-28.md).
+
+**Nghiệm thu lần 11, 2026-10-28: backend 862dd805 chưa nhận/chưa ghép.** POL-R10-01 đã sửa registry/DB guard/CLI đối chiếu; control bảo vệ admin đầu tiên xanh trên PostgreSQL thật. Required CORE-R11-01 mới: A bootstrap active, B admin thêm sau bị disabled; hạ B role=user trả409 last-admin dù không giảm admin active. Test độc lập1 assertion đỏ/1 control xanh,0 setup error. Chỉ áp guard cuối khi thực sự loại admin active; giữ mọi bảo vệ đầu tiên/concurrency/rollback. Sửa hai hàng SHA manifest stale cùng lượt. Chưa chạy migration trên DB dùng chung; React/mốc17.2 chờ backend được nhận. [Biên bản](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan11-2026-10-28.md), [lời giao](../../report/lenh-giao-viec-ba-nhom-lan11-2026-10-28.md).
+
 **Nghiệm thu lần 10, 2026-10-28: giữ backend 9cf405ac ở nhánh, chưa nhận/chưa ghép.** Theo hợp đồng cũ có 23 probe độc lập xanh/6 mutant bị bắt. Sau câu trả lời chủ dự án “admin đầu tiên ko đc khóa hay gì”, Required POL-R10-01 bắt buộc bảo vệ định danh admin đầu tiên khỏi khoá/hạ quyền/xoá, không chỉ đếm admin cuối. Test mới đã assertion đỏ/0 setup error. Sửa W-17.1 trước, không coi đây còn là Optional/chờ chủ dự án chọn; [ADR 0030](../../doc/adr/0030-bao-ve-tai-khoan-admin-dau-tien.md). Toàn W-17 còn mở/React chưa làm. [biên bản lần 10](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan10-2026-10-28.md) và [lời giao lần 10](../../report/lenh-giao-viec-ba-nhom-lan10-2026-10-28.md).
 
 **Phân công lần 9, 2026-10-27: mở mốc backend W-17.1, toàn W-17 vẫn mở.** W-14/W-16 đã đạt. Lõi nhận list_users/update_user + GET/PATCH admin/users và GET admin/audit, tái dùng account/session/audit/policy; web làm React ở lượt sau. Kiểm quyền/không lộ dữ liệu học, disable hủy mọi phiên, admin cuối/cạnh tranh, rollback audit. Không tạo migration rỗng, không bật trần demo/Cloudinary thật. Phần bản dựng/khoá mẫu rồi chi/log validation là các mốc sau, chưa hoàn tất; xem [biên bản lần 9](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan9-2026-10-27.md) và [lời giao lần 9](../../report/lenh-giao-viec-ba-nhom-lan9-2026-10-27.md).
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 3 (admin không đọc chat), 8 (`spend_summary`), 9, 10 (nhật ký); spec thiết kế, khu quản
 trị.
-**Ai:** lõi làm backend theo mốc; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-14, W-16 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm backend theo mốc; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-14, W-16 · **Trạng thái:** backend W-17.1 đạt; React W-17.1 và backend W-17.2 ready
 
 ## Vì sao
 
@@ -36,7 +40,7 @@ và mục đích.
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Bảo vệ định danh admin đầu tiên bền vững: không disable/demote/delete, kể cả có admin thứ hai, tự thao tác, PATCH nhiều trường/cạnh tranh; tài khoản thường cũ được nâng admin không thay người được bảo vệ; từ chối không làm đổi phiên/field/audit thành công.
+- [x] Bảo vệ định danh admin đầu tiên bền vững: không disable/demote/delete, kể cả có admin thứ hai, tự thao tác, PATCH nhiều trường/cạnh tranh; tài khoản thường cũ được nâng admin không thay người được bảo vệ; từ chối không làm đổi phiên/field/audit thành công.
 
 Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Người dùng thường gọi mọi route `/admin/*` đều bị `forbidden` (test liệt kê route).

@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_bootstrap_insert_and_audit_failure_roll_back_together __________
+
+empty_postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_base_test_72561a82ca904d458284697f23ac30e6
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F531213DD0>
+
+    def test_bootstrap_insert_and_audit_failure_roll_back_together(empty_postgres_database_url,monkeypatch):
+        from wayfinder.composition import compose_account_service
+        from wayfinder.settings import WebSettings
+        upgrade_database(empty_postgres_database_url)
+        engine=create_database_engine(empty_postgres_database_url)
+        service=compose_account_service(WebSettings(_env_file=None),engine,mailer=SimpleNamespace(send=lambda **k:None))
+        def fail(event): raise RuntimeError('synthetic bootstrap audit failure')
+        monkeypatch.setattr(service.store,'append_audit',fail)
+        try:
+            with pytest.raises(RuntimeError,match='synthetic bootstrap'):
+                service.create_admin('bootstrap-fail@example.vn','W17 bootstrap synthetic password!')
+            with engine.connect() as connection:
+>               assert connection.scalar(text('SELECT count(*) FROM bootstrap_admin'))==0
+E               AssertionError: assert 1 == 0
+E                +  where 1 = scalar(<sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0>)
+E                +    where scalar = <sqlalchemy.engine.base.Connection object at 0x000001F531603560>.scalar
+E                +    and   <sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0> = text('SELECT count(*) FROM bootstrap_admin')
+
+src\web\backend\tests\test_w17_first_admin.py:206: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-first-admin-evidence\runs\policy-mutation-bootstrap-transaction.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_bootstrap_insert_and_audit_failure_roll_back_together
+1 failed, 70 deselected, 1 warning in 2.36s

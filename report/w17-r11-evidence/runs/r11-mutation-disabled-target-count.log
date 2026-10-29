@@ -1,0 +1,127 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-False] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000216F62D..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000216FFD54400>)
+enable = False, quota = False
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+>       assert response.status_code==200,response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+src\web\backend\tests\test_w17_r11.py:26: AssertionError
+_ test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-True] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000216FFA5..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x00000216963AD3A0>)
+enable = True, quota = False
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+>       assert response.status_code==200,response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+src\web\backend\tests\test_w17_r11.py:26: AssertionError
+_ test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-False] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x000002169645..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000002169677A480>)
+enable = False, quota = True
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+>       assert response.status_code==200,response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+src\web\backend\tests\test_w17_r11.py:26: AssertionError
+_ test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-True] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x00000216F5E2..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x000002169651BCE0>)
+enable = True, quota = True
+
+    @pytest.mark.parametrize('enable',[False,True])
+    @pytest.mark.parametrize('quota',[False,True])
+    def test_disabled_later_admin_demotion_and_enable_demotion_are_atomic(admin_case,enable,quota):
+        rt=admin_case
+        later=rt.user(True)
+        assert patch(rt,{'status':'disabled'},target=later).status_code==200
+        registry=sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')
+        owner=snapshot(rt,rt.owner.id)['account']
+        assert rt.services.admin.store.admin_count()==1
+        changes={'role':'user'}
+        if enable: changes['status']='active'
+        if quota: changes['build_monthly_max']=7
+        response=patch(rt,changes,target=later)
+        record(f'disabled-demote-enable-{enable}-quota-{quota}',{
+            'response_status':response.status_code,'response':response.json(),
+            'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=later.id),
+            'registry':sql(rt,'SELECT account_id,established_at FROM bootstrap_admin')})
+>       assert response.status_code==200,response.text
+E       AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E       assert 409 == 200
+E        +  where 409 = <Response [409 Conflict]>.status_code
+
+src\web\backend\tests\test_w17_r11.py:26: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-r11-evidence\runs\r11-mutation-disabled-target-count.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_r11.py::test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-False]
+FAILED src/web/backend/tests/test_w17_r11.py::test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[False-True]
+FAILED src/web/backend/tests/test_w17_r11.py::test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-False]
+FAILED src/web/backend/tests/test_w17_r11.py::test_disabled_later_admin_demotion_and_enable_demotion_are_atomic[True-True]
+4 failed, 4 deselected, 1 warning in 6.81s

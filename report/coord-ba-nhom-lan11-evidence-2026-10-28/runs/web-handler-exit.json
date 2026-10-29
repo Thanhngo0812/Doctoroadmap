@@ -1,0 +1,19 @@
+{
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/Invitations.test.tsx",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r11-tools-20261028\\runs\\web-handler.xml"
+  ],
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r11-final-20261028",
+  "commit": "3b90bf687bfb34c33a42733bd10a47a52c28b597",
+  "native_exit_code": 1,
+  "elapsed_seconds": 9.52
+}

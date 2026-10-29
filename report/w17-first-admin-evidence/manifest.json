@@ -1,0 +1,2283 @@
+{
+  "tested_source_head": "847cfe94be63f62e9a680cb409e414c19297d1ff",
+  "files": [
+    {
+      "path": "report/w17-first-admin-evidence/mutations.json",
+      "bytes": 5431,
+      "sha256": "71816e1c55e3a22da740e87b7f54060811d0bfc5ef2cc6912fe1401cc201152b",
+      "raw_sha256": "d5db579a146fe989d0c02090d8c4dbc1293db332b05747021777233db2278972"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/retained-test-exports.json",
+      "bytes": 6743,
+      "sha256": "f2522c81a8427a0deea5a9f80c4c4909dd75531a1bb30588443ddd464bf57abe",
+      "raw_sha256": "c93f3686d75973a4df9526c4fece5d65162eae4477daabe218e5f625744cd111"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/review.md",
+      "bytes": 3576,
+      "sha256": "ebe665956298226dd2055e991deb8744e225be6655c2795238a24d89fd266e16",
+      "raw_sha256": "ebe665956298226dd2055e991deb8744e225be6655c2795238a24d89fd266e16"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/source-identity.json",
+      "bytes": 7495,
+      "sha256": "4c488f7bd3e21ed54ae76147241c1f38bd07be1e73005acb772964f365416507",
+      "raw_sha256": "6181c205a385a658b9b815daa478f95226774907a8c384fff6b29ce67e6a8c66"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/summary.json",
+      "bytes": 2742,
+      "sha256": "70237982e893933c231eac58fa38cb38217fd0439a1a0b5b4a9c9a50ede28997",
+      "raw_sha256": "46e6d03077c1f5144845949daafd432f94bc71702df66b7130431f5d8587d03f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/inputs/candidate.json",
+      "bytes": 356,
+      "sha256": "8e84478ebd4081409391a756c23fdab6f08eddd8024b04e387c2d3f8c01d2dda",
+      "raw_sha256": "8a25947dd554424d26440a3c4e91256f8e7ae0ede01270c29bc052a12d228b6e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/inputs/fixture-copy.json",
+      "bytes": 724163,
+      "sha256": "196612d8a38671e881cea49a5e0ee88b600c74574167c0526bb0e76d68989a66",
+      "raw_sha256": "15ccb83a08e2a2ef4d79661f3ff997cc6327a52f7b8006e302b3842acf527731"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/inputs/fixture-copy.log",
+      "bytes": 966,
+      "sha256": "80cd4eb12f8361e5ecf95af372a213ec4c726bb7fbc62b827e321214249d292f",
+      "raw_sha256": "0cc7d1d604802997272422b43366c64d81cfaf0983d612eb01414714874017e2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/audit-sql.json",
+      "bytes": 410,
+      "sha256": "f24c93a558e69ee1efa312e39f142deb5026ed970949e885e951853291c55d0b",
+      "raw_sha256": "e43379e4665089b6c424b8db96f6761815c00ca83798801964e6f60d1abc6522"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/audit.json",
+      "bytes": 336,
+      "sha256": "6a4dcfac4a24555bc723915687d2e9a34ff549a4e39f6159060426bc3a01c50f",
+      "raw_sha256": "9f03f1913001f7ff7c8a772cb43242d1c448c0effc00b928dfa72f7514d0e459"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/bootstrap-race.json",
+      "bytes": 172,
+      "sha256": "c8ca59cc0ff89b6aa3baefe04582f8b689910ef1e0d20534516e4c7ea04cc0f8",
+      "raw_sha256": "73c2635712ea25107ae52ad477800c5212cc95bf05d86ab29cb50f77a2570442"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/concurrent-demotion.json",
+      "bytes": 142,
+      "sha256": "96d9356790bff4110d72d7c355d0678ed5018cc88697bd1b76ecde0ed0fae14f",
+      "raw_sha256": "977615ea488bb9184ceede22fcfe2308fcb911fe235929b7666e606f7bc4b6a3"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/disable.json",
+      "bytes": 484,
+      "sha256": "714e960f74c9b510b08ae3a2db45da146e13d63f5b5535a46198a4ff642d92aa",
+      "raw_sha256": "25a57d05e4be3e95f90d35af8b62610f868284a853026b04dfe549e9e31f6dbe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/first-admin-user.json",
+      "bytes": 519,
+      "sha256": "af08aa98ad630055781b108e342c34d1d1f8ce474cc4a396e537e5fb13cb3a2e",
+      "raw_sha256": "ccaf3e5772e2f57fcf0ac51cfc7b905c6fa98fb627731117a823670bb9db722c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/forbidden.json",
+      "bytes": 138,
+      "sha256": "f5c9a2333af1fc4dce7cdd692eaa0ea273d5ea15ab41e69255177555c8ec17c5",
+      "raw_sha256": "36b4debd7925d4458e8efcdf5c2ddfac457c2183345100e12b3bce6d8bb5db46"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/last-admin-conflict.json",
+      "bytes": 325,
+      "sha256": "9020e192f01cfb7724c500cebf904862e5be415c0dc4ee5d94e219e50e734518",
+      "raw_sha256": "3e34feeabcc026a2ac301f9cf79cf21622867ba9a1adf8396d1d1048df8053fc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/last-admin-protected.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/legacy-assignment.json",
+      "bytes": 314,
+      "sha256": "160c9f986962efdc1d8cf21e3c5ee52efeeaedeef69dffbcf24b58e2edbee4c6",
+      "raw_sha256": "75ece16dbf83a23d4c6afdee00b2265b95b6e66e563f5af2f1236622b5bb2d20"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/monthly-boundary-2026-01-31.json",
+      "bytes": 619,
+      "sha256": "b1ce103404ea1c5043be4f26c9124e5656c8c3cb8fb7242c9fb2a3cff41c018b",
+      "raw_sha256": "26cf383629782a393aad391fdf8c55f7b696559f72ddb6692ebf338f2f022dae"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/monthly-boundary-2026-12-31.json",
+      "bytes": 619,
+      "sha256": "49f8e70df3b4d3fa560c28daf3f1450b8a368cd5db8c89ae60dba3de2d1ee38a",
+      "raw_sha256": "5f9d4b45e32b6b0ed0ab7a7aaf254e5f0c02a74508894fd87b4a7c6d873db547"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/monthly-boundary-2028-02-29.json",
+      "bytes": 619,
+      "sha256": "0ee9d7df1ae04a6b8f4ac9b6bba35467039893b6b55920cf2c9006daeb934128",
+      "raw_sha256": "f63dd567c14edf402fc8089f9035cd95e9985fe782fdf6215eaa8fda45d0486b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/older-promoted-user.json",
+      "bytes": 493,
+      "sha256": "8994e45c8bb7e9fbbb0a9d39294b9da7493a977047fa59481bff2f4643762f4f",
+      "raw_sha256": "6651bd3700b455b9e66391a5411ed8a8479928b2e878501920947c8e8253cdda"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/patch-quota.json",
+      "bytes": 479,
+      "sha256": "623b4ae825032f87ffd0bb5517a33923c84a104ca5fc8dcbb91b6f77db72260a",
+      "raw_sha256": "7a33a3082bb616493873ce8e7738ed804b4e1472e13cff238afc025b36bdb723"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/protected-first-admin.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/users.json",
+      "bytes": 619,
+      "sha256": "830f06c942ca88a186736ee9fbd74fa3063c105ea7952fa4f63b432d79d69b85",
+      "raw_sha256": "5e06ffae7779d429d19a2aff523ae876b7226defbdca58cb96995c578ad5d275"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/validation.json",
+      "bytes": 302,
+      "sha256": "b0e22c190b996305c99185c03410798a328f7166cde98400d153745dd1d90abf",
+      "raw_sha256": "b1b3929c2730d3686bfd64a0833b9a3d63bc86d3435be4b0d3e4f05dc7fa138e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/audit-sql.json",
+      "bytes": 410,
+      "sha256": "a6a6ca42122cac27a9ea4fa236d8b807708c4ebcf85ecc24c83f03b3a2299e88",
+      "raw_sha256": "797fe06560d540dc058d2dd3e73092055c2609530082cd37ae576c1beba48121"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/audit.json",
+      "bytes": 336,
+      "sha256": "d6d421ca3acf0e0edc6a21185f4886965c6a4f40b12dd0a312b8d1245b89d27d",
+      "raw_sha256": "5e03acf1bb1f9683d43f7a7a4343d281917a9ad039065846ced9cf12986a72b5"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/bootstrap-race.json",
+      "bytes": 172,
+      "sha256": "dd737192aee04d50dd75e91750d1fab7c3a0e6202636583b3b57872851c11240",
+      "raw_sha256": "0b2b2ac77ed8c407cd24c8980c3e4f5ed5e43a837726e4b538567e079b978021"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/concurrent-demotion.json",
+      "bytes": 142,
+      "sha256": "a0117f953c3a654c0ca76adcd8b072920147233627169a18666e9bc78470e3f9",
+      "raw_sha256": "da2ce7bf7df5c462d8116c32d54f443302113aca4f52a7ae4f16562e41d44a6f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/disable.json",
+      "bytes": 484,
+      "sha256": "0da9e6df90e36215d361db0db903abd3ca0402a3de360b4366498c4fd40b8460",
+      "raw_sha256": "cee8af4a3612596185b8aded3d9c04ad2a28f34951fe0f6353b146e650c79c97"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/first-admin-user.json",
+      "bytes": 519,
+      "sha256": "c30b057e7c904d2c4081cca66b55899bd17449adee76a7603c4e1fd24974cfcc",
+      "raw_sha256": "e99c6ed4e96b3350209744da786a8fec120f87dffab67afd1501f2b064e2696a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/forbidden.json",
+      "bytes": 138,
+      "sha256": "f5c9a2333af1fc4dce7cdd692eaa0ea273d5ea15ab41e69255177555c8ec17c5",
+      "raw_sha256": "36b4debd7925d4458e8efcdf5c2ddfac457c2183345100e12b3bce6d8bb5db46"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/last-admin-conflict.json",
+      "bytes": 325,
+      "sha256": "9020e192f01cfb7724c500cebf904862e5be415c0dc4ee5d94e219e50e734518",
+      "raw_sha256": "3e34feeabcc026a2ac301f9cf79cf21622867ba9a1adf8396d1d1048df8053fc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/last-admin-protected.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/legacy-assignment.json",
+      "bytes": 314,
+      "sha256": "e11ff0ef51c7bab50ea5a88ade068358160901ade84ae40961a92300c31e605a",
+      "raw_sha256": "b318346d947bb218eaa7e4b12ee53e8206b43c950b3755003613e1161e99b857"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/monthly-boundary-2026-01-31.json",
+      "bytes": 619,
+      "sha256": "0117ff8b223a7c2a4d1911a895659bf18c3a4b6026637af70a39b1064ad7474f",
+      "raw_sha256": "8d035f10ee7e20f83619ad7dfbbd88a49c91ea6f4a88653d9b699910c110329d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/monthly-boundary-2026-12-31.json",
+      "bytes": 619,
+      "sha256": "4a7b41864042c752564a9e3a8c5582f88481ee853a07fe189cd787d5b04c7ec7",
+      "raw_sha256": "e2bca4e3978f3ffe1bca0f77dd9867eb0030bea1e10ad1f158456effb3a90398"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/monthly-boundary-2028-02-29.json",
+      "bytes": 619,
+      "sha256": "e9a311c7dde2f5f8e8fc8b69f0c3beea00fb692dfa9cefc5c64a06dc55254e1b",
+      "raw_sha256": "9ade40ba445eaa54d94c06e1d8a8bd9641b0111b9b66a1742063d4a9b3e5dfd8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/older-promoted-user.json",
+      "bytes": 493,
+      "sha256": "f6b6b93037edea9790e191c317c07dc4a9007714d16dfb5551e9b4cfc12ad825",
+      "raw_sha256": "ded70c5b96049cc330f0249171ae43f2cd7c9feffe64d1d108ea2196c8cca06d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/patch-quota.json",
+      "bytes": 479,
+      "sha256": "8dd7ecfa4d532c9234916ba0eb8edab25b7e771d2ed1ab0aefdf9cc355198294",
+      "raw_sha256": "e157779e886c2728e300f65e238797122842f993ee15c21021cda9c7dff5f20f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/protected-first-admin.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/users.json",
+      "bytes": 619,
+      "sha256": "540ac2b9e6df44d962fb9252e45cf88850673051243bd1cb9c08cef6d90b9211",
+      "raw_sha256": "0b8852ad6d3ade187524378d0f9c32b632d3da62f6b99de9d34866532298773e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/validation.json",
+      "bytes": 302,
+      "sha256": "b0e22c190b996305c99185c03410798a328f7166cde98400d153745dd1d90abf",
+      "raw_sha256": "b1b3929c2730d3686bfd64a0833b9a3d63bc86d3435be4b0d3e4f05dc7fa138e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/audit-sql.json",
+      "bytes": 410,
+      "sha256": "a5e43d131502c08092015381466984d4214c9e41488858941891305b4ce41732",
+      "raw_sha256": "28e07b651bc8a8da06e1ecd2899cf7fe65fd675f0f40ce0d65e13a4df325254b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/audit.json",
+      "bytes": 336,
+      "sha256": "22df4002fcedd5e27903d89f83a31a898ccc1b0c4a651dce79c963dde51cca0c",
+      "raw_sha256": "c10b1889672aa52e10e3e99b1289a1f900a001fe5b95a430a0276548c2b8433b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/bootstrap-race.json",
+      "bytes": 172,
+      "sha256": "1878d977eeb100891350df1e16381dfb4dbb1cea54ea41580d1a2ffc887d7cff",
+      "raw_sha256": "293c296f4f8a22e25a1d1ea7381914d3ae339e88f2dd907172f4a74f1e74a250"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/concurrent-demotion.json",
+      "bytes": 142,
+      "sha256": "3f62104e257578083c7474ce9a060631d1d98f2c22fc6f042322971008521ff5",
+      "raw_sha256": "54c9ce1872a3e5364497ec595b0d91cd6a074445cc3646f56e92795bac175544"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/disable.json",
+      "bytes": 484,
+      "sha256": "616576c0e430218a4237bf1dc8687f880423ca9f1c00dcc748322ad7c8cf9710",
+      "raw_sha256": "8f420178423d04ec6bd5b9958d3867279792dd4c512b68942d5b3d1eacb2ff3c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/first-admin-user.json",
+      "bytes": 519,
+      "sha256": "55b56e27b97d5e1a0642ea12eeaeda37f6d05403eff47172e38269dc12eefcfd",
+      "raw_sha256": "b7c2472931575b73247813e13453719b968c4b26c0437355e25126bab87103c9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/forbidden.json",
+      "bytes": 138,
+      "sha256": "f5c9a2333af1fc4dce7cdd692eaa0ea273d5ea15ab41e69255177555c8ec17c5",
+      "raw_sha256": "36b4debd7925d4458e8efcdf5c2ddfac457c2183345100e12b3bce6d8bb5db46"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/last-admin-conflict.json",
+      "bytes": 325,
+      "sha256": "9020e192f01cfb7724c500cebf904862e5be415c0dc4ee5d94e219e50e734518",
+      "raw_sha256": "3e34feeabcc026a2ac301f9cf79cf21622867ba9a1adf8396d1d1048df8053fc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/last-admin-protected.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/legacy-assignment.json",
+      "bytes": 314,
+      "sha256": "65e220c04e78a3c0709905f53733414b2b23da36a0eccaa9af828d1598ad7a46",
+      "raw_sha256": "37e9dbec9a73b986d890baa629c3daddc36f711a49e86ee7fce58acb420a3a9b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/monthly-boundary-2026-01-31.json",
+      "bytes": 619,
+      "sha256": "9be47a11d01b1ef36a4271176461dffda2f76f4535f0ecdae2e59163312a784f",
+      "raw_sha256": "35abb5db035e1f3d7029606379f0cbaa23805b73e5969b6b77396aced9861309"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/monthly-boundary-2026-12-31.json",
+      "bytes": 619,
+      "sha256": "fb7180f9192c9e881cde40efe1aab0e3a36bdb1e61cdac605eaf90d503f4bab9",
+      "raw_sha256": "3810bb9c3eb40b867c1c624b133f3707e8a2e59f5d6986f03b1c96d65d83854e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/monthly-boundary-2028-02-29.json",
+      "bytes": 619,
+      "sha256": "8685c7105ac264cc081f7e03a9c33b696683dc853f81b8ab807289f38f84fe39",
+      "raw_sha256": "3371c6a235aaa2deab1335c8ed021510bb0784d4e000b1df8809247e501afc2a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/older-promoted-user.json",
+      "bytes": 493,
+      "sha256": "0784a1e9d2bf7372eb240025139352d5223affbb5421b0f7058199f4dd50bfb8",
+      "raw_sha256": "4937ad1ae3a1279d832259b108655ee8b147d62c0761e6f453ed953305d2134b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/patch-quota.json",
+      "bytes": 479,
+      "sha256": "8d4c0907e2b66e92564ce62d9aaa19cb98a9b174dceeb95f3be0ff6ecfc1bee4",
+      "raw_sha256": "25d07f3b5d489fece74945f170a3360aa9d9d8e310b83f65edad7c2b300a4e89"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/protected-first-admin.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/users.json",
+      "bytes": 619,
+      "sha256": "e96cbbf33e55ab115df0689e64dd9e733644f9da7a163c17d422f2f5217984d7",
+      "raw_sha256": "4347313393cc7f386890303915c2d43f8095d89f7bb89109e2e9ef73c67603c7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/validation.json",
+      "bytes": 302,
+      "sha256": "b0e22c190b996305c99185c03410798a328f7166cde98400d153745dd1d90abf",
+      "raw_sha256": "b1b3929c2730d3686bfd64a0833b9a3d63bc86d3435be4b0d3e4f05dc7fa138e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-green-01/protected-first-admin.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/audit-sql.json",
+      "bytes": 410,
+      "sha256": "a5e43d131502c08092015381466984d4214c9e41488858941891305b4ce41732",
+      "raw_sha256": "28e07b651bc8a8da06e1ecd2899cf7fe65fd675f0f40ce0d65e13a4df325254b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/audit.json",
+      "bytes": 336,
+      "sha256": "22df4002fcedd5e27903d89f83a31a898ccc1b0c4a651dce79c963dde51cca0c",
+      "raw_sha256": "c10b1889672aa52e10e3e99b1289a1f900a001fe5b95a430a0276548c2b8433b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/bootstrap-race.json",
+      "bytes": 172,
+      "sha256": "1878d977eeb100891350df1e16381dfb4dbb1cea54ea41580d1a2ffc887d7cff",
+      "raw_sha256": "293c296f4f8a22e25a1d1ea7381914d3ae339e88f2dd907172f4a74f1e74a250"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/concurrent-demotion.json",
+      "bytes": 142,
+      "sha256": "3f62104e257578083c7474ce9a060631d1d98f2c22fc6f042322971008521ff5",
+      "raw_sha256": "54c9ce1872a3e5364497ec595b0d91cd6a074445cc3646f56e92795bac175544"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/disable.json",
+      "bytes": 484,
+      "sha256": "616576c0e430218a4237bf1dc8687f880423ca9f1c00dcc748322ad7c8cf9710",
+      "raw_sha256": "8f420178423d04ec6bd5b9958d3867279792dd4c512b68942d5b3d1eacb2ff3c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/first-admin-user.json",
+      "bytes": 519,
+      "sha256": "55b56e27b97d5e1a0642ea12eeaeda37f6d05403eff47172e38269dc12eefcfd",
+      "raw_sha256": "b7c2472931575b73247813e13453719b968c4b26c0437355e25126bab87103c9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/forbidden.json",
+      "bytes": 138,
+      "sha256": "f5c9a2333af1fc4dce7cdd692eaa0ea273d5ea15ab41e69255177555c8ec17c5",
+      "raw_sha256": "36b4debd7925d4458e8efcdf5c2ddfac457c2183345100e12b3bce6d8bb5db46"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/last-admin-conflict.json",
+      "bytes": 325,
+      "sha256": "9020e192f01cfb7724c500cebf904862e5be415c0dc4ee5d94e219e50e734518",
+      "raw_sha256": "3e34feeabcc026a2ac301f9cf79cf21622867ba9a1adf8396d1d1048df8053fc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/last-admin-protected.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/legacy-assignment.json",
+      "bytes": 314,
+      "sha256": "65e220c04e78a3c0709905f53733414b2b23da36a0eccaa9af828d1598ad7a46",
+      "raw_sha256": "37e9dbec9a73b986d890baa629c3daddc36f711a49e86ee7fce58acb420a3a9b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/metadata.json",
+      "bytes": 710,
+      "sha256": "a92c47adea1cde6d02ec9a763a7b253c13d163abfad30d9d67d1d241d30f45d1",
+      "raw_sha256": "1ea79f24002443c79ce1e86224766bf20a7a89198ba9424d8889f33f7207dffe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/older-promoted-user.json",
+      "bytes": 493,
+      "sha256": "0784a1e9d2bf7372eb240025139352d5223affbb5421b0f7058199f4dd50bfb8",
+      "raw_sha256": "4937ad1ae3a1279d832259b108655ee8b147d62c0761e6f453ed953305d2134b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/openapi.json",
+      "bytes": 172919,
+      "sha256": "aa85b14fb32e73e3da3d81e80228e8ca0dc8bdf668e254a38aff92d42ee2c694",
+      "raw_sha256": "a388b1781b34e0e2c948b3ad9cb7df1e6dfa9dc835333b816332086904f3b1cd"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/patch-quota.json",
+      "bytes": 479,
+      "sha256": "8d4c0907e2b66e92564ce62d9aaa19cb98a9b174dceeb95f3be0ff6ecfc1bee4",
+      "raw_sha256": "25d07f3b5d489fece74945f170a3360aa9d9d8e310b83f65edad7c2b300a4e89"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/protected-first-admin.json",
+      "bytes": 327,
+      "sha256": "9b38d9b5f5be3f00fe71bd56fe602894b9e5e31bd04e159500b19eae141c379a",
+      "raw_sha256": "4d16aef2fefec2f38d3b924e763d1559721b9ad82b819304347e541ebdcf0969"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/users.json",
+      "bytes": 619,
+      "sha256": "e96cbbf33e55ab115df0689e64dd9e733644f9da7a163c17d422f2f5217984d7",
+      "raw_sha256": "4347313393cc7f386890303915c2d43f8095d89f7bb89109e2e9ef73c67603c7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/public/validation.json",
+      "bytes": 302,
+      "sha256": "b0e22c190b996305c99185c03410798a328f7166cde98400d153745dd1d90abf",
+      "raw_sha256": "b1b3929c2730d3686bfd64a0833b9a3d63bc86d3435be4b0d3e4f05dc7fa138e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/reproduce/w17_openapi.py",
+      "bytes": 778,
+      "sha256": "4f37103d89ff2af358adc085a97dd93407e830a66ae5972bac19cd7cf2cde1f7",
+      "raw_sha256": "4f37103d89ff2af358adc085a97dd93407e830a66ae5972bac19cd7cf2cde1f7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/reproduce/w17_policy_capture.py",
+      "bytes": 1312,
+      "sha256": "6541f0827c56a5f8734d4582dc9c78791074d3248edc5a0cfb08662f7429baf5",
+      "raw_sha256": "42cb816c3a95a3803b5b1f246b216ddb698de536be6dc040279de369679e7075"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/reproduce/w17_policy_frontend_gate.py",
+      "bytes": 1222,
+      "sha256": "e7536d8251c21a92bef7ab0d5f4f4dc61aff54cef17811e6d1d5950e2759c426",
+      "raw_sha256": "9577cea7b7bd994d443280b11b14f6f90e8a6cb3a9ec1ee74d0440226722efaf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/reproduce/w17_policy_inputs.py",
+      "bytes": 1490,
+      "sha256": "80c2bc486ed5a64cc1e3c7aa7340edde3d981e75c033614faf13ad71be9cf017",
+      "raw_sha256": "5ae236bfcd68e63d89d01f1fe1eadeb781bf5b58de3f28b62253c9f4cd204182"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/reproduce/w17_policy_mutations.py",
+      "bytes": 4561,
+      "sha256": "2a4a86f51dc07b1e4a097ebd438636af84cb5080d74e3586cabfd357612a165f",
+      "raw_sha256": "2a4a86f51dc07b1e4a097ebd438636af84cb5080d74e3586cabfd357612a165f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-build-01-exit.json",
+      "bytes": 7649,
+      "sha256": "14763b23c3b7d1ff218bc69632c4b474651f706cb94d74351643ff7dcc214dba",
+      "raw_sha256": "255f1e03deac684834897045b4091fb7d43cb238085ab2a1a13a768bc4890895"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-build-01.log",
+      "bytes": 4499,
+      "sha256": "d6503e7c25a080df58157a9616292d8da102e156421f02d5f821712039f35b35",
+      "raw_sha256": "d6503e7c25a080df58157a9616292d8da102e156421f02d5f821712039f35b35"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-01-exit.json",
+      "bytes": 18697,
+      "sha256": "6f8c0f1db86bffb80ddb1ce852764de077077e8ebf56021c1ff0b82d49d9f8a0",
+      "raw_sha256": "18ee9ff1c9130703b0fea2cd336e36777acbef36e9d8d0a42088f9946a109033"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-01.log",
+      "bytes": 2081,
+      "sha256": "85803bfaf97818a3ec49d00d3a713b3d54c683e447df6169c0703f1106af8b45",
+      "raw_sha256": "64b62d1a64d6aa99d26b0e8016e78b7ef5379eaef0d5eb59745a25375e1018cd"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-01.xml",
+      "bytes": 13221,
+      "sha256": "c83dd0e8325f24eadd77a1b37eac0ba59f80afae2f3702645cf7812640cbafcd",
+      "raw_sha256": "29ac0703274923ce784ed1d39dea8785a97d64cef66c1e0f1d789d8d5dbd267f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-02-exit.json",
+      "bytes": 18843,
+      "sha256": "d274bfc21c5c4d7b1889c45d8a6ada38538fa26264703fbcd32a3385e7d9ad43",
+      "raw_sha256": "22c0b52cea6246884805828e9a3ea0721cc5789061fd51459c27d8024b6b0de7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-02.log",
+      "bytes": 907,
+      "sha256": "a02ff51beceae1c79415c449f85492d446c8fdcd1b362f4eae5a502d6e45ecd3",
+      "raw_sha256": "d78d28785db5dc6318848836d9dbde63ddab290082a2103b371a1e10c22c4dca"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-expanded-02.xml",
+      "bytes": 22528,
+      "sha256": "453e22699eed3a384849ffd754cb154a56b43b4e3ac4162a8780eeb1149e33c2",
+      "raw_sha256": "4b9cd534012fca595c6cb4a6fa39f97664b8291e0d7d5b17bf1cf1c340076403"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-full-01-exit.json",
+      "bytes": 18486,
+      "sha256": "ea75e42fcc275525200a04c3889bf6671cb64a78da3023c80757207a05ecb6a1",
+      "raw_sha256": "5ff11b034a67fa3bff23f8e9ae25374af0d1386409d8e32dc464f93786d15cc4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-full-01.log",
+      "bytes": 5821,
+      "sha256": "ebc6e4a93c12d43aed04d6783ed3506880a2c9ebebbadbd57b0f946b4e8af2ad",
+      "raw_sha256": "4373256f5ea16073d2ca391e9a87512d9b869e16063b738817202f0ecf61a39e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-full-01.xml",
+      "bytes": 543999,
+      "sha256": "cc0cd9b118cc90beb5d4765695137793d8784daf491683da47c35805da497de4",
+      "raw_sha256": "383fc2f5c3aa0969401875e9da145e0136e9667f5eceab793890209aaf06e3a4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-green-01-exit.json",
+      "bytes": 18587,
+      "sha256": "25a27d5fe914004adbb0487a1c121a7c2844a1d1d465b0355cd2bc6379a51a84",
+      "raw_sha256": "e40860f82b313ef6ed6bf1f31622854a059f00fe299c74696309ff13944cb765"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-green-01.log",
+      "bytes": 732,
+      "sha256": "3a4c7fc9e98a2e478347e0ba353b4aebdbed2468a865aecb9c393cbad6bf1b12",
+      "raw_sha256": "f63620555ed03c7f577af73ffc324c10efd72f02838f3feaf903e7051d1f4cc0"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-green-01.xml",
+      "bytes": 3381,
+      "sha256": "bd73c8ee2796a1b86b5cb3a0ff15a85e29b9a9b048bb956df8ef6f4fb64d0f47",
+      "raw_sha256": "c02cb17ec4d976c553ce502e007095e9c317c037c18810421874adad9f518338"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-account-db-guard-exit.json",
+      "bytes": 18701,
+      "sha256": "9d30c03ae65aee6735453a86104a4966930b25657d2eabb6e28a1f1e667f9a33",
+      "raw_sha256": "ce2ca682e3af8454d7bdaa054b6f0059921427ea15c91c6c02f423a4f6c338f9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-account-db-guard.log",
+      "bytes": 7079,
+      "sha256": "24c7d10a2df7fcaef33beddeb1d97d1246150e9ff6638bc2c47c39efe358176e",
+      "raw_sha256": "400d61d33aa15d4eb7d13dc4033825babc0f27f02a4a0447f0ada0e79991b2ba"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-account-db-guard.xml",
+      "bytes": 8847,
+      "sha256": "68165703d908db80b1e9a64e4821af6493f7d6b64c50a3f5d8fec9a1f0106967",
+      "raw_sha256": "69565cc7f758b126f6db2b8ccacbca57d680a34082f7e18ad3354dc70ec291f6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-active-admin-count-exit.json",
+      "bytes": 18704,
+      "sha256": "259bb028a242e76eca2809dbdbc84e745e0f12a0b4f8e2bde1bc4bafb9d8d744",
+      "raw_sha256": "bb82ede97b2345359c8519941ae2497815b39d77fd27fe9d5c961c84e4070165"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-active-admin-count.log",
+      "bytes": 3025,
+      "sha256": "73cd97693094018bad1871bb43e7841406908716eff056b99699e7773b140e66",
+      "raw_sha256": "7f69d495e5119882d61aadab72bbb97a7d16bf9588889705740f28217629c781"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-active-admin-count.xml",
+      "bytes": 3732,
+      "sha256": "8044e57b36e0d24d94622d5d178abf72de24b17bfdb9321be64eded58a7a431b",
+      "raw_sha256": "7c32f162e3c2a434e3b58c9e13c90c43cd850466b31be122052b0ed59c22a362"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-global-lock-exit.json",
+      "bytes": 18718,
+      "sha256": "55813ecfff0fa602d59b9b44f3cbf17408e4b9423442dfa7afb5a4442114d62c",
+      "raw_sha256": "a24aae1c4c2e6dbc21560b783bd65b848003ba3e1ca0c0778eb33b3e7f15c300"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-global-lock.log",
+      "bytes": 5606,
+      "sha256": "bb30f278be0f251774c80560bffccfaf2a1ee10536dec7efbb252b6d191a4bc7",
+      "raw_sha256": "72ea9289678700e0226b154a8632dc0b7577db01c0dfabc9fab9a990195da139"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-global-lock.xml",
+      "bytes": 5080,
+      "sha256": "ce6120c8afcc1e7a6db8cebd256c6a43d6b8ac63b11cf182020977fd062beb10",
+      "raw_sha256": "14fea820773723f99820614fac258ffb00ffd7dd6b50c2b3e31a44f0159d21aa"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-transaction-exit.json",
+      "bytes": 18708,
+      "sha256": "664b787ea0c7753f1fb6a6273b19bc7da5fcd1afb91c1c63048dfec3924c487b",
+      "raw_sha256": "823a57053a18df3e0f80aeb41af9d37bde80d511d5ceddac0bb0d02a39861e51"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-transaction.log",
+      "bytes": 2739,
+      "sha256": "b591f0af2f8afe4580d66d7a4efc39ae099cfe9d9261c9dc274b41f8edd3ad50",
+      "raw_sha256": "2af986b932b06e5651e72210f25c6c41586463a7d68831b68227083d66d63ea7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-transaction.xml",
+      "bytes": 2436,
+      "sha256": "aa2e3c9ae4f236642809d5f4e472873f003881e3d784d64461a3c1cc97b8d106",
+      "raw_sha256": "d7d16173a0876b66f6562acb287590fa3f484efaec359a0ffce74275cc3d1ac7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-write-exit.json",
+      "bytes": 18706,
+      "sha256": "4932322dd33b7f89cdadb599d974dcef369eba20f1c27b1a64b224e1d87cf26e",
+      "raw_sha256": "26b080dd5e32771ed4c290cab8abb93bd6f7826dc9b2ae2be98509816835d640"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-write.log",
+      "bytes": 5615,
+      "sha256": "c043a1c55facc5b6bf5e1fb6b0b7675cb78f49ae31ddca739000d176e7b80c71",
+      "raw_sha256": "8787e75f55e61cffbdca36e423469387ecd1d3d2a5793e6ba55088aaa507fb57"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-bootstrap-write.xml",
+      "bytes": 5095,
+      "sha256": "c99ae065e9522d88b199cb5e178d1ca546e5c26fd6ee06d1e18c6b6dba8bcb65",
+      "raw_sha256": "97f9abab02e51a92e80767d61d7a7261f289fa7b0365bd8ec182eab2241cf8fe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-dto-projection-exit.json",
+      "bytes": 18698,
+      "sha256": "97f13a4da0f64ba5a8c52969eb23653600b6d52ac9a82e7c4b6e58d3bcea00b2",
+      "raw_sha256": "4ebd0065f462d98da26d4bfbf7d746a46f443132961a76e2cdc5eaab1a1b7703"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-dto-projection.log",
+      "bytes": 2487,
+      "sha256": "64064b94d55afb97246f3ba39a05d8da0d209712ce9b289ed6a670bc416cc47a",
+      "raw_sha256": "dc3a56556aa4ea922ed05b8c19e999f0b7bbf735612037955fefdcfdede11547"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-dto-projection.xml",
+      "bytes": 2287,
+      "sha256": "d0285fb63122b60926eb056042ac02055f1cb36a9b5bb83462fb1be668792d5c",
+      "raw_sha256": "48a7be4c557ed87dde63ed56b139d053ec0ba269dbca5033712254994cea7ec8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-first-identity-service-exit.json",
+      "bytes": 18720,
+      "sha256": "0731064d05fd40bd925c644f9511d69e5aac3ede97255d2aabe4050478893b6b",
+      "raw_sha256": "a87117c6c1f03e5aaa769f0c9df5b9034f076c367ca5d18173e5957af8ec08dc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-first-identity-service.log",
+      "bytes": 61079,
+      "sha256": "74de7b5bf96d6f691e800d39a210ab4bdbd31e8a89b1339cf29c4298432f50c9",
+      "raw_sha256": "a56484d5859545bfa594fa15a74f9a46b82fee1f33558cfb78a3edf8124b0b41"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-first-identity-service.xml",
+      "bytes": 11320,
+      "sha256": "3370eb84bebf68a8d739ac5b721e401f88f1a6b0fc478486727109c2b5f2b451",
+      "raw_sha256": "d8e11ccf8895d3c506c8a265c2402a1b92d6fa7ec711309a33729e5a81f743e4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-assignment-transaction-exit.json",
+      "bytes": 18747,
+      "sha256": "e2d4e6c00f4d1e314b1357a69cf4e81b669f7df07feb6f77ad0e5049f44abf5a",
+      "raw_sha256": "2790f7b706aebe938ef69c4d46a02ec51a922da9c4f3c1f9d52ed326b94a47ff"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-assignment-transaction.log",
+      "bytes": 4725,
+      "sha256": "885aaadff02bc8c6e7613f2ac108af045563561512c5fb38b46edf203a191f33",
+      "raw_sha256": "cb7cf40f8fa69915573b3bbb1ad886465e1d7751172ebc76439314d5a988683e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-assignment-transaction.xml",
+      "bytes": 4526,
+      "sha256": "b7eb4d606900ab93884e7667035a32767c43e49a5831e1ccf24ca1f0a6583e4c",
+      "raw_sha256": "1b15ea51d660de679f3e688cbd1f5fcbcffa16fbf2520826c59d59fd9117eb75"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-no-guess-exit.json",
+      "bytes": 18719,
+      "sha256": "ac4f2f710ad19805b386c841714cfc8e961cf7f58155acb6e2d136388f6bc634",
+      "raw_sha256": "69a4e008026a6000ba098a568a0d9f7fe16c0be3311a403790bf1dc8e84a6c9f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-no-guess.log",
+      "bytes": 3423,
+      "sha256": "237d74a01213475cd92afb9711ff54f3c3b07f8b496082392515446065df3285",
+      "raw_sha256": "70db5f11f23d91c64b4326ace07f9851fcf6716744ccee0005724af37015aa67"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-legacy-no-guess.xml",
+      "bytes": 2824,
+      "sha256": "ab9c8726e20f121c3dead8cf0c100af200163cb72ee475a02221b01b61133ad3",
+      "raw_sha256": "58439ce0991aafcb306ca7631a86d796c6eed6e54f96ebdc302187d9f4f51ed8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-login-lock-exit.json",
+      "bytes": 18684,
+      "sha256": "f1ca1ad9f2bd3ae2fd9b3d0044d0eb9ca5e41b89203a0db859425ab6d9dbf1ed",
+      "raw_sha256": "c19c12e0b57f7b627df02ff964cf0db397b6367c147b140424a83003dc3326af"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-login-lock.log",
+      "bytes": 3156,
+      "sha256": "d2083a90125a8742591d49babd2e855d41c83a38a145d6f374d3e65b565b055e",
+      "raw_sha256": "f8991663a38f8d85e66630d03ea1cb254dc3f1616a00f68177b0945f991d2dbc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-login-lock.xml",
+      "bytes": 2680,
+      "sha256": "fa9549bff8e0123bfb5106dc29d1ecdf73207f410a4749e2f861bdbebd9bd7af",
+      "raw_sha256": "27aaffa1526ba098c65a6cc444f479cd0eb5047f52e7e79c2ecd1a54cf0e3dbf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-registry-immutable-exit.json",
+      "bytes": 18704,
+      "sha256": "fb16a49eefdb922de5b3242fc545058d930577c451b833386c2486a8baee51f9",
+      "raw_sha256": "fc4a86923d21e1be53986f68a7ded5ffceb98614cde8466496cc7a7fb4a03b23"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-registry-immutable.log",
+      "bytes": 5034,
+      "sha256": "3fab19ce760e10d43b117c0d0ae669fba9b94b5d14057b6117aa57ff382f3c63",
+      "raw_sha256": "1ccf35927f7c348efe14995e402960424d0a09f2ef8f2d1f4ccc93ef95962e85"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-registry-immutable.xml",
+      "bytes": 6112,
+      "sha256": "3f06101797e877486f8e074407f97bc99f3dd636e268741755a016a49363155d",
+      "raw_sha256": "a504544d9046193c6d1124b80957a705b5d3386eecd50b3d580c687236617dd1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-session-revocation-exit.json",
+      "bytes": 18701,
+      "sha256": "1dc439a62233b33627e5b56682d7ee5b0b1ac826c2618e6393e11a2bef20dd73",
+      "raw_sha256": "5c05d5863cf56498554c0e09db21f1cd634982ab03c1ee16cc833eec416076f5"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-session-revocation.log",
+      "bytes": 2324,
+      "sha256": "2089e6ef3925f2b904824e26f6f8d0d53bd73353f3f6fdadf301318de6d61bf6",
+      "raw_sha256": "aae02e8e437f139f8b1b1b636de61a1bf01cc191ab7d62296b671b3b1e7e9785"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-session-revocation.xml",
+      "bytes": 1851,
+      "sha256": "186953e4c6778bf4672362881ad9ef460509635bbfc9a678762d6f9345f49ee4",
+      "raw_sha256": "c1501ad6bf076e21b47b7c75648355c40b2f809399be60bea7c3ecd29799fb08"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-stale-actor-exit.json",
+      "bytes": 18689,
+      "sha256": "76bec91ffc8ad612179e3c21d748bef94e7748961dda0342e5372e92601240a3",
+      "raw_sha256": "d56747e74d5581d09b2b3e6ac9e8fc55359ef61917046ba29ef8ad5c3736acb3"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-stale-actor.log",
+      "bytes": 1865,
+      "sha256": "5b8adbfe1cbe9003c9709e327b65c9be6623a00435f1fb5e2bf409aa0557c605",
+      "raw_sha256": "137bda85304b7654c5c722dae2ae6bb9e66454d79566e09f49c39ede61332c33"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-stale-actor.xml",
+      "bytes": 1282,
+      "sha256": "b067c1810ada46a4196313733b16ccd0725a9a7ced972c161cb850d7fe4df111",
+      "raw_sha256": "d3832d31415bf70798ffa2eefe50b826fed2eb1c2a9c2a1f537e89ecb4a30c0c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-update-transaction-exit.json",
+      "bytes": 18691,
+      "sha256": "cc023cd1120f77ef418ac83b67cb39c2fd507bf218fa18ed17885340fc78160e",
+      "raw_sha256": "3d05dfdf308955f7a3fb576b7e61429d3c77735e506662f118b3a0832dd4e917"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-update-transaction.log",
+      "bytes": 7821,
+      "sha256": "730e7f6ea042b906787092b391ac4f3ea9adb215f821f423c5f008a460042f51",
+      "raw_sha256": "ebc87c35255a74d7df5a8efb8332bdb3d2f43b79e9543a19ce30c60800f1861b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-mutation-update-transaction.xml",
+      "bytes": 2046,
+      "sha256": "a364b6ca18b916adbdb68ad0878f9cf24346f3114f724832ad2dfc8748910d79",
+      "raw_sha256": "6c2f60f77a6b4421c3d6ff3a2344f36f05706bce0131e4dbd960abaf1a4761fd"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-npm-ci-exit.json",
+      "bytes": 220,
+      "sha256": "2259388dc24c53ee7e0547951059fe7bc7e66f1ddcc6f521d9d8985d3c078811",
+      "raw_sha256": "87ea1562d19bfc135e2ca980874a3d3e24f31f75fb855202b30644b794d0d9ee"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-npm-ci.log",
+      "bytes": 267,
+      "sha256": "27a0960bffbe358e30f004a062e35728fd3e2cc72e90b16effb8942ec1240058",
+      "raw_sha256": "27a0960bffbe358e30f004a062e35728fd3e2cc72e90b16effb8942ec1240058"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-react-01-exit.json",
+      "bytes": 7691,
+      "sha256": "d4333302a3bf282e006f585cf0ce3f62835a475068d877ec76bece69484aeeee",
+      "raw_sha256": "9cf2e0eede7ed36ddb773846e3ba0ba9618c901d729727af3956c89e41299f2a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-react-01.log",
+      "bytes": 535,
+      "sha256": "125190153c130f73c43e507fc4a38637eb46379395e036e078df235c89fd5470",
+      "raw_sha256": "95b2901084b73bf0d3542fd84258f7ff5b26feaade6e30f4bbce75d285e9c7b6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-01-exit.json",
+      "bytes": 18393,
+      "sha256": "11b2f01fdf6f968d7a0ab4c70539cd30f75ffdabc5acc69bb3ba42092cc87ad1",
+      "raw_sha256": "6aa0f606712473852026c33d980228ef628248b6f97a9523e2ce1d73cf969adf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-01.log",
+      "bytes": 1446,
+      "sha256": "71e3f905ecdb5a14dee2db7da2ebfe02850d5be152eb77e6c56d09031dd6a09c",
+      "raw_sha256": "27b1bbe8269e13f5057e6cb56e0ac497df7dc7b6a119c4fab39d9193aae8c945"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-01.xml",
+      "bytes": 913,
+      "sha256": "770c7d30094c74f84071a5ed4f23a08afc868126f653ab56ef05d70053d43f10",
+      "raw_sha256": "2dc263a737821b1025cee9fb66350e27338723f29e7dac80a71c962c58643a4c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-02-exit.json",
+      "bytes": 18393,
+      "sha256": "6fd7910d4bc7e459aa8648822591ee7fd8a7e3219e090378c74bb438826302bd",
+      "raw_sha256": "baea59761d4e019cb464e2988683566621175a9ab56dea182e9efd55b476ddf7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-02.log",
+      "bytes": 2545,
+      "sha256": "05653d2bf5310526a38c113db2650e4dcca7ce5bd0fdc27e96f89cf0144f9412",
+      "raw_sha256": "55ba1dceb7ebdb78673d2d59c4cceb351e8684bb45549bf964ce2d598acf497b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/runs/policy-red-02.xml",
+      "bytes": 2648,
+      "sha256": "99a4fc92e3fb09e58f7c8e2f2e64d6192a5b965b738c7185e9f82c656fd4e455",
+      "raw_sha256": "10cf15767d95cb4b8a3e7f469dd23d366c617d596569ea2c0d17330503c7168a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_admin_inventory_detects_an_unguarded_new_route.json",
+      "bytes": 936,
+      "sha256": "5e338dea0fef45e55e3ea5fcb3c6819c61df0af8b56d9205f5566bea9f7fd58d",
+      "raw_sha256": "05ae313be25f167c91dabaf4356f28e082b8063349543414b91fdb337eecb56c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_all_admin_routes_require_admin_and_no_store.json",
+      "bytes": 936,
+      "sha256": "03adb3dfb883c17069f91e6d4fd39314efe0c7aa2666f6faa671923f7831154c",
+      "raw_sha256": "1b0b32ff64b23e1596dfdff5b4d9a2f26caa17c3daf18ecffbe79ab0b311ec2f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta.json",
+      "bytes": 936,
+      "sha256": "0a858bfc94ecad60b4094c6e52a172c6e0dd4c3910c01f1d92b09ffa2bbc391d",
+      "raw_sha256": "50e4f750dd36c38e248bda1009523290a814e0ba49cc50fc1280cb39123022bf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params0_.json",
+      "bytes": 936,
+      "sha256": "c2c1887a8d60958647200e07f7a881d8a165d89beadaf9140ce52a242f65d6a1",
+      "raw_sha256": "3ea970bd64b890e07ac8cc84640ea1db2012f2c5f0e4e179d0052bb95ee44a1c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params1_.json",
+      "bytes": 936,
+      "sha256": "fba56421034de9e8a82a02096a663974bc7f626f7fafb2cca0eca00ddc277645",
+      "raw_sha256": "653f55212880cc6ce43c4bf7bb1b7e83d72d4a99e78c4c4e2fd0054fcdad589a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params2_.json",
+      "bytes": 936,
+      "sha256": "d44f95ea3a163ab555101c734a7eeb79963713253712c7babf31134331025bcb",
+      "raw_sha256": "174b87978c394d24e5aaa45c558a2286da7d15915414a1abfba0efaaf433d427"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params3_.json",
+      "bytes": 936,
+      "sha256": "64c37e9ac3427c0b18fcf19c651556dcf0571c96ef8fb2223533f94803d19467",
+      "raw_sha256": "971fd3066268462bb1aca205ac9a01cd0855f007d88e566dd67b371e04567563"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params4_.json",
+      "bytes": 936,
+      "sha256": "61a3745cea16ec84fc9835fba8dda10466a90dcf3553618962ac693257d9cbba",
+      "raw_sha256": "5e22049d914cd32c0680672a13203996527a0426d1e630a6a53291b4619d7582"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params5_.json",
+      "bytes": 936,
+      "sha256": "2636b286e2a9b7f0d936b742e565dd7aa17b04f0496b8618290066db4d2ea524",
+      "raw_sha256": "2ee2175b59eb3de55eaa02b3f8b7f51a30ddda0b5ac684fb9cf87fe3c6dddbc0"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params6_.json",
+      "bytes": 936,
+      "sha256": "e32b5a9d09d018d4cfce1e4015276f0570c202062c14479b81babce3604dff94",
+      "raw_sha256": "00d42331cd9ccdcfde517099838e8096bfc02d5a4e299f9bc6b2c4d6843550ea"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_bootstrap_creation_race_persists_exactly_one_identity_and_audit.json",
+      "bytes": 936,
+      "sha256": "4557d7ebfb42a9b6a1a10368e249e218791f170fe8cd765a5c1bab62e05c3ce6",
+      "raw_sha256": "138e5b3dbd5e5b676ca1d3d9cd655a01ee2142e0e6812780106e6bc1dc6a3040"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_csrf_and_origin_required_and_missing_user_is_stable.json",
+      "bytes": 936,
+      "sha256": "2ea5b0931553f0fc6d9975dcda66803383e18616d3192fabb32af09b93594de3",
+      "raw_sha256": "b61260f23820058525a9491d94bb5e00bcff002214dddf9b8d59f687b0b414f4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_account_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "18ee4aa0c0e422d1970625efa7df74ff10c97f9581fb3a2523a3f3ec27e09049",
+      "raw_sha256": "e31f1fa155c020e0f62bec068dc461690ff33906f81d8e4399cb8f5ef42f24d4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_bootstrap_admin_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "128cf08728424c1486157ef865f9270d812fee835e28f64ff13fdb6f987d7036",
+      "raw_sha256": "416657458499accd768949484c31f8c4174b273b3a6a551aea1f2cb3a59e2978"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_role__user__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "5e8056f23e20bb781730b1d60b05a39cbbae4e81cc10beb992cb5d7732c9ea06",
+      "raw_sha256": "c978c91a41e4c1c7a6fd3b983d184f98186ac8a29407cd6abd889e2b92628964"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_status__disabled__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "6e3235bca8e50bc097d99fb32334f23f565e55bb05d6ee1c80b408d45b249b71",
+      "raw_sha256": "6ebb8b9d4236b5fbbb3ab926679a8752bb6aa2cdaf3440e50a5018cd70acc856"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_bootstrap_admin_SET_account_id__other_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "f0a83a1644bb639baf2d0e57abb677f770549b80ef47e552e5f1c2f734c5cbeb",
+      "raw_sha256": "b2c498d5063f2d730af3bf15a26da477ed1764b76abdf8fe51e241ab8f5d6ea1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_disable_revokes_two_cookies_enable_never_resurrects.json",
+      "bytes": 1255,
+      "sha256": "ca65b3f2da0a70956f16c11d38c54606c8e7ef0d9b2ddc3dcbe74c93db295646",
+      "raw_sha256": "9407ca5e60e56cb1736aa2673e352ad95d9e70e32904a7c5f776b64c5003d7ee"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_disabling_only_first_admin_is_rejected_and_preserves_session.json",
+      "bytes": 936,
+      "sha256": "730c2aa6815302260660721badd16d1cf80124b352293c1d232a917336502e57",
+      "raw_sha256": "df657a75f43e8f2f34cc2e626da753ed263fde1142aa855e1d6835a9d4fadc21"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-False_.json",
+      "bytes": 936,
+      "sha256": "29d1b1e2a08b40000e07699ce3bc868783aa84e1b8896f90a00e07a93e9d1950",
+      "raw_sha256": "c19fedd9e053a4ad2281deada7b144c98f7c5ad6fb419c2295ccd4227fb31283"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-True_.json",
+      "bytes": 936,
+      "sha256": "a6a5b3dbfa67ae0a35adc565003eb01343804c97a1f92a4e3e5fb9ef3e08f191",
+      "raw_sha256": "d7d5e88b014038913137dc22dfabc2863ffe2d97903397077ea622aaef516120"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-False_.json",
+      "bytes": 936,
+      "sha256": "c0538f5a687c8d687d988f76a313315bf0372d60f400aac2868f81f1ebf1747d",
+      "raw_sha256": "67172aad78cb8adbcc1c6315cac6fec837d6fb98b0bd7ec00dac84488a8ce8ba"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-True_.json",
+      "bytes": 936,
+      "sha256": "9ec457cca2d00dda55592b492717b96653e7f581ebb34816cd9af19dd32be176",
+      "raw_sha256": "e8c4664821a0b50572c82c05012c7802516ac1d00c8065ed26abe250ab52e8e1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-False_.json",
+      "bytes": 936,
+      "sha256": "884cc2bb99737d31f903ae11382ec7d02f0590cf871b1d224fa6263e45276354",
+      "raw_sha256": "407e8e845fbc0c8b68d693551ad936c304a18c88f23774269e17feff7b8c7243"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-True_.json",
+      "bytes": 936,
+      "sha256": "95d3148b416c19cda45fd830e0769746b6301f6b51ba60b8e0c0927a90df4759",
+      "raw_sha256": "4c0b45c4e59bf163fb8b6e9475c3d9ae33904a88441fe6e24bfe2442119c90b7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_inflight_login_cannot_leave_a_session_after_disable.json",
+      "bytes": 1005,
+      "sha256": "926f59dc9eb331792ed5984c4b7c4c768c3d8bef098f46fb8815e155696117e1",
+      "raw_sha256": "d8fd134bf4ff8b467267435162304d6809a0d44d9ca33191ce92684a3be25fb1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data0_.json",
+      "bytes": 936,
+      "sha256": "13fcfb4871589ea634908c167f057528a0eff8f0937520b985732b747a65675b",
+      "raw_sha256": "c57fb99268ed758bf67ee3e065d8cd6bda3b4f610d0d7243c2d8fdc1e21967d2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data10_.json",
+      "bytes": 936,
+      "sha256": "0230152cf96d300fc6e7bcc348a334e7432198817549ca007168e4416a124adb",
+      "raw_sha256": "b442e8cb764063ed2571af9874f7c8d1798c9a9bbcf4ebad659037d08ccab795"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data11_.json",
+      "bytes": 936,
+      "sha256": "f95d5da8eb348609543de8ec4485f489246bf26be27a7df81e81da1fa0e114cb",
+      "raw_sha256": "c98c0d03bb5670c59d11cae41fe4a4f0ebaf4cb65a13ddafc915b7fbdb769bba"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data12_.json",
+      "bytes": 936,
+      "sha256": "181fc319ee710e23fa8bfc76fe4cf12bdb14caa9bccb13888a2f7ecd579336d6",
+      "raw_sha256": "7f6770d8ac0083c7d44ac9a8945b0811c19208f59b5fa8b426db4413f4662b36"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data13_.json",
+      "bytes": 936,
+      "sha256": "5109bfd7332e854f6e35051191b1a473eefb9fec014d085dab12cb67cd57a5fd",
+      "raw_sha256": "69f27cc7fb271bcdf9f2aeda99c763887e4dd97a727b0742d6511e15b2c6c955"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data1_.json",
+      "bytes": 936,
+      "sha256": "48afa742827c7e6aa370912196f1c459d0c82e68b093307e2120ee793ea02a6f",
+      "raw_sha256": "1f27dbf98c3a92df34bf61eaa043d549c11f9c775aa0587865017d1d0782e6c2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data2_.json",
+      "bytes": 936,
+      "sha256": "2359d30c49e2f70aa6d0cec125923770916d54d04384e51d884309c746cac397",
+      "raw_sha256": "9a025ab2bf3f71b6d660c95edf374def9fd94c2236d87e994df36521a4ed260a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data3_.json",
+      "bytes": 936,
+      "sha256": "88a34b139be3745fb8fcee99de8ae053a3f148203bbf509450b70c6e39e8b0f9",
+      "raw_sha256": "3dd249766b1e0330159efbc00cfe416cc8eaced8dd4f29f3ef8db8363c40674f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data4_.json",
+      "bytes": 936,
+      "sha256": "29546923b64d6eec98ee93156c4eeadceb254bea59b6320d5f529826296eeb63",
+      "raw_sha256": "a2ce6e0b6ae45d2e0619056d61c9b5bfaa7e0efda45ae0c4134c76f14d5aa53f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data5_.json",
+      "bytes": 936,
+      "sha256": "665e19b99015d1bbc572684ae512bf786201e736840bf73d1042d096214e149e",
+      "raw_sha256": "d763960e062a022df1b6d78ef9bbe51535a0ec7e382717b2e04e1496fd6a270c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data6_.json",
+      "bytes": 936,
+      "sha256": "8fed1f5dc687654c62f5582f46416b7945a0d400162826b7277349533ab9b412",
+      "raw_sha256": "5a720e8668a908b65982fab7b44b9d9c44ebc4f13bbdde2825f13ecad5d0632d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data7_.json",
+      "bytes": 936,
+      "sha256": "10d7eace8f2aab8e4920eb39de6ccdafdc2a7c9b3dcec9617096afcb0195d9ee",
+      "raw_sha256": "05f6e391f24961dd631c8be74f7d090e2584189fee7f90b31cb76f0c3f586b23"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data8_.json",
+      "bytes": 936,
+      "sha256": "ca7f9cedfe46c140aa6c88425772cdc1a277d578c46a6be5cfd88128168feaa1",
+      "raw_sha256": "97a17e61b858bc929ddc282e7e23da825675fae1b5dfca4d5ab5593f0dea9898"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data9_.json",
+      "bytes": 936,
+      "sha256": "852dbd5e0f716ddafcc9da3fa25bffc3e9dc052ed054fd81917fed845c4011dd",
+      "raw_sha256": "d0d362b48454d9fa6a9c3e5dd028b34e65559c5ff7f8115b5dd4cc26a6a2d591"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_last_admin_demote_rejected.json",
+      "bytes": 936,
+      "sha256": "b1d8e78544e828d15869d1c94655c5c9769eb6ff4caf3bc8de526cfbf0dc195d",
+      "raw_sha256": "6716463ce12dfeb7910e072507d390dc2f3805a175658b9c6362b75ff4341faf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_new_owner_policy_first_admin_cannot_be_disabled.json",
+      "bytes": 936,
+      "sha256": "6abc4c8187b03d0c7d54f36e5fb70ba148b0b75e5f36286c8463c9de0ec87b08",
+      "raw_sha256": "2e96c19baaa166828088da1246bc3a2330e8c8b65f52bf27b53d4b00f62afd32"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_no_delete_api_bypass_and_normal_accounts_still_deletable_by_repository_sql.json",
+      "bytes": 698,
+      "sha256": "820b513a9faf5f4e4a9e03b3c589c147ea8f237fd3d091bf13346d09e6a03273",
+      "raw_sha256": "ff98cbfd5ba9bec1939f2a3ca6f1fde76fc2901a7fcef024699d2aceebe6adfa"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_pagination_literal_email_filters_and_last_login.json",
+      "bytes": 936,
+      "sha256": "b728bbae154a60d9898db059315f124247b762321d57ae5d52d78ddcfaf6561d",
+      "raw_sha256": "8c252425b8f13b538c0aa05dceeb1f4856c1f7a5730263240cf80fa80a4e2cc9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_patch_quota_override_null_fallback_role_and_idempotent_audit.json",
+      "bytes": 1594,
+      "sha256": "28d2dfe64a47e6b67c8f299d228b437d98bf614343662896eba54d5b9f79567b",
+      "raw_sha256": "3123f9513b0f2db606324974e4a8343a0807e50847088d4eb5bb5936de1eb10b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_private_learning_records_are_inaccessible_to_admin_and_absent_from_every_admin_response.json",
+      "bytes": 1263,
+      "sha256": "9c213c7b19293bcbe34557d8a67f45f0f43690d54d1fa5ec4dd8bee1de667cf1",
+      "raw_sha256": "53e78535052964e9165fe5a62d7e8b8250e516177e97906fa89ce5915f5a4acf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_profile_password_and_security_guards_remain_available_for_first_admin.json",
+      "bytes": 1093,
+      "sha256": "48961705aa8cd626579683d5afc177afcb591ced073eeffc9b7bbe54b11dbd95",
+      "raw_sha256": "025a97c867933c28221a54bb751798f2a927f8208a393c3f1655cd9dfbd7280e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_real_response_dtos_strip_repository_extras_at_every_level.json",
+      "bytes": 936,
+      "sha256": "b22178d92d6c6e7ec6c01fc52271eb83e427cddd9c9ea19909b7e146b3b134ee",
+      "raw_sha256": "da3f064968e321157455d46308fa5a03be7693550fedc92efbe65d5af3957308"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_registry_survives_restart_and_older_learner_promotion_and_filtered_lists.json",
+      "bytes": 1424,
+      "sha256": "082b5175ddf93177053266f6957d9df4142eaa67a499e809581c96dc9d3c286a",
+      "raw_sha256": "b37d9b1c26a752ad358218d1c62788303d3ebe9837e3c36763feb79d188865bf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_stale_admin_actor_and_unauthorized_patch_cannot_write.json",
+      "bytes": 1100,
+      "sha256": "e3c429dc491d7afc15bc622ba5f846e6284afb0dbe1b6a016d16e78afb56d5c6",
+      "raw_sha256": "c2e46f9983383ff1d1653f812952e89f537a26a5f924b4ce7a94db29eb6bf6f2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_two_postgres_runtimes_cannot_demote_both_last_admins.json",
+      "bytes": 936,
+      "sha256": "6fdc4345e0ebd84e78542340d5fc5268166106f035b129606ce1c68fe5b7f478",
+      "raw_sha256": "145a89b3a9ddf05db09a5fe896d56700b9e17a4e20d8e8e3768c69cd3ad3b0f3"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_update_and_audit_rollback_on_audit_failure.json",
+      "bytes": 936,
+      "sha256": "3fbc21f7ff47932ac767cd50678669248cb778fb9b20c3e4fe2f46c4afe3d2fe",
+      "raw_sha256": "5eff5d66cc9bd3162aad211d25d96e2c833245591274d7d02c10974703c7cb4f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_update_rolls_back_if_session_delete_fails.json",
+      "bytes": 936,
+      "sha256": "9128d6d04564b24ea4ee5f485f3e0806c8416dc9cb5db02659c7082e92d5ab08",
+      "raw_sha256": "f25eacda6b5926ce34119092725a8f34d95f84deac7172c42dc01415cdd033f2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params0_.json",
+      "bytes": 936,
+      "sha256": "f81eac9db89679e3addbdfceac5549aa1055ba5a72a5bdb6f51ddc5ef7330ff5",
+      "raw_sha256": "add1d686bc695a7827fd632283962e8558c2169544e90192dbf7fb829a25f3f3"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params1_.json",
+      "bytes": 936,
+      "sha256": "5450e70cd8369f23b7075eea70f042250eaf0ecdb38c445324c5543d255cd397",
+      "raw_sha256": "6b3cb1ce955b15b8662cdf7d544f7477f1226626187b511145423efc10ab7c17"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params2_.json",
+      "bytes": 936,
+      "sha256": "3fb47279b6bfd056ab5f3972ce476011c5a8b79fb3b611088da1d200af9524ac",
+      "raw_sha256": "bf185cab829903a3265f5f3f156b1a7888b0e9c425ab5520eb1a47e3726b6d23"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params3_.json",
+      "bytes": 936,
+      "sha256": "b3af59584f30ea13b9e1853c3157e85dc3075967f84558e3d40bccc5f286b3aa",
+      "raw_sha256": "6ee367fe74dc2cd03574a149218e678e4fb998c552e013a33eff0d0bad926206"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params4_.json",
+      "bytes": 936,
+      "sha256": "82cc6bf8550c3c92d72b32c3b6f8ef5bd9b2e93fc714c26c3d2abeaa6e3db032",
+      "raw_sha256": "2ccd1b53584bf40dcc662b8ddadd1c9ce5bc74560600cc3708c7eb2881d1311f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params5_.json",
+      "bytes": 936,
+      "sha256": "18d1c1f060030f4073ec19b7274f0ff027fef41d743b09d7b70fa97e7601492c",
+      "raw_sha256": "059699e29551196b1f408daa9ee4285527372c1ba8a2401a96d9c4a408704077"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_filters_are_bounded_params6_.json",
+      "bytes": 936,
+      "sha256": "06d269951118a3ced3a5e65e837ad518c0a6dec4c5e503e109693453946b9362",
+      "raw_sha256": "612d1b25b9a953a68259d3a5d3d8d73179ea65f15710e5be50e207a519805f8f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_users_public_projection_search_and_demo_null.json",
+      "bytes": 936,
+      "sha256": "c4c06bb42ad46962835b795dc45c2c828c037ed663a6c1e6cc9b615fd8740761",
+      "raw_sha256": "ebe5ac03f4bfb0915812e8deb971f211e985a4b7df5cd74004012e705b745c16"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-01-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "944ab6a3e8f07fb4564cde272c2d764370132526832af5f1dac4640419ddc71b",
+      "raw_sha256": "fed7dc9e8b16cab2fb23ee66613b2770c36665eb54ae30b7b3f495c35868700c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-12-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "7dbb20b951e614e09063aba49fc301fa7deda43dae2da21b7b6fa14b488ed8dd",
+      "raw_sha256": "8ba12cc71868a851a0c02f4f54e3e0e54ae6a895f30a8e24fac28e9c2a36b02f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2028-02-29T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "9ee004926eb34e4b81735f3c631b5618094ca09a16cd39cd5a0d151461cb3cc3",
+      "raw_sha256": "4cc6ad3fd3f7d9e588c038c0e724ad11747e31e0558b94fb775f777ffb926e74"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_admin_inventory_detects_an_unguarded_new_route.json",
+      "bytes": 936,
+      "sha256": "f2a12fd55806a3a978cba7a3c669636249cc9a40a91273ee0cc2fbcb48cd12ce",
+      "raw_sha256": "7715771b14fa3ecd177a7c59558689cbe6914b4413b6ee3272d315f6f23fbb6c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_all_admin_routes_require_admin_and_no_store.json",
+      "bytes": 936,
+      "sha256": "b0dba3059563ddd40263afae1a851cb63352826ca1e2432106dd03ecebdafa03",
+      "raw_sha256": "7c89d74c8e41b7cdb5c9be9e8bef40e5dadd9caa4ff78f1d4d84f144691e1140"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta.json",
+      "bytes": 936,
+      "sha256": "cb43dbbf1a71015880143efcebaaf5cbef840ff1f171a4c7be213ee7bd75029c",
+      "raw_sha256": "a2a09a1cc84bba806c12b15236184b5701a4d307ca9bcefb7ade708fc7e43bdf"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params0_.json",
+      "bytes": 936,
+      "sha256": "1522ffa7c83d7afb278a496dff26fe1a54bdeb0df7bb87c749340c918298ad2f",
+      "raw_sha256": "344f0ac96228974792bc0049b2a155d5d42f3a9c8fedc0f3e57f5e432ff1a551"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params1_.json",
+      "bytes": 936,
+      "sha256": "71815df4859824d9e00edc52d5bb49bfd10fce1f1f93527f36c5d56576b0b49f",
+      "raw_sha256": "0a3e1c9ccb38771efabda4bddac4b06fe189314d9d576253fc0020e3c9a99bdc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params2_.json",
+      "bytes": 936,
+      "sha256": "08edf7123ca9e5452dcf5a9c28342d9cac8dbcebffa3988a919282cf80fb7607",
+      "raw_sha256": "d727372401125dd806e5f40217992f75bc813ddea8b2feaf6ee7f2ed24d145b6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params3_.json",
+      "bytes": 936,
+      "sha256": "2c02538551cdbb2c2e21d3447255b7c3649ea6f82df3037fb9d4f1279251b75e",
+      "raw_sha256": "cc98d6ac78b7f1fa9cd1c0b254b0a5f1cca4133ac6cc584b5e9f78aa259dfdb2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params4_.json",
+      "bytes": 936,
+      "sha256": "250b51eea2f006e47a10f1d7bd1d60c9cae69ada7bd731c1c2077644507f016d",
+      "raw_sha256": "d3e990559945ed889773de4fc037a10953a105ffa4037a32c61e4164d5a9fce8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params5_.json",
+      "bytes": 936,
+      "sha256": "011fd8e1ef078cbe247ab44b121d3aa192b9f1c12475c5a910bcdeb4efb8acc5",
+      "raw_sha256": "19d2bc5fa985f2981fa7b786d5faf5c2541a36ce3f710549e227fcc2f3d58829"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_audit_invalid_filters_fail_with_fields_params6_.json",
+      "bytes": 936,
+      "sha256": "4af37bf916c92a4b740b72485b8aa80306d48564dcda50c2e6868a20204ca8cf",
+      "raw_sha256": "ea32577fe93dc621b6c79c26045ef486d694c6e84944dc7709d204b60a4216cc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_bootstrap_creation_race_persists_exactly_one_identity_and_audit.json",
+      "bytes": 936,
+      "sha256": "2ce86681be4c65d73902f3a8f80d8280d1f039208fb3e9da46ed97e4d1863b1e",
+      "raw_sha256": "b460a891a6def85846ec4d0222eed1b58949cf9267b6dc46620cae45e8bf5fa0"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_client_cannot_write_bootstrap_identity_data0_.json",
+      "bytes": 936,
+      "sha256": "beff41cbc2fb7a27bf1491d1c5da7cef2f05de94e22ad19c602dd04926fe2f7f",
+      "raw_sha256": "20694faf8129e212d3b1eaef745eb07265bb817d9a3b0f6c333cf376f87d0a0a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_client_cannot_write_bootstrap_identity_data1_.json",
+      "bytes": 936,
+      "sha256": "1cb59b64c3d3470f101c397aa078bf0ef6e4608d81e7ca220565669f0fef56d9",
+      "raw_sha256": "077dfeb870e71b46b65f2e2c8b3c46e9a78297d2deac2dbed507015c07aab3c3"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_client_cannot_write_bootstrap_identity_data2_.json",
+      "bytes": 936,
+      "sha256": "7e2bab3d57050a78a721fe2b22525d3fc03b7fff288eee063adb0b19b8dd96a0",
+      "raw_sha256": "8a20a3dd30b18655c93b80fcf37fde0abe603b384a5b2138a99d5398adcdd703"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_csrf_and_origin_required_and_missing_user_is_stable.json",
+      "bytes": 936,
+      "sha256": "350d07a610542ef10cea425c9ae3418b4663d7fa4849968dff4692c21851db0e",
+      "raw_sha256": "abaefafd2beb7fae19ae731ed5fa9d972cc69a31ac3a496da63c5a6676e6082a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_account_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "fd1411f0335f8a4e92993c1fbe0651dbbada3443c722c651f9c4b666586a1c74",
+      "raw_sha256": "4d61c96b4299c7aa64ccf4bc19f3ac63ab65fee49e0a054475453b0ff65a74c6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_bootstrap_admin_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "745000086774bbc7c32420370534230c593fc7710726efadede9643144e86bd3",
+      "raw_sha256": "dcf8c6b23ac9220fd3f4a0203b958fddbdc8411b7ce081c1cf00e1abe51828a4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_role__user__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "17be69039846bddbdb31f2e0b431b272f184118769f1e0d48905119126136023",
+      "raw_sha256": "f3dd1f344fb610ce1e797c66e31e6d1cde7863128350f6a553c99fd18a33cdd8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_status__disabled__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "1e9108356f113f89e61da75c416c94882ce1bd2db713cb9272e2c815a34a5b47",
+      "raw_sha256": "21327cb697ad70dae93c83fde373d49b912f7ada2a9f5176664e24ab0dc7e05c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_bootstrap_admin_SET_account_id__other_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "5d066b52b8b3b2fcd498999fa93dcbe752d58e77a8a1027e757e06356d62aaef",
+      "raw_sha256": "4310d2f6b33bebbe6db45fbd0fc6a64fca46f62ee4752ad3de1b61bea3d5dd23"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_disabled_actor_and_disabled_admin_not_counted_as_active.json",
+      "bytes": 1096,
+      "sha256": "b30b91e92ecfd36620d23e12ec25546df37e43f60c98c53a513187f6cfb613e7",
+      "raw_sha256": "99fd5830a44e5f0d4132b91d9f4df2300f4ad6c26872a458f98f672f177989c2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_disable_revokes_two_cookies_enable_never_resurrects.json",
+      "bytes": 1255,
+      "sha256": "c5637e6a714cc2bd47f747ba583736f800676bce33e17a3bae4f94c0633b44e0",
+      "raw_sha256": "d27afc91d9e37cae569cb3c98161ad6f1ebad9808b7ce6b2c8aea8f81a660df6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_disabling_only_first_admin_is_rejected_and_preserves_session.json",
+      "bytes": 936,
+      "sha256": "8f78de06011976accab1f998da1c5697b62fa7b9e4abb54b7aaeb8ee80ffedca",
+      "raw_sha256": "da7ce02c41e5d2c7d15bc81338f5b80f524cb2c50b2557ce7fdaf2256713f18c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-False_.json",
+      "bytes": 936,
+      "sha256": "a8c177ff43978d3f3e4bba36be91c20c5d9d49e2f66c064665b513fdbb958657",
+      "raw_sha256": "139e4a153b672533120db1f5d3dcffc95ebfc2c87e3f6d85429f9f09303f00ba"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-True_.json",
+      "bytes": 936,
+      "sha256": "490854b52c3303788481b779d38a11a688f85a65a8b2fbf942ae00c0c88dfca5",
+      "raw_sha256": "0301803bd9886006b098c00fe0825bb6b06427e80ad01bb17c1fc454a5323aa6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-False_.json",
+      "bytes": 936,
+      "sha256": "c9d014a627ca3d2bfe21967384dbd0ded5afb344788963a055680724790dec2d",
+      "raw_sha256": "4c7ab0ed6d7821b660f9975e01a77f28fc3274634fcb47147faf6e2eb38973a2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-True_.json",
+      "bytes": 936,
+      "sha256": "80ddb50875a8fbc32185b9ecca4acfcd6f383c1be669be4cc354606fdbe657ee",
+      "raw_sha256": "c7176647f394b3dd1cd6671cf7d1c9eed5f70b46487cee0ce3c54ae752a85c91"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-False_.json",
+      "bytes": 936,
+      "sha256": "74a7dd489ba86c9e23f3f64c002567d8dd30718599b6d32c538cd00019f1cf07",
+      "raw_sha256": "af30d961b8c41364b69f8d1dfbf0ca89d1b3352c903e86f6c249ac50fabaf3ef"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-True_.json",
+      "bytes": 936,
+      "sha256": "eac49d161e78ccd9c7215efff7b07a98ce3e4cd28592807dd4335bd452aa6380",
+      "raw_sha256": "7ecbe47c75a7ca97ccbcb6c1cc8a37297cb6c1c1ba3bcb1f570c35df17214197"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_inflight_login_cannot_leave_a_session_after_disable.json",
+      "bytes": 1005,
+      "sha256": "c7ae783381e80ae02fff25694a206c5bdc0f4781ebed4894a88df3165c14b6c7",
+      "raw_sha256": "ff25f4871b0d163893d25e0079ec5c49c668c7a89bf3ba48f67fd56aee364803"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data0_.json",
+      "bytes": 936,
+      "sha256": "f1e376bc2d1c839700a7a3cecfa7a50fa5f7f32433ff68ef21f222b5d9662a3f",
+      "raw_sha256": "3c4d04332efe4ecbfe84e0e9dc75b612245e15c093e4d475dd380595ab836c5a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data10_.json",
+      "bytes": 936,
+      "sha256": "f80e326baff733bb8e646e905383dffddd1e71104dc9ee3dd9129cc6a159dcd5",
+      "raw_sha256": "9f4a783ef55463afcb10ff463ff4c3e243f2993c603d155ff7125de203485546"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data11_.json",
+      "bytes": 936,
+      "sha256": "692761448a8a67b3e298a16c5047a05633d8b6b8374ce4e1aba46a4f3c36ed37",
+      "raw_sha256": "e89d1a2f0632a53818ef95a89da34664ee6e544d1808f0d9d9ed51686b0a69f4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data12_.json",
+      "bytes": 936,
+      "sha256": "a65c53ea9614b2455bdfb07276bc16c25e75ae940ee1f32d86f3087691aa2ec6",
+      "raw_sha256": "882d6ae4eff01fc50766b933b19f724bff4144ee53f1abc4aa2e45fbe5991b59"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data13_.json",
+      "bytes": 936,
+      "sha256": "cab7d5438e1429020c9db07817eae10c5868f1b91a771a344f2646ef86d81fa6",
+      "raw_sha256": "e42a435a1bc5a3beff0431ea42a3c5096fac40ecb987eae5c00ee9456129609f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data1_.json",
+      "bytes": 936,
+      "sha256": "f3db407e697cd20ee81f8a5e6916a1b8e0e71d3d87dc762a7bb9c77bb990fa22",
+      "raw_sha256": "34e2a76d72373ab0836d08905c51d92f91e3c31bfc33216dd65a29dafa8bce77"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data2_.json",
+      "bytes": 936,
+      "sha256": "ae172c0fc07f6e9f572ac2ca8c78f9b898c4e943c6bd83153c6dc56bef65594d",
+      "raw_sha256": "1e0790f0dbe7437c8f76460cf36bc12b958558f2fe46399990d9924600aae94f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data3_.json",
+      "bytes": 936,
+      "sha256": "e0ac47d1d45a70ce3014e5dca2734597e29cfaa337d5f2fb62e194177806a9a5",
+      "raw_sha256": "711dd961b558b1b0b4bc531b30fbb509445f63d3ee69da4995cdcda73857e4d6"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data4_.json",
+      "bytes": 936,
+      "sha256": "c0f505ec54efb54852964c76ca979d78a07ef0eaad38593c6ebf397431ab1bd4",
+      "raw_sha256": "21a89e5b219d509ad6b27608dbd5473423cdca68cee46c82f1e4ba2c858d7da7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data5_.json",
+      "bytes": 936,
+      "sha256": "51c7f967c249f15311b20f64ba8e622800359de8337e03b1468d857b3e9e2519",
+      "raw_sha256": "99dcb65a0fdd723cff6cb599bc79dd6ede86763600b10087771722ab3ed0412d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data6_.json",
+      "bytes": 936,
+      "sha256": "cb1251edd3802cd52f4f5167f6422ba84b9145cedf821ce17c7f2aecde46c061",
+      "raw_sha256": "6905e84476f12b03a157e3f1dfb315d65ca5fe092a08be104431ed4d92e7be08"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data7_.json",
+      "bytes": 936,
+      "sha256": "f9f8c693e86e920241e6722fe02224f6c13ff9e307a37492100fbf812985b741",
+      "raw_sha256": "5c4a8bf301bd1876ea4b3822ae8d897f895e34637f3d353a4e68b4c3387448b2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data8_.json",
+      "bytes": 936,
+      "sha256": "8b76aaa8f7f3642ec5c2b8dccb1bf32e8c69ec331d09cd4b1cb517d6ab383e55",
+      "raw_sha256": "9da20555d61a36658272defccbf9715d6b8f3d0523152f8d85e9a47a99ef3402"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data9_.json",
+      "bytes": 936,
+      "sha256": "914e528f3a4b394b43ba5ab5fe9e829fa989b64efbffbf2f2b0b2b31cefa48f8",
+      "raw_sha256": "362ff06dc28f99467e6b07c2f9eca14a4d16b11e1ee919f6371c23e9c7e65cf7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_last_admin_demote_rejected.json",
+      "bytes": 936,
+      "sha256": "d251fc05fec1266b7637362dcb703276c6aad7aa11979fa879279f1a5b29836a",
+      "raw_sha256": "3d8865af85aa69f8075d403f4ab203d48b8e3d4f03d5a0de1192ae4348c6a738"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_local_cli_assigns_only_explicit_server_uuid.json",
+      "bytes": 936,
+      "sha256": "254fd5f34e58c2a1a57f818991e61ad0b4c54f1f34beeda3c74f6476d87257b5",
+      "raw_sha256": "3007eb85fa8963d9b60175006e876e8315f7d46942de638280f7a64cdf54d1ed"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_new_owner_policy_first_admin_cannot_be_disabled.json",
+      "bytes": 936,
+      "sha256": "3abdd1045123154b4fd30a8225ca650cfb3bba09f21d0919416f7d7568a53c8d",
+      "raw_sha256": "0b22923b4970147fbe104fbd9269492ae1463d945034e693455e819c76d2db02"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_no_delete_api_bypass_and_normal_accounts_still_deletable_by_repository_sql.json",
+      "bytes": 698,
+      "sha256": "dcd97d9dd23cc84d32b704db0652c60c7dcdf101b3b74c775bb78d0d25ef624d",
+      "raw_sha256": "52ac9803274e1ff5db10d5a3256db11a233a1ecc4114e53822bb237a24eb419d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_pagination_literal_email_filters_and_last_login.json",
+      "bytes": 936,
+      "sha256": "8ef3fa5f6ae55ac02437473da33d745f58541458176548749d0d8d8dbd53242c",
+      "raw_sha256": "54ecc04a558d078b9258bed0910175362f38543b18643bd0c1fe7c20c6e645bc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_patch_quota_override_null_fallback_role_and_idempotent_audit.json",
+      "bytes": 1594,
+      "sha256": "783810e2fc9528c2f2def2c8ee6ca0fc3bf71c6e6d7ee624fb3a5591f4484d87",
+      "raw_sha256": "7d094ba0bc47bbea1031136c622aa6d3a8fed85f649bb50bb21623d51bc4748f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_private_learning_records_are_inaccessible_to_admin_and_absent_from_every_admin_response.json",
+      "bytes": 1263,
+      "sha256": "293d7562fe351fe3938ee32e7290883675df6894b3a0b5a183d59b593abcd135",
+      "raw_sha256": "a9b526950d2d195b2504b155e49622518f5fe78f6a58fa8559c38292d877b74a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_profile_password_and_security_guards_remain_available_for_first_admin.json",
+      "bytes": 1093,
+      "sha256": "63164da7a871870bea80bd4e7ce84f4c0b8a3a21c2d860b34c479b4d77882deb",
+      "raw_sha256": "45b4fc9db0bd830d9433ed2081136af2e66f8bbbbd69b622313fb11c74f62f29"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_real_response_dtos_strip_repository_extras_at_every_level.json",
+      "bytes": 936,
+      "sha256": "4880dc7d8bffd3476a35fde49006824fe2a5b3413b423dfb1136dfa77605c001",
+      "raw_sha256": "5e9b1914ab6558b5d8ce8fa251790cdea389ce2b1b7c21e35c34301c4f415511"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_registry_survives_restart_and_older_learner_promotion_and_filtered_lists.json",
+      "bytes": 1424,
+      "sha256": "023edaf2c2e5f5f011a1e6721fd74a357f45f57a19ec2c95f89ada47f20d932c",
+      "raw_sha256": "433281ca87e00b2fcf031eea9ba902b2e539e5f9129b4ec3118db5a74f128351"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_stale_admin_actor_and_unauthorized_patch_cannot_write.json",
+      "bytes": 1100,
+      "sha256": "eca5bf8f1b26269d337d17c677a0346501af765d99783d1111d185eed0aad57f",
+      "raw_sha256": "b8df65801a425fc36bb6439fbf448ebfe67472e5713448694ac52e23f99c66dc"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_two_postgres_runtimes_keep_first_admin_while_demoting_later_admin.json",
+      "bytes": 936,
+      "sha256": "1baab2b299bf2a96280d3ca05502eec9e9645da5c261a5f02801ab0e35526195",
+      "raw_sha256": "5327202a3e7878d2ce4e076dbb36e0b3698cb59797d702efc82366c52b831b51"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_update_and_audit_rollback_on_audit_failure.json",
+      "bytes": 936,
+      "sha256": "a39cad04cbd0d26006646a9f6f59f049e0c8c24f3bcb9547b4eafbe734e80903",
+      "raw_sha256": "195c5d49527340c1d755f89e5d1c982ab0ca22e87f378b2e571318187a339844"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_update_rolls_back_if_session_delete_fails.json",
+      "bytes": 936,
+      "sha256": "af824f4d8781bc0ad7b563937a366dde6fc3f9a373c867aca67e39d8d03499b6",
+      "raw_sha256": "fa7a89ae2366fb510bb9ccc074d0ca9519d1f904b1ad3e1f7c1669b5ebe8ab88"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params0_.json",
+      "bytes": 936,
+      "sha256": "e25e6821fbda23ac8baf786341107f9e0a7fe4a07bc807fdfbe9d32ddccc113f",
+      "raw_sha256": "86df26d2c0c96f20ae4dfab19c8d6488940459e79907f40f28dca20f0622ed74"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params1_.json",
+      "bytes": 936,
+      "sha256": "ec191dca5b5e662cd988e53420cb78fc302184e5d63ae2a7e880ae73775ba3d1",
+      "raw_sha256": "92e7c58eecfdc705f577e3f448edf4a4f3b2f35857e779687161a7caad9a7c98"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params2_.json",
+      "bytes": 936,
+      "sha256": "bb73b300199a13073bde0a2856a9dfdadb2c59b00dd01295455e8883df6edcdf",
+      "raw_sha256": "2db20e0cd3540cc53fc01e652c589547b53edf4f26453afeffce96b2bbd88a5d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params3_.json",
+      "bytes": 936,
+      "sha256": "e73aac34cfb3a25ee851624c8e67c65918b34be90a8034875a3a3c076287d0e9",
+      "raw_sha256": "ac11b4d700680694d188cead0a4b5759ed4a2f9636b8fc75a6b199647fd1287d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params4_.json",
+      "bytes": 936,
+      "sha256": "854cb4055187e09a71b50a63794a30920cc1f8f88b72e69c27212540b82e753f",
+      "raw_sha256": "824228b16600ab4701d617290532cfaf160af0954ec656c5fa14d6c916a17956"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params5_.json",
+      "bytes": 936,
+      "sha256": "e5a46d9230582b9f500463f5680753dc64ae75e5304a5e2d85db382e292264e0",
+      "raw_sha256": "38c511f9f6a082f8dff17479d79efdc374afb4e15218b9cdb5402648db98b8fa"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_filters_are_bounded_params6_.json",
+      "bytes": 936,
+      "sha256": "7c7f6eaeeac77dd206af7dd4023a0e53c04c5d896dea281c03e5f9c0deee3bed",
+      "raw_sha256": "c646f69cc28295c6e55b98ab645740a0f590a8926aba3df9d051c481542374ab"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_users_public_projection_search_and_demo_null.json",
+      "bytes": 936,
+      "sha256": "490378a3ed6345ab5a49a00fdf52583383d7fcf610287a76f96b497de1cd39ed",
+      "raw_sha256": "3f90ba393d8cee3c924d393a7adeb27e11207753122dfb7365b681736f9bc0a1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-01-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "67b55683c4144eb1454374eb14831c43a4449cef32400d95a41f5537fd67ab68",
+      "raw_sha256": "31e609180d44f15f1d0dec3336beb7888b476263d5305ff5b8fcdc37fd7c069c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-12-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "fc3ce901e469570a9d51a332124655d9a63c252117566ea04341ed7d95c94f71",
+      "raw_sha256": "3f7880c3d3e9b3be4560f007f082992568fdad5bdc46b88d73ea39a1008349e1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-expanded-02/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2028-02-29T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "0fccb2b6c3e6b0543b20b04fc9c158f53b3615795ee45c4432630f2a1795e993",
+      "raw_sha256": "63d0805baaa5a87b353aed65040e0885820c123464c13f48114c4b07d720847e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_admin_inventory_detects_an_unguarded_new_route.json",
+      "bytes": 936,
+      "sha256": "b0557730491dec1272224696603e3818754f9693c7516195042a51756aabf399",
+      "raw_sha256": "2fe004cc12b48c3dfcbb2f8a4f5c0aea3ec7cf511b1ca29be62b7be07bbbcbfe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_all_admin_routes_require_admin_and_no_store.json",
+      "bytes": 936,
+      "sha256": "9f83224b4fd089301e62b53fee792a93f87356218fb6a496e026724791a0e741",
+      "raw_sha256": "63d9f9ff4800670a9d7747d328966f1fab48070a153109694631ab0d744cc045"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta.json",
+      "bytes": 936,
+      "sha256": "4adfd834dc5490997bbefe2f6da3140b02baa19eb53d895431960506cec2fb0d",
+      "raw_sha256": "fe498b30b9a4446c71d70794a0a4611ebd0fc8fce652789b91d3767c76d79511"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params0_.json",
+      "bytes": 936,
+      "sha256": "892f6fa36bc75ff9e4b0c70e2aeb211e332db61561521e04cbd73030567e275d",
+      "raw_sha256": "05bc980bba6262db00ecb837918d49d212260f17545319fc7caa2a1c1bee4d67"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params1_.json",
+      "bytes": 936,
+      "sha256": "94365008f8ab23b36739010cbccd0830bc05443897276d88918c46c69ce67951",
+      "raw_sha256": "ecb09a723d9b254e60ce4638fca54a83b1ad18677a06ad1f61e4fa6c058feb0c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params2_.json",
+      "bytes": 936,
+      "sha256": "155c601a522b04a160b9af09fe15a7de00d5696c6483d6b46d596e8f83cd1172",
+      "raw_sha256": "59c4d7dd440e2757e373755ee35146101d0fcfd6f13bb73ba14816a5711a9283"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params3_.json",
+      "bytes": 936,
+      "sha256": "02fe6debb51d1edb73ed0bc03f8af3d8fba9e47b15e0156f2819f3ac83996616",
+      "raw_sha256": "cd6b7d559987ccd048ee937745cb7efd06e9ae7f81a81543ac5050c942023570"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params4_.json",
+      "bytes": 936,
+      "sha256": "2a52af1b6532aff341fb138d93f7503f2bc20d4c1b243a325b89b4e418d53c50",
+      "raw_sha256": "1b9856666857df2a9d011a29e6428be2d0b39f1eee87c81d0af649702206bc85"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params5_.json",
+      "bytes": 936,
+      "sha256": "dd6c70fced49c7968d083fe619b92163a4638d9e72ee2309a57f41432a9e0352",
+      "raw_sha256": "0ea03fe6d97db45055bee5ae946fdd6c902f0c2d2661a1e645a86b531873c3d9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_audit_invalid_filters_fail_with_fields_params6_.json",
+      "bytes": 936,
+      "sha256": "97003e13d4f6b968f7ed8b017daed89f61011a2b1f895467344943cb25200e45",
+      "raw_sha256": "0b64296bb4211d82d11c46fc891a4076426958ee9fbf77cb5f30eb57fe37736a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_bootstrap_creation_race_persists_exactly_one_identity_and_audit.json",
+      "bytes": 936,
+      "sha256": "3dde4803b4c971f72f86ef798f24d1d5d2763783a29b1c84d250a4ef62f2ff70",
+      "raw_sha256": "daa5462cb524ca84de05af5de6bf4aace32589a52dcd7f9c0fb320772777d5e2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_client_cannot_write_bootstrap_identity_data0_.json",
+      "bytes": 936,
+      "sha256": "7104d104125f90c2d6b18f9e2dfde42561d0dcbd5ad2627d83827ecefa176865",
+      "raw_sha256": "f5e69cea1b550de36d8e2f61657610f0df17532d0dc7c126c3858c859b2fb4ff"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_client_cannot_write_bootstrap_identity_data1_.json",
+      "bytes": 936,
+      "sha256": "141d7bdd272b8edced287bf64886df8eb1bee5469980c94d74b35d63bf5d0e74",
+      "raw_sha256": "05de80b907f4da48d8b2d3b72d411ca9c8f885d09a36c66f54f26e67fcd1f1e2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_client_cannot_write_bootstrap_identity_data2_.json",
+      "bytes": 936,
+      "sha256": "c1d1062c79f9d20d829087530f8b8989720d09e5850e70c27c56269fad87abf2",
+      "raw_sha256": "54b2f6cf3d86035bbcae84d81ff2b6936371df44e9ffcc5d8414b2f52ffaa85a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_csrf_and_origin_required_and_missing_user_is_stable.json",
+      "bytes": 936,
+      "sha256": "c28a6d8653a28fdb6d08b6111fc47d3e0bdf70c80a1c52e2731e685a669c2d50",
+      "raw_sha256": "4c1c6e4d77c8b37eafd78ac1cc2d7bc0f7f5ed66db2200221854a07ec5d7e089"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_account_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "e8ba8656c01cd6e323f8cdce028fdaa90159f3dbfb5eca01451325ec454411a0",
+      "raw_sha256": "c9250c9a6a146845be5fa00f69f60aa8b9fa245ffecf26630addbd6db790a40b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_bootstrap_admin_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "7b53cf313b57902008f3793874b7f58de41a5cd3271a85a8d5bf9042db60f9b5",
+      "raw_sha256": "a975b7711b2e5afafd89cfc5e62281e8e19b9a6e07246765787ae2e9ab2e731d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_role__user__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "5b64703f4a296baaa2b9ee9eaf52187b55ea99ecdf530430171ec542d3704662",
+      "raw_sha256": "b613abc4531760862276b9d10fb3119ded918ab03a94db4b41efaf8c7c7d5a38"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_status__disabled__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "f1b6eb3a64586bf876095629eee5dce8e824d1576383be9edd72499844218671",
+      "raw_sha256": "6478074bcf0115fe678030ace5b2ae030268960e29acab1d0dc311becdeab490"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_bootstrap_admin_SET_account_id__other_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "43826a5aad273f7e754bef5189c4339230885edaca248fea6470ff77e05f6c12",
+      "raw_sha256": "526fe39dbba4a06814526ba83a8ed13d907d0bea3e8b67b8e77890513d7a1a36"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_disabled_actor_and_disabled_admin_not_counted_as_active.json",
+      "bytes": 1096,
+      "sha256": "09283233727f27357cbd38ac378278655010f4941ca4aa55315e6adeb6c6e3c8",
+      "raw_sha256": "b6dbddc671ce51631b76afe12afec16be77460e43b803b6e75a815cdfc994413"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_disable_revokes_two_cookies_enable_never_resurrects.json",
+      "bytes": 1255,
+      "sha256": "fd2af92198e96d7540033f4a5d860c2cda47d2468a6b3e72972d0cbb46b5abc5",
+      "raw_sha256": "285e482a0b15af1217df7811bdb787063d0f2d566f54a9e0197f6b218a5992d5"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_disabling_only_first_admin_is_rejected_and_preserves_session.json",
+      "bytes": 936,
+      "sha256": "5cf34ada31bff203d6edb7bb44b1be7c848fa174cfbac14cdbb878a18d112529",
+      "raw_sha256": "748f985b3d2382542a3930e5caa28fce27b79f991f7bc9137ef9fce6c3d28ed7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-False_.json",
+      "bytes": 936,
+      "sha256": "019c3157b719c2a16491e0e16f4ced835e3c4edf2b6343538046bc2d8ff978f7",
+      "raw_sha256": "a4320714cddbde5445b0742e799d5c553e22e464ce47c958ec9dc1f37b0bab48"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-True_.json",
+      "bytes": 936,
+      "sha256": "601daa398ccf8900e60b3e96a2b3327d3d1634a282d27ced20016f09910e5173",
+      "raw_sha256": "1ddfb1e8ef329271e54a450461a8d82745ae6482be8351a0ff3ddd6006d496b1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-False_.json",
+      "bytes": 936,
+      "sha256": "62d2fa3b9fb339e1a53dd049c36550795ea9c81e3e70526b00399b4fd1c6ca65",
+      "raw_sha256": "4bf1d9dd71f27242c22940e6841b9db8b7dc002223639e4710c07d59dec30df2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-True_.json",
+      "bytes": 936,
+      "sha256": "1ea09d0f9a4813a8a08a4e284800ff467fed4809e7b350a82c1bfae5d7473f3d",
+      "raw_sha256": "a7d6a13fe198786b952af474f2135ef4525f8d9645eccf3c4f1cb440214e8abe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-False_.json",
+      "bytes": 936,
+      "sha256": "239cc21f6141758911a5dcc5c04de1aaf5b6cfe444d9cf3528a00403684ca891",
+      "raw_sha256": "4139615a09ce63e7e671696232b338b191566ba95ebaecb03d3d756e0019ba21"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-True_.json",
+      "bytes": 936,
+      "sha256": "95f69eeb61ce3881faf279b9e2ebbfa62587458ec6d5eb65121f390091329685",
+      "raw_sha256": "ff0014b199028332e1f69f2db274637c5f3c16fdff61e993bbcc01a68ee1548f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_inflight_login_cannot_leave_a_session_after_disable.json",
+      "bytes": 1005,
+      "sha256": "102627c28f0c08f50f21686560c6bdeed32977ff5e3decd131152a8478d6b08e",
+      "raw_sha256": "041bf35552ac58575ed3263f8edc21fed4476bbfa3ac5c65d6f6a5fbe737764a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data0_.json",
+      "bytes": 936,
+      "sha256": "e99fa5126ecce911c2e013067b36708870087c51f88c39eee4262f9b0082fa07",
+      "raw_sha256": "bf2eed99409a2c4af6b9436d976adc0aff3d942349a0114ede90aeb46ce9d23e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data10_.json",
+      "bytes": 936,
+      "sha256": "22dd957815a29c581921425efa62377b0d0616ac8a3d2292b11ca692c8d34984",
+      "raw_sha256": "713e23f2ced231382877dcd02e6a2e405c74e1242009257d2e52b9706c5c793b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data11_.json",
+      "bytes": 936,
+      "sha256": "4ff0161320be3320361aae4444a25fe124ef4c942ce75303e4c6ad78cd29e12d",
+      "raw_sha256": "8ad8353d299e4fca81a1894cf63b0b95d9f364a7f4233b7e250c34746440c296"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data12_.json",
+      "bytes": 936,
+      "sha256": "182c8b1b75c1932510d660a299a9536f18a863e889761a74c6d724f600fd23f1",
+      "raw_sha256": "21f3a5b4ce6e8cd7a319c1cf3c8693786366a764c349d21fd4dc133e5d1211e8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data13_.json",
+      "bytes": 936,
+      "sha256": "1704319c6aa60ee1c5a6070676edb32b90ee08032877ac2e8e19b2373c5cf103",
+      "raw_sha256": "f37fd8d1a05022ca73617b4400899f124b9059b722d41ebbf78e175a27890c29"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data1_.json",
+      "bytes": 936,
+      "sha256": "6fbcf2deae8ada4937d2928825f208cf965686a728e73d3ed0e7ea45706ff39a",
+      "raw_sha256": "f644d2d8a62e9fac08648c0162997aff36e5b81916cb9b105d109ef7ed121225"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data2_.json",
+      "bytes": 936,
+      "sha256": "4c8c749de535cd9defcd29a49d55ea6a63e8a4d7929909acebf774401d2362f6",
+      "raw_sha256": "f134d79c4c0341b65b4f7f5eff13e2eef17abf04492b1d4ed9d933e801b8d7fd"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data3_.json",
+      "bytes": 936,
+      "sha256": "ef86c4f043809f862d535ea62d92e18826e7e179dac79c69f7f3245ffda2543c",
+      "raw_sha256": "93262a2d00fa093ae141484822e4dd2272fffbaa1d208ff54b2b3f96209bb23c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data4_.json",
+      "bytes": 936,
+      "sha256": "db0c01a9819ff403bea789c9627adc43ed41b2d66e7babea551bee637714f1ef",
+      "raw_sha256": "8ab83cc79344ffe6748ef679f3256d16850b72daf0fed391bb6e6609ead6e199"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data5_.json",
+      "bytes": 936,
+      "sha256": "c66d93a1566e4c131decfce2f3fb94ffb9712a0c307ab9059e0aca4e2b958cf4",
+      "raw_sha256": "413697a3813df7c125ebbc05bbaa98a55651b872d8926349e80ec26fabd7f6d8"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data6_.json",
+      "bytes": 936,
+      "sha256": "f52620c25142d6b8c4a34c516e224d82b65d3e149b1b3066590dc7273505f709",
+      "raw_sha256": "b6cc4820e49ead9b31238a1e8fd644e99b28dc6b806a763870d6f0124144c3fe"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data7_.json",
+      "bytes": 936,
+      "sha256": "d57e9bce4fd0a36df15d0ca77edbe53fcd4d74e89559aeb05c0d7f7238b9fced",
+      "raw_sha256": "10ea6d25710c396795d0b7e7a7c962b42ce829258e790cb4967ffb7a4678d7d0"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data8_.json",
+      "bytes": 936,
+      "sha256": "744ef1f03eea2d177a8b8b950c479a96151d5a50fcd45eee96a4fd0e9b5b9b37",
+      "raw_sha256": "4e564098a2dc8d4c8c283997748cece44fa952141441885e9191135616cb7e92"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_invalid_patch_fields_never_change_account_or_sessions_data9_.json",
+      "bytes": 936,
+      "sha256": "ca2b5c5ac58737897bf1b0e6e790ddc7d61921f0fa7bba91f23c47b62da572ce",
+      "raw_sha256": "5e79fc8c98ec37af4952b130b5e0cf62f7660d0f1a909011cd53123329c22136"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_last_admin_demote_rejected.json",
+      "bytes": 936,
+      "sha256": "2aa3adb67da200ae2d56a438b901b84459dcddd954fbd406abc8d00d2dcfbf88",
+      "raw_sha256": "fb5dfccc3c83000ed74e8c06203e5b370aa9b69c3d068e4f9aa15ca0dac56dab"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_local_cli_assigns_only_explicit_server_uuid.json",
+      "bytes": 936,
+      "sha256": "6bd2fb8ca8572111e680694789b7a45fb94d02532fb60fb0a650f542bf468bfd",
+      "raw_sha256": "1223144fc4050a78dcc02566b2a8f2969517eab14a56fb3d066d9f6bb5a8d6da"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_new_owner_policy_first_admin_cannot_be_disabled.json",
+      "bytes": 936,
+      "sha256": "73839c1d480db7e907fa4ce0ca0eed963a32dfec587ddd2f518f7034c68852bb",
+      "raw_sha256": "65b59562f7b410c37614b3130a2828afa11d6ca556458dcda4b6b4b50d7e93f7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_no_delete_api_bypass_and_normal_accounts_still_deletable_by_repository_sql.json",
+      "bytes": 698,
+      "sha256": "666c28b66fcae3745118fef399636355111d0ae52af479b4bdabf5febf45dc58",
+      "raw_sha256": "7b3f34b474a7f0c14ca0ff578e248fcd89b8a9c7fc4fde03b7f53b2ae1be675b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_pagination_literal_email_filters_and_last_login.json",
+      "bytes": 936,
+      "sha256": "0b3a48442f8923ff8ed450d029e12eaa7409fe7370b28018ebb07e0adfd644b6",
+      "raw_sha256": "9fd2c0a514d415ebe0b26f2afd8b065fcf075501d822951d5ca0508d715a097b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_patch_quota_override_null_fallback_role_and_idempotent_audit.json",
+      "bytes": 1594,
+      "sha256": "5bf2a6ad915f6a6012787f7a11f8d178c4d4bc695b31c0be264c3f970c357b57",
+      "raw_sha256": "c164eca5a0472a5c56ea81550b9ca6761785dac62e51a60af64dd188e44eab62"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_private_learning_records_are_inaccessible_to_admin_and_absent_from_every_admin_response.json",
+      "bytes": 1263,
+      "sha256": "bb73c9e2d48b36c549f3f048d03f86bd244cfa75b77a4219e088d6d10639d682",
+      "raw_sha256": "ee9dec2025bcba0cfad3e7b90bfa366cd1a1d954c93c003cc4639ac27eb33ba5"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_profile_password_and_security_guards_remain_available_for_first_admin.json",
+      "bytes": 1093,
+      "sha256": "df764eb488297434fd054bd9799bb128ae3c5504ce0dca1588118d75738ef2aa",
+      "raw_sha256": "abb4e9a5347b0f1c21eff6bc7ba855998bfeaa9e84fc521009c80803565f9541"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_real_response_dtos_strip_repository_extras_at_every_level.json",
+      "bytes": 936,
+      "sha256": "4dbad3d6dba6fc2b53d02ca298a30c88d615a0a125c1da3d153e96a2eb8ac8fa",
+      "raw_sha256": "ba630a4c8f5cecdb0f76704dccceda3a863caaa000779552de73a8eb7719c022"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_registry_survives_restart_and_older_learner_promotion_and_filtered_lists.json",
+      "bytes": 1424,
+      "sha256": "9727c14349b8a17c8a1a9c5185e101d01862206ecae3c8ee7e903e8b6212be1c",
+      "raw_sha256": "d7ae6610c21e93bc6b6bd668b84aa8f75804e092137c57035fcfdbe90eeaea1c"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_stale_admin_actor_and_unauthorized_patch_cannot_write.json",
+      "bytes": 1100,
+      "sha256": "fc22d73906beb09657ad0ca493663bf351f57cbf9b75ba9a962d3fc8513eeaa2",
+      "raw_sha256": "43b4c47fb95ed5a389d524a1c7dc9120b22f3dec7723d3d8708119fe2ac6aa68"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_two_postgres_runtimes_keep_first_admin_while_demoting_later_admin.json",
+      "bytes": 936,
+      "sha256": "fd3458e750742c09fabea42559d393143532ba76aa33e2a9de6f931f82d3d2f1",
+      "raw_sha256": "9a5d85d8cdda30a33ad900b10464365497b85fc4343df3705a86e6cf184c5b19"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_update_and_audit_rollback_on_audit_failure.json",
+      "bytes": 936,
+      "sha256": "7055dac642cf109c342a5757dad0cfd400747b79238132bb97389cb0224a49eb",
+      "raw_sha256": "c396e580f9af6a46ed8cb6acc7d60ceeefb7412d7f36164a4a1ad6b6a331ab43"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_update_rolls_back_if_session_delete_fails.json",
+      "bytes": 936,
+      "sha256": "a12cfc0e12b90c830254d4345a664a0e1724713e83c174a2117c96d6e3b33122",
+      "raw_sha256": "4299db552df39589deb9f74604115ba57d7855f33da82870d3bdad9660248c42"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params0_.json",
+      "bytes": 936,
+      "sha256": "4ffc90a2757a95f0c8c61b20243081a05e8ec8ab548d64f19d181c4ed17c9e15",
+      "raw_sha256": "a0c70e54f7f243fb1fd7bfb6d8f5bad915e7dd9a220dc6c65ed287beeb21f732"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params1_.json",
+      "bytes": 936,
+      "sha256": "c6892f2f1b30f727b1c09f9c47893b791a18558c20d37cb46e0c50560b242934",
+      "raw_sha256": "c295b004bcc06c20fb4e15394617193ca1bf8349f10a259516e0d16685e31f98"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params2_.json",
+      "bytes": 936,
+      "sha256": "b8c5ccbd0b765ea6ebbc7c7f352e1446f229f3af87d02b34e335d2bbec2d4c3a",
+      "raw_sha256": "45f4d20b76c331f1b516e2139ec50d4855345973feaefc2d15073185c5bdc905"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params3_.json",
+      "bytes": 936,
+      "sha256": "289c49f5bf405d224cb16666edab2d4836ba692d8498c0c77ac0fce59e6c90ae",
+      "raw_sha256": "ee4ff572b0954414d25a65c19a74c258bfff992632d226a1ca38bd76c9a867c7"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params4_.json",
+      "bytes": 936,
+      "sha256": "656b1b6863741babf5b8f26f999e980394297714cbe90842785537a330e6b86f",
+      "raw_sha256": "81834f8db6cb9810784eea7d8181778386ceaf94e5ee27053b12c3e39fad59bb"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params5_.json",
+      "bytes": 936,
+      "sha256": "d11c0c1bd16b24334847ccb82179ce560624bc5919a9530e2952ecb528176979",
+      "raw_sha256": "1cc51e711042acff0121e24e147288bcc1b720a988a2d235c0df27175efe7d71"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_filters_are_bounded_params6_.json",
+      "bytes": 936,
+      "sha256": "3a0f7227a6e9d8f5afc44c164fa21cc5372154529cc8b8595e7b81585fa369e7",
+      "raw_sha256": "b867c4b791c1c0c8e8781418b49cb8cc62223f8ab94a1d70396587a07bb9ac2a"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_users_public_projection_search_and_demo_null.json",
+      "bytes": 936,
+      "sha256": "5df1be78e5ca33abc3f7cde63e2c6ac7f4e4dedf8457e2b53c00fa03cf9bb6b6",
+      "raw_sha256": "301b9e07e8faec3af69f2a05029642ded3008797a064a3477c4f9075b98f0180"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-01-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "adc276427ed3cd35e751cd577980edea2b3e3ac7f97bb28554ed5ce37bdab928",
+      "raw_sha256": "dae90521a7ad1aff0d150ac780a024e4bffbe786773beacd0c7eeecae8835c9e"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2026-12-31T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "f183c57eca5e5bde284f008eed64e48b6e1ddcac9c53ae8992e653bc278fee3a",
+      "raw_sha256": "8762cd4f6bb9676739270406e24b4bea569f87c9081f67b6f6dd603b49090534"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-full-01/sql-proof/test_user_monthly_counts_match_existing_quota_at_vietnam_boundary_2028-02-29T16_59_00_00_00_.json",
+      "bytes": 1085,
+      "sha256": "1915fd0acf90f7350856fabfc161b86435798c2054f49841756d106877f2a6f4",
+      "raw_sha256": "0879b61871a7bdffd49e8f9dd70f9fc2dcdeb3c9e5b2f1b4877ec67c17fd5625"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-green-01/sql-proof/test_new_owner_policy_first_admin_cannot_be_disabled.json",
+      "bytes": 936,
+      "sha256": "216986e16483d7b21871c6aa6d8932a7f8ef9570696fa0d295f601f241ed376f",
+      "raw_sha256": "0500cf20c055933bc1aaaa427fb1e8bf9c9f8293f5ff61df6362671b6142ab05"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-account-db-guard/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_account_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "f07dc765366e7b34ccc665c5e7d70a6c71c0c2dac4b203bf2ddfeaafa73f48b3",
+      "raw_sha256": "12c60f36b944a8a29728483a7f2b6c6af6af65bd65d5ac31735bc12c06d9a9e4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-account-db-guard/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_bootstrap_admin_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "91f82b33c6a719c2a79a456d720da686d06ebee1df10ae11b45c0775add2eef6",
+      "raw_sha256": "7a2e730e89caa7eb10327c7ddbd55f23453beaee3448b4dffab1d317ecc423b1"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-account-db-guard/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_role__user__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 932,
+      "sha256": "86e2d8e9c48bdd0fca81d275c8646283f2250e9e9a3d7a12f085b5f5c3d0ac48",
+      "raw_sha256": "288baa2e34a5a48456b657c157aba7b264719ff5d27760252aaf307098e28e1f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-account-db-guard/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_status__disabled__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 935,
+      "sha256": "06be15675e4aaccd5949aa40c808706c3a57e3a2a9c59d31877300a33efcbf5a",
+      "raw_sha256": "aaff1a8166f9f2ef01464455cebe3ff10fbcdf24bddbee76d31e92f9b8473124"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-account-db-guard/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_bootstrap_admin_SET_account_id__other_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "77b965407e0d59830d322ad323e0b1df69928d4f8eadbf3f127bcd8c9bd483cc",
+      "raw_sha256": "df9ef9cdd1c218fe6e9219a8496b7f5f7b2134e1a864a282fa0a148a5d20c34f"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-active-admin-count/sql-proof/test_disabled_actor_and_disabled_admin_not_counted_as_active.json",
+      "bytes": 1096,
+      "sha256": "cf029dc623ebf1fa7c0c0e2200dfaadd75bf359baf2b17e1b2c06f31e2c5a972",
+      "raw_sha256": "a6969a01ff76dc17fa5d1038fb10778d76ec937c8db30d7c52de5f2984fefbf9"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-bootstrap-global-lock/sql-proof/test_bootstrap_creation_race_persists_exactly_one_identity_and_audit.json",
+      "bytes": 936,
+      "sha256": "261110b5bb5c123c0acb5e64bb020302a64c3bdd9842a2b33163951fcf083684",
+      "raw_sha256": "cc3ad00232f0642f28e27283616db4d860b01d72ba91048ff95c12aa4611140d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-bootstrap-write/sql-proof/test_bootstrap_creation_race_persists_exactly_one_identity_and_audit.json",
+      "bytes": 936,
+      "sha256": "1e927633a3b191d66b63723a7c15b179180fcab236b1b08e55539231d8eb1c6b",
+      "raw_sha256": "c6576af76ad5222e5234921f0e017e6b123f65f101e745b1b767738194204dec"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-dto-projection/sql-proof/test_real_response_dtos_strip_repository_extras_at_every_level.json",
+      "bytes": 936,
+      "sha256": "6f3db35ac0d0b8c327976fce476cea5459e888bebcd51d225f23b0f9e57d7b46",
+      "raw_sha256": "2fbb52d0420da07f804be2389316f3566eacf87ef047b02e32ac80d223e0cd39"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-False_.json",
+      "bytes": 936,
+      "sha256": "56183717a386ed837895092b1da5973df7a5913a17915da77616297f960744db",
+      "raw_sha256": "0d5d9924e97d9fb70e5ac8825bd3301c178ba4cd3d6567d2dd9fbaa2b440fd7d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes0-True_.json",
+      "bytes": 936,
+      "sha256": "951c543ae52bb974c785d9dc8120bc4ed905d609d98aea467bc79a673e36dc4e",
+      "raw_sha256": "7de156f7766f3b5affdac424437db8282b0bb749a0069ea030181953ba19ba44"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-False_.json",
+      "bytes": 936,
+      "sha256": "fe979783433a477ce71db9424c60d240f4bad3fab18828b0f2f4d46f2a0d3a8d",
+      "raw_sha256": "af69a8f02711d08b6f5cf281790f5ca842e30cd2537ea161cb98438ec0751e97"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes1-True_.json",
+      "bytes": 936,
+      "sha256": "81a94a08da044eb5ae344188df28668902cb366a3f6ceb2d7a0a6ffe973900dd",
+      "raw_sha256": "9f3783774ff15ce48c20e273c6d731539cb219db224fa4e8e442a9f906a47c21"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-False_.json",
+      "bytes": 936,
+      "sha256": "0b1c2cf3f09551a52f75a4cf3abfb3233b8f081e46d27135d861c0c311f76933",
+      "raw_sha256": "cb452511781ef27107cc1d37e09fea481a892fd33a70d7952978f6c3a0da0a11"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-first-identity-service/sql-proof/test_first_identity_protected_even_with_two_admins_and_atomic_patch_changes2-True_.json",
+      "bytes": 936,
+      "sha256": "2941cda6ccf2a21f144372c56069d9be7054ce5f1458d73b9fb2b7ed9b4acd99",
+      "raw_sha256": "fcf3cf2703fa9e0321f2bc4d09d605de052668de2fc8edae123429ef1bfccbf2"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-login-lock/sql-proof/test_inflight_login_cannot_leave_a_session_after_disable.json",
+      "bytes": 1098,
+      "sha256": "804f474a50fdc657c6ced1ad1bf3a4f619c8f4d7b06f1273a693cba6482695d9",
+      "raw_sha256": "4242f5dac79a6e66168680aee1a96cf97cd561671649ff4651d32bb7a3347525"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-registry-immutable/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_account_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "6419a75989d4476574645b7affb91710b002cd681781680bbd386768d85c20df",
+      "raw_sha256": "f649f5452c2155958dac48e2fcd9c8f3c3ffdff71f56e987137c159e3628dcd4"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-registry-immutable/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_DELETE_FROM_bootstrap_admin_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "c75f0ae478e3d5ee5ea18409dcec222af02c82060bf7e56cdf488325a4fef7a0",
+      "raw_sha256": "e1970d31be74764b17f1d59dc1075e35b6567d3a9296ce0e9a820bb1761b9e7d"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-registry-immutable/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_role__user__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "7e9c5fa81cc6cf4a50490681afe05f1cb5b2f19b1e49473dfe2d6d2af5bf7cc4",
+      "raw_sha256": "6b21f7a2f04afbe2908a42d30681e6c552fca0a220bf0ae5cdf1888ed8776870"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-registry-immutable/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_account_SET_status__disabled__build_monthly_max_9_WHERE_id__uid_.json",
+      "bytes": 936,
+      "sha256": "ea065b1c0f6276e984d7c8d98349fed3ea9d60e42fc5954c85fd8fda0799ab76",
+      "raw_sha256": "0256739f3c40874ad5307cb7d0251217ceffe5279bf19c8059cd44a98b885deb"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-registry-immutable/sql-proof/test_database_rejects_delete_and_bypass_of_protected_identity_UPDATE_bootstrap_admin_SET_account_id__other_WHERE_account_id__uid_.json",
+      "bytes": 936,
+      "sha256": "6f444f243dc9aeb82a91ee5383217d426ad24c16c21803203afcbd616abd8f72",
+      "raw_sha256": "3e5c0e94f079691c656147f7fc766eb2aaeab1e17726f0ea4841ab62d831905b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-session-revocation/sql-proof/test_disable_revokes_two_cookies_enable_never_resurrects.json",
+      "bytes": 1098,
+      "sha256": "10614750858e6b81d2c6a9979525dc1ce1eabfaac4725237affe9fe8e5716615",
+      "raw_sha256": "93d363967ee3d335f656905b0010e79a6857f352b89bf2854a4672805cfec258"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-stale-actor/sql-proof/test_stale_admin_actor_and_unauthorized_patch_cannot_write.json",
+      "bytes": 1009,
+      "sha256": "e484626be3337046a83e4d87d056d020cd26bcd726221e69ad5b40f9e0d8bf2e",
+      "raw_sha256": "38dfd54b37867162dcc49936900446f72be80b09bcf3a40d507028e9d1e42462"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/policy-mutation-update-transaction/sql-proof/test_update_and_audit_rollback_on_audit_failure.json",
+      "bytes": 843,
+      "sha256": "8e8627aaf16f8d003c5b350a548df8c53a0a4e50ab1c8fea3546087295981ea6",
+      "raw_sha256": "05c511984a998be3996a3505eefbe1f26847af6958d66c98e49642c72fff880b"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/redactions.json",
+      "bytes": 168,
+      "sha256": "7688e3a7c11f9baf480aa000615017b3dae9df5df084164534ca8cc5b517a979"
+    },
+    {
+      "path": "report/w17-first-admin-evidence/packaging-note.json",
+      "bytes": 237,
+      "sha256": "2bcddedbc40c0cad34829ed0c3db24426569b3333db91bb964a6d07a3b295d7b"
+    }
+  ]
+}

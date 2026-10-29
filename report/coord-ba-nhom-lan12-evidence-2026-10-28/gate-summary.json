@@ -1,0 +1,193 @@
+{
+  "source": {
+    "candidate": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+    "main": "35f15fa3fbe6a9e2939149e760545e8e80464419",
+    "core": "a07bff3f604c253cad030b45f744409ab7897bee",
+    "held": "f9705f4299ffd360de8c11861848689b3233503c",
+    "wt": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r12-acceptance-20261028"
+  },
+  "gates": {
+    "full-final": {
+      "receipt": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/coord-r12-full-final",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r12-tools-20261028\\runs\\full-final.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r12-acceptance-20261028",
+        "commit": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+        "native_exit_code": 0,
+        "elapsed_seconds": 1308.36
+      },
+      "tests": 3700,
+      "passed": 3696,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+          "reason": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+          "reason": {
+            "type": "pytest.skip",
+            "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+          }
+        },
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "reason": {
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          }
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "reason": {
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        }
+      ]
+    },
+    "react-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "test",
+          "--",
+          "--pool=threads",
+          "--maxWorkers=1",
+          "--reporter=default",
+          "--reporter=junit",
+          "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r12-tools-20261028\\runs\\react-final.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r12-acceptance-20261028",
+        "commit": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+        "native_exit_code": 0,
+        "elapsed_seconds": 220.92
+      },
+      "tests": 259,
+      "passed": 259,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    },
+    "build-final": {
+      "receipt": {
+        "command": [
+          "npm.cmd",
+          "--prefix",
+          "src/web/frontend",
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r12-acceptance-20261028",
+        "commit": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+        "native_exit_code": 0,
+        "elapsed_seconds": 7.8
+      }
+    }
+  },
+  "core_independent": {
+    "core-old-retry": {
+      "tests": 2,
+      "passed": 0,
+      "failures": 2,
+      "errors": 0,
+      "skipped": []
+    },
+    "core-missing-status-retry": {
+      "tests": 8,
+      "passed": 2,
+      "failures": 6,
+      "errors": 0,
+      "skipped": []
+    },
+    "core-no-count-retry": {
+      "tests": 8,
+      "passed": 7,
+      "failures": 1,
+      "errors": 0,
+      "skipped": []
+    },
+    "core-green-retry": {
+      "tests": 81,
+      "passed": 81,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    }
+  },
+  "infra_first_run": {
+    "tests": 2,
+    "passed": 0,
+    "failures": 0,
+    "errors": 2,
+    "skipped": []
+  },
+  "browser": {
+    "browser-coord-r12-current": {
+      "source": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+      "screens": [
+        "current-w10-library-here-390-light.png",
+        "current-w08-self-check-folded-1280-dark-reduced.png",
+        "current-w08-self-check-open-1280-dark-reduced.png"
+      ],
+      "http": 16,
+      "pageErrors": 0,
+      "externalProviderUsd": 0
+    },
+    "browser-coord-r12-current-fonts": {
+      "source": "34c1712f58122457aeff1dee3cb69f50d3321a0a",
+      "screens": [
+        "current-w10-library-here-390-light.png",
+        "current-w08-self-check-folded-1280-dark-reduced.png",
+        "current-w08-self-check-open-1280-dark-reduced.png"
+      ],
+      "http": 16,
+      "pageErrors": 0,
+      "externalProviderUsd": 0
+    }
+  },
+  "owned_databases_absent": [
+    "wayfinder_w10_096f707551814d9d846175aac168a028",
+    "wayfinder_w10_b1103fe8355046eeab920a1aa657756b"
+  ],
+  "port8032closed": true,
+  "protectedTracked": 8,
+  "protectedUntracked": 216,
+  "new_provider_cost_usd": 0,
+  "design_unresolved_mismatches": [
+    {
+      "field": "W10 tab height",
+      "submitted": 44,
+      "actual": 45
+    },
+    {
+      "field": "W10 row width",
+      "submitted": 332,
+      "actual": 358
+    },
+    {
+      "field": "W10 row horizontal padding",
+      "submitted": 16,
+      "actual": 0.0
+    },
+    {
+      "field": "W08 heading weight",
+      "submitted": 700,
+      "actual": 600
+    }
+  ]
+}

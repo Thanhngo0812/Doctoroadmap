@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.934" timestamp="2026-10-28T10:39:45.673363+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_bootstrap_creation_race_persists_exactly_one_identity_and_audit" time="3.433"><failure message="wayfinder.application.accounts.AuthError: Cần xác lập admin đầu tiên từ hồ sơ bootstrap trước khi tạo thêm admin.">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000270CE27..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000270EDD21760&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000270CDD63EC0&gt;
+
+    def test_bootstrap_creation_race_persists_exactly_one_identity_and_audit(admin_case,monkeypatch):
+        from wayfinder.composition import compose_account_service
+        rt=admin_case
+        # Use another fresh database for concurrent initial bootstrap, not the already protected fixture database.
+        name='w17_bootstrap_'+uuid4().hex
+        control=create_database_engine(rt.engine.url).execution_options(isolation_level='AUTOCOMMIT')
+        with control.connect() as connection:
+            connection.execute(text(f'CREATE DATABASE "{name}"'))
+        url=rt.engine.url.set(database=name)
+        upgrade_database(url)
+        engines=[create_database_engine(url),create_database_engine(url)]
+        barrier=Barrier(2)
+        def create(index):
+            service=compose_account_service(rt.settings,engines[index],mailer=rt.services.accounts.mailer)
+            original=service.store.first_admin_id
+            def slow_first_read():
+                result=original()
+                sleep(.4)  # Widen the independent transactions' read/claim window if the shared lock is removed.
+                return result
+            monkeypatch.setattr(service.store,'first_admin_id',slow_first_read)
+            barrier.wait(5)
+            return service.create_admin(uuid4().hex+'@example.vn','W17 bootstrap synthetic password!').id
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+&gt;               ids=list(pool.map(create,range(2)))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w17_first_admin.py:181:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\tests\test_w17_first_admin.py:178: in create
+    return service.create_admin(uuid4().hex+'@example.vn','W17 bootstrap synthetic password!').id
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.accounts.AccountService object at 0x00000270EDEBF2F0&gt;
+email = '47dc4be8732d49b4828ec4904e3bc818@example.vn'
+password = 'W17 bootstrap synthetic password!', display_name = 'Quản trị viên'
+
+    def create_admin(self, email: str, password: str, display_name: str = "Quản trị viên") -&gt; Account:
+        normalized, email = self._validated_identity(email, password, display_name)
+        now = self.clock.now()
+        account = Account(
+            id=str(uuid4()), email=email, email_normalized=normalized, display_name=display_name.strip(),
+            role="admin", status="active", email_verified_at=now, created_at=now, updated_at=now,
+        )
+        password_hash = self.hasher.hash(password)
+        duplicate = False
+        with self.store.atomic(['admin:users', f"account:{normalized}"]):
+            first_admin = self.store.first_admin_id()
+            if first_admin is None and self.store.has_admins():
+&gt;               raise AuthError('bootstrap_required', 'Cần xác lập admin đầu tiên từ hồ sơ bootstrap trước khi tạo thêm admin.')
+E               wayfinder.application.accounts.AuthError: Cần xác lập admin đầu tiên từ hồ sơ bootstrap trước khi tạo thêm admin.
+
+src\web\backend\wayfinder\application\accounts.py:408: AuthError</failure></testcase></testsuite></testsuites>

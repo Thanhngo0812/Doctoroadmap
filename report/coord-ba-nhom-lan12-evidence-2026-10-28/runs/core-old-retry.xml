@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="17.425" timestamp="2026-10-28T19:11:57.813628+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_coord_r12_probe" name="test_independent_disabled_admin_demotion_keeps_bootstrap_live[False]" time="10.051"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;conflict&quot;,&quot;message&quot;:&quot;Không thể hạ quyền quản trị viên cuối cùng.&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 409 == 200&#10; +  where 409 = &lt;Response [409 Conflict]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001F5B227..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001F5D1C6BD80&gt;)
+enable = False
+
+    @pytest.mark.parametrize('enable',[False,True])
+    def test_independent_disabled_admin_demotion_keeps_bootstrap_live(admin_case,enable):
+     rt=admin_case;b=rt.user(True)
+     assert patch(rt,{'status':'disabled'},target=b).status_code==200
+     data={'role':'user','build_monthly_max':7}
+     if enable:data['status']='active'
+     response=patch(rt,data,target=b)
+     proof={'response_status':response.status_code,'response':response.json(),'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=b.id),'registry':sql(rt,'SELECT account_id FROM bootstrap_admin'),'bootstrap_id':rt.owner.id,'later_id':b.id}
+     Path(r'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r12-tools-20261028/core-probe-enable-'+str(enable)+'.json').write_text(json.dumps(proof,indent=2,default=str))
+&gt;    assert response.status_code==200,response.text
+E    AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E    assert 409 == 200
+E     +  where 409 = &lt;Response [409 Conflict]&gt;.status_code
+
+src\web\backend\tests\test_coord_r12_probe.py:15: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_coord_r12_probe" name="test_independent_disabled_admin_demotion_keeps_bootstrap_live[True]" time="2.397"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;conflict&quot;,&quot;message&quot;:&quot;Không thể hạ quyền quản trị viên cuối cùng.&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 409 == 200&#10; +  where 409 = &lt;Response [409 Conflict]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001F5D1F4..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001F5D2148900&gt;)
+enable = True
+
+    @pytest.mark.parametrize('enable',[False,True])
+    def test_independent_disabled_admin_demotion_keeps_bootstrap_live(admin_case,enable):
+     rt=admin_case;b=rt.user(True)
+     assert patch(rt,{'status':'disabled'},target=b).status_code==200
+     data={'role':'user','build_monthly_max':7}
+     if enable:data['status']='active'
+     response=patch(rt,data,target=b)
+     proof={'response_status':response.status_code,'response':response.json(),'accounts':sql(rt,'SELECT id,role,status,build_monthly_max FROM account WHERE id IN (:a,:b)',a=rt.owner.id,b=b.id),'registry':sql(rt,'SELECT account_id FROM bootstrap_admin'),'bootstrap_id':rt.owner.id,'later_id':b.id}
+     Path(r'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r12-tools-20261028/core-probe-enable-'+str(enable)+'.json').write_text(json.dumps(proof,indent=2,default=str))
+&gt;    assert response.status_code==200,response.text
+E    AssertionError: {"error":{"code":"conflict","message":"Không thể hạ quyền quản trị viên cuối cùng.","retry_after":null,"ref":null}}
+E    assert 409 == 200
+E     +  where 409 = &lt;Response [409 Conflict]&gt;.status_code
+
+src\web\backend\tests\test_coord_r12_probe.py:15: AssertionError</failure></testcase></testsuite></testsuites>

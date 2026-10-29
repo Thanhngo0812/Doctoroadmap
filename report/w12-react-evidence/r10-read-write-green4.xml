@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="19" failures="0" errors="0" time="6.7109771">
+    <testsuite name="src/Invitations.test.tsx" timestamp="2026-10-28T04:21:43.489Z" hostname="ADMIN" tests="19" failures="0" errors="0" skipped="0" time="6.7109771">
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (0 initial items)" time="0.6527539">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="waits for the initial list before sending, then retains the canonical invitation (1 initial items)" time="0.5716237">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="keeps the draft on send failure, serializes a reload, and allows retry after a list error" time="0.6167196">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores the old course list after switching course and still allows a send in the new course" time="0.551253">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after unmount" time="0.0775414">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not render a delayed private list after logout" time="0.1399524">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="validates the email field and sends a deduplicated batch without owner or invitation token" time="1.4525416">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="rejects 51 input addresses before POST, including duplicates counted in the input limit" time="0.2056776">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="shows pending invitations and cancels only the selected public invitation ID" time="0.105964">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error email_unverified without an internal error or delivery claim" time="0.4829208">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="maps owner error rate_limited without an internal error or delivery claim" time="0.4545533">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="discloses learner privacy before accepting and refreshes courses after the server commits" time="0.1516896">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="declines without posting membership and shows a course-full failure without removing the invitation" time="0.1557424">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="does not display pending emails or accept controls for an unverified account" time="0.0221076">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="ignores a delayed send callback after the dialog changes course" time="0.499677">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=false)" time="0.1796825">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="clears the invitation fragment, keeps only boolean context through auth switching (transition=true)" time="0.1738435">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for owner does not claim the list is empty and can reload" time="0.1231587">
+        </testcase>
+        <testcase classname="src/Invitations.test.tsx" name="a failed invitation list for recipient does not claim the list is empty and can reload" time="0.0912053">
+        </testcase>
+    </testsuite>
+</testsuites>

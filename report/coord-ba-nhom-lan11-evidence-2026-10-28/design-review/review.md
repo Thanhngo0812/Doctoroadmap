@@ -1,0 +1,13 @@
+# R11 — W-23 first slice
+
+Pinned delivery 60412c87df1b684c97e6148d1f88f578d5202322. **REQUEST CHANGES on receipts/current-source binding; accept the factual corrections and three exact pixel crops as useful partial work. Whole W23 remains open.**
+
+D-R10-01: all three React crops exactly equal the specified historical PNG rectangles; prerequisite panel is outside the W08 crop. D-R10-02: target27.1875px, AA contrast6.765701698019035, withdrawn no-lag claim correct. D-R10-04: W04 password8–128/commonpassword and W12 disclosure corrected. Source rawCRLF/GitLF hashes and all submitted image SHA/bytes match. No Cloud gate.
+
+**D-R11-01 Required:** bind each accepted comparison to the source actually being compared. The script crops historical React only; no fresh React runtime metrics/font/keyboard capture exists. W10 1fc0f553→aaf68eb reuse proof is valid, but aaf68eb→current main ContentLibrary adds UsageLimits; W08 current source also adds assistant/library and markdown capability. Historical crops may stay labeled historical; capture current component or provide a narrowly valid leaf-source/style/state reuse proof. Do not turn whole-file differences into a claim that self-check is broken. Record applicable source/assets, state/crop and actual metrics, and do not certify unchanged whole modules from the old reuse interval.
+
+**D-R11-02 Required:** make report/JSON/PNG describe the same run. Report§3.2 says blocked-offline W08 SegoeUI/no fontfaces, submitted JSON records custom BeVietnamPro78glyph and loaded faces. Independent blockedHTTP reproduction really yields SegoeUI/emptyfaces; those are different runs. Do not retroactively attach offline font evidence to online PNG. Report says W08 open808x153 (PNG808x154), folded receipt808x61 (PNG808x62), W10receipt366x807(PNG366x808). Store actual decoded PNG dimensions separately from floating CSS rect and use full SHA. Submitted HTML PNG are unchanged from prior24538ae0, legitimate historical assets; say reused or retain same-run raw/font/source receipts before asserting new capture.
+
+Reproduction of submitted script with only external HTTP(S) blocked succeeds in isolated owned scratch (native0); copies only local pinned HTML/token, crops known historical originals. This proves script can run locally, not identical font/pixels under different network/font state. Offline reproduction notes in design-offline-adaptation.json; evidence-inspection.json verifies hashes/crops/dimensions. No original worker/root files overwritten.
+
+Two/three tabs and self-check UX proposals remain owner choices. Keep received React behavior while collecting comparable evidence; not a reason to invent a product bug or block functional W12.

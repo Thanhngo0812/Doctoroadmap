@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.366" timestamp="2026-10-28T10:39:53.634643+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_bootstrap_insert_and_audit_failure_roll_back_together" time="0.810"><failure message="AssertionError: assert 1 == 0&#10; +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0&gt;)&#10; +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x000001F531603560&gt;.scalar&#10; +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0&gt; = text('SELECT count(*) FROM bootstrap_admin')">empty_postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_base_test_72561a82ca904d458284697f23ac30e6
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F531213DD0&gt;
+
+    def test_bootstrap_insert_and_audit_failure_roll_back_together(empty_postgres_database_url,monkeypatch):
+        from wayfinder.composition import compose_account_service
+        from wayfinder.settings import WebSettings
+        upgrade_database(empty_postgres_database_url)
+        engine=create_database_engine(empty_postgres_database_url)
+        service=compose_account_service(WebSettings(_env_file=None),engine,mailer=SimpleNamespace(send=lambda **k:None))
+        def fail(event): raise RuntimeError('synthetic bootstrap audit failure')
+        monkeypatch.setattr(service.store,'append_audit',fail)
+        try:
+            with pytest.raises(RuntimeError,match='synthetic bootstrap'):
+                service.create_admin('bootstrap-fail@example.vn','W17 bootstrap synthetic password!')
+            with engine.connect() as connection:
+&gt;               assert connection.scalar(text('SELECT count(*) FROM bootstrap_admin'))==0
+E               AssertionError: assert 1 == 0
+E                +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0&gt;)
+E                +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x000001F531603560&gt;.scalar
+E                +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x000001F5311EB4A0&gt; = text('SELECT count(*) FROM bootstrap_admin')
+
+src\web\backend\tests\test_w17_first_admin.py:206: AssertionError</failure></testcase></testsuite></testsuites>

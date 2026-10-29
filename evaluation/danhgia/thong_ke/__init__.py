@@ -7,6 +7,7 @@ from danhgia.thong_ke.cong_suat import mo_phong_cong_suat
 from danhgia.thong_ke.dong_thuan import cohen_kappa, krippendorff_alpha, psa
 from danhgia.thong_ke.kiem_dinh import hoan_vi_ghep_cap, holm, sign_test
 from danhgia.thong_ke.so_dem import thuoc_theo_cuon
+from danhgia.thong_ke.wilson import wilson
 
 __all__ = [
     "bootstrap_phan_cap",
@@ -18,4 +19,5 @@ __all__ = [
     "psa",
     "sign_test",
     "thuoc_theo_cuon",
+    "wilson",
 ]

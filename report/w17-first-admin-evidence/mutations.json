@@ -1,0 +1,142 @@
+[
+  {
+    "name": "first-identity-service",
+    "test": "test_first_identity_protected_even_with_two_admins_and_atomic_patch",
+    "native_exit": 1,
+    "failures": 6,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346",
+    "restored_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346"
+  },
+  {
+    "name": "bootstrap-write",
+    "test": "test_bootstrap_creation_race_persists_exactly_one_identity_and_audit",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004",
+    "restored_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004"
+  },
+  {
+    "name": "bootstrap-transaction",
+    "test": "test_bootstrap_insert_and_audit_failure_roll_back_together",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004",
+    "restored_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004"
+  },
+  {
+    "name": "bootstrap-global-lock",
+    "test": "test_bootstrap_creation_race_persists_exactly_one_identity_and_audit",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004",
+    "restored_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004"
+  },
+  {
+    "name": "legacy-no-guess",
+    "test": "test_legacy_upgrade_requires_explicit_uuid_without_guessing_and_atomic_assignment",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004",
+    "restored_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004"
+  },
+  {
+    "name": "legacy-assignment-transaction",
+    "test": "test_legacy_upgrade_requires_explicit_uuid_without_guessing_and_atomic_assignment",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004",
+    "restored_sha256": "5fca9cdffb438fc7bc4c86f143932e9ef24f3a16a911f09c28f2c0c94c561004"
+  },
+  {
+    "name": "account-db-guard",
+    "test": "test_database_rejects_delete_and_bypass_of_protected_identity",
+    "native_exit": 1,
+    "failures": 3,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "f06055a48e882598ae31abfb93058a4557e26473c5bade2bfcba4b79d23ffde7",
+    "restored_sha256": "f06055a48e882598ae31abfb93058a4557e26473c5bade2bfcba4b79d23ffde7"
+  },
+  {
+    "name": "registry-immutable",
+    "test": "test_database_rejects_delete_and_bypass_of_protected_identity",
+    "native_exit": 1,
+    "failures": 2,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "f06055a48e882598ae31abfb93058a4557e26473c5bade2bfcba4b79d23ffde7",
+    "restored_sha256": "f06055a48e882598ae31abfb93058a4557e26473c5bade2bfcba4b79d23ffde7"
+  },
+  {
+    "name": "active-admin-count",
+    "test": "test_disabled_actor_and_disabled_admin_not_counted_as_active",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "0e4aeb47b3fc32855a8f1d30d149d010028764a62367916a7302a202b6b59d67",
+    "restored_sha256": "0e4aeb47b3fc32855a8f1d30d149d010028764a62367916a7302a202b6b59d67"
+  },
+  {
+    "name": "session-revocation",
+    "test": "test_disable_revokes_two_cookies_enable_never_resurrects",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346",
+    "restored_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346"
+  },
+  {
+    "name": "update-transaction",
+    "test": "test_update_and_audit_rollback_on_audit_failure",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346",
+    "restored_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346"
+  },
+  {
+    "name": "stale-actor",
+    "test": "test_stale_admin_actor_and_unauthorized_patch_cannot_write",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346",
+    "restored_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346"
+  },
+  {
+    "name": "dto-projection",
+    "test": "test_real_response_dtos_strip_repository_extras_at_every_level",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "2f773927cca26fd9ed88b5934babb364bb4f8276dfc3c6f6f69493eef6c46f62",
+    "restored_sha256": "2f773927cca26fd9ed88b5934babb364bb4f8276dfc3c6f6f69493eef6c46f62"
+  },
+  {
+    "name": "login-lock",
+    "test": "test_inflight_login_cannot_leave_a_session_after_disable",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_original_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346",
+    "restored_sha256": "6539e6077a24c0bc320929f89442c4a300eb91304acc0bc35d89f4facf2fd346"
+  }
+]

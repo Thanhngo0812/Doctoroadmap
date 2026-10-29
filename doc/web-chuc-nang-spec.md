@@ -315,7 +315,7 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 
 ### 3. Phân quyền
 
-**Quyết định chủ dự án 2026-10-28 — bảo vệ admin đầu tiên:** tài khoản admin đầu tiên được bảo vệ khỏi khoá quản trị (status disabled), hạ quyền khỏi admin và xoá, kể cả tự thao tác hoặc admin khác thao tác. Định danh được giữ bền vững phía server; không suy lại từ role/status/thứ tự danh sách hoặc tài khoản thường tạo sớm được nâng admin sau. Thao tác bị cấm phải từ chối nguyên tử. Hồ sơ/mật khẩu và bảo vệ xác thực hiện hành vẫn giữ. Chủ dự án nói “admin đầu tiên ko đc khóa hay gì”; [ADR 0030](adr/0030-bao-ve-tai-khoan-admin-dau-tien.md). Bản W-17.1 9cf405ac chưa thực hiện đúng nên chưa ghép; cách lưu/migration/DTO được đề xuất trong bản sửa.
+**Quyết định chủ dự án 2026-10-28 — bảo vệ admin đầu tiên:** tài khoản admin đầu tiên được bảo vệ khỏi khoá quản trị (status disabled), hạ quyền khỏi admin và xoá, kể cả tự thao tác hoặc admin khác thao tác. Định danh được giữ bền vững phía server; không suy lại từ role/status/thứ tự danh sách hoặc tài khoản thường tạo sớm được nâng admin sau. Thao tác bị cấm phải từ chối nguyên tử. Hồ sơ/mật khẩu và bảo vệ xác thực hiện hành vẫn giữ. Chủ dự án nói “admin đầu tiên ko đc khóa hay gì”; [ADR 0030](adr/0030-bao-ve-tai-khoan-admin-dau-tien.md). Backend W-17.1 đã được nhận lần 12, ghép local 4e6f33cb; registry bootstrap/DTO/migration được mô tả trong spec DB và ADR 0030. DB dùng chung chưa được chuyển trong lượt nghiệm thu.
 
 **Một hàm thuần ở domain**, `decide(actor, action, course, membership) → allow | deny(code)`. Mọi dịch vụ gọi hàm này trước khi làm việc. Bảng luật:
 
@@ -533,6 +533,10 @@ giây. Nguồn là sổ chi; số này là **ước theo token**, không thay ho
 ### 9. Quản trị
 
 - **Admin đầu tiên:** không được khoá, hạ quyền hoặc xoá theo quyết định 28/10 và ADR 0030; bảo vệ ở server, không chỉ ẩn nút React.
+
+**Hợp đồng W-17.1 đã triển khai:** GET/PATCH /admin/users và GET /admin/audit trả siêu dữ liệu, phân trang có giới hạn; mọi route yêu cầu admin live và response no-store. AdminUserResponse có is_first_admin: true/false nếu registry đã lập, null nếu DB cũ chưa đối chiếu. PATCH chỉ nhận status/role/build_monthly_max, không nhận định danh bảo vệ từ client. Vi phạm người đầu tiên trả409 protected_admin; chưa lập registry trả409 bootstrap_required cho thao tác nguy hiểm; fields chỉ rõ role/status. Guard admin active cuối chỉ áp khi chuyển đổi thực sự làm giảm số admin active: hạ một admin đã disabled, kể cả enable+demote cùng PATCH, không thuộc trường hợp này. Trạng thái/role/quota/audit/session thay đổi nguyên tử. Audit DTO không trả raw meta hay dữ liệu học riêng. React chỉ phản ánh hợp đồng server.
+
+Mốc bản dựng/khoá mẫu, chi/validation và retry/cancel thay chủ vẫn theo kế hoạch các mốc sau; không coi các route dự kiến trong bảng mục11 đều đã triển khai. [Nghiệm thu lần12](../report/dieu-phoi-nghiem-thu-ba-nhom-lan12-2026-10-28.md).
 
 - **Người dùng:** tìm theo email; xem ngày tạo, lần đăng nhập gần nhất, số khoá sở hữu, lượt dựng tháng này; khoá hay mở tài khoản; đổi `build_monthly_max`
   riêng; nâng hay hạ vai trò admin (không tự hạ mình nếu là admin cuối cùng).

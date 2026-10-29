@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.173" timestamp="2026-10-27T23:00:00.201893+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_disable_revokes_two_cookies_enable_never_resurrects" time="1.710"><failure message="AssertionError: assert [{'id': UUID(...ec421d4e09')}] == []&#10;  &#10;  Left contains 2 more items, first extra item: {'id': UUID('16ee4ab1-ab6f-4abc-8e77-d47ff8269155')}&#10;  Use -v to get more diff">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000001815EAF..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000001817E60D4E0&gt;)
+
+    def test_disable_revokes_two_cookies_enable_never_resurrects(admin_case):
+        rt = admin_case
+        second = TestClient(rt.app, base_url=ORIGIN)
+        try:
+            assert second.post('/api/v1/auth/login', headers={'Origin': ORIGIN},
+                json={'email': rt.learner.email, 'password': PASSWORD}).status_code == 200
+            assert len(sql(rt, 'SELECT id FROM auth_session WHERE account_id=:uid', uid=rt.learner.id)) == 2
+            response = patch(rt, {'status': 'disabled'})
+            assert response.status_code == 200, response.text
+&gt;           assert sql(rt, 'SELECT id FROM auth_session WHERE account_id=:uid', uid=rt.learner.id) == []
+E           AssertionError: assert [{'id': UUID(...ec421d4e09')}] == []
+E
+E             Left contains 2 more items, first extra item: {'id': UUID('16ee4ab1-ab6f-4abc-8e77-d47ff8269155')}
+E             Use -v to get more diff
+
+src\web\backend\tests\test_w17_admin.py:128: AssertionError</failure></testcase></testsuite></testsuites>

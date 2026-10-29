@@ -1,0 +1,123 @@
+{
+  "sourceCommit": "6cd3612264e35133381bfe3e14903267af35f2e9",
+  "source": "Selected actual HTTP JSON responses; full transport/SQL proof in browser-final3/audit.json",
+  "responses": [
+    {
+      "stage": "owner-create-deduplicate",
+      "path": "/api/v1/courses/aa5f11ef-1695-4047-ae34-1695dc1b86d1/invitations",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": "83477a9a-35db-4765-a027-48f337faf9c2",
+            "course_id": "aa5f11ef-1695-4047-ae34-1695dc1b86d1",
+            "course_title": "Đại số tuyến tính",
+            "email": "new-w12@example.invalid",
+            "status": "pending",
+            "expires_at": "2026-11-03T08:00:00+00:00",
+            "created_at": "2026-10-27T08:00:00+00:00",
+            "responded_at": null
+          },
+          {
+            "id": "37f11b05-7a0b-4c8a-b921-69e0527af4d2",
+            "course_id": "aa5f11ef-1695-4047-ae34-1695dc1b86d1",
+            "course_title": "Đại số tuyến tính",
+            "email": "second-new-w12@example.invalid",
+            "status": "pending",
+            "expires_at": "2026-11-03T08:00:00+00:00",
+            "created_at": "2026-10-27T08:00:00+00:00",
+            "responded_at": null
+          }
+        ]
+      },
+      "via": "fetch-clone-before-application"
+    },
+    {
+      "stage": "cancelled-denied",
+      "path": "/api/v1/invitations/934d708f-b609-49cb-95c3-01042fa22c77/accept",
+      "status": 410,
+      "body": {
+        "error": {
+          "code": "link_invalid",
+          "message": "Link tham gia không hợp lệ hoặc đã hết hạn.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "expired-denied",
+      "path": "/api/v1/invitations/aa2c1d92-bb09-451e-b7a6-2ae88999aea7/accept",
+      "status": 410,
+      "body": {
+        "error": {
+          "code": "link_invalid",
+          "message": "Link tham gia không hợp lệ hoặc đã hết hạn.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "full",
+      "path": "/api/v1/invitations/1805d53e-1af8-4b73-a7db-ecc11eef99d6/accept",
+      "status": 409,
+      "method": "POST",
+      "body": {
+        "error": {
+          "code": "course_full",
+          "message": "Khoá học đã đủ thành viên",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "fetch-clone-before-application"
+    },
+    {
+      "stage": "wrong-email-denied",
+      "path": "/api/v1/invitations/83477a9a-35db-4765-a027-48f337faf9c2/accept",
+      "status": 404,
+      "body": {
+        "error": {
+          "code": "not_found",
+          "message": "Không tìm thấy nội dung yêu cầu",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "unverified-recipient-denied",
+      "path": "/api/v1/invitations/83477a9a-35db-4765-a027-48f337faf9c2/accept",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "email_unverified",
+          "message": "Vui lòng xác minh email trước khi dùng lời mời.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "daily-mail-cap",
+      "path": "/api/v1/courses/aa5f11ef-1695-4047-ae34-1695dc1b86d1/invitations",
+      "status": 429,
+      "method": "POST",
+      "body": {
+        "error": {
+          "code": "rate_limited",
+          "message": "Bạn đã đạt giới hạn gửi lời mời hôm nay.",
+          "retry_after": 32400,
+          "ref": null
+        }
+      },
+      "via": "fetch-clone-before-application"
+    }
+  ]
+}

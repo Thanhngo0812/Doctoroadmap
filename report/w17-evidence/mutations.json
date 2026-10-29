@@ -1,0 +1,101 @@
+[
+  {
+    "name": "session-revocation",
+    "test": "test_disable_revokes_two_cookies_enable_never_resurrects",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "last-admin",
+    "test": "test_last_admin_demote_rejected",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "concurrent-admin-lock",
+    "test": "test_two_postgres_runtimes_cannot_demote_both_last_admins",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "audit-transaction",
+    "test": "test_update_and_audit_rollback_on_audit_failure",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "admin-authority",
+    "test": "test_all_admin_routes_require_admin_and_no_store",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "live-admin-authority",
+    "test": "test_stale_admin_actor_and_unauthorized_patch_cannot_write",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  },
+  {
+    "name": "audit-meta",
+    "test": "test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "048a2a542fb6d175aaed7cd467f9deffd70d0e572faa1277cf2f1208ffb00a0c"
+  },
+  {
+    "name": "dto-users",
+    "test": "test_real_response_dtos_strip_repository_extras_at_every_level",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "8d8ff7e20961a94c651df7f6ee82729f3b0326e6d30350c5701876105ca20830"
+  },
+  {
+    "name": "month-end",
+    "test": "test_user_monthly_counts_match_existing_quota_at_vietnam_boundary",
+    "native_exit": 1,
+    "failures": 3,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "048a2a542fb6d175aaed7cd467f9deffd70d0e572faa1277cf2f1208ffb00a0c"
+  },
+  {
+    "name": "audit-start",
+    "test": "test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "048a2a542fb6d175aaed7cd467f9deffd70d0e572faa1277cf2f1208ffb00a0c"
+  },
+  {
+    "name": "login-account-lock",
+    "test": "test_inflight_login_cannot_leave_a_session_after_disable",
+    "native_exit": 1,
+    "failures": 1,
+    "errors": 0,
+    "caught": true,
+    "source_before_sha256": "5d74ff466436890b6e7a17c9c5940e902073c0ccba9c315d5a4fa63896e63225"
+  }
+]
