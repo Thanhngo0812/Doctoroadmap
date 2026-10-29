@@ -113,7 +113,11 @@ Khái niệm nguồn "ngoài" của G4 được căn theo cùng luật, dùng tr
 
 ## 8. Lời nhắc B5
 
-Chế độ: **CHỜ** (B5a một lời gọi cả cuốn, hoặc B5b mỗi chương một lời gọi; chọn sau dry-run trên tập phát triển ngày 01/11 theo Q36, lý do ghi tại đây).
+Chế độ: **CHỜ** (B5a một lời gọi cả cuốn, hoặc B5b mỗi chương một lời gọi).
+
+**Luật chọn (khai 29/10, trước khi chấm bất kỳ lượt B5 nào):** chọn chế độ có **F1 quan hệ** (mức nghiêm, trung bình macro trên các sách phát triển có G4)
+**cao hơn**, để B5 là đối thủ mạnh nhất trong hai cách. Chênh dưới 0,02 thì chọn B5b, vì B5b đọc trọn từng chương mà không bị cắt ở trần token ra.
+Chế độ không chọn vẫn được báo trong phụ lục phát triển, không chạy trên tập thử.
 
 Lời nhắc nguyên văn: **CHỜ** (chép nguyên văn bản chốt từ `evaluation/giao-thuc/b5/loi-nhac-b5.md` vào đây, kèm SHA-256 của tệp đó và mã phiên bản lời nhắc).
 
@@ -139,6 +143,22 @@ Mọi so sánh khác chỉ mô tả, báo cỡ hiệu ứng và CI. Thứ tự b
   - Precision hiệu chỉnh kèm CI Wilson trên tỉ lệ mẫu; báo thêm cận dưới coi cạnh thiếu trường là sai.
   - Likert báo trung bình và Krippendorff α thứ bậc.
   - So sánh cặp là vòng tròn đủ cặp giữa các hệ có lộ trình, báo thăm dò.
+
+**Hệ chính chạy đúng đường của sản phẩm** (`DocumentPipeline`, cùng mã của web và lệnh `build`; vé DG-08b), gồm cả hai cổng từ chối:
+- **chất lượng chữ:** sách có bất kỳ cảnh báo chất lượng chữ nào thì bị từ chối;
+- **bản quét và ngôn ngữ:** tỉ lệ trang trống, số chữ mỗi trang, tỉ lệ dấu tiếng Việt.
+
+Sách bị sản phẩm từ chối thì xử lý như sau:
+- Trong số chính, sách đó là **lỗi của sản phẩm**, tính như hệ không trả gì và theo hướng bất lợi cho hệ chính:
+  - độ phủ (A3, đầu-cuối) bằng 0;
+  - Q6 bằng 1, vì mọi cạnh vàng có đầu không nằm trong dãy học;
+  - F1 quan hệ bằng 0;
+  - tỉ lệ bằng chứng có thật bằng 0.
+
+  Thước của các khâu không đo được thì để trống. Mã từ chối được báo theo cuốn. Bộ chấm và bộ sinh bảng sinh các dòng này từ bản ghi lượt bị từ chối (DG-17b).
+- Biến thể `chinh-vong-chu` vượt riêng cổng chất lượng chữ, có lý do ghi trong bản ghi lượt, và hợp đồng mang cờ `duong_vong_chu`. Biến thể này chạy thêm, chỉ
+  để phân tích phụ. Số của nó không thay số chính và không vào ba phép kiểm định.
+- Cổng bản quét và ngôn ngữ không có đường vòng.
 
 ## 10. Luật tranh chấp và vàng thiếu
 
