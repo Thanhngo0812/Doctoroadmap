@@ -39,6 +39,7 @@ def chan_mang(monkeypatch, tmp_path):
     monkeypatch.setattr(socket, "socket", cam)
     monkeypatch.setattr(socket, "create_connection", cam)
     monkeypatch.setattr(chay, "chay_cli_that", cam)  # không có pipeline thật nếu test quên thay bản giả
+    monkeypatch.setattr(chay, "dung_pipeline_that", cam)
     monkeypatch.chdir(tmp_path)
     chung = tmp_path / "artifacts"
     chung.mkdir()
@@ -52,6 +53,7 @@ def chan_mang(monkeypatch, tmp_path):
 def gia(monkeypatch):
     g = lh.GiaPipeline()
     monkeypatch.setattr(chay, "chay_cli_that", g)
+    monkeypatch.setattr(chay, "dung_pipeline_that", g.tao_pipeline)
     return g
 
 
@@ -70,15 +72,12 @@ def sach(tmp_path):
     vang.mkdir()
     for ten, gt in zip(("g3", "g4", "can"), lh.vang_tay(NODE[:4])):
         (vang / f"{ten}.json").write_text(json.dumps(gt), encoding="utf-8")
-    (tmp_path / "a4-vang.json").write_text("{}", encoding="utf-8")
-    return {"pdf": pdf, "manifest": mf, "vang": vang, "a4": tmp_path / "a4-vang.json", "m": m}
+    return {"pdf": pdf, "manifest": mf, "vang": vang, "m": m}
 
 
 def lenh(sach, ra, bien_the, *them, co_vang=False, co_chi=True):
     a = ["luot", "--manifest", str(sach["manifest"]), "--pdf", str(sach["pdf"]), "--bien-the", bien_the, "--ra", str(ra),
          "--commit", "c" * 40, "--ngay", "2026-11-01"]
-    if "a4" in sach:
-        a += ["--vang-a4", str(sach["a4"])]
     if co_vang:
         a += ["--g3", str(sach["vang"] / "g3.json"), "--g4", str(sach["vang"] / "g4.json"), "--can", str(sach["vang"] / "can.json")]
     if co_chi:
@@ -108,13 +107,13 @@ def chinh(sach, gia, tmp_path):
 def test_chinh_chay_tron_tu_pdf_den_hop_dong_va_bang_diem(chinh, gia, tmp_path):
     ban = ban_ghi.doc(chinh)
     assert ban_ghi.da_xong(ban) and [b["ten"] for b in ban["buoc"]] == [
-        "ingest", "label-roles", "a3", "a4", "roadmap", "pha-b-rieng", "xuat", "cham"]
+        "read", "label-roles", "a3", "canonical", "roadmap", "pha-b-rieng", "xuat", "cham"]
     hd = doc_json(chinh / "hop-dong.json")
     assert kiem(hd) == [] and hd["dinh_danh"]["he"] == "chinh" and hd["dinh_danh"]["doc_id"] == DOC
     assert hd["dinh_danh"]["sha256_pdf"] == ban["sha256_pdf"] and hd["dinh_danh"]["transport"] == "vertex"
     bang = doc_json(chinh / "bang-diem.json")
     assert bang["theo_chuong"] and any(r["thuoc"] == "a10.q6.nghiem" for r in bang["theo_cuon"])
-    assert {t: gia.goi_mo_hinh[t] for t in ("label-roles", "a3", "a4", "roadmap")} == {"label-roles": 1, "a3": 1, "a4": 1, "roadmap": 1}
+    assert {t: gia.goi_mo_hinh[t] for t in ("label-roles", "a3", "canonical", "roadmap")} == {"label-roles": 1, "a3": 1, "canonical": 1, "roadmap": 1}
     assert (chinh / "so-chi.json").exists()
 
 
@@ -126,23 +125,232 @@ def test_ban_ghi_du_truong_va_cau_hinh(chinh):
     assert len(ban["hash_cau_hinh"]) == 64 and ban["seed"] is None and all(b["trang_thai"] == "xong" for b in ban["buoc"])
 
 
-def test_moi_lenh_pipeline_dung_kho_rieng_cua_luot(chinh, gia, tmp_path):
+def test_moi_buoc_pipeline_dung_kho_rieng_cua_luot_va_theo_thu_tu_san_pham(chinh, gia, tmp_path):
     kho = str((chinh / "kho").resolve())
     assert gia.lenh and all(Path(e["DOC2ROADMAP_ARTIFACT_DIR"]).resolve() == Path(kho) for _, e in gia.lenh)
     assert all(e["DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"] == "" and e["DOC2ROADMAP_SECONDARY_MODE"] == "ml" for _, e in gia.lenh)
-    assert [a[0] for a, _ in gia.lenh] == ["ingest", "label-roles", "a3", "a4", "roadmap"]
-    assert "--a1" not in gia.lenh[0][0] and Path(gia.lenh[3][0][gia.lenh[3][0].index("--gold") + 1]).resolve() == (chinh / "vang-a4.json").resolve()
+    assert [a[0] for a, _ in gia.lenh] == ["read", "label-roles", "a3", "canonical", "roadmap"]
     assert not (tmp_path / "artifacts" / "graph").exists()  # kho chung không bị đụng
 
 
-def test_ly_do_chat_luong_chu_duoc_chuyen_cho_cac_lenh_nhan_no(sach, gia, tmp_path):
-    assert main(lenh(sach, tmp_path / "luot", "chinh", "--ly-do-chu", "trang 3 ma VNI da biet")) == 0
-    for argv, _ in gia.lenh:
-        co = "--allow-text-quality-reason" in argv
-        assert co == (argv[0] in ("ingest", "label-roles", "a3", "roadmap")), argv
-        if co:
-            assert argv[argv.index("--allow-text-quality-reason") + 1] == "trang 3 ma VNI da biet"
-    assert ban_ghi.doc(tmp_path / "luot")["cau_hinh"]["ly_do_chu"] == "trang 3 ma VNI da biet"
+def test_canonical_goi_voi_ngon_ngu_vi_va_khong_co_vang(chinh, gia):
+    (argv, _), = gia.lenh_dau("canonical")
+    assert argv == ["canonical", DOC, "vi"]
+    ten, kw = next(x for x in gia.chi_tiet if x[0] == "canonical")
+    assert kw == {"ngon_ngu": "vi"}                      # giao diện sản phẩm không có tham số vàng
+    assert not any("--gold" in a or a[0] == "a4" for a, _ in gia.lenh)   # CLI a4 --gold không còn trong đường hệ chính
+    assert not (chinh / "vang-a4.json").exists() and "vang_a4_sha256" not in ban_ghi.doc(chinh)["ket_qua"]
+    assert "a4" not in ban_ghi.doc(chinh)["cau_hinh"]["vang"]
+
+
+def test_mot_pipeline_san_pham_cho_ca_luot(chinh, gia):
+    assert len(gia.tao) == 1 and gia.tao[0][1] is True    # một pipeline, có allow_spend vì lượt có --allow-spend
+    assert gia.tao[0][0]["DOC2ROADMAP_ARTIFACT_DIR"] == str(chinh / "kho")
+
+
+def test_xao_k_roadmap_di_cli_phat_trien_vi_san_pham_chua_nhan_cong_tac(sach, gia, chinh, tmp_path):
+    so_tao = len(gia.tao)
+    assert main(lenh(sach, tmp_path / "xao", "xao-k", "--tu-luot", str(chinh), "--k", "1")) == 0
+    assert len(gia.tao) == so_tao                          # xao-k không dựng pipeline sản phẩm: roadmap đi CLI phát triển
+    assert ban_ghi.doc(tmp_path / "xao" / "xao-1")["cau_hinh"]["roadmap_qua"] == "cli-phat-trien"
+    assert ban_ghi.doc(chinh)["cau_hinh"]["roadmap_qua"] == "san-pham"
+
+
+def test_cli_roadmap_khop_ma_san_pham():
+    # Chốt chặn của ngoại lệ CLI_ROADMAP: sản phẩm chưa nhận công tắc thì hai biến thể ở lại CLI; khi sản phẩm nhận công tắc, test này đỏ để chuyển chúng sang pipeline.
+    import inspect
+
+    from doc2roadmap.composition_build import DocumentPipeline
+    nguon = inspect.getsource(DocumentPipeline.roadmap)
+    san_pham_nhan_cong_tac = "main_context_shuffle_seed" in nguon and "secondary_target_filter" in nguon
+    assert san_pham_nhan_cong_tac == (chay.CLI_ROADMAP == ()), "đồng bộ chay.CLI_ROADMAP với DocumentPipeline.roadmap"
+
+
+def test_ly_do_chu_la_duong_vong_co_co_trong_ban_ghi_va_hop_dong(sach, gia, tmp_path):
+    ra = tmp_path / "luot"
+    assert main(lenh(sach, ra, "chinh", "--ly-do-chu", "trang 3 ma VNI da biet")) == 0
+    assert gia.chi_tiet[0] == ("read", {"a1": "nhe", "ly_do": "trang 3 ma VNI da biet"})
+    ban = ban_ghi.doc(ra)
+    assert ban["cau_hinh"]["ly_do_chu"] == "trang 3 ma VNI da biet" and ban["cau_hinh"]["duong_vong_chu"] is True
+    hd = doc_json(ra / "hop-dong.json")
+    assert kiem(hd) == [] and hd["dinh_danh"]["duong_vong_chu"] is True
+
+
+def test_luot_khong_vong_ghi_co_false_trong_hop_dong_va_khong_ly_do(chinh):
+    ban = ban_ghi.doc(chinh)
+    assert ban["cau_hinh"]["duong_vong_chu"] is False and ban["cau_hinh"]["ly_do_chu"] is None
+    assert doc_json(chinh / "hop-dong.json")["dinh_danh"]["duong_vong_chu"] is False
+
+
+def test_duong_vong_chu_vao_hash_cau_hinh(sach, gia, tmp_path):
+    a, b = tmp_path / "a", tmp_path / "b"
+    assert main(lenh(sach, a, "chinh")) == 0
+    assert main(lenh(sach, b, "chinh", "--ly-do-chu", "trang 3 ma VNI da biet")) == 0
+    ha, hb = ban_ghi.doc(a), ban_ghi.doc(b)
+    assert ha["hash_cau_hinh"] != hb["hash_cau_hinh"]
+    # cờ tự nó (lý do giữ nguyên) cũng đổi hash: hai cấu hình chỉ khác `duong_vong_chu`
+    cau = {k: v for k, v in hb["cau_hinh"].items() if k != "duong_vong_chu"}
+    assert "duong_vong_chu" in hb["cau_hinh"]
+    kwargs = dict(bien_the="chinh", doc_id=DOC, sha256_pdf=hb["sha256_pdf"], commit=hb["commit"], mo_hinh=hb["mo_hinh"], transport=hb["transport"],
+                  seed=None, k=None, luot_nhieu=0, tu_luot=None, ten_buoc=[b_["ten"] for b_ in hb["buoc"]])
+    assert hb["hash_cau_hinh"] == ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(cau_hinh=hb["cau_hinh"], **kwargs))
+    assert hb["hash_cau_hinh"] != ban_ghi.hash_cau_hinh(ban_ghi.thanh_phan(cau_hinh=cau, **kwargs))
+
+
+# ---------- cổng chất lượng chữ theo đúng sản phẩm ----------
+
+def test_sach_co_canh_bao_chu_bi_san_pham_tu_choi_o_read_khong_goi_buoc_sau(sach, gia, tmp_path, capsys):
+    gia.canh_bao_chu = "Trang có chất lượng chữ chưa đạt: 3"
+    ra = tmp_path / "luot"
+    assert main(lenh(sach, ra, "chinh")) == 3   # mã thoát riêng, không phải 1 (lỗi chạy)
+    ban = ban_ghi.doc(ra)
+    assert [b["trang_thai"] for b in ban["buoc"]][:3] == ["tu_choi_chu_loi", "cho", "cho"]
+    assert ban["ket_qua"]["tu_choi"] == {"trang_thai": "tu_choi_chu_loi", "buoc": "read", "ma": "chu_loi", "ly_do": "Trang có chất lượng chữ chưa đạt: 3"}
+    assert [a[0] for a, _ in gia.lenh] == ["read"] and not gia.goi_mo_hinh   # không bước nào sau read, không mô hình
+    assert not ban_ghi.da_xong(ban) and ban_ghi.kiem(ban) == [] and not (ra / "hop-dong.json").exists()
+    assert main(["luot", "--kiem", str(ra)]) == 1
+
+
+def test_tu_choi_chu_khong_nham_voi_loi_chay(sach, gia, tmp_path):
+    gia.hong_o = "read"
+    ra = tmp_path / "loi"
+    assert main(lenh(sach, ra, "chinh")) == 1
+    assert ban_ghi.doc(ra)["buoc"][0]["trang_thai"] == "loi" and "tu_choi" not in ban_ghi.doc(ra)["ket_qua"]
+
+
+def test_sach_co_canh_bao_chu_chay_tron_khi_co_ly_do_chu(sach, gia, tmp_path):
+    gia.canh_bao_chu = "Trang có chất lượng chữ chưa đạt: 3"
+    ra = tmp_path / "luot"
+    assert main(lenh(sach, ra, "chinh", "--ly-do-chu", "đã xem trang 3")) == 0
+    assert ban_ghi.da_xong(ban_ghi.doc(ra))
+
+
+def test_tap_thu_ly_do_chu_chi_voi_bien_the_vong_chu(sach, gia, tmp_path, capsys):
+    thu = {**sach["m"], "tap": "thu"}
+    mf = tmp_path / "thu.json"
+    mf.write_text(json.dumps(thu), encoding="utf-8")
+    giao_thuc = tmp_path / "gt.md"
+    giao_thuc.write_text("# Giao thuc dang ky truoc\n\nDa chot.\n", encoding="utf-8")
+    a = lenh({**sach, "manifest": mf}, tmp_path / "x", "chinh", "--ly-do-chu", "đã xem", "--giao-thuc", str(giao_thuc))
+    assert main(a) == 2 and "hậu tố -vong-chu" in capsys.readouterr().err
+    assert not gia.lenh and not (tmp_path / "x").exists()
+    ok = lenh({**sach, "manifest": mf}, tmp_path / "y", "chinh-vong-chu", "--ly-do-chu", "đã xem", "--giao-thuc", str(giao_thuc))
+    assert main(ok) == 0
+    ban = ban_ghi.doc(tmp_path / "y")
+    assert ban["bien_the"] == "chinh-vong-chu" and ban["cau_hinh"]["duong_vong_chu"] is True
+    assert doc_json(tmp_path / "y" / "hop-dong.json")["dinh_danh"]["he"] == "chinh_vong_chu"
+
+
+def test_bien_the_vong_chu_can_ly_do(sach, gia, tmp_path, capsys):
+    assert main(lenh(sach, tmp_path / "z", "chinh-vong-chu")) == 2 and "--ly-do-chu" in capsys.readouterr().err
+    assert not gia.lenh and not (tmp_path / "z").exists()
+
+
+def test_tap_phat_trien_dung_ly_do_chu_voi_chinh_nhung_van_co_co(sach, gia, tmp_path):
+    assert main(lenh(sach, tmp_path / "l", "chinh", "--ly-do-chu", "đã xem")) == 0
+    assert ban_ghi.doc(tmp_path / "l")["cau_hinh"]["duong_vong_chu"] is True
+
+
+def test_docling_la_ablation_doi_bo_doc_o_read_con_lai_la_buoc_san_pham(sach, gia, tmp_path):
+    assert main(lenh(sach, tmp_path / "dl", "docling")) == 0
+    assert gia.chi_tiet[0] == ("read", {"a1": "docling", "ly_do": None})
+    assert [a[0] for a, _ in gia.lenh] == ["read", "label-roles", "a3", "canonical", "roadmap"]
+
+
+# ---------- bọc DocumentPipeline: từ chối và đường vòng ----------
+
+class _TomTat:
+    chunk_version, parse_version, chunk_count = 4, 2, 7
+
+
+class _IngestGia:
+    def __init__(self, canh_bao=()):
+        self.goi, self.canh_bao = [], list(canh_bao)
+
+    def execute(self, noi_dung, ten, doc_id, **kw):
+        self.goi.append(kw)
+        return _TomTat()
+
+
+class _PipelineSanPhamGia:
+    """Chỉ đủ cho `DuongSanPham.read`: ghi lại việc `read` sản phẩm có được gọi không."""
+
+    def __init__(self, canh_bao=(), tu_choi=None):
+        from types import SimpleNamespace
+        self.ingest, self.goi_read, self.tu_choi = _IngestGia(canh_bao), 0, tu_choi
+        self.settings = SimpleNamespace(max_tokens=1, max_table_tokens=1, hard_cap_tokens=1, target_tokens=1, sentence_overlap=0)
+        canh_bao_ = list(canh_bao)
+        self.store = SimpleNamespace(load_chunks=lambda doc, v: SimpleNamespace(
+            manifest={"text_quality": {"warnings": canh_bao_}}, result=SimpleNamespace(doc_id=doc)), load_parse=lambda *a: SimpleNamespace(
+            tree=SimpleNamespace(parse_stats={"page_count": 2}, nodes=[SimpleNamespace(page=1, text=VI * 3), SimpleNamespace(page=2, text=VI * 3)])))   # trang tiếng Việt: qua cổng bản quét
+
+    def read(self, pdf, doc_id):
+        from doc2roadmap.application.ports.build import BuildRejected
+        self.goi_read += 1
+        if self.tu_choi:
+            raise BuildRejected("chu_loi", self.tu_choi)
+        return {"chunks_version": 1}
+
+
+def _duong_san_pham(pl, tmp_path):
+    from danhgia.luot.san_pham import DuongSanPham
+    d = DuongSanPham.__new__(DuongSanPham)
+    d.env, d.pipeline = {"DOC2ROADMAP_TOKENIZER_MODEL": str(Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model")}, pl
+    (tmp_path / "s.pdf").write_bytes(b"%PDF")
+    return d, tmp_path / "s.pdf"
+
+
+def test_read_san_pham_doi_build_rejected_thanh_tu_choi(tmp_path):
+    from danhgia.luot.ban_ghi import TuChoi
+    pl = _PipelineSanPhamGia(tu_choi="Trang có chất lượng chữ chưa đạt: 3")
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    with pytest.raises(TuChoi) as e:
+        d.read(pdf, "D")
+    assert (e.value.ma, pl.goi_read, pl.ingest.goi) == ("chu_loi", 1, [])   # đi đúng DocumentPipeline.read, không qua ingest riêng
+
+
+def test_read_san_pham_co_ly_do_la_duong_vong_khong_qua_read_cua_san_pham(tmp_path):
+    pl = _PipelineSanPhamGia(tu_choi="Trang có chất lượng chữ chưa đạt: 3")
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    kq = d.read(pdf, "D", ly_do="đã xem trang 3")
+    assert pl.goi_read == 0 and pl.ingest.goi[0]["quality_reason"] == "đã xem trang 3" and kq["chunks_version"] == 4
+
+
+def test_read_docling_khong_ly_do_van_chiu_cong_chu_cua_san_pham(tmp_path):
+    from danhgia.luot.ban_ghi import TuChoi
+    pl = _PipelineSanPhamGia(canh_bao=["Trang có chất lượng chữ chưa đạt: 3"])
+    d, pdf = _duong_san_pham(pl, tmp_path)
+    with pytest.raises(TuChoi):
+        d.read(pdf, "D", a1="docling")
+    assert pl.goi_read == 0 and "quality_reason" not in pl.ingest.goi[0]
+    sach_sach = _PipelineSanPhamGia()
+    d2, pdf2 = _duong_san_pham(sach_sach, tmp_path)
+    assert d2.read(pdf2, "D", a1="docling")["chunks_version"] == 4
+
+
+# ---------- tích hợp: bước read của luot = DocumentPipeline.read ----------
+
+def test_read_cua_luot_cung_chunk_voi_document_pipeline_read(sach, tmp_path, monkeypatch):
+    from danhgia.luot import san_pham
+    from doc2roadmap.composition_build import DocumentPipeline
+    from doc2roadmap.config import Settings
+
+    monkeypatch.setattr(chay, "dung_pipeline_that", san_pham.dung_pipeline_that)   # pipeline sản phẩm thật; mạng vẫn bị chặn
+    token = Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model"   # test chdir sang tmp_path nên đường tương đối mặc định không còn đúng
+    monkeypatch.setenv("DOC2ROADMAP_TOKENIZER_MODEL", str(token))
+    ra = tmp_path / "luot"
+    # PDF fixture ngắn và chỉ có chữ ASCII: cổng bản quét của sản phẩm từ chối sau khi đã cắt chunk; chunk vẫn phải giống từng byte
+    assert main(lenh(sach, ra, "chinh", "--transport", "developer_api", co_chi=False)) == 3
+    ban = ban_ghi.doc(ra)
+    assert ban["buoc"][0]["trang_thai"] == "tu_choi_ban_quet"
+    truc_tiep = tmp_path / "truc-tiep"
+    doc_id = "xstk-ch3-1"
+    kq = DocumentPipeline(Settings(artifact_dir=truc_tiep, llm_transport="developer_api", tokenizer_model=token), allow_spend=False).read(sach["pdf"], doc_id)
+    v = kq["chunks_version"]
+    assert ban["ket_qua"]["tu_choi"]["ma"] == "ban_quet" and "read" not in ban["ket_qua"]
+    mot = doc_json(ra / "kho" / "chunks" / doc_id / f"v{v}" / "chunks.json")
+    hai = doc_json(truc_tiep / "chunks" / doc_id / f"v{v}" / "chunks.json")
+    assert mot == hai and len(mot) == kq["chunk_count"] > 0
 
 
 def test_kho_pha_b_rieng_duoc_dua_vao_hop_dong(sach, gia, tmp_path):
@@ -170,9 +378,10 @@ def test_so_chi_lay_tu_usage_cua_kho_luot(chinh):
 def test_thieu_allow_spend_chi_dry_run_khong_goi_mo_hinh(sach, gia, tmp_path):
     ra = tmp_path / "luot"
     assert main(lenh(sach, ra, "chinh", co_chi=False)) == 0
-    assert sum(gia.goi_mo_hinh.values()) == 0 and [a[0] for a, _ in gia.lenh] == ["ingest"]  # ingest không tốn tiền
+    assert sum(gia.goi_mo_hinh.values()) == 0 and [a[0] for a, _ in gia.lenh] == ["read"]  # read không tốn tiền
+    assert [allow for _, allow in gia.tao] == [False]   # pipeline dựng với allow_spend=False: bảo vệ thứ hai ở tầng sản phẩm
     bao = doc_json(ra / "dry-run.json")
-    assert bao["buoc_co_chi"] == ["label-roles", "a3", "a4", "roadmap"] and "allow-spend" in bao["ly_do"]
+    assert bao["buoc_co_chi"] == ["label-roles", "a3", "canonical", "roadmap"] and "allow-spend" in bao["ly_do"]
     assert bao["du_toan"]["so_chunk"] == SO_CHUNK and bao["du_toan"]["tong"]["usd"] > 0
     assert not ban_ghi.da_xong(ban_ghi.doc(ra)) and not (ra / "hop-dong.json").exists()
 
@@ -180,21 +389,22 @@ def test_thieu_allow_spend_chi_dry_run_khong_goi_mo_hinh(sach, gia, tmp_path):
 def test_dry_run_chan_ca_khi_co_allow_spend(sach, gia, tmp_path):
     assert main(lenh(sach, tmp_path / "luot", "chinh", "--dry-run")) == 0
     assert sum(gia.goi_mo_hinh.values()) == 0
+    assert [allow for _, allow in gia.tao] == [False]   # có --allow-spend nhưng dry-run: pipeline vẫn dựng với allow_spend=False (phép phá S10)
 
 
 # ---------- chạy tiếp ----------
 
 def test_chay_tiep_sau_ngat_khong_goi_lai_buoc_da_xong(sach, gia, tmp_path):
     ra = tmp_path / "luot"
-    gia.hong_o = "a4"
+    gia.hong_o = "canonical"
     assert main(lenh(sach, ra, "chinh")) == 1
     ban = ban_ghi.doc(ra)
     assert [b["trang_thai"] for b in ban["buoc"]][:5] == ["xong", "xong", "xong", "loi", "cho"]
     truoc = bam(ra / "kho")
     assert main(lenh(sach, ra, "chinh")) == 0
-    # a4 được gọi hai lần (lần ngắt và lần chạy tiếp); mọi bước đã xong chỉ một lần
-    assert dict(gia.goi_mo_hinh) == {"label-roles": 1, "a3": 1, "a4": 2, "roadmap": 1}
-    assert [a[0] for a, _ in gia.lenh].count("ingest") == 1
+    # canonical được gọi hai lần (lần ngắt và lần chạy tiếp); mọi bước đã xong chỉ một lần
+    assert dict(gia.goi_mo_hinh) == {"label-roles": 1, "a3": 1, "canonical": 2, "roadmap": 1}
+    assert [a[0] for a, _ in gia.lenh].count("read") == 1
     sau = bam(ra / "kho")
     assert all(sau[t] == h for t, h in truoc.items())  # không xoá, không sinh lại bản đã xong
     assert ban_ghi.da_xong(ban_ghi.doc(ra))
@@ -208,7 +418,7 @@ def test_chay_lai_lượt_da_xong_khong_lam_gi(chinh, gia, sach):
 
 def test_chay_tiep_voi_hash_cau_hinh_khac_bi_tu_choi(sach, gia, tmp_path, capsys):
     ra = tmp_path / "luot"
-    gia.hong_o = "a4"
+    gia.hong_o = "canonical"
     assert main(lenh(sach, ra, "chinh")) == 1
     truoc, so_lenh = bam(ra), len(gia.lenh)
     a = lenh(sach, ra, "chinh")
@@ -220,7 +430,7 @@ def test_chay_tiep_voi_hash_cau_hinh_khac_bi_tu_choi(sach, gia, tmp_path, capsys
 
 def test_chay_tiep_doi_bien_the_bi_tu_choi(sach, gia, tmp_path):
     ra = tmp_path / "luot"
-    gia.hong_o = "a4"
+    gia.hong_o = "canonical"
     assert main(lenh(sach, ra, "chinh")) == 1
     assert main(lenh(sach, ra, "docling")) == 2
 
@@ -281,7 +491,7 @@ def test_luot_moi_ma_kho_da_co_noi_dung_bi_tu_choi(sach, gia, tmp_path, capsys):
 def test_hai_luot_chinh_khong_chung_cache(sach, gia, tmp_path):
     assert main(lenh(sach, tmp_path / "a", "chinh")) == 0
     assert main(lenh(sach, tmp_path / "b", "chinh")) == 0
-    assert [a[0] for a, _ in gia.lenh].count("ingest") == 2 and gia.goi_mo_hinh["roadmap"] == 2  # lượt b chạy từ đầu
+    assert [a[0] for a, _ in gia.lenh].count("read") == 2 and gia.goi_mo_hinh["roadmap"] == 2  # lượt b chạy từ đầu
 
 
 def test_luot_di_qua_lien_ket_bi_tu_choi(sach, gia, tmp_path):
@@ -307,7 +517,7 @@ def test_xao_k_chep_thuong_nguon_va_khong_ghi_de_luot_chinh(sach, gia, chinh, tm
     assert bam(chinh) == truoc  # lượt chính không đổi một byte
     lenh_roadmap = [e for a, e in gia.lenh_dau("roadmap")][1:]
     assert [e["DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"] for e in lenh_roadmap] == ["10", "11", "12"]
-    assert [a[0] for a, _ in gia.lenh].count("a3") == 1 and [a[0] for a, _ in gia.lenh].count("ingest") == 1  # không chạy lại thượng nguồn
+    assert [a[0] for a, _ in gia.lenh].count("a3") == 1 and [a[0] for a, _ in gia.lenh].count("read") == 1  # không chạy lại thượng nguồn
     for i in (1, 2, 3):
         con = ra / f"xao-{i}"
         ban = ban_ghi.doc(con)
@@ -347,15 +557,14 @@ def test_pass_phu_llm_dat_che_do_llm_va_loc_dich_theo_chuong_boc(sach, gia, chin
 def test_docling_doi_khau_dau_nen_co_kho_rieng(sach, gia, tmp_path):
     ra = tmp_path / "dl"
     assert main(lenh(sach, ra, "docling")) == 0
-    ingest = gia.lenh_dau("ingest")[0][0]
-    assert ingest[ingest.index("--a1") + 1] == "docling"
+    assert gia.chi_tiet[0][1]["a1"] == "docling"
     assert ban_ghi.doc(ra)["tu_luot"] is None and doc_json(ra / "hop-dong.json")["dinh_danh"]["he"] == "docling"
 
 
 def test_bien_the_dung_lai_can_luot_chinh_da_xong(sach, gia, tmp_path, capsys):
     assert main(lenh(sach, tmp_path / "x", "xao-k")) == 2  # không có --tu-luot
     dang_do = tmp_path / "dang-do"
-    gia.hong_o = "a4"
+    gia.hong_o = "canonical"
     assert main(lenh(sach, dang_do, "chinh")) == 1
     assert main(lenh(sach, tmp_path / "y", "xao-k", "--tu-luot", str(dang_do))) == 2
     assert "chưa xong" in capsys.readouterr().err
@@ -469,7 +678,7 @@ def test_chi_ba_mo_dun_cua_luot_nhap_pipeline():
                 [nut.module or ""] if isinstance(nut, ast.ImportFrom) and nut.level == 0 else []
             if any(t.split(".")[0] == "doc2roadmap" for t in ten):
                 co.add(p.name)
-    assert co == {"chay_cli.py", "so_chi.py", "uoc_chi.py"}
+    assert co == {"chay_cli.py", "san_pham.py", "so_chi.py", "uoc_chi.py"}
 
 
 def test_lenh_luot_trong_bang_lenh():
@@ -549,12 +758,6 @@ def test_hash_cua_ban_ghi_moi_dung_thanh_phan_day_du():
     assert doi["hash_cau_hinh"] != moi["hash_cau_hinh"]
 
 
-def test_vang_a4_duoc_chep_vao_luot_va_ghi_sha256(chinh, sach):
-    chep = chinh / "vang-a4.json"
-    assert chep.is_file() and chep.read_bytes() == sach["a4"].read_bytes()
-    assert ban_ghi.doc(chinh)["ket_qua"]["vang_a4_sha256"] == hashlib.sha256(sach["a4"].read_bytes()).hexdigest()
-
-
 def test_ghi_ban_ghi_thu_lai_khi_windows_khoa_tep_tam_thoi(tmp_path, monkeypatch):
     # Cổng rút gọn 28/10: `Path.replace` báo WinError 5 khi trình quét đang giữ tệp vừa ghi; lượt thật không được chết vì việc này.
     goc = Path.replace
@@ -581,3 +784,148 @@ def test_ghi_ban_ghi_bao_loi_khi_tep_bi_khoa_mai(tmp_path, monkeypatch):
     monkeypatch.setattr(ban_ghi.time, "sleep", lambda _: None)
     with pytest.raises(PermissionError):
         ban_ghi.ghi(tmp_path, {"schema": ban_ghi.SCHEMA})
+
+
+def test_ban_ghi_chap_nhan_tu_choi_cua_san_pham_nhung_khong_trang_thai_la(chinh):
+    ban = ban_ghi.doc(chinh)
+    ban["buoc"][0]["trang_thai"] = "tu_choi_chu_loi"
+    assert ban_ghi.kiem(ban) == [] and not ban_ghi.da_xong(ban)      # hợp lệ nhưng chưa xong
+    for la in ("hu", "tu_choi", "xong_roi"):
+        ban["buoc"][0]["trang_thai"] = la
+        assert any("buoc[0]" in dong for dong in ban_ghi.kiem(ban)), la
+
+
+# ---------- cổng bản quét và ngôn ngữ của sản phẩm (BuildDocument._check_pages) ----------
+
+VI = "Xác suất thống kê nghiên cứu các hiện tượng ngẫu nhiên và quy luật của chúng trong đời sống. "
+
+
+class _PipelineDoc:
+    """Thay `DocumentPipeline` bên trong `DuongSanPham`: `read` trả `page_texts` đã định; `ingest` ghi lại việc đường vòng có gọi."""
+
+    def __init__(self, trang):
+        self.trang, self.ingest_goi = trang, 0
+        from types import SimpleNamespace
+        self.settings = SimpleNamespace(max_tokens=1, max_table_tokens=1, hard_cap_tokens=1, target_tokens=1, sentence_overlap=0)
+        self.ingest = self
+        self.store = self
+
+    def read(self, pdf, doc_id):
+        return {"page_texts": self.trang, "chunks_version": 1, "parse_version": 1, "chunk_count": 3}
+
+    def execute(self, *a, **k):
+        from types import SimpleNamespace
+        self.ingest_goi += 1
+        return SimpleNamespace(chunk_version=1, parse_version=1, chunk_count=3)
+
+    def load_chunks(self, doc_id, ban):
+        from types import SimpleNamespace
+        return SimpleNamespace(manifest={})
+
+    def load_parse(self, doc_id, ban):
+        from types import SimpleNamespace
+        nut = [SimpleNamespace(page=i + 1, text=t) for i, t in enumerate(self.trang)]
+        return SimpleNamespace(tree=SimpleNamespace(parse_stats={"page_count": len(self.trang)}, nodes=nut))
+
+
+@pytest.fixture
+def duong(tmp_path, monkeypatch):
+    from danhgia.luot import san_pham
+    monkeypatch.setenv("DOC2ROADMAP_TOKENIZER_MODEL", str(Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model"))
+
+    def tao(trang):
+        d = object.__new__(san_pham.DuongSanPham)
+        d.env = {"DOC2ROADMAP_ARTIFACT_DIR": str(tmp_path / "kho"), "DOC2ROADMAP_LLM_TRANSPORT": "developer_api"}
+        d.pipeline = _PipelineDoc(trang)
+        return d
+    return tao
+
+
+def test_cong_ban_quet_sach_hop_le_qua_va_ghi_so_do(duong):
+    ra = duong([VI * 3] * 4).read("x.pdf", "D")
+    assert ra["ban_quet"]["page_count"] == 4 and ra["ban_quet"]["empty_page_ratio"] == 0 and ra["ban_quet"]["vi_diacritic_ratio"] > 0.01
+    assert "page_texts" not in ra and ra["chunk_count"] == 3
+
+
+def test_cong_ban_quet_it_dau_tieng_viet_bi_tu_choi(duong):
+    from danhgia.luot.ban_ghi import TuChoi
+    with pytest.raises(TuChoi) as e:
+        duong(["Probability and statistics study random phenomena and their laws in daily life. " * 3] * 4).read("x.pdf", "D")
+    assert e.value.ma == "ngon_ngu_khong_ho_tro"
+
+
+def test_cong_ban_quet_nhieu_trang_trong_bi_tu_choi(duong):
+    from danhgia.luot.ban_ghi import TuChoi
+    with pytest.raises(TuChoi) as e:
+        duong([VI * 3, "", "", ""]).read("x.pdf", "D")
+    assert e.value.ma == "ban_quet"
+
+
+def test_duong_vong_chu_van_bi_cong_ban_quet_chan_va_ghi_so_do_khi_qua(duong, tmp_path):
+    pdf = tmp_path / "x.pdf"
+    pdf.write_bytes(b"%PDF")
+    from danhgia.luot.ban_ghi import TuChoi
+    d = duong([VI * 3, "", "", ""])
+    with pytest.raises(TuChoi) as e:
+        d.read(pdf, "D", ly_do="phân tích phụ")
+    assert e.value.ma == "ban_quet" and d.pipeline.ingest_goi == 1   # đường vòng đã chạy ingest, rồi cổng chặn
+    ok = duong([VI * 3] * 2).read(pdf, "D", ly_do="phân tích phụ")
+    assert ok["ban_quet"]["page_count"] == 2
+
+
+def test_luot_ghi_so_do_ban_quet_vao_ket_qua_read(sach, tmp_path, monkeypatch):
+    class G(lh.GiaPipeline):
+        def tao_pipeline(self, env, allow_spend):
+            p = super().tao_pipeline(env, allow_spend)
+            goc = p.read
+            p.read = lambda *a, **k: {**goc(*a, **k), "ban_quet": {"page_count": 4, "vi_diacritic_ratio": 0.2}}
+            return p
+    g = G()
+    monkeypatch.setattr(chay, "chay_cli_that", g)
+    monkeypatch.setattr(chay, "dung_pipeline_that", g.tao_pipeline)
+    ra = tmp_path / "luot"
+    assert main(lenh(sach, ra, "chinh")) == 0
+    assert ban_ghi.doc(ra)["ket_qua"]["read"]["ban_quet"] == {"page_count": 4, "vi_diacritic_ratio": 0.2}
+
+
+def test_nguong_cong_ban_quet_la_nguong_cua_san_pham(duong, monkeypatch):
+    """Ngưỡng không chép lại: đổi ngưỡng ở chỗ sản phẩm dựng `BuildDocument` thì kết quả của luot đổi theo. (Settings không có ngưỡng này.)"""
+    import doc2roadmap.application.use_cases.build_document as bd
+    from danhgia.luot.ban_ghi import TuChoi
+    trang = [VI] * 3   # khoảng 85 chữ mỗi trang: dưới ngưỡng 150 của sản phẩm
+    with pytest.raises(TuChoi) as e:
+        duong(trang).read("x.pdf", "D")
+    assert e.value.ma == "ban_quet"
+
+    class Long(bd.BuildDocument):
+        def __init__(self, *a, **k):
+            super().__init__(*a, **{**k, "scan_min_chars_per_page": 10})
+    monkeypatch.setattr(bd, "BuildDocument", Long)
+    assert duong(trang).read("x.pdf", "D")["ban_quet"]["page_count"] == 3
+
+
+# ---------- biến môi trường của lượt được hoàn lại (phép phá S9) ----------
+
+def test_moi_truong_hoan_lai_ca_khi_bien_chua_co(monkeypatch):
+    import os
+    from danhgia.luot import san_pham
+    monkeypatch.delenv("DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED", raising=False)
+    monkeypatch.setenv("DOC2ROADMAP_ARTIFACT_DIR", "truoc")
+    with san_pham._moi_truong({"DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED": "7", "DOC2ROADMAP_ARTIFACT_DIR": "luot"}):
+        assert os.environ["DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"] == "7" and os.environ["DOC2ROADMAP_ARTIFACT_DIR"] == "luot"
+    assert "DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED" not in os.environ and os.environ["DOC2ROADMAP_ARTIFACT_DIR"] == "truoc"
+
+
+def test_moi_truong_hoan_lai_sau_moi_buoc_cua_duong_san_pham(duong, monkeypatch):
+    import os
+    khoa = "DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"
+    monkeypatch.delenv(khoa, raising=False)
+    d = duong([VI * 3] * 2)
+    d.env[khoa] = "7"
+    d.pipeline.label_roles = d.pipeline.a3 = d.pipeline.roadmap = lambda doc_id: os.environ[khoa]
+    d.pipeline.canonical = lambda doc_id, ngon_ngu: os.environ[khoa]
+    for buoc in (d.label_roles, d.a3, d.roadmap):
+        assert buoc("D") == "7" and khoa not in os.environ
+    assert d.canonical("D", "vi") == "7" and khoa not in os.environ
+    d.read("x.pdf", "D")
+    assert khoa not in os.environ
