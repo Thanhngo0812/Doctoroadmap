@@ -423,6 +423,9 @@ Nhóm theo danh mục báo cáo nghiên cứu có trách nhiệm của ACL [21].
 - **Khai việc dùng AI:** trợ lý AI lập bản nháp cấu trúc mục (G1, G2) để sinh viên duyệt; trợ lý AI ghép một phần khái niệm (mục 6), có
   người kiểm 20%.
 - **Tái lập:** một lệnh chạy lại từ PDF tới bảng kết quả; mọi tệp đầu vào và vàng có mã băm SHA-256; ghi phiên bản mô hình và ngày chạy.
+- **Đo đúng sản phẩm:** hệ chính chạy bằng chính mã mà ứng dụng web dùng, kể cả hai cổng từ chối sách: cổng chất lượng chữ, và cổng bản quét và ngôn ngữ.
+  Cuốn nào bị sản phẩm từ chối thì tính là lỗi của sản phẩm, với điểm bất lợi nhất (độ phủ 0, F1 bằng 0), không bỏ ra khỏi trung bình. Một biến thể chạy
+  vòng qua cổng chất lượng chữ chỉ dùng cho phân tích phụ.
 
 ## 13. Kết quả
 
