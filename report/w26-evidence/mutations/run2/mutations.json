@@ -1,0 +1,26 @@
+[
+  {
+    "label": "worker-mailer",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_build_finished_notice_goes_through_smtp_in_the_demo_worker"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "smtp-required",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_demo_needs_smtp_credentials"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  }
+]

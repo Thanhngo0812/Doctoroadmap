@@ -1,0 +1,227 @@
+[
+  {
+    "label": "db-name",
+    "exit_code": 1,
+    "failures": 7,
+    "caught_by": [
+      "test_demo_never_targets_a_database_that_is_not_dedicated[Wayfinder_demo_x]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[postgres]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[wayfinder]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[wayfinder_demo_]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[wayfinder_demo_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[wayfinder_demo_x\"; DROP DATABASE wayfinder; --]",
+      "test_demo_never_targets_a_database_that_is_not_dedicated[wayfinder_test]"
+    ],
+    "assertion_failures": 7,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "db-name-prepare",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_ensure_database_refuses_the_shared_database_before_any_connection"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "db-local-only",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_demo_only_uses_a_local_postgres_and_a_dedicated_name"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "book-cap",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_book_cap_stops_a_build_that_would_exceed_three_usd",
+      "test_demo_defaults_are_the_ones_the_owner_asked_for"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "daily-remainder",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_daily_cap_leaves_only_the_remainder_to_the_next_build"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "daily-claim-cap",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_a_full_day_queues_builds_until_vietnam_midnight",
+      "test_demo_defaults_are_the_ones_the_owner_asked_for"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "vietnam-day",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_a_full_day_queues_builds_until_vietnam_midnight"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "82422e2ad08f534157a69c2cc5361cd6a970a6b96fec6e0b8e11568487ffbfb4",
+    "source_restored": true
+  },
+  {
+    "label": "waiting-reason",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_a_full_day_queues_builds_until_vietnam_midnight"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "receipt-doubled",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_build_receipt_is_added_to_the_ledger_exactly_once"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "82422e2ad08f534157a69c2cc5361cd6a970a6b96fec6e0b8e11568487ffbfb4",
+    "source_restored": true
+  },
+  {
+    "label": "trace-billed",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_build_receipt_is_added_to_the_ledger_exactly_once"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "be3d84ee7415dd3a85d0349d25057c5dfb41a9a582a5ad8d9d907a65c949a256",
+    "source_restored": true
+  },
+  {
+    "label": "flag-off-spends",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_without_the_demo_command_no_build_may_spend"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "ab20337c3e6c1442ad03d2eeb5ddbbbb578f036c90c8014f8bc4611b82aab6f6",
+    "source_restored": true
+  },
+  {
+    "label": "shared-worker-grant",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_the_shared_worker_command_does_not_pass_a_grant"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "aec419f76eaf5b43674183a700b3d07f6ba751d22735a796ec39b4a3a70cef09",
+    "source_restored": true
+  },
+  {
+    "label": "grant-per-build",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_two_accounts_both_get_a_grant_and_spend"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "cloudinary-media",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_demo_media_is_the_disk_store_and_never_cloudinary"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "cloudinary-samples",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_six_sample_courses_load_from_disk_without_network"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "learner-cap-config",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_demo_defaults_are_the_ones_the_owner_asked_for",
+      "test_learner_cap_is_three_usd_on_the_demo_server_and_one_elsewhere"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "learner-cap-wiring",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_learner_cap_is_three_usd_on_the_demo_server_and_one_elsewhere"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "d13f8a31f16704ef2f8388bb5d94ce55dd812f567e357546f4228f08f48edd03",
+    "source_restored": true
+  },
+  {
+    "label": "mailer-console",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  }
+]

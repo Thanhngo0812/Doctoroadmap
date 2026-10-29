@@ -506,8 +506,10 @@ def test_demo_needs_smtp_credentials(builds):
 
 def test_build_finished_notice_goes_through_smtp_in_the_demo_worker(builds, provider, smtp, tmp_path):
     b = builds
+    from wayfinder.infrastructure.mail_dispatch import BackgroundMailer
     worker, engine, cfg = demo_worker(b, 1, tmp_path)
     try:
+        assert isinstance(worker.mailer, BackgroundMailer)  # not the FakeMailer the worker would otherwise default to
         queue(worker, b.actor, 1)
         assert worker.run_next_job()['status'] == 'succeeded'
         worker.mailer.close()
@@ -596,6 +598,7 @@ def test_role_all_runs_the_builder_as_a_separate_process_and_stops_it(builds, tm
     assert captured['database'].endswith('/wayfinder_demo_unit') and not captured['database'].endswith('/wayfinder')
     assert type(captured['build_media']) is DiskMediaStore and captured['build_media'].root.is_relative_to((tmp_path / 'artifacts').resolve())
     assert captured['app'].router.routes[0].path.startswith('/api/v1/demo-files/')
+    assert len(started) == 1, 'the builder must be started as its own process'
     command = started[0]
     assert command[1:3] == ['-m', 'wayfinder.cli'] and command[command.index('--role') + 1] == 'worker'
     assert '--env-file' in command and events == ['terminate', 'wait']

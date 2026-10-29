@@ -1,0 +1,86 @@
+[
+  {
+    "label": "separate-process",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_role_all_runs_the_builder_as_a_separate_process_and_stops_it"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "worker-role",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_role_all_runs_the_builder_as_a_separate_process_and_stops_it"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "token-expiry",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_source_download_is_a_short_signed_server_link_not_a_file_path"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "e52c5926a743f7290f6cac6ae5969b3e77569decc54c2481d5ce513a2493c0c4",
+    "source_restored": true
+  },
+  {
+    "label": "token-signature",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_source_download_is_a_short_signed_server_link_not_a_file_path"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "e52c5926a743f7290f6cac6ae5969b3e77569decc54c2481d5ce513a2493c0c4",
+    "source_restored": true
+  },
+  {
+    "label": "route-first",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_source_download_is_a_short_signed_server_link_not_a_file_path"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "disk-path-safety",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_disk_store_rejects_paths_outside_its_root"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "e52c5926a743f7290f6cac6ae5969b3e77569decc54c2481d5ce513a2493c0c4",
+    "source_restored": true
+  },
+  {
+    "label": "page-render",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_page_and_formula_images_are_real_images_served_through_the_learning_media_port"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "e52c5926a743f7290f6cac6ae5969b3e77569decc54c2481d5ce513a2493c0c4",
+    "source_restored": true
+  }
+]
