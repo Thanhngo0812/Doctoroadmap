@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.381" timestamp="2026-10-27T23:00:57.991995+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta" time="1.790"><failure message="assert (1 == 2)">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000209157C..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000020935329580&gt;)
+
+    def test_audit_filters_half_open_dates_and_never_exposes_arbitrary_meta(admin_case):
+        from wayfinder.application.auth_ports import AuditEvent
+        rt=admin_case
+        start=rt.clock.now()
+        marker='W17_PRIVATE_AUDIT_CONTENT_SENTINEL'
+        for seconds in (-1,0,59,60):
+            rt.services.accounts.store.append_audit(AuditEvent(start+timedelta(seconds=seconds),rt.learner.id,
+                'password_changed','account',rt.learner.id,'127.0.0.1',{'password_hash':marker,'token':marker,'extra':{'chat':marker}}))
+        params={'actor_id':rt.learner.id,'action':'password_changed','since':start.isoformat(),
+            'until':(start+timedelta(minutes=1)).isoformat(),'limit':1}
+        first=rt.owner.client.get('/api/v1/admin/audit',params=params)
+        assert first.status_code==200,first.text
+&gt;       assert first.json()['total']==2 and len(first.json()['items'])==1
+E       assert (1 == 2)
+
+src\web\backend\tests\test_w17_admin.py:345: AssertionError</failure></testcase></testsuite></testsuites>

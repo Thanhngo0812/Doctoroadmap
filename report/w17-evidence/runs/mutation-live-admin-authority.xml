@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.165" timestamp="2026-10-27T23:00:31.233248+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_stale_admin_actor_and_unauthorized_patch_cannot_write" time="1.652"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002513FAF..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x000002515F569440&gt;)
+
+    def test_stale_admin_actor_and_unauthorized_patch_cannot_write(admin_case):
+        rt=admin_case
+        second=rt.user(True)
+        assert patch(rt,{'role':'user'},target=second).status_code==200
+        before=sql(rt,'SELECT status FROM account WHERE id=:id',id=rt.learner.id)
+&gt;       with pytest.raises(AuthError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w17_admin.py:301: Failed</failure></testcase></testsuite></testsuites>

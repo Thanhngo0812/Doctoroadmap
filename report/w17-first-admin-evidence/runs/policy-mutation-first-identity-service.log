@@ -1,0 +1,781 @@
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-True] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A41E4..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A61841760>)
+self_action = True, changes = {'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"66499817583e4f0a9bb0600ebb7ffdcc"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=66499817583e4f0a9bb0600ebb7ffdcc
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET status=%(status)s::VARCHAR, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-False] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A61D1..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A61E7B6A0>)
+self_action = False, changes = {'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"84122c89ba67487f9d84f05a42763539"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=84122c89ba67487f9d84f05a42763539
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET status=%(status)s::VARCHAR, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-True] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A6210..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A617BB880>)
+self_action = True, changes = {'role': 'user'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"07589a78659d439ba29f1255d4661403"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=07589a78659d439ba29f1255d4661403
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET role=%(role)s::VARCHAR, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-False] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A622A..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A62403380>)
+self_action = False, changes = {'role': 'user'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"5dd24a3f9210495c8802cebdbc588486"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=5dd24a3f9210495c8802cebdbc588486
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET role=%(role)s::VARCHAR, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-True] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A6268..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A627E54E0>)
+self_action = True
+changes = {'build_monthly_max': 11, 'role': 'user', 'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"679a9485e58d40bca2515da1672bf1c6"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=679a9485e58d40bca2515da1672bf1c6
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET role=%(role)s::VARCHAR, status=%(status)s::VARCHAR, build_monthly_max=%(build_monthly_max)s::INTEGER, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+_ test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-False] _
+
+admin_case = namespace(services=WebServices(health_check=<wayfinder.infrastructure.database.DatabaseHealth object at 0x0000023A62A3..., role='user', email_verified=False, status='active')), user=<function admin_case.<locals>.user at 0x0000023A624CE020>)
+self_action = False
+changes = {'build_monthly_max': 11, 'role': 'user', 'status': 'disabled'}
+
+    @pytest.mark.parametrize('self_action',[True,False])
+    @pytest.mark.parametrize('changes',[{'status':'disabled'},{'role':'user'},
+        {'status':'disabled','role':'user','build_monthly_max':11}])
+    def test_first_identity_protected_even_with_two_admins_and_atomic_patch(admin_case,self_action,changes):
+        rt=admin_case
+        other=rt.user(True)
+        actor=rt.owner if self_action else other
+        before=snapshot(rt,rt.owner.id)
+        response=patch(rt,changes,target=rt.owner,actor=actor)
+>       assert response.status_code==409 and response.json()['error']['code']=='protected_admin',response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"74771a5f4b1d43269bdf30d6f50a0833"}}
+E       assert (500 == 409)
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w17_first_admin.py:51: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:145 Unhandled request error ref=74771a5f4b1d43269bdf30d6f50a0833
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\app.py", line 138, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\api\admin.py", line 101, in update_user
+    return admin.update_user(actor,str(uid),data.model_dump(exclude_unset=True),ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\application\admin.py", line 60, in update_user
+    self.store.update_user(uid, actual, now)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\src\web\backend\wayfinder\infrastructure\admin_store.py", line 55, in update_user
+    return _account(conn.execute(update(table).where(table.c.id==uid).values(**changes,updated_at=at).returning(table)).mappings().one())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) protected_admin
+CONTEXT:  PL/pgSQL function guard_bootstrap_admin_account() line 13 at RAISE
+[SQL: UPDATE account SET role=%(role)s::VARCHAR, status=%(status)s::VARCHAR, build_monthly_max=%(build_monthly_max)s::INTEGER, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE account.id = %(id_1)s::UUID RETURNING account.id, account.email, account.email_normalized, account.password_hash, account.display_name, account.role, account.status, account.email_verified_at, account.build_monthly_max, account.created_at, account.updated_at, account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-backend\report\w17-first-admin-evidence\runs\policy-mutation-first-identity-service.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-True]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes0-False]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-True]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes1-False]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-True]
+FAILED src/web/backend/tests/test_w17_first_admin.py::test_first_identity_protected_even_with_two_admins_and_atomic_patch[changes2-False]
+6 failed, 65 deselected, 1 warning in 9.98s

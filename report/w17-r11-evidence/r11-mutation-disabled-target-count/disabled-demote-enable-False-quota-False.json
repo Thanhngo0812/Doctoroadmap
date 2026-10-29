@@ -1,0 +1,31 @@
+{
+  "response_status": 409,
+  "response": {
+    "error": {
+      "code": "conflict",
+      "message": "Không thể hạ quyền quản trị viên cuối cùng.",
+      "retry_after": null,
+      "ref": null
+    }
+  },
+  "accounts": [
+    {
+      "id": "3b9fdaaa-162b-461e-a5cc-21726af67782",
+      "role": "admin",
+      "status": "active",
+      "build_monthly_max": null
+    },
+    {
+      "id": "cba9df16-4db0-4db7-b084-ed97873b983b",
+      "role": "admin",
+      "status": "disabled",
+      "build_monthly_max": null
+    }
+  ],
+  "registry": [
+    {
+      "account_id": "3b9fdaaa-162b-461e-a5cc-21726af67782",
+      "established_at": "2026-01-01 00:00:00+00:00"
+    }
+  ]
+}

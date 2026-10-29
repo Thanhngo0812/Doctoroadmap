@@ -1,0 +1,9 @@
+{
+  "problem": "Own review/postprocessing helpers used Windows default cp1252 on UTF8 Vietnamese JSON",
+  "invalidEvidenceLabel": "design-metrics-assert",
+  "invalidLabelExitMeaning": "Encoding failure before assertion; not a behavioral failure",
+  "retainedOriginalHelper": "verify_design_claims-first-encoding.py",
+  "fixedBy": "Explicit UTF8 for helper file reads; no product/test assertion weakened",
+  "validReplacementLabel": "design-metrics-assert-utf8",
+  "productGateUnchanged": true
+}

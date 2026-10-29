@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.954" timestamp="2026-10-27T23:00:25.210140+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_admin" name="test_all_admin_routes_require_admin_and_no_store" time="1.598"><failure message="AssertionError: {&quot;items&quot;:[{&quot;id&quot;:&quot;47d8f847-5d39-4074-8ec7-50433afce6ea&quot;,&quot;email&quot;:&quot;2a684548cb0e4b5287d2c5b5ce8df657@example.vn&quot;,&quot;display_name&quot;:&quot;Quản trị viên&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;status&quot;:&quot;active&quot;,&quot;email_verified_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;created_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;last_login_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;owned_courses&quot;:0,&quot;build_monthly_max&quot;:null,&quot;builds_this_month&quot;:{&quot;used&quot;:0,&quot;max&quot;:null,&quot;resets_at&quot;:&quot;2026-02-01T00:00:00+07:00&quot;}},{&quot;id&quot;:&quot;6d1f4ebb-f2b9-4439-ae27-00f415c964cf&quot;,&quot;email&quot;:&quot;36c25dde64634b72a9a3e0c76505ffcf@example.vn&quot;,&quot;display_name&quot;:&quot;Người học&quot;,&quot;role&quot;:&quot;user&quot;,&quot;status&quot;:&quot;active&quot;,&quot;email_verified_at&quot;:null,&quot;created_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;last_login_at&quot;:&quot;2026-01-01T00:00:00Z&quot;,&quot;owned_courses&quot;:0,&quot;build_monthly_max&quot;:null,&quot;builds_this_month&quot;:{&quot;used&quot;:0,&quot;max&quot;:null,&quot;resets_at&quot;:&quot;2026-02-01T00:00:00+07:00&quot;}}],&quot;total&quot;:2,&quot;limit&quot;:50,&quot;offset&quot;:0}&#10;assert 200 == 403&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000026EEBCE..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000026EFF829440&gt;)
+
+    def test_all_admin_routes_require_admin_and_no_store(admin_case):
+&gt;       assert_admin_routes_protected(admin_case)
+
+src\web\backend\tests\test_w17_admin.py:180:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+rt = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x0000026EEBCE..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x0000026EFF829440&gt;)
+
+    def assert_admin_routes_protected(rt):
+        routes = list(admin_routes(rt.app))
+        assert {route.path for route, _ in routes} &gt;= {'/api/v1/admin/users', '/api/v1/admin/users/{uid}', '/api/v1/admin/audit'}
+        with TestClient(rt.app, base_url=ORIGIN) as guest:
+            for route, method in routes:
+                path = route.path.replace('{uid}', rt.learner.id)
+                body = {'status':'disabled'} if method == 'PATCH' else None
+                for client, extra, status, code in ((rt.learner.client, headers(rt.learner),403,'forbidden'),
+                    (guest, {'Origin':ORIGIN},401 if method=='GET' else 403,'unauthenticated' if method=='GET' else 'csrf_failed')):
+                    response = client.request(method,path,headers=extra,json=body)
+&gt;                   assert response.status_code == status, response.text
+E                   AssertionError: {"items":[{"id":"47d8f847-5d39-4074-8ec7-50433afce6ea","email":"2a684548cb0e4b5287d2c5b5ce8df657@example.vn","display_name":"Quản trị viên","role":"admin","status":"active","email_verified_at":"2026-01-01T00:00:00Z","created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":null,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-02-01T00:00:00+07:00"}},{"id":"6d1f4ebb-f2b9-4439-ae27-00f415c964cf","email":"36c25dde64634b72a9a3e0c76505ffcf@example.vn","display_name":"Người học","role":"user","status":"active","email_verified_at":null,"created_at":"2026-01-01T00:00:00Z","last_login_at":"2026-01-01T00:00:00Z","owned_courses":0,"build_monthly_max":null,"builds_this_month":{"used":0,"max":null,"resets_at":"2026-02-01T00:00:00+07:00"}}],"total":2,"limit":50,"offset":0}
+E                   assert 200 == 403
+E                    +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w17_admin.py:174: AssertionError</failure></testcase></testsuite></testsuites>

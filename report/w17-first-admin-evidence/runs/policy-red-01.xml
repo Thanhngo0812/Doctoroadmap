@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="9.534" timestamp="2026-10-28T10:25:58.707735+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_new_owner_policy_first_admin_cannot_be_disabled" time="4.067"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase></testsuite></testsuites>

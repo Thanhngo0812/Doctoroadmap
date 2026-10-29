@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="5" time="7.129" timestamp="2026-10-28T10:40:28.273259+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM account WHERE id=:uid]" time="1.998" /><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid]" time="1.061" /><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid]" time="0.920" /><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[DELETE FROM bootstrap_admin WHERE account_id=:uid]" time="0.989"><failure message="AssertionError: assert 'protected_admin' in 'bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE'&#10; +  where 'bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE' = str(CheckViolation('bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE'))&#10; +    where CheckViolation('bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') = IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE').orig&#10; +      where IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') = &lt;ExceptionInfo IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') tblen=10&gt;.value">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x000002432405..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000243241E8B80&gt;)
+statement = 'DELETE FROM bootstrap_admin WHERE account_id=:uid'
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+        with pytest.raises(IntegrityError) as error:
+            with rt.engine.begin() as connection:
+                connection.execute(text(statement),{'uid':rt.owner.id,'other':other.id})
+&gt;       assert 'protected_admin' in str(error.value.orig)
+E       AssertionError: assert 'protected_admin' in 'bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE'
+E        +  where 'bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE' = str(CheckViolation('bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE'))
+E        +    where CheckViolation('bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') = IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE').orig
+E        +      where IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') = &lt;ExceptionInfo IntegrityError('(psycopg.errors.CheckViolation) bootstrap_admin_requires_active_admin\nCONTEXT:  PL/pgSQL function guard_bootstrap_admin_registry() line 8 at RAISE') tblen=10&gt;.value
+
+src\web\backend\tests\test_w17_first_admin.py:124: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w17_first_admin" name="test_database_rejects_delete_and_bypass_of_protected_identity[UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid]" time="0.775"><failure message="Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;">admin_case = namespace(services=WebServices(health_check=&lt;wayfinder.infrastructure.database.DatabaseHealth object at 0x00000243038B..., role='user', email_verified=False, status='active')), user=&lt;function admin_case.&lt;locals&gt;.user at 0x00000243242A2DE0&gt;)
+statement = 'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'
+
+    @pytest.mark.parametrize('statement',[
+        'DELETE FROM account WHERE id=:uid',
+        "UPDATE account SET role='user',build_monthly_max=9 WHERE id=:uid",
+        "UPDATE account SET status='disabled',build_monthly_max=9 WHERE id=:uid",
+        'DELETE FROM bootstrap_admin WHERE account_id=:uid',
+        'UPDATE bootstrap_admin SET account_id=:other WHERE account_id=:uid'])
+    def test_database_rejects_delete_and_bypass_of_protected_identity(admin_case,statement):
+        rt=admin_case
+        other=rt.user(True)
+        before=snapshot(rt,rt.owner.id)
+&gt;       with pytest.raises(IntegrityError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;
+
+src\web\backend\tests\test_w17_first_admin.py:121: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,59 @@
+{
+  "source": "Independent PostgreSQL connection; synthetic accounts; no provider spend",
+  "accounts": [
+    {
+      "id": "83c5f1a1-4868-4840-a70a-066ef299db02",
+      "role": "admin",
+      "status": "active",
+      "build_monthly_max": null
+    },
+    {
+      "id": "00be037a-dbe2-463d-a0e6-ee644af2a4e7",
+      "role": "user",
+      "status": "active",
+      "build_monthly_max": null
+    }
+  ],
+  "sessions": [
+    {
+      "account_id": "00be037a-dbe2-463d-a0e6-ee644af2a4e7",
+      "sessions": 1
+    },
+    {
+      "account_id": "83c5f1a1-4868-4840-a70a-066ef299db02",
+      "sessions": 1
+    }
+  ],
+  "audit": [
+    {
+      "action": "admin_account_created",
+      "target_kind": "account",
+      "target_id": "83c5f1a1-4868-4840-a70a-066ef299db02",
+      "ip": null
+    },
+    {
+      "action": "login_ok",
+      "target_kind": "account",
+      "target_id": "83c5f1a1-4868-4840-a70a-066ef299db02",
+      "ip": null
+    },
+    {
+      "action": "admin_user_disabled",
+      "target_kind": "account",
+      "target_id": "191227a3-fe1e-44ad-a8e8-462113bbd0d7",
+      "ip": null
+    },
+    {
+      "action": "admin_user_role_changed",
+      "target_kind": "account",
+      "target_id": "191227a3-fe1e-44ad-a8e8-462113bbd0d7",
+      "ip": null
+    },
+    {
+      "action": "admin_user_quota_changed",
+      "target_kind": "account",
+      "target_id": "191227a3-fe1e-44ad-a8e8-462113bbd0d7",
+      "ip": null
+    }
+  ]
+}

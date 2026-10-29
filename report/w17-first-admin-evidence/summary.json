@@ -1,0 +1,76 @@
+{
+  "milestone": "W17.1 POL-R10-01 first-admin protection repair",
+  "tested_source_head": "847cfe94be63f62e9a680cb409e414c19297d1ff",
+  "received_main": "26d43b83ba0d3f265f28ea7d3220f924ba96a97d",
+  "observed_main": "26d43b83ba0d3f265f28ea7d3220f924ba96a97d",
+  "branch": "work/w17-admin-users-backend",
+  "prior_delivery_accepted": false,
+  "new_policy_required": true,
+  "postgres": {
+    "native_exit": 0,
+    "passed": 3600,
+    "skipped": [
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[xstk-ch3-1-68-82-156]",
+        "classname": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_tai_tao_tren_graph_thuc_tap_phat_trien[doc-4-27-495-1273]",
+        "classname": "tests.evaluation.test_phat_lai",
+        "type": "pytest.skip",
+        "message": "đặt DANHGIA_KHO_CHUNG=<artifacts của thư mục chung> để kiểm trên graph thật"
+      },
+      {
+        "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+        "classname": "tests.unit.application.test_phase_b_sa55_runner",
+        "type": "pytest.xfail",
+        "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+      },
+      {
+        "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+        "classname": "src.web.backend.tests.test_media_store",
+        "type": "pytest.skip",
+        "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+      }
+    ],
+    "skipped_count": 3,
+    "xfailed_count": 1,
+    "seconds": 938.5228655338287
+  },
+  "w17_postgres_cases": 71,
+  "mutations": {
+    "caught": 14,
+    "total": 14,
+    "setup_errors": 0
+  },
+  "react": {
+    "native_exit": 0,
+    "passed": 239,
+    "files": 19,
+    "seconds": 144.7033724784851
+  },
+  "build": {
+    "native_exit": 0,
+    "seconds": 3.692568063735962
+  },
+  "new_migrations": 1,
+  "migration_head": "w17_0009",
+  "down_revision": "w12_0008",
+  "openapi_operations": 63,
+  "new_spend_usd": 0,
+  "real_mail_sent": 0,
+  "provider_calls": 0,
+  "shared_application_database_migrated": false,
+  "shared_legacy_bootstrap_identity_assigned": false,
+  "first_admin_identity": "Immutable server registry UUID set atomically at bootstrap; explicit trusted CLI for legacy DB",
+  "backend_ready": true,
+  "w17_complete": false,
+  "w17_2_implemented": false,
+  "w17_3_implemented": false,
+  "merged_main": false,
+  "pushed": false,
+  "delete_api_implemented": false,
+  "delete_protected_at_db": true
+}
