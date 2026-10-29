@@ -64,6 +64,23 @@ def dong_nhieu(f1):
     return _f1("xao", F1, f1)
 
 
+# Quy lỗi hệ chính (mỗi chương: số đúng và số cạnh vàng mất ở lý do 1..7); lý do 1 và 5 không áp. Tổng 60 cạnh = 27 đúng + 9 + 5 + 3 + 10 + 6
+QUY_LOI = {"A": [(4, [0, 2, 1, 0, 0, 2, 1]), (5, [0, 1, 1, 1, 0, 1, 1])], "B": [(3, [0, 3, 0, 1, 0, 2, 1]), (6, [0, 0, 1, 0, 0, 2, 1])],
+           "C": [(7, [0, 1, 0, 0, 0, 1, 1]), (2, [0, 2, 2, 1, 0, 2, 1])]}
+TONG_QUY_LOI = {"tong": 60, "dung": 27, "ly_do": {1: None, 2: 9, 3: 5, 4: 3, 5: None, 6: 10, 7: 6}}
+
+
+def quy_loi(sach, khong_ap=(1, 5), them=None):
+    rows = []
+    for i, (dung, ly_do) in enumerate(QUY_LOI[sach]):
+        c = f"c{i + 1}"
+        gia = {"quy_loi.vang_pham_vi.nghiem": dung + sum(ly_do), "quy_loi.dung.nghiem": dung,
+               **{f"quy_loi.ly_do_{k + 1}.nghiem": v for k, v in enumerate(ly_do)}, **(them or {})}
+        rows += [dong.dem("chinh", sach, c, t, v) for t, v in gia.items()]
+    return {"theo_chuong": rows, "theo_cuon": [], "meta": {"khong_ap": list(khong_ap), "ly_do_5_khong_ap": 5 in khong_ap, "cua_so_thieu": False,
+                                                          "so_canh_vang": 20}}
+
+
 def dong_thuan(a, b, c):
     """Tệp đồng thuận G4 giống `vang.g4.dem_g4` ở phần dùng đến: mỗi chương một khối `tong` có a, b, c."""
     return {"khong_bac_cau": {"theo_chuong": {ch: {"tong": {"a": a, "b": b, "c": c, "f1": None}} for ch in ("c1", "c2")}}}
@@ -111,5 +128,6 @@ def dung_thu_muc(thu_muc, *, tap="phat_trien", them_manifest=None, co_b5=True):
             argv += ["--hop-dong", f"{sach}={ghi_json(thu_muc / f'hd-{he}-{sach}.json', hd)}"]
     for sach, kq in DONG_THUAN.items():
         argv += ["--dong-thuan", f"{sach}={ghi_json(thu_muc / f'dt-{sach}.json', kq)}"]
+    argv += ["--quy-loi", *[ghi_json(thu_muc / f"ql-{sach}.json", quy_loi(sach)) for sach in SACH]]
     argv += ["--nhieu", ghi_json(thu_muc / "nhieu-1.json", dong_nhieu(F1_NHIEU_1)), ghi_json(thu_muc / "nhieu-2.json", dong_nhieu(F1_NHIEU_2))]
     return argv

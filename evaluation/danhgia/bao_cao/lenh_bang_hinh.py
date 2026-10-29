@@ -11,7 +11,7 @@ Màn hình chỉ in khoá trong allowlist với giá trị số, bool hay null (
 import json
 from pathlib import Path
 
-from danhgia.bao_cao import bang, cong, so_lieu as S
+from danhgia.bao_cao import bang, cong, hinh, so_lieu as S
 from danhgia.bao_cao import thuoc as T
 
 ALLOWLIST = ("tap_thu", "so_cuon", "so_dong", "so_o", "so_bang", "so_hinh", "p_holm_q6_chinh_so_b1", "p_holm_f1_chinh_so_b5",
@@ -73,11 +73,19 @@ def _chay(a):
     cac_bang = bang.tao_bang(boi)
     for ten, text in cac_bang.items():
         (ra / ten).write_text(text, encoding="utf-8")
+    cac_hinh, h3, h4 = {}, None, S.thac_nuoc(rows, a.he_hinh_4, meta_theo_sach)
+    if tinh.o("chinh", T.THUOC_F1) is not None:
+        h3 = S.hinh3(tinh, {m["ma_sach"]: m.get("chu_de", m["ma_sach"]) for m in manifests})
+        cac_hinh["hinh-3.svg"] = hinh.hinh_3(h3)
+    if h4 is not None:
+        cac_hinh["hinh-4.svg"] = hinh.hinh_4(h4)
+    for ten, text in cac_hinh.items():
+        (ra / ten).write_text(text, encoding="utf-8")
     o, hieu = tinh.tat_ca()
     so_lieu = {"so_cuon": boi.n, "sach": tinh.sach, "so_vong": a.so_vong, "seed": a.seed, "o": o, "hieu": hieu, "kiem_dinh": boi.kd, "dai_nhieu": boi.dai,
-               "g5": g5}
+               "g5": g5, "hinh_3": h3, "hinh_4": h4}
     (ra / "so-lieu.json").write_text(json.dumps(so_lieu, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    cong.in_allowlist({"tap_thu": tap_thu, "so_cuon": boi.n, "so_dong": len(rows), "so_o": len(o), "so_bang": len(cac_bang), "so_hinh": 0,
+    cong.in_allowlist({"tap_thu": tap_thu, "so_cuon": boi.n, "so_dong": len(rows), "so_o": len(o), "so_bang": len(cac_bang), "so_hinh": len(cac_hinh),
                        **{f"p_holm_{k}": v["p_holm"] for k, v in boi.kd.items()}}, ALLOWLIST)
     return 0
 

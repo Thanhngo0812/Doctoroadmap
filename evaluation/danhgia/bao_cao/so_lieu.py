@@ -200,6 +200,16 @@ class Tinh:
         return ket
 
 
+def hinh3(tinh, nhan_sach):
+    """Số liệu Hình 3: F1 cạnh của hệ chính và B5 theo từng cuốn (CI bootstrap chương trong cuốn) và hàng trung bình (CI bootstrap phân cấp)."""
+    sach = [{"ma_sach": s, "nhan": nhan_sach.get(s, s), **{he: tinh.ci_cuon(he, T.THUOC_F1, s) for he in ("chinh", "b5")}} for s in tinh.sach]
+    tb = {}
+    for he in ("chinh", "b5"):
+        o = tinh.o(he, T.THUOC_F1)
+        tb[he] = None if o is None else {"gia_tri": o["macro"], "thap": o["thap"], "cao": o["cao"]}
+    return {"sach": sach, "trung_binh": tb}
+
+
 def dai_nhieu(tinh_chinh, tinh_nhieu):
     """Dải min–max của macro hệ chính qua lượt chính cộng các lượt nhiễu, mỗi thước chất lượng. `tinh_nhieu`: các `Tinh` của lượt nhiễu (hệ đã đổi thành chinh)."""
     ket = {}
