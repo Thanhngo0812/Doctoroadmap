@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.740" timestamp="2026-10-29T17:35:02.331922+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_demo_local_w26" name="test_demo_origins_include_both_loopback_names" time="1.147"><failure message="AssertionError: assert {'http://127....calhost:8000'} &lt;= {'http://127.0.0.1:8000'}&#10;  &#10;  Extra items in the left set:&#10;  'http://localhost:8000'">src\web\backend\tests\test_demo_local_w26.py:537: in test_demo_origins_include_both_loopback_names
+    assert {'http://127.0.0.1:8000', 'http://localhost:8000'} &lt;= set(config(builds).allowed_origins)
+E   AssertionError: assert {'http://127....calhost:8000'} &lt;= {'http://127.0.0.1:8000'}
+E     
+E     Extra items in the left set:
+E     'http://localhost:8000'</failure></testcase></testsuite></testsuites>

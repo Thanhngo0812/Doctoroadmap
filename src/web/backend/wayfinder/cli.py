@@ -40,6 +40,13 @@ def main(argv=None) -> int:
     seed.add_argument("--admin-email", required=True)
     seed.add_argument("--doc-id", action="append", dest="doc_ids")
     seed.add_argument("--source-root", type=Path)
+    demo = commands.add_parser("demo-local", help="Local demo server: real builds, real mail, media on disk")
+    demo.add_argument("--database", help="Dedicated database name, wayfinder_demo_<suffix>")
+    demo.add_argument("--artifact-root", type=Path, default=Path("artifacts"))
+    demo.add_argument("--admin-email")
+    demo.add_argument("--role", choices=("all", "server", "worker"), default="all")
+    demo.add_argument("--host", default="127.0.0.1")
+    demo.add_argument("--port", type=int, default=8000)
     database = commands.add_parser("db").add_subparsers(dest="db_command", required=True)
     database.add_parser("upgrade")
     openapi = commands.add_parser("openapi").add_subparsers(dest="openapi_command", required=True)
@@ -51,6 +58,25 @@ def main(argv=None) -> int:
             parser.error("Server dotenv file does not exist")
         load_dotenv(args.env_file, override=False)
     settings = WebSettings(_env_file=None)
+
+    if args.command == "demo-local":
+        from google.auth.exceptions import DefaultCredentialsError
+        from sqlalchemy.exc import SQLAlchemyError
+        from wayfinder.api.errors import WebError
+        from wayfinder.demo_local import default_database_name, run_demo_local
+
+        args.database = args.database or default_database_name()
+        try:
+            return run_demo_local(args, settings, env_file=args.env_file)
+        except (ValueError, DefaultCredentialsError) as error:
+            print(f"Không chạy được máy chủ demo: {error}", file=sys.stderr)
+            return 2
+        except WebError as error:
+            print(f"Không chạy được máy chủ demo: {error.message}", file=sys.stderr)
+            return 1
+        except SQLAlchemyError:
+            print("Không chạy được máy chủ demo: PostgreSQL dev chưa chạy hoặc từ chối kết nối.", file=sys.stderr)
+            return 1
 
     if args.command == "seed-samples":
         from wayfinder.api.errors import WebError

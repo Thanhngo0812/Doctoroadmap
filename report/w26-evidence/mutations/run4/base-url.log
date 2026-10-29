@@ -1,0 +1,22 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+______ test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server ______
+src\web\backend\tests\test_demo_local_w26.py:522: in test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server
+    assert links and all(link.startswith('http://127.0.0.1:8000/') for link in links), links
+E   AssertionError: ['http://127.0.0.1:5173/assets/Artboard%2024.png', 'http://127.0.0.1:5173/xac-minh#token=24fCcUcOqA29xk0ERnM5JWGQNf7w1...24fCcUcOqA29xk0ERnM5JWGQNf7w1QmB54-xYraNpq8', 'http://127.0.0.1:5173/dang-nhap', 'http://127.0.0.1:5173/quen-mat-khau']
+E   assert (['http://127.0.0.1:5173/assets/Artboard%2024.png', 'http://127.0.0.1:5173/xac-minh#token=24fCcUcOqA29xk0ERnM5JWGQNf7w1...24fCcUcOqA29xk0ERnM5JWGQNf7w1QmB54-xYraNpq8', 'http://127.0.0.1:5173/dang-nhap', 'http://127.0.0.1:5173/quen-mat-khau'] and False)
+E    +  where False = all(<generator object test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server.<locals>.<genexpr> at 0x00000225956F2F60>)
+______ test_demo_links_and_origins_follow_the_demo_port_not_the_env_file ______
+src\web\backend\tests\test_demo_local_w26.py:527: in test_demo_links_and_origins_follow_the_demo_port_not_the_env_file
+    assert config(builds).public_base_url == 'http://127.0.0.1:8000'
+E   AssertionError: assert 'http://127.0.0.1:5173' == 'http://127.0.0.1:8000'
+E     
+E     - http://127.0.0.1:8000
+E     ?                  ^^^^
+E     + http://127.0.0.1:5173
+E     ?                  ^^^^
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w26-demo-local\report\w26-evidence\mutations\run4\base-url.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_demo_local_w26.py::test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server
+FAILED src/web/backend/tests/test_demo_local_w26.py::test_demo_links_and_origins_follow_the_demo_port_not_the_env_file
+2 failed, 33 deselected in 4.54s

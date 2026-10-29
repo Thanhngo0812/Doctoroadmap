@@ -1,0 +1,13 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________________ test_demo_origins_include_both_loopback_names ________________
+src\web\backend\tests\test_demo_local_w26.py:537: in test_demo_origins_include_both_loopback_names
+    assert {'http://127.0.0.1:8000', 'http://localhost:8000'} <= set(config(builds).allowed_origins)
+E   AssertionError: assert {'http://127....calhost:8000'} <= {'http://127.0.0.1:8000'}
+E     
+E     Extra items in the left set:
+E     'http://localhost:8000'
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w26-demo-local\report\w26-evidence\mutations\run4\no-localhost-origin.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_demo_local_w26.py::test_demo_origins_include_both_loopback_names
+1 failed, 34 deselected in 3.74s

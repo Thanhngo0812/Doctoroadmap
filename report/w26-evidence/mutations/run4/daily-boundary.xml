@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.853" timestamp="2026-10-29T17:35:09.495540+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_demo_local_w26" name="test_a_day_spent_to_exactly_the_cap_grants_nothing" time="1.193"><failure message="AssertionError: assert 'ValueError' == 'stopped'&#10;  &#10;  - stopped&#10;  + ValueError">src\web\backend\tests\test_demo_local_w26.py:426: in test_a_day_spent_to_exactly_the_cap_grants_nothing
+    assert outcome == 'stopped'
+E   AssertionError: assert 'ValueError' == 'stopped'
+E     
+E     - stopped
+E     + ValueError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,39 @@
+[
+  {
+    "label": "base-url",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_demo_links_and_origins_follow_the_demo_port_not_the_env_file",
+      "test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "no-localhost-origin",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_demo_origins_include_both_loopback_names"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  },
+  {
+    "label": "daily-boundary",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_a_day_spent_to_exactly_the_cap_grants_nothing"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": "31473519fce0c30d1cbb142c0b28b25265eff9482a7b364d3dea30d96bb41c13",
+    "source_restored": true
+  }
+]
