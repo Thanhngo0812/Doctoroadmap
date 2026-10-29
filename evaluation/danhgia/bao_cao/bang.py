@@ -74,6 +74,9 @@ def bang_9(b):
             if he == T.HE_TRAN_NGUOI and thuoc != T.THUOC_F1:
                 o_cot.append(KHONG_CO)      # trần người chỉ có F1 cạnh: các cột khác không áp dụng
                 continue
+            if he in T.HE_KHONG_CHI_RIENG and thuoc in (T.THUOC_PHUT, T.THUOC_USD):
+                o_cot.append(KHONG_CO)      # dựng trên node của hệ chính, không có chi riêng: không hiện 0,00
+                continue
             text = o_text(b.tinh.o(he, thuoc), chu_so, b.n)
             if text != KHONG_CO and b.trong_dai(he, thuoc):
                 text += " (trong dải nhiễu)"
@@ -84,7 +87,7 @@ def bang_9(b):
     phu = b.tinh.o("chinh", T.THUOC_PHUT_KHONG_CHO)
     if phu is not None:
         ghi_chu.append(f"Phút/cuốn của hệ chính không tính phần chờ embedding: {o_text(phu, 1, b.n)}.")
-    ghi_chu.append("Chi phí của B1, B2 chỉ gồm phần tính lại từ artifact đã lưu, không gồm lượt chạy hệ chính.")
+    ghi_chu.append("B1 và B2: ô USD và phút hiện — vì dựng trên node của hệ chính, không có chi riêng.")
     kd_dong = []
     nhan_kd = {"q6_chinh_so_b1": "Q6, hệ chính so với B1", "f1_chinh_so_b5": "F1 cạnh, hệ chính so với B5",
                "bang_chung_chinh_so_b5": "bằng chứng có thật, hệ chính so với B5"}
@@ -132,6 +135,18 @@ def _hieu_text(b, he, nhan, thuoc, chu_so):
     return text
 
 
+def _chi_phi_11(b, he):
+    """Biến thể chạy lại cả chuỗi: hiệu mỗi cuốn so với hệ chính. Biến thể dùng lại thượng nguồn: chi phí của chính hợp đồng biến thể."""
+    if T.CHI_PHI_11.get(he) == "hieu":
+        d_usd, d_phut = b.tinh.hieu(he, "chinh", T.THUOC_USD), b.tinh.hieu(he, "chinh", T.THUOC_PHUT)
+        gia = [(d_usd, 2, "USD"), (d_phut, 1, "phút")]
+        phan = [f"{so(d['hieu'], cs, dau=True)} {dv}" for d, cs, dv in gia if d is not None and d["hieu"] is not None]
+    else:
+        gia = [(b.tinh.o(he, T.THUOC_USD), 2, "USD"), (b.tinh.o(he, T.THUOC_PHUT), 1, "phút")]
+        phan = [f"{so(o['macro'], cs)} {dv}" for o, cs, dv in gia if o is not None and o["macro"] is not None]
+    return "; ".join(phan) or KHONG_CO
+
+
 def bang_11(b):
     hang, da_oracle = [], False
     for he, nhan, chi_so, nhom in T.BANG_11:
@@ -143,14 +158,13 @@ def bang_11(b):
             hang.append(_hang(nhan, f"{KHONG_CO} (không chạy)", KHONG_CO))
             continue
         thay_doi = "; ".join(_hieu_text(b, he, nhan_cs, t, cs) for nhan_cs, t, cs in chi_so)
-        usd, phut = b.tinh.o(he, T.THUOC_USD), b.tinh.o(he, T.THUOC_PHUT)
-        chi_phi = "; ".join(x for x in (
-            f"{so(usd['macro'], 2)} USD" if usd and usd["macro"] is not None else "",
-            f"{so(phut['macro'], 1)} phút" if phut and phut["macro"] is not None else "") if x) or KHONG_CO
+        chi_phi = _chi_phi_11(b, he)
         hang.append(_hang(nhan, thay_doi, chi_phi))
     return _bang("Bảng 11. Thí nghiệm bỏ hoặc thay bộ phận", ["Thí nghiệm", "Thay đổi so với hệ chính", "Chi phí thay đổi"], hang,
                  ["Thay đổi = chỉ số của biến thể trừ chỉ số của hệ chính trên các cuốn có ở cả hai, kèm khoảng tin cậy 95% bootstrap phân cấp ghép cặp. "
-                  "Chi phí là phần ghi nhận trong hợp đồng của biến thể, không gồm phần dùng lại từ lượt chính."])
+                  "Chi phí thay đổi: biến thể dùng lại thượng nguồn của lượt chính (bước phụ bằng mô hình, bỏ quan hệ, tắt R17, logistic, cross-encoder, oracle) "
+                  "lấy USD và phút của chính hợp đồng biến thể, tức phần chạy thêm; biến thể chạy lại cả chuỗi (docling, tắt A2, tắt A5) "
+                  "lấy hiệu USD và phút mỗi cuốn so với hệ chính, có dấu."])
 
 
 def bang_12(b):
@@ -168,7 +182,8 @@ def bang_12(b):
     hang = [_hang("Điểm rubric trung bình (thang 7)", *[rubric[h] for h, _ in cac_he]),
             _hang("Tỉ lệ thắng khi so cặp (tính trên các cặp có hệ đó)", *[thang[h] for h, _ in cac_he])]
     chu_thich = ["Kết quả thăm dò, không kiểm định. Khoảng trong ngoặc vuông là Wilson 95% trên số lượt so cặp gộp mọi người chấm; hoà tính vào mẫu số. "
-                 "Ba hệ so theo vòng tròn nên mỗi hệ xuất hiện ở hai cặp."]
+                 "Ba hệ so theo vòng tròn nên mỗi hệ xuất hiện ở hai cặp. "
+                 "Khoảng Wilson giả định các lượt so cặp độc lập, nhưng cùng một người chấm nhiều lượt và các cặp dùng chung hệ, nên khoảng thực tế rộng hơn."]
     if g is not None and g["cap"]:
         hang_cap = [_hang("Cặp", "Thắng (trái)", "Thắng (phải)", "Hoà", "Tỉ lệ thắng (trái)")]
         hang_cap.append(_hang(*["---"] * 5))

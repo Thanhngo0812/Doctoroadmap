@@ -207,3 +207,22 @@ def test_thac_nuoc_tu_choi_du_lieu_khong_khep_kin():
 def test_svg_hong_bi_kiem_xml_bat():
     with pytest.raises(ET.ParseError):
         hinh.kiem_xml("<svg><title>x</svg>")
+
+
+def test_hinh_4_cac_cot_giam_noi_tiep_tu_dinh_xuong_dap_cot_dung():
+    from danhgia.bao_cao import hinh as Hn
+
+    h4 = {"he": "chinh", "so_cuon": 3, "tong": 60, "dung": 27, "khong_ap": [1, 5],
+          "ly_do": {1: None, 2: 9, 3: 5, 4: 3, 5: None, 6: 10, 7: 6}}
+    goc = ET.fromstring(Hn.hinh_4(h4))
+    thanh = sorted(_thanh_giam(goc).items())
+    y_day = float(goc.find(".//s:line[@class='truc']", NS).get("y1"))
+    dinh = {e.get("data-cot"): float(re.search(r"Q[\d.]+ ([\d.]+) ", e.get("d")).group(1)) for e in goc.iter(f"{SVG}path") if e.get("data-cot")}
+    # cột đầu bắt đầu ở đỉnh cột tổng; mỗi cột sau bắt đầu đúng ở đáy cột trước; đáy cột cuối bằng đỉnh cột "đúng"
+    ky_vong_tren = dinh["tong"]
+    for _, e in thanh:
+        y, h = float(e.get("y")), float(e.get("height"))
+        assert y == pytest.approx(ky_vong_tren, abs=0.1)
+        ky_vong_tren = y + h
+    assert ky_vong_tren == pytest.approx(dinh["dung"], abs=0.1)
+    assert ky_vong_tren < y_day

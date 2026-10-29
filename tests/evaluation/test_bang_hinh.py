@@ -7,6 +7,7 @@ import pytest
 
 from danhgia.__main__ import main
 from danhgia.bao_cao import cong
+from danhgia.cham import dong
 from tests.evaluation import bang_hinh_ho_tro as H
 
 SO_VONG = 400
@@ -125,7 +126,7 @@ def test_o_thieu_hien_gach_ngang_khong_bao_gio_0(tmp_path, capsys):
     assert b5[1] == "—" and b5[2] == "—" and b5[5] == "—" and b5[6] == "—"      # B5 không có dòng độ phủ, Q6 hay chi phí
     b1 = hang(doc(ra, "bang-9.md"), "B1 mục lục")
     assert b1[5] == "—"                                                           # B1 không đo thời gian: null, không phải 0 phút
-    assert b1[6].startswith("0,00 ")                                              # nhưng USD là số 0,0 có thật
+    assert b1[6] == "—"                                                           # USD cũng "—" (dựng trên node hệ chính), không hiện 0,00
     for cot in (*b5[1:], *b1[1:]):
         assert cot != "0" and not re.fullmatch(r"0([.,]0+)?", cot)
 
@@ -204,7 +205,7 @@ def test_bang_11_hieu_ci_suy_bien_hang_khong_chay_va_nhom_oracle(tmp_path, capsy
     r17 = hang(text, "tắt R17")
     assert r17[1] == "Q6 +0,100 [+0,100; +0,100]"                                   # mọi chương hơn hệ chính đúng 0,1
     assert hang(text, "docling thay bộ đọc nhẹ (3–4 cuốn)")[1] == "— (không chạy)"
-    assert hang(text, "hồi quy logistic thay LightGBM (A1 và bước phụ A8)")[1] == "— (không chạy)"
+    assert hang(text, "hồi quy logistic thay LightGBM ở A1")[1] == "— (không chạy)"
     assert text.index("Thiết lập oracle") < text.index("oracle A8 (khái niệm vàng)") < text.index("oracle A10 (quan hệ vàng)")
     assert text.index("cross-encoder thay LightGBM") < text.index("Thiết lập oracle")
     assert hang(text, "oracle A10 (quan hệ vàng)")[1] == "— (không chạy)"
@@ -288,3 +289,67 @@ SECRET_CHUOI = H.SECRET
 def test_cong_in_so_bool_null_theo_thu_tu():
     dong = cong.dong_allowlist({"a": 1, "b": 0.5, "c": True, "d": None}, ("a", "b", "c", "d"))
     assert dong == ["a 1", "b 0.5", "c true", "d null"]
+
+
+# ------------------------------------------------------------------------------------------------ vòng 2: bắt các phép phá còn sống
+
+
+def test_phut_khong_tinh_cho_embedding_tru_phan_cho(tmp_path, capsys):
+    ra, _ = chay(tmp_path, capsys)
+    o = so_lieu(ra)["o"]
+    # hợp đồng hệ chính: 600/60, 1200/120, 1800/180 giây chạy/chờ -> 9, 18, 27 phút không chờ (tính tay), 10, 20, 30 phút có chờ
+    assert o["chinh|chi_phi.phut_khong_cho_embedding"]["macro"] == pytest.approx(18.0, abs=1e-12)
+    assert o["chinh|chi_phi.phut"]["macro"] == pytest.approx(20.0, abs=1e-12)
+    assert o["chinh|chi_phi.phut_khong_cho_embedding"]["theo_cuon"] == {"A": pytest.approx(9.0), "B": pytest.approx(18.0), "C": pytest.approx(27.0)}
+
+
+def test_hieu_hai_he_lech_tap_chuong_trong_mot_cuon_phai_loi_khong_ghep_sai():
+    from danhgia.bao_cao.so_lieu import Tinh
+
+    rows = [dong.f1("x", "A", "c1", H.F1, 5, 5, 5), dong.f1("x", "A", "c2", H.F1, 5, 5, 5),
+            dong.f1("y", "A", "c1", H.F1, 4, 6, 6)]               # y thiếu chương c2 của cuốn A
+    with pytest.raises(ValueError, match="chương lệch"):
+        Tinh(rows, so_vong=10).hieu("x", "y", H.F1)
+
+
+def test_so_am_lam_tron_ve_0_hien_0_khong_dau_tru():
+    from danhgia.bao_cao.bang import so
+
+    assert so(-0.0001, 3) == "0,000"
+    assert so(-0.0001, 3, dau=True) == "0,000"
+    assert so(0.0004, 3, dau=True) == "0,000"
+    assert so(-0.0006, 3) == "-0,001"
+    assert so(0.1234, 2, dau=True) == "+0,12"
+
+
+def test_bang_9_b1_b2_chi_phi_hien_gach_va_co_chu_thich(tmp_path, capsys):
+    ra, _ = chay(tmp_path, capsys)
+    text = doc(ra, "bang-9.md")
+    b1 = hang(text, "B1 mục lục")
+    assert b1[5] == "—" and b1[6] == "—"
+    assert "dựng trên node của hệ chính, không có chi riêng" in text
+    assert "0,00" not in "".join(b1)
+
+
+def _bang_11_chi_phi():
+    from danhgia.bao_cao import bang, so_lieu as S
+    from danhgia.bao_cao.so_lieu import Tinh
+
+    hd = {"chinh": [("A", H.hop_dong("chinh", 600, 60, 0.004)), ("B", H.hop_dong("chinh", 1200, 120, 0.004)), ("C", H.hop_dong("chinh", 1800, 180, 0.008))],
+          # docling chạy lại cả chuỗi: mỗi cuốn hơn hệ chính 0,01 USD và 5 phút
+          "docling": [("A", H.hop_dong("docling", 900, 0, 0.014)), ("B", H.hop_dong("docling", 1500, 0, 0.014)), ("C", H.hop_dong("docling", 2100, 0, 0.018))],
+          # logistic ở A8 dùng lại thượng nguồn: hợp đồng chỉ ghi phần chạy thêm
+          "a8_logistic": [(s, H.hop_dong("a8_logistic", 120, 0, 0.30)) for s in "ABC"]}
+    rows = H.dong_he_chinh() + [{**r, "he": "docling"} for r in H.dong_b5()] + [{**r, "he": "a8_logistic"} for r in H.dong_b5()]
+    rows = [r for r in rows if r["thuoc"] == H.F1]
+    for lst in hd.values():
+        rows += S.dong_chi_phi(lst)
+    return bang.bang_11(bang.Boi(Tinh(rows, so_vong=50)))
+
+
+def test_bang_11_chi_phi_rieng_cho_bien_the_dung_lai_thuong_nguon_va_hieu_cho_chay_lai_ca_chuoi():
+    text = _bang_11_chi_phi()
+    assert hang(text, "bước phụ A8 bằng mô hình ngôn ngữ (cặp của 3 chương bốc)")[2] == "—"
+    assert hang(text, "hồi quy logistic thay LightGBM ở bước phụ A8")[2] == "0,30 USD; 2,0 phút"      # chính hợp đồng biến thể
+    assert hang(text, "docling thay bộ đọc nhẹ (3–4 cuốn)")[2] == "+0,01 USD; +5,0 phút"             # mỗi cuốn +0,010 USD và +5 phút (tính tay)
+    assert "hiệu USD và phút mỗi cuốn so với hệ chính" in text

@@ -67,11 +67,18 @@ BANG_11 = (
     ("tat_r17", "tắt R17", [("Q6", THUOC_Q6, 3)], "thật"),
     ("tat_a2", "tắt gán vai trò vùng A2 (nếu chạy)", [("recall nội dung", "a2.recall_noi_dung_muc", 3)], "thật"),
     ("tat_a5", "tắt lọc trạng thái dạy A5 (nếu chạy)", [("độ phủ", f"dau_cuoi.do_phu_day_hoc.{MUC}", 3)], "thật"),
-    ("logistic", "hồi quy logistic thay LightGBM (A1 và bước phụ A8)", [("M3", "a1.m3", 3), ("F1", THUOC_F1, 3)], "thật"),
-    ("cross_encoder", "cross-encoder thay LightGBM ở bước phụ A8", [("F1", THUOC_F1, 3)], "thật"),
+    ("a1_logistic", "hồi quy logistic thay LightGBM ở A1", [("M3", "a1.m3", 3)], "thật"),
+    ("a8_logistic", "hồi quy logistic thay LightGBM ở bước phụ A8", [("F1", THUOC_F1, 3)], "thật"),
+    ("a8_cross_encoder", "cross-encoder thay LightGBM ở bước phụ A8", [("F1", THUOC_F1, 3)], "thật"),
     ("oracle_a8", "oracle A8 (khái niệm vàng)", [("F1", THUOC_F1, 3)], "oracle"),
     ("oracle_a10", "oracle A10 (quan hệ vàng)", [("Q6", THUOC_Q6, 3)], "oracle"),
 )
+
+# Chi phí thay đổi ở Bảng 11. "rieng": biến thể dùng lại thượng nguồn của lượt chính (phát lại, oracle, bước phụ, logistic, cross-encoder) nên lấy USD/phút của
+# chính hợp đồng biến thể (phần chạy thêm). "hieu": biến thể chạy lại cả chuỗi nên lấy hiệu USD/phút mỗi cuốn so với hệ chính.
+CHI_PHI_11 = {"docling": "hieu", "tat_a2": "hieu", "tat_a5": "hieu"}
+# Hệ dựng trên node của hệ chính, không có chi riêng: ô USD và phút ở Bảng 9 hiện — chứ không phải 0
+HE_KHONG_CHI_RIENG = ("b1", "b2")
 
 HE_NHAN = {**dict(HE_BANG_9), **{k: n for k, n, _, _ in BANG_11}}
 
