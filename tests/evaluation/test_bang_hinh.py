@@ -100,6 +100,18 @@ def test_bang_9_cac_cot_con_lai_khop_so_tinh_tay(tmp_path, capsys):
     assert o[6].startswith("0,01 [")           # USD: (0,004 + 0,004 + 0,008) / 3 = 0,00533
 
 
+def test_seed_thong_ke_quyet_dinh_ci(tmp_path, capsys):
+    # tiền đề: với 30 vòng, seed mặc định và seed 1 cho hai CI khác nhau, nên test này nhạy với việc seed bị bỏ qua
+    mac_dinh, khac = ref_ci_f1(H.F1_CHINH, so_vong=30, seed=SEED), ref_ci_f1(H.F1_CHINH, so_vong=30, seed=1)
+    assert tuple(mac_dinh) != tuple(khac)
+    ra, _ = chay(tmp_path, capsys, "--so-vong", "30")
+    o = so_lieu(ra)["o"]["chinh|a8.f1_truc_tiep.nghiem"]
+    assert (o["thap"], o["cao"]) == pytest.approx(tuple(mac_dinh), abs=1e-12)
+    ra, _ = chay(tmp_path, capsys, "--so-vong", "30", "--seed", "1", ra="ra-seed1")
+    o = so_lieu(ra)["o"]["chinh|a8.f1_truc_tiep.nghiem"]
+    assert (o["thap"], o["cao"]) == pytest.approx(tuple(khac), abs=1e-12)
+
+
 def test_chi_lam_tron_luc_hien_thi_khong_lam_tron_tung_cuon_truoc_khi_lay_trung_binh(tmp_path, capsys):
     ra, _ = chay(tmp_path, capsys)
     macro = so_lieu(ra)["o"]["chinh|chi_phi.usd"]["macro"]
