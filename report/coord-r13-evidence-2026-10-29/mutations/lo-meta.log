@@ -1,0 +1,48 @@
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r13-acceptance-20261029/src/web/frontend
+
+ ❯ src/Admin.test.tsx (22 tests | 1 failed) 9849ms
+   ✓ loads the server user page with only the two delivered admin destinations and real counts 1076ms
+   ✓ sends email/role/status filtering to the server and resets paging 721ms
+   ✓ uses the server first-admin flag even when the protected row is not first; quota null means inherited 344ms
+   ✓ allows enable plus demote of a disabled later admin, confirms and submits only changed fields 726ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 438ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 657ms
+   ✓ keeps an unsuccessful mutation visible and maps conflict without claiming success 592ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 445ms
+   × renders public audit fields and server filters without rendering raw extra metadata 176ms
+   ✓ blocks a regular account without requesting an admin list 36ms
+   ✓ removes admin data when the live server returns forbidden 68ms
+   ✓ removes admin data when the live server returns unauthenticated 103ms
+   ✓ ignores a delayed PATCH after closing its dialog 580ms
+   ✓ does not apply an older list after a newer filter result 323ms
+   ✓ discards a delayed list after the identity changes to a different user 141ms
+   ✓ discards a delayed list after the identity changes to a different admin 159ms
+   ✓ rejects invalid quota locally, keeps a network-failed draft and retries a canonical update 760ms
+   ✓ a failed list is not an empty result and can be retried 175ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another user 537ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another admin 565ms
+   ✓ keeps keyboard focus on the completion message while the changed row is reloaded 459ms
+   ✓ clears the previous completion before editing the same account again and focuses the next completion 763ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  13:50:43
+   Duration  14.76s (tests 68%, import 12%, environment 11%, transform 5%, setup 4%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r13-acceptance-20261029/report/coord-r13-evidence-2026-10-29/mutations/lo-meta.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Admin.test.tsx > renders public audit fields and server filters without rendering raw extra metadata
+Error: [2mexpect([22m[31melement[39m[2m).not.toBeInTheDocument()[22m
+
+[31mexpected document not to contain element, found <td>
+  127.0.0.1
+  {"id":8,"at":"2026-10-29T08:00:00Z","actor_id":"admin-a","action":"admin_user_disabled","target_kind":"account","target_id":"admin-b","ip":"127.0.0.1","meta":{"secret":"PRIVATE_AUDIT_MARKER"}}
+</td> instead[39m
+ ❯ src/Admin.test.tsx:63:268
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
