@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="6.4445745">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T05:01:24.004Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="6.4445745">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.4720767">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.3700984">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.1495613">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.424907">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.2990686">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.3179037">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.3297221">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.3399305">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.648572">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0164091">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.0315962">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.0292731">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.32286">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.278091">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1488426">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1081533">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.5239006">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.0984374">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.3882572">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.3574295">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps keyboard focus on the completion message while the changed row is reloaded" time="0.2904554">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="clears the previous completion before editing the same account again and focuses the next completion" time="0.496453">
+        </testcase>
+    </testsuite>
+</testsuites>

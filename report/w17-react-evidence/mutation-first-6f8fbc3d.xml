@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="1" errors="0" time="5.5832891">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T04:49:33.260Z" hostname="ADMIN" tests="20" failures="1" errors="0" skipped="0" time="5.5832891">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.3360382">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.4225871">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.1186861">
+            <failure message="expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;select
+  aria-invalid=&quot;false&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;select
+  aria-invalid=&quot;false&quot;
+/&gt;
+ ❯ src/Admin.test.tsx:47:64
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.4873202">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.3021789">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.3053708">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.2969208">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.3366168">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.6824244">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0167119">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.030918">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.0340111">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.3353618">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.2704643">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1376299">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1258845">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.524531">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.0845795">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.3726448">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.3601029">
+        </testcase>
+    </testsuite>
+</testsuites>

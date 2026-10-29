@@ -1,0 +1,52 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Admin.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/mutation-callback-6f8fbc3d.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/src/web/frontend
+
+ ❯ src/Admin.test.tsx (20 tests | 1 failed) 5993ms
+   ✓ loads the server user page with only the two delivered admin destinations and real counts 478ms
+   ✓ sends email/role/status filtering to the server and resets paging 435ms
+   ✓ uses the server first-admin flag even when the protected row is not first; quota null means inherited 245ms
+   ✓ allows enable plus demote of a disabled later admin, confirms and submits only changed fields 531ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 377ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 308ms
+   ✓ keeps an unsuccessful mutation visible and maps conflict without claiming success 313ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 267ms
+   ✓ renders public audit fields and server filters without rendering raw extra metadata 630ms
+   ✓ blocks a regular account without requesting an admin list 11ms
+   ✓ removes admin data when the live server returns forbidden 37ms
+   ✓ removes admin data when the live server returns unauthenticated 37ms
+   × ignores a delayed PATCH after closing its dialog 360ms
+   ✓ does not apply an older list after a newer filter result 272ms
+   ✓ discards a delayed list after the identity changes to a different user 118ms
+   ✓ discards a delayed list after the identity changes to a different admin 124ms
+   ✓ rejects invalid quota locally, keeps a network-failed draft and retries a canonical update 635ms
+   ✓ a failed list is not an empty result and can be retried 80ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another user 373ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another admin 357ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Admin.test.tsx > ignores a delayed PATCH after closing its dialog
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <p
+  class="admin-success"
+  role="status"
+>
+  Đã cập nhật tài khoản binh@example.invalid.
+</p> instead
+ ❯ src/Admin.test.tsx:75:251
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  11:49:13
+   Duration  9.70s (tests 64%, environment 14%, import 12%, setup 6%, transform 5%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/report/w17-react-evidence/mutation-callback-6f8fbc3d.xml

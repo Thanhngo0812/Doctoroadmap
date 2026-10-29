@@ -1,0 +1,116 @@
+{
+  "sourceCommit": "ce86f12c9bd1bd1199b2b1f66adb6ca04622a4f7",
+  "purpose": "Supplementary real React checks for Axe incomplete contrast/scrolling; measurements belong only to these fresh images",
+  "states": [
+    {
+      "url": "http://127.0.0.1:8037/admin/nguoi-dung?role=admin",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "theme": "light",
+      "reduced": true,
+      "fonts": {
+        "fonts": [
+          {
+            "familyName": "Be Vietnam Pro",
+            "postScriptName": "BeVietnamPro-Bold",
+            "isCustomFont": true,
+            "glyphCount": 10
+          }
+        ]
+      },
+      "file": "users-1280-light.png",
+      "kind": "users"
+    },
+    {
+      "url": "http://127.0.0.1:8037/admin/nguoi-dung?role=admin",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "theme": "light",
+      "reduced": true,
+      "fonts": {
+        "fonts": [
+          {
+            "familyName": "Be Vietnam Pro",
+            "postScriptName": "BeVietnamPro-Bold",
+            "isCustomFont": true,
+            "glyphCount": 10
+          }
+        ]
+      },
+      "file": "bootstrap-error-1280-light.png",
+      "kind": "dialog",
+      "measured": [
+        {
+          "tag": "P",
+          "text": "Chưa xác lập định danh bảo vệ admin đầu tiên. Người vận hành cần đối chiếu phía máy chủ; thao tác hạn chế quyền có thể bị từ chối.",
+          "color": "rgb(18, 22, 27)",
+          "background": [
+            0.9647058823529412,
+            0.9725490196078431,
+            0.9803921568627451,
+            1
+          ],
+          "contrast": 17.059401218501797,
+          "unobscured": true,
+          "cssRect": {
+            "x": 365,
+            "y": 312.921875,
+            "width": 550,
+            "height": 68.78125
+          },
+          "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "scrollX": 0
+        },
+        {
+          "tag": "P",
+          "text": "Máy chủ chưa xác lập định danh admin đầu tiên. Cần người vận hành đối chiếu trước thao tác này.",
+          "color": "rgb(176, 47, 47)",
+          "background": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "contrast": 6.375857663383373,
+          "unobscured": true,
+          "cssRect": {
+            "x": 365,
+            "y": 405.703125,
+            "width": 550,
+            "height": 44.78125
+          },
+          "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "scrollX": 0
+        },
+        {
+          "tag": "P",
+          "text": "Hiệu lực hiện tại: Không giới hạn. Đặt lại 00:00 1/11/26 (giờ Việt Nam).",
+          "color": "rgb(91, 102, 115)",
+          "background": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "contrast": 5.844797723334521,
+          "unobscured": true,
+          "cssRect": {
+            "x": 365,
+            "y": 738.875,
+            "width": 550,
+            "height": 26
+          },
+          "fontFamily": "\"Be Vietnam Pro\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          "scrollX": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

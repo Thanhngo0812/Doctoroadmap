@@ -1,0 +1,478 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Admin.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/green-admin-02.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/src/web/frontend
+
+ ❯ src/Admin.test.tsx (13 tests | 1 failed) 6610ms
+   ✓ loads the server user page with only the two delivered admin destinations and real counts 1213ms
+   ✓ sends email/role/status filtering to the server and resets paging 760ms
+   ✓ uses the server first-admin flag even when the protected row is not first; quota null means inherited 339ms
+   ✓ allows enable plus demote of a disabled later admin, confirms and submits only changed fields 688ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 454ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 638ms
+   ✓ keeps an unsuccessful mutation visible and maps conflict without claiming success 641ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 716ms
+   × renders public audit fields and server filters without rendering raw extra metadata 393ms
+   ✓ blocks a regular account without requesting an admin list 38ms
+   ✓ removes admin data when the live server returns forbidden 116ms
+   ✓ removes admin data when the live server returns unauthenticated 91ms
+   ✓ ignores a delayed PATCH after closing its dialog 516ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Admin.test.tsx > renders public audit fields and server filters without rendering raw extra metadata
+TestingLibraryElementError: Unable to find a label with the text of: Loại thao tác
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary[39m
+                [33maria-label[39m=[32m"Tài khoản của Mai"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mMai[0m
+                [36m</span>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"courses-account-label"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/muc-dung"[39m
+                [36m>[39m
+                  [0mMức dùng[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/admin/nguoi-dung"[39m
+                [36m>[39m
+                  [0mQuản trị[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"admin-layout"[39m
+        [36m>[39m
+          [36m<aside[39m
+            [33mclass[39m=[32m"admin-nav"[39m
+          [36m>[39m
+            [36m<span>[39m
+              [0mQuản trị WayFinder[0m
+            [36m</span>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Quản trị"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/admin/nguoi-dung"[39m
+              [36m>[39m
+                [0mNgười dùng[0m
+              [36m</a>[39m
+              [36m<a[39m
+                [33maria-current[39m=[32m"page"[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/admin/nhat-ky"[39m
+              [36m>[39m
+                [0mNhật ký[0m
+              [36m</a>[39m
+            [36m</nav>[39m
+            [36m<p>[39m
+              [0mChỉ dữ liệu tài khoản và nhật ký thao tác.[0m
+            [36m</p>[39m
+          [36m</aside>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"admin-title"[39m
+            [33mclass[39m=[32m"admin-sheet"[39m
+          [36m>[39m
+            [36m<header[39m
+              [33mclass[39m=[32m"admin-heading"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mid[39m=[32m"admin-title"[39m
+                [36m>[39m
+                  [0mNhật ký[0m
+                [36m</h1>[39m
+                [36m<p>[39m
+                  [0mTheo dõi thao tác và đối tượng thay đổi.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"button button-secondary"[39m
+              [36m>[39m
+                [0mTải lại[0m
+              [36m</button>[39m
+            [36m</header>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"admin-filters"[39m
+            [36m>[39m
+              [36m<fieldset>[39m
+                [36m<label>[39m
+                  [0mNgười thực hiện (ID)[0m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"off"[39m
+                    [33mname[39m=[32m"actor_id"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</label>[39m
+                [36m<label>[39m
+                  [0mLoại thao tác[0m
+                  [36m<input[39m
+                    [33mlist[39m=[32m"admin-actions"[39m
+                    [33mmaxlength[39m=[32m"80"[39m
+                    [33mname[39m=[32m"action"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                  [36m<datalist[39m
+                    [33mid[39m=[32m"admin-actions"[39m
+                  [36m>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"admin_user_disabled"[39m
+                    [36m>[39m
+                      [0mKhoá tài khoản[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"admin_user_enabled"[39m
+                    [36m>[39m
+                      [0mMở tài khoản[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"admin_user_role_changed"[39m
+                    [36m>[39m
+                      [0mĐổi vai trò[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"admin_user_quota_changed"[39m
+                    [36m>[39m
+                      [0mĐổi hạn mức dựng[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"admin_account_created"[39m
+                    [36m>[39m
+                      [0mTạo tài khoản quản trị[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"bootstrap_admin_assigned"[39m
+                    [36m>[39m
+                      [0mXác lập admin đầu tiên[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"login_success"[39m
+                    [36m>[39m
+                      [0mĐăng nhập thành công[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"logout_all"[39m
+                    [36m>[39m
+                      [0mĐăng xuất mọi phiên[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"password_changed"[39m
+                    [36m>[39m
+                      [0mĐổi mật khẩu[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"profile_updated"[39m
+                    [36m>[39m
+                      [0mĐổi hồ sơ[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"invitation_sent"[39m
+                    [36m>[39m
+                      [0mTạo lời mời[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"invitation_accepted"[39m
+                    [36m>[39m
+                      [0mChấp nhận lời mời[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"invitation_declined"[39m
+                    [36m>[39m
+                      [0mTừ chối lời mời[0m
+                    [36m</option>[39m
+                    [36m<option[39m
+                      [33mvalue[39m=[32m"invitation_cancelled"[39m
+                    [36m>[39m
+                      [0mHuỷ lời mời[0m
+                    [36m</option>[39m
+                  [36m</datalist>[39m
+                [36m</label>[39m
+                [36m<label>[39m
+                  [0mTừ (giờ Việt Nam)[0m
+                  [36m<input[39m
+                    [33mname[39m=[32m"since"[39m
+                    [33mtype[39m=[32m"datetime-local"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</label>[39m
+                [36m<label>[39m
+                  [0mĐến, không gồm (giờ Việt Nam)[0m
+                  [36m<input[39m
+                    [33mname[39m=[32m"until"[39m
+                    [33mtype[39m=[32m"datetime-local"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</label>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"admin-filter-actions"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-primary"[39m
+                    [33mtype[39m=[32m"submit"[39m
+                  [36m>[39m
+                    [0mÁp dụng bộ lọc[0m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"button button-secondary"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0mXoá lọc[0m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</fieldset>[39m
+            [36m</form>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"admin-result-count"[39m
+            [36m>[39m
+              [0m1[0m
+              [0m [0m
+              [0mthao tác[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33maria-label[39m=[32m"Bảng nhật ký thao tác"[39m
+              [33mclass[39m=[32m"admin-audit-scroll"[39m
+              [33mrole[39m=[32m"region"[39m
+              [33mtabindex[39m=[32m"0"[39m
+            [36m>[39m
+              [36m<table[39m
+                [33mclass[39m=[32m"admin-table"[39m
+              [36m>[39m
+                [36m<caption[39m
+                  [33mclass[39m=[32m"sr-only"[39m
+                [36m>[39m
+                  [0mNhật ký — thời gian Việt Nam[0m
+                [36m</caption>[39m
+                [36m<thead>[39m
+                  [36m<tr>[39m
+                    [36m<th[39m
+                      [33mscope[39m=[32m"col"[39m
+                    [36m>[39m
+                      [0mThời gian Việt Nam[0m
+                    [36m</th>[39m
+                    [36m<th[39m
+                      [33mscope[39m=[32m"col"[39m
+                    [36m>[39m
+                      [0mThao tác[0m
+                    [36m</th>[39m
+                    [36m<th[39m
+                      [33mscope[39m=[32m"col"[39m
+                    [36m>[39m
+                      [0mNgười thực hiện[0m
+                    [36m</th>[39m
+                    [36m<th[39m
+                      [33mscope[39m=[32m"col"[39m
+                    [36m>[39m
+                      [0mĐối tượng[0m
+                    [36m</th>[39m
+                    [36m<th[39m
+                      [33mscope[39m=[32m"col"[39m
+                    [36m>[39m
+                      [0mIP[0m
+                    [36m</th>[39m
+                  [36m</tr>[39m
+                [36m</thead>[39m
+                [36m<tbody>[39m
+                  [36m<tr>[39m
+                    [36m<td[39m
+                      [33mclass[39m=[32m"admin-date"[39m
+                    [36m>[39m
+                      [0m15:00 29/10/26[0m
+                    [36m</td>[39m
+                    [36m<td>[39m
+                      [0mKhoá tài khoản[0m
+                    [36m</td>[39m
+                    [36m<td[39m
+                      [33mclass[39m=[32m"admin-id"[39m
+                    [36m>[39m
+                      [0madmin-a[0m
+                    [36m</td>[39m
+                    [36m<td>[39m
+                      [36m<span>[39m
+                        [0mTài khoản[0m
+                      [36m</span>[39m
+                      [36m<small[39m
+                        [33mclass[39m=[32m"admin-id"[39m
+                      [36m>[39m
+                        [0madmin-b[0m
+                      [36m</small>[39m
+                    [36m</td>[39m
+                    [36m<td>[39m
+                      [0m127.0.0.1[0m
+                    [36m</td>[39m
+                  [36m</tr>[39m
+                [36m</tbody>[39m
+              [36m</table>[39m
+            [36m</div>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Phân trang"[39m
+              [33mclass[39m=[32m"admin-pagination"[39m
+            [36m>[39m
+              [36m<span>[39m
+                [0m1–1[0m
+                [0m / [0m
+                [0m1[0m
+              [36m</span>[39m
+              [36m<div>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Trang trước"[39m
+                  [33mclass[39m=[32m"button button-secondary"[39m
+                  [33mdisabled[39m=[32m""[39m
+                [36m>[39m
+                  [0mTrước[0m
+                [36m</button>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Trang sau"[39m
+                  [33mclass[39m=[32m"button button-secondary"[39m
+                  [33mdisabled[39m=[32m""[39m
+                [36m>[39m
+                  [0mSau[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</nav>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Admin.test.tsx:61:97
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  11:26:00
+   Duration  13.50s (tests 50%, environment 19%, import 19%, transform 6%, setup 6%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/report/w17-react-evidence/green-admin-02.xml

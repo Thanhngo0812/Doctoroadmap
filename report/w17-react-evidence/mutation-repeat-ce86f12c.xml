@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="1" errors="0" time="8.7848363">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T05:04:09.474Z" hostname="ADMIN" tests="22" failures="1" errors="0" skipped="0" time="8.7848363">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.6210396">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.4825229">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.1939181">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.5248469">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.441687">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.5245558">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.4438549">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.5332897">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.7318193">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0316239">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.063316">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.0734618">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.4475846">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.3133717">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1491663">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1749969">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.7959501">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.1913351">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.6420053">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.5606709">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps keyboard focus on the completion message while the changed row is reloaded" time="0.3724983">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="clears the previous completion before editing the same account again and focuses the next completion" time="0.4674053">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;admin-success&quot;
+  role=&quot;status&quot;
+  tabindex=&quot;-1&quot;
+&gt;
+  Đã cập nhật tài khoản binh@example.invalid.
+&lt;/p&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;admin-success&quot;
+  role=&quot;status&quot;
+  tabindex=&quot;-1&quot;
+&gt;
+  Đã cập nhật tài khoản binh@example.invalid.
+&lt;/p&gt; instead
+ ❯ src/Admin.test.tsx:114:159
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

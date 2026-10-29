@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="3" errors="0" time="6.3000089">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T04:25:25.401Z" hostname="ADMIN" tests="13" failures="3" errors="0" skipped="0" time="6.3000089">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.6018634">
+            <failure message="expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  aria-label=&quot;Trang trước&quot;
+  class=&quot;button button-secondary&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button
+  aria-label=&quot;Trang trước&quot;
+  class=&quot;button button-secondary&quot;
+/&gt;
+ ❯ src/Admin.test.tsx:35:58
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.8273357">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.3688732">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.8475283">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.6875859">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.6508636">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.5853675">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.6822619">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.1645564">
+            <failure message="expect(element).toBeVisible()
+
+Received element is not visible:
+  &lt;option
+  value=&quot;admin_user_disabled&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeVisible()
+
+Received element is not visible:
+  &lt;option
+  value=&quot;admin_user_disabled&quot;
+/&gt;
+ ❯ src/Admin.test.tsx:60:185
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0764393">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.1892222">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.1410728">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after leaving the admin route" time="0.4719767">
+            <failure message="fireEvent.cancel is not a function" type="TypeError">
+TypeError: fireEvent.cancel is not a function
+ ❯ src/Admin.test.tsx:72:12
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

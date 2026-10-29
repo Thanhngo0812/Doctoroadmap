@@ -1,0 +1,97 @@
+........................................................................ [  1%]
+........................................................................ [  3%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 13%]
+........................................................................ [ 15%]
+................................................................ss...... [ 17%]
+........................................................................ [ 19%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+.........................................................F.............. [ 34%]
+........................................................................ [ 36%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 43%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 49%]
+........................x............................................... [ 51%]
+........................................................................ [ 53%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 76%]
+........................................................................ [ 77%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 83%]
+........................................................................ [ 85%]
+........................................................................ [ 87%]
+........................................................................ [ 89%]
+..............................................s......................... [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 97%]
+........................................................................ [ 98%]
+.........................................                                [100%]
+================================== FAILURES ===================================
+__ test_transport_failure_preserves_every_finished_call_and_reuses_it[main] ___
+
+phase = 'main'
+
+    @pytest.mark.parametrize('phase', ['main', 'repair'])
+    def test_transport_failure_preserves_every_finished_call_and_reuses_it(phase):
+        expected = run(chapter_store(), FailingModel(), concurrency=4)
+        store, model = chapter_store(), FailingModel(phase)
+        with pytest.raises(ModelTransportError, match='fixture transport failure'):
+            run(store, model, concurrency=4)
+        finished, counts_before = set(model.returned), model.calls.copy()
+        assert len(finished) == (3 if phase == 'main' else 7)
+>       assert store.checkpoints and model.peak == 4
+E       AssertionError: assert ({'main-070dc0a63e36d4718b6dc4d3d2945e63eec8466522a183d79bac72b6d72fbebf': {'completed_main_sessions': [], 'decision_log': [], 'executor_log': [], 'main_edges': [], ...}} and 3 == 4)
+E        +  where {'main-070dc0a63e36d4718b6dc4d3d2945e63eec8466522a183d79bac72b6d72fbebf': {'completed_main_sessions': [], 'decision_log': [], 'executor_log': [], 'main_edges': [], ...}} = <tests.unit.application.test_build_main_edges.Store object at 0x000002489832E930>.checkpoints
+E        +  and   3 = <test_main_checkpoint_review_19k.FailingModel object at 0x000002489832E300>.peak
+
+tests\unit\application\test_main_checkpoint_review_19k.py:64: AssertionError
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-pypdfium2]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-pypdfium2]
+tests/integration/test_ingest_real.py::test_real_ingest_reuses_parse_and_keeps_unchanged_chunk_ids
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\docling\models\stages\ocr\rapid_ocr_model.py:430: DeprecationWarning: deprecated
+    if self.options.rec_font_path is not None:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-react\report\w17-react-evidence\gate-python-final.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/application/test_main_checkpoint_review_19k.py::test_transport_failure_preserves_every_finished_call_and_reuses_it[main]
+1 failed, 3780 passed, 3 skipped, 1 xfailed, 8 warnings in 1512.74s (0:25:12)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

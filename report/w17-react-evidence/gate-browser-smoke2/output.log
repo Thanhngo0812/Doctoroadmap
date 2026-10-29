@@ -1,0 +1,109 @@
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 149, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3294, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 445, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1317, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 709, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 176, in _do_get
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 174, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 386, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 671, in __init__
+    self.__connect()
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 916, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 912, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\create.py", line 645, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 869, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+psycopg.errors.ConnectionTimeout: connection timeout expired
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-react\scripts\w17_react_runtime.py", line 104, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w17-admin-users-react\scripts\w17_react_runtime.py", line 44, in main
+    with control.connect() as c:c.execute(text(f'CREATE DATABASE "{name}"'))
+         ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3270, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 151, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2427, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 149, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3294, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 445, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1317, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 709, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 176, in _do_get
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 174, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 386, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 671, in __init__
+    self.__connect()
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 916, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 912, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\create.py", line 645, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 869, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+sqlalchemy.exc.OperationalError: (psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)

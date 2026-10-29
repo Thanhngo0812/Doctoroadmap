@@ -1,0 +1,51 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Admin.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/mutation-first-a2d0791e.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/src/web/frontend
+
+ ❯ src/Admin.test.tsx (21 tests | 1 failed) 7075ms
+   ✓ loads the server user page with only the two delivered admin destinations and real counts 686ms
+   ✓ sends email/role/status filtering to the server and resets paging 468ms
+   × uses the server first-admin flag even when the protected row is not first; quota null means inherited 180ms
+   ✓ allows enable plus demote of a disabled later admin, confirms and submits only changed fields 603ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 416ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 363ms
+   ✓ keeps an unsuccessful mutation visible and maps conflict without claiming success 315ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 341ms
+   ✓ renders public audit fields and server filters without rendering raw extra metadata 647ms
+   ✓ blocks a regular account without requesting an admin list 35ms
+   ✓ removes admin data when the live server returns forbidden 65ms
+   ✓ removes admin data when the live server returns unauthenticated 57ms
+   ✓ ignores a delayed PATCH after closing its dialog 339ms
+   ✓ does not apply an older list after a newer filter result 368ms
+   ✓ discards a delayed list after the identity changes to a different user 169ms
+   ✓ discards a delayed list after the identity changes to a different admin 177ms
+   ✓ rejects invalid quota locally, keeps a network-failed draft and retries a canonical update 654ms
+   ✓ a failed list is not an empty result and can be retried 99ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another user 387ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another admin 360ms
+   ✓ keeps keyboard focus on the completion message while the changed row is reloaded 341ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Admin.test.tsx > uses the server first-admin flag even when the protected row is not first; quota null means inherited
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <select
+  aria-invalid="false"
+/>
+ ❯ src/Admin.test.tsx:47:64
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  11:53:44
+   Duration  11.47s (tests 63%, environment 17%, import 13%, transform 4%, setup 3%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/report/w17-react-evidence/mutation-first-a2d0791e.xml

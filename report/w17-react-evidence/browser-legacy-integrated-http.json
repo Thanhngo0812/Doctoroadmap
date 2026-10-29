@@ -1,0 +1,183 @@
+{
+  "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+  "responses": [
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/courses",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "owned": [],
+        "joined": [],
+        "samples": []
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/admin/users",
+      "method": "GET",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "forbidden",
+          "message": "Không có quyền quản trị.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": null
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users/5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+      "query": "",
+      "status": 409,
+      "method": "PATCH",
+      "body": {
+        "error": {
+          "code": "bootstrap_required",
+          "message": "Cần xác lập định danh admin đầu tiên.",
+          "retry_after": null,
+          "ref": null,
+          "fields": [
+            {
+              "loc": "role",
+              "message": "Tài khoản được bảo vệ bởi chính sách admin đầu tiên."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

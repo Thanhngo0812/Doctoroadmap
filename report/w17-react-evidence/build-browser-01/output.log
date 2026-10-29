@@ -1,0 +1,16 @@
+
+> wayfinder-web@0.1.0 build
+> tsc -b && vite build
+
+src/Admin.test.tsx(16,114): error TS2322: Type '{ role: string; email_verified_at: string; created_at: string; last_login_at: null; owned_courses: number; build_monthly_max: null; builds_this_month: { used: number; max: null; resets_at: string; }; id: string; email: string; display_name: string; status: string; is_first_admin: boolean; }' is not assignable to type 'AdminUser'.
+  Types of property 'role' are incompatible.
+    Type 'string' is not assignable to type '"admin" | "user"'.
+src/Admin.test.tsx(16,120): error TS2322: Type '{ id: string; email: string; display_name: string; role: string; status: string; email_verified_at: string; created_at: string; last_login_at: null; owned_courses: number; build_monthly_max: null; builds_this_month: { used: number; max: null; resets_at: string; }; is_first_admin: boolean; }' is not assignable to type 'AdminUser'.
+  Types of property 'role' are incompatible.
+    Type 'string' is not assignable to type '"admin" | "user"'.
+src/Admin.test.tsx(57,68): error TS2322: Type '{ role: string; email_verified_at: string; created_at: string; last_login_at: null; owned_courses: number; build_monthly_max: null; builds_this_month: { used: number; max: null; resets_at: string; }; id: string; email: string; display_name: string; status: string; is_first_admin: null; }' is not assignable to type 'AdminUser'.
+  Types of property 'role' are incompatible.
+    Type 'string' is not assignable to type '"admin" | "user"'.
+src/Admin.test.tsx(89,129): error TS2322: Type '{ role: string; email_verified_at: string; created_at: string; last_login_at: null; owned_courses: number; build_monthly_max: null; builds_this_month: { used: number; max: null; resets_at: string; }; id: string; display_name: string; status: string; is_first_admin: boolean; email: string; }' is not assignable to type 'AdminUser'.
+  Types of property 'role' are incompatible.
+    Type 'string' is not assignable to type '"admin" | "user"'.

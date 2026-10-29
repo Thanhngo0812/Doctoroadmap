@@ -1,0 +1,4974 @@
+{
+  "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+  "responses": [
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me/invitations",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": []
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/courses",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "owned": [],
+        "joined": [],
+        "samples": []
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/admin/users",
+      "method": "GET",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "forbidden",
+          "message": "Không có quyền quản trị.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/courses",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "owned": [],
+        "joined": [],
+        "samples": []
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me/invitations",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": []
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-390-light-false",
+      "path": "/api/v1/courses",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "owned": [],
+        "joined": [],
+        "samples": []
+      }
+    },
+    {
+      "stage": "matrix-390-light-false",
+      "path": "/api/v1/me/invitations",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": []
+      }
+    },
+    {
+      "stage": "matrix-390-light-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-390-light-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-light-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-light-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-390-light-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-light-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-dark-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-390-dark-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-dark-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-dark-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-390-dark-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-390-dark-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-light-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-768-light-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-light-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-light-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-768-light-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-light-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-dark-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-768-dark-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-dark-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-dark-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-768-dark-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-768-dark-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-light-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-1280-light-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-light-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-light-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-1280-light-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-light-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-false",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-false",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-false",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-true",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-true",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "matrix-1280-dark-true",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          },
+          {
+            "id": 23,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "ip": null
+          },
+          {
+            "id": 22,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "ip": null
+          },
+          {
+            "id": 21,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "ip": null
+          },
+          {
+            "id": 20,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "ip": null
+          },
+          {
+            "id": 19,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "ip": null
+          },
+          {
+            "id": 18,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "ip": null
+          },
+          {
+            "id": 17,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "ip": null
+          },
+          {
+            "id": 16,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "ip": null
+          },
+          {
+            "id": 15,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "ip": null
+          },
+          {
+            "id": 14,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "ip": null
+          }
+        ],
+        "total": 33,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "pagination-filter",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "pagination-filter",
+      "path": "/api/v1/admin/users",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "17e18bab-be27-495b-ba98-45294f992f97",
+            "email": "hocvien-01@w17.example.invalid",
+            "display_name": "Người học 01",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "1d6364f4-1350-4d6d-a244-852ebb6337fe",
+            "email": "hocvien-16@w17.example.invalid",
+            "display_name": "Người học 16",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "email": "hocvien-23@w17.example.invalid",
+            "display_name": "Người học 23",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "2b2e6bd3-45b3-419e-8bd3-23eb5af2c424",
+            "email": "hocvien-11@w17.example.invalid",
+            "display_name": "Người học 11",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "2faf337a-5a74-4e6c-9947-91a02503b47a",
+            "email": "hocvien-18@w17.example.invalid",
+            "display_name": "Người học 18",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "3da6d19c-9807-45bd-aace-c33ce1ba92bc",
+            "email": "hocvien-12@w17.example.invalid",
+            "display_name": "Người học 12",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "454b9b1b-6fc9-424d-9363-03eb5423ae3e",
+            "email": "hocvien-07@w17.example.invalid",
+            "display_name": "Người học 07",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "45e6006b-8c5d-4581-80c0-703f23e85946",
+            "email": "hocvien-19@w17.example.invalid",
+            "display_name": "Người học 19",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "4df2fa90-694c-452e-9e7f-f10a9a251f82",
+            "email": "hocvien-05@w17.example.invalid",
+            "display_name": "Người học 05",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "email": "hocvien-24@w17.example.invalid",
+            "display_name": "Người học 24",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "77eeca5a-ef66-478c-ae4d-499900d73ef3",
+            "email": "hocvien-02@w17.example.invalid",
+            "display_name": "Người học 02",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "7bf0324e-2d14-4fd7-a322-6e28cad64787",
+            "email": "hocvien-04@w17.example.invalid",
+            "display_name": "Người học 04",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "7c8241a4-65ec-48d9-b439-2226383fd5a2",
+            "email": "hocvien-15@w17.example.invalid",
+            "display_name": "Người học 15",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "9899b131-6396-4c11-bf2b-59824724f2b4",
+            "email": "hocvien-10@w17.example.invalid",
+            "display_name": "Người học 10",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "9c4b0d7b-d6f1-4ecc-bf11-b7a7b82690bb",
+            "email": "hocvien-17@w17.example.invalid",
+            "display_name": "Người học 17",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "email": "hocvien-22@w17.example.invalid",
+            "display_name": "Người học 22",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "a4316ecd-0616-45ff-8973-5dcb012ee31c",
+            "email": "hocvien-08@w17.example.invalid",
+            "display_name": "Người học 08",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "email": "hocvien-20@w17.example.invalid",
+            "display_name": "Người học 20",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "c81a140f-2633-4000-b868-40bbb809a546",
+            "email": "hocvien-14@w17.example.invalid",
+            "display_name": "Người học 14",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 28,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "pagination-filter",
+      "path": "/api/v1/admin/users",
+      "query": "?limit=20&offset=20",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "dd0b13d6-d688-4eb5-a5a2-acdfbb2497e9",
+            "email": "hocvien-13@w17.example.invalid",
+            "display_name": "Người học 13",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "df97de58-c3df-4fa0-a3ce-462edc02a0ca",
+            "email": "hocvien-03@w17.example.invalid",
+            "display_name": "Người học 03",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "email": "observer@w17.example.invalid",
+            "display_name": "Kiểm tra độc lập",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          },
+          {
+            "id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "email": "linh@w17.example.invalid",
+            "display_name": "Hoàng Linh",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "f5462923-828f-4ce7-af6e-0f4260229c60",
+            "email": "hocvien-06@w17.example.invalid",
+            "display_name": "Người học 06",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "email": "hocvien-21@w17.example.invalid",
+            "display_name": "Người học 21",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "fe05ac16-a14d-4641-996e-6df4a18a55ef",
+            "email": "hocvien-09@w17.example.invalid",
+            "display_name": "Người học 09",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 28,
+        "limit": 20,
+        "offset": 20
+      }
+    },
+    {
+      "stage": "pagination-filter",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh%40&role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "first-admin-http-protection",
+      "path": "/api/v1/admin/users/ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+      "method": "PATCH",
+      "status": 409,
+      "body": {
+        "error": {
+          "code": "protected_admin",
+          "message": "Không thể khoá hoặc hạ quyền admin đầu tiên.",
+          "retry_after": null,
+          "ref": null,
+          "fields": [
+            {
+              "loc": "status",
+              "message": "Tài khoản được bảo vệ bởi chính sách admin đầu tiên."
+            }
+          ]
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "quota-override",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "admin",
+        "status": "active",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": 7,
+        "builds_this_month": {
+          "used": 0,
+          "max": 7,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "quota-override",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh%40&role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "disable-two-sessions",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "admin",
+        "status": "disabled",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": 7,
+        "builds_this_month": {
+          "used": 0,
+          "max": 7,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "disable-two-sessions",
+      "path": "/api/v1/admin/users",
+      "method": "GET",
+      "status": 401,
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "disable-two-sessions",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh%40&role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "disabled",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "disable-two-sessions",
+      "path": "/api/v1/admin/users",
+      "method": "GET",
+      "status": 401,
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "disabled-admin-demote",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "disabled-admin-demote",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "disabled",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "disabled-admin-demote",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "user",
+        "status": "disabled",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": 7,
+        "builds_this_month": {
+          "used": 0,
+          "max": 7,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "disabled-admin-demote",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "user",
+            "status": "disabled",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "promote-disabled-then-enable-demote",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "admin",
+        "status": "disabled",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": 7,
+        "builds_this_month": {
+          "used": 0,
+          "max": 7,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "promote-disabled-then-enable-demote",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "disabled",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "promote-disabled-then-enable-demote",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "user",
+        "status": "active",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": 7,
+        "builds_this_month": {
+          "used": 0,
+          "max": 7,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "promote-disabled-then-enable-demote",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": 7,
+            "builds_this_month": {
+              "used": 0,
+              "max": 7,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "inherit-null",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "user",
+        "status": "active",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": null,
+        "builds_this_month": {
+          "used": 0,
+          "max": null,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "inherit-null",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/admin/users/89d8bd36-38ea-42ea-b014-232dc783de52",
+      "query": "",
+      "status": 200,
+      "method": "PATCH",
+      "body": {
+        "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "admin",
+        "status": "active",
+        "email_verified_at": "2026-10-29T08:00:00Z",
+        "created_at": "2026-10-29T08:00:00Z",
+        "last_login_at": "2026-10-29T08:00:00Z",
+        "owned_courses": 0,
+        "build_monthly_max": null,
+        "builds_this_month": {
+          "used": 0,
+          "max": null,
+          "resets_at": "2026-11-01T00:00:00+07:00"
+        },
+        "is_first_admin": false
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/admin/users",
+      "query": "?email=binh&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "email": "binh@w17.example.invalid",
+            "display_name": "Trần Bình",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          },
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 2,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 403,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "forbidden",
+          "message": "Không có quyền quản trị.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "stale-live-admin",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "user",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "audit-filters",
+      "path": "/api/v1/admin/audit",
+      "query": "?limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 43,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": null
+          },
+          {
+            "id": 42,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 41,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 40,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_quota_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 39,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 38,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_enabled",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 37,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 36,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 35,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_disabled",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 34,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_quota_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 33,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 32,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 31,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 30,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 29,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "e21d4f66-30d2-47e6-9d60-994cc4944b92",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 28,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "65442092-7f4e-45e0-9c40-2a37820dcb23",
+            "ip": null
+          },
+          {
+            "id": 27,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "2a6d57d3-907a-447f-9d0d-d5664ae69b17",
+            "ip": null
+          },
+          {
+            "id": 26,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "9d2523a5-9b96-40e2-9547-9c01221b0464",
+            "ip": null
+          },
+          {
+            "id": 25,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "f73ef28a-353b-4aa8-94d4-091d1f12140c",
+            "ip": null
+          },
+          {
+            "id": 24,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "action": "login_ok",
+            "target_kind": "account",
+            "target_id": "b9986aa6-3d1c-4155-ab3f-7a09f8b1ef91",
+            "ip": null
+          }
+        ],
+        "total": 43,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "audit-filters",
+      "path": "/api/v1/admin/audit",
+      "query": "?actor_id=ee872942-a0bb-4944-8684-4f8abcc9e6fb&action=admin_user_role_changed&since=2026-10-29T07%3A00%3A00.000Z&until=2026-10-29T09%3A00%3A00.000Z&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": 43,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": null
+          },
+          {
+            "id": 41,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 39,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 37,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          },
+          {
+            "id": 36,
+            "at": "2026-10-29T08:00:00Z",
+            "actor_id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "action": "admin_user_role_changed",
+            "target_kind": "account",
+            "target_id": "89d8bd36-38ea-42ea-b014-232dc783de52",
+            "ip": "127.0.0.1"
+          }
+        ],
+        "total": 5,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "old-real-get-after-filter",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "old-real-get-after-filter",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "old-real-get-after-filter",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "old-real-get-after-filter",
+      "path": "/api/v1/admin/users",
+      "query": "?email=linh%40&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "f53bf9a4-548c-40ab-a69e-accf7daca39e",
+            "email": "linh@w17.example.invalid",
+            "display_name": "Hoàng Linh",
+            "role": "user",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": false
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "taste-inspection",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": true
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "taste-inspection",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "ee872942-a0bb-4944-8684-4f8abcc9e6fb",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": "2026-10-29T08:00:00Z",
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": true
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    }
+  ]
+}
