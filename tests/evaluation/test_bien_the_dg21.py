@@ -491,3 +491,126 @@ def test_a1_logistic_khong_lo_bi_mat_len_man_hinh(tmp_path, monkeypatch, capsys)
     monkeypatch.setattr(lenh, "cong", SimpleNamespace(in_allowlist=lambda d, cho_phep: print(json.dumps(hd, ensure_ascii=False))))
     main(argv)
     assert SECRET in capsys.readouterr().out
+
+
+# ================================================================================================ vòng 2: bốn phép phá Claude bắt sống
+
+def _m3_sua(tmp_path, sua):
+    """Bản chép M3 mà manifest được `sua` rồi ghi lại; SHA mô hình không đổi nên chỉ còn đúng lỗi vừa cài."""
+    shutil.copytree(M3, tmp_path / "m")
+    manifest = _doc(M3 / "manifest.json")
+    sua(manifest)
+    (tmp_path / "m" / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    return tmp_path / "m"
+
+
+def test_m3_ghi_lai_nguyen_ven_manifest_van_nap_duoc(tmp_path):
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer
+    assert LogisticSecondaryScorer(_m3_sua(tmp_path, lambda m: None)).metadata["version"]       # đối chứng cho các ca sửa bên dưới
+
+
+def test_logistic_tu_choi_danh_sach_dac_trung_doi_thu_tu(tmp_path):
+    """T6: cùng tập đặc trưng nhưng khác thứ tự thì cột đưa vào mô hình lệch nghĩa; phải từ chối khi nạp."""
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer
+    from doc2roadmap.domain.secondary_features import FEATURE_NAMES
+
+    def doi(m):
+        assert m["dac_trung"] == list(FEATURE_NAMES)
+        m["dac_trung"][0], m["dac_trung"][1] = m["dac_trung"][1], m["dac_trung"][0]
+    with pytest.raises(ValueError, match="đặc trưng"):
+        LogisticSecondaryScorer(_m3_sua(tmp_path, doi))
+
+
+def test_logistic_tu_choi_manifest_thieu_mot_dac_trung(tmp_path):
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer
+    with pytest.raises(ValueError, match="đặc trưng"):
+        LogisticSecondaryScorer(_m3_sua(tmp_path, lambda m: m["dac_trung"].pop()))
+
+
+@pytest.mark.parametrize("diem,xac_suat", [
+    ([0.1, 0.5, 0.4], [0.1, 0.5, 0.9]),        # điểm giảm
+    ([0.1, 0.5, 0.5], [0.1, 0.5, 0.9]),        # điểm trùng (không tăng nghiêm ngặt)
+    ([0.1, 0.5, 0.9], [0.1, 0.8, 0.3]),        # xác suất giảm
+])
+def test_hieu_chinh_khong_don_dieu_bi_tu_choi_ca_o_ham_va_khi_nap_mo_hinh(diem, xac_suat, tmp_path):
+    """T7: bảng hiệu chỉnh isotonic phải tăng; điểm tăng nghiêm ngặt, xác suất không giảm."""
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer, _kiem_hieu_chinh
+    with pytest.raises(ValueError, match="hiệu chỉnh"):
+        _kiem_hieu_chinh(diem, xac_suat)
+    with pytest.raises(ValueError, match="hiệu chỉnh"):
+        LogisticSecondaryScorer(_m3_sua(tmp_path, lambda m: m["hieu_chinh"].update(diem=diem, xac_suat=xac_suat)))
+    assert len(_kiem_hieu_chinh([0.1, 0.5, 0.9], [0.1, 0.5, 0.5])[0]) == 3           # xác suất đi ngang vẫn hợp lệ (đối chứng)
+
+
+def test_pass_phu_chi_xet_cap_co_dich_trong_bo_loc_dich_cua_manifest_edges(cap, tmp_path, chan_mang):
+    """T9: `config.target_filter` của manifest edges là bộ lọc đích của biến thể pass phụ LLM; chấm lại phải giữ đúng bộ lọc đó."""
+    from danhgia.phat_lai.pass_phu import chay_pass_phu
+    kho = tmp_path / "kho"
+    shutil.copytree(KHO, kho)
+    # một node là đầu của một số (không phải mọi) chiều ứng viên
+    dem = Counter(n for h in cap for n in {h[1], h[2]})
+    loc = next(n for n, so in sorted(dem.items()) if 0 < so < len(cap))
+    mong_doi = sum(1 for h in cap if loc in (h[1], h[2]))
+    assert 0 < mong_doi < len(cap)
+    duong = kho / "graph" / DOC / "v2" / "manifest.json"
+    manifest = _doc(duong)
+    manifest["config"]["target_filter"] = [loc]
+    duong.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    truoc, sau = Ghi(), Ghi()
+    goc_artifact, _ = chay_pass_phu(KHO, DOC, PB, truoc)
+    artifact, _ = chay_pass_phu(kho, DOC, PB, sau)
+    assert len(truoc.dong) == len(cap)
+    assert len(sau.dong) == mong_doi < len(truoc.dong)                                # số chiều chấm đúng bộ lọc
+    cap_dau = {h[0]: {h[1], h[2]} for h in cap}
+    log = artifact.payload["secondary_log"]
+    assert log and all(loc in cap_dau[r["pair_id"]] for r in log if r["pair_id"] in cap_dau)
+    assert len(log) < len(goc_artifact.payload["secondary_log"])                      # số cặp ở nhật ký theo bộ lọc
+
+
+def test_kiem_tai_tao_chi_in_khoa_so_va_canh_bao_co_dinh(tmp_path, capsys, chan_mang):
+    """T11: nhánh --kiem-tai-tao in đúng các khoá allowlist (số/bool/null) và cảnh báo cố định; in thêm dict so sánh (có id, cạnh) là đỏ."""
+    from danhgia.phat_lai.lenh_pass_phu import CHO_PHEP_KIEM
+    kho = _kho_co_bi_mat(tmp_path)
+    ma, out, err = _chay_kiem(kho, None, capsys)
+    dong_out = out.splitlines()
+    assert ma in (0, 1) and dong_out
+    for dong in dong_out:
+        khoa, gia_tri = dong.split(" ")                                               # đúng dạng "khoá giá_trị", không gì khác
+        assert khoa in CHO_PHEP_KIEM and (gia_tri in ("true", "false", "null") or gia_tri.isdigit()), dong
+    assert len({d.split(" ")[0] for d in dong_out}) == len(dong_out)
+    for dong in err.splitlines():
+        assert dong.startswith("CẢNH BÁO: ") and len(dong) < 200 and "{" not in dong and "[" not in dong, dong
+    assert SECRET not in out + err
+
+
+def test_kiem_tai_tao_secret_o_ten_khai_niem_khong_len_man_hinh(tmp_path, capsys, chan_mang):
+    kho = _kho_co_bi_mat(tmp_path)
+    ma, out, err = _chay_kiem(kho, None, capsys)
+    assert out.strip() and SECRET not in out + err
+    # bản in ngây thơ (in thẳng nội dung graph) làm lộ chuỗi: bằng chứng cổng thật sự chặn chứ đầu vào không vô hại
+    import danhgia.phat_lai.lenh_pass_phu as lenh
+    graph = next(g.read_text(encoding="utf-8") for g in (kho / "graph" / DOC).glob("v*/graph.json") if SECRET in g.read_text(encoding="utf-8"))
+    cu = lenh.cong
+    try:
+        lenh.cong = SimpleNamespace(in_allowlist=lambda d, cho_phep: print(graph))
+        main(["pass-phu-thay", "--kho", str(kho), "--doc", DOC, "--phien-ban", str(PB), "--bo-cham", "lightgbm", "--kiem-tai-tao"])
+    finally:
+        lenh.cong = cu
+    assert SECRET in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("tep", ["phat_lai/lenh_pass_phu.py", "xuat/lenh_a1_logistic.py"])
+def test_lenh_moi_moi_print_va_ghi_stderr_chi_la_chuoi_hang(tep):
+    """Rà tĩnh: mọi `print`/`sys.stderr.write` trong các lệnh mới chỉ nhận chuỗi hằng (cảnh báo cố định)."""
+    import ast
+    cay = ast.parse((GOC / "evaluation" / "danhgia" / tep).read_text(encoding="utf-8"))
+    dem = 0
+    for nut in ast.walk(cay):
+        if not isinstance(nut, ast.Call):
+            continue
+        ten = ast.unparse(nut.func)
+        if ten == "print" or ten.endswith("stderr.write") or ten.endswith("stdout.write") or ten.endswith("pprint"):
+            dem += 1
+            assert ten == "print" or ten.endswith("stderr.write"), ast.unparse(nut)
+            assert all(isinstance(a, ast.Constant) and isinstance(a.value, str) for a in nut.args), ast.unparse(nut)
+    assert dem == (2 if "pass_phu" in tep else 0)
