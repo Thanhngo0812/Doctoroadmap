@@ -1,6 +1,6 @@
 # W-17.2 — Metadata bản dựng và khoá mẫu (backend)
 
-**Trạng thái:** đang hoàn tất (code + test xanh, bảng phá xong; còn chạy lại sau commit cuối).
+**Trạng thái:** xong, chờ nghiệm thu.
 Nhánh `work/w17-builds-samples-backend` (worktree `tmp/w17-builds-samples-backend`), tạo từ main local 96515f08. Không ghép, không push.
 
 ## Phạm vi
@@ -90,7 +90,9 @@ Tất cả qua `scripts/w05_run_tests.py`, PostgreSQL `db-test` (5433), DB UUID 
 
 - Gốc: 79 ca W-17.1 xanh trước khi sửa (`test_w17_admin/first_admin/r11`).
 - Đỏ trước: 33/34 ca mới fail (404 hoặc `AttributeError`, assertion, không phải lỗi setup) khi chưa có mã; ca còn lại (`csrf_and_origin_required_for_flag`) xanh sẵn vì middleware chặn trước route. Sau khi cài: 34 xanh.
-- `src/web/backend/tests/test_w17_builds_samples.py`: 34 passed. Với `test_w17_admin/first_admin/r11` và `test_web_architecture` (snapshot OpenAPI): xem dòng tổng kết cuối báo cáo.
+- Sau commit 691b3d88, toàn `src/web/backend/tests` qua runner: **713 passed, 1 skipped, 1 failed** (460 s). Ca đỏ duy nhất `test_internal_dry_run_w15.py::test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate]` do thiếu `tmp/w15-candidate/input.pdf` (tệp chưa theo dõi); thư mục chung cũng không có tệp này, không liên quan W-17.2.
+- Lượt đầy đủ trước khi sửa 404/`routes_with_cid` đã bắt 4 ca đỏ do route admin mới lọt kho kiểm kê `{cid}` (3 ca W-06, 1 ca W-17.1); sau sửa: `test_w17_builds_samples` + `test_courses_w06` + `test_w17_admin` = 102 passed. `test_web_architecture` (snapshot OpenAPI) xanh.
+- Các test ghi tệp bằng chứng cũ (`report/w06-evidence`, `w14-evidence`, `w15/w25 sql/latest`): đã hoàn nguyên, không commit.
 
 ## Bảng phá (`tests/w17_2_mutations.py`, từng phép một, khôi phục bytes + đối chiếu SHA)
 
