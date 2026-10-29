@@ -19,9 +19,10 @@ giao diện, worker dựng sách, PostgreSQL, sáu khoá mẫu.
 - Một lệnh bật (ví dụ `chay.ps1`, nhấp đúp hay chạy một dòng): kiểm Python/uv, Node, Docker và báo rõ thiếu gì; cài thư viện; bật PostgreSQL; tạo DB và
   migrate; nạp khoá mẫu; build giao diện; mở server và worker; in địa chỉ để mở trình duyệt. Chạy lại lần hai không hỏng dữ liệu đã có.
 - `.env.example` liệt kê mọi khoá cần điền (Gmail, PostgreSQL, Vertex project hoặc khoá Gemini Developer API), không chứa bí mật thật.
-  Repo hiện có **hai** tệp: `.env.example` gốc (lõi `DOC2ROADMAP_*`: khoá Gemini/Vertex, model, tham số chỉnh) và `src/web/.env.example`
-  (`WAYFINDER_*`, `POSTGRES_*`, SMTP, Cloudinary). Gói chỉ đưa **một** `.env.example` cho người dùng, chỉ các khoá phải điền; tham số chỉnh lõi lấy
-  mặc định trong mã. Lệnh bật nạp tệp đó cho cả lõi lẫn web (lõi hiện chỉ đọc `.env` ở thư mục đang đứng, nên khoá Vertex phải đến được cả hai).
+  Chỉ dùng `src/web/.env.example` (đã có khối Vertex `DOC2ROADMAP_LLM_TRANSPORT`/`_VERTEX_PROJECT`/`_VERTEX_LOCATION`, tuỳ chọn
+  `GOOGLE_APPLICATION_CREDENTIALS`). `.env` gốc chỉ phục vụ CLI dựng/đánh giá, không đưa vào gói. Bản trong gói rút còn các khoá phải điền: mật khẩu
+  PostgreSQL, Gmail, project Vertex (hoặc khoá Developer API nếu lúc đó đã đổi); khoá còn lại để mặc định hoặc do lệnh bật tự đặt (URL, đường dẫn
+  artifact tương đối). README hướng dẫn đăng nhập Vertex bằng `gcloud auth application-default login`.
 - `README.md` tiếng Việt, từng bước cho người không rành: cài gì, điền gì, bấm gì, mở địa chỉ nào, dừng thế nào, lỗi hay gặp.
 
 ## Không được có
