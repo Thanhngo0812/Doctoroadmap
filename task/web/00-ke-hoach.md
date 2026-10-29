@@ -130,6 +130,7 @@ còn đổi; nhóm web đã được báo.
 | [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | giữ mốc web đã nhận; D-R8-02 wiring bda1366b đạt, ghép local 1513ac7f; W-23 còn mở |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 | [W-26](W-26-may-chu-demo-local-chay-that.md) | máy chủ demo local chạy thật: dựng sách thật mọi tài khoản (3 USD/cuốn, 10 USD/ngày), mail SMTP thật, ảnh trên đĩa, DB riêng, trần học 3 USD/người/ngày | — | ready-for-agent; chủ dự án yêu cầu 2026-10-29; giao subagent lõi sau sửa W-17.1 |
+| [W-final](W-final-goi-ban-chay-may-khac.md) | gói thư mục ngoài Desktop chỉ chứa mã + dữ liệu tối thiểu, README và một lệnh bật máy chủ trên máy khác | mọi vé web còn mở | chờ; làm sau cùng, Claude viết chi tiết khi các vé khác đạt |
 
 ## Thứ tự đề xuất
 

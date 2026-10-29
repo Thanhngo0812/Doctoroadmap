@@ -43,6 +43,8 @@ agent khác. Người điều phối:
 
 ## 2. Tình hình lúc bàn giao
 
+**Mới nhất — 2026-10-29 tối, Claude:** W-17.1 React đạt, ghép local `e4465b4c`. Đang chạy subagent lõi **W-26** máy chủ demo local (`tmp/w26-demo-local`); xong thì Claude nghiệm thu, ghép rồi tự chạy máy chủ cho chủ dự án xem. Hàng đợi: W-17.2 → D-R12-01/W-23 → vé còn mở → **W-final** gói chạy máy khác. **W-21 bỏ** (demo chỉ local). Lời giao ở `tmp/claude-tools/prompt-cai-*.md`, sổ tay `so-tay-agent-web.md`. Web chặn Gemini Developer API ở `composition.py:57`, `real_build.py:19`, `build_spend.py:63,175`. Chưa push.
+
 **Mới nhất — 2026-10-29, Claude tiếp nhận điều phối:** chủ dự án báo lời giao lần 12 **chỉ gửi nhóm web**; lõi (W-17.2) và thiết kế (D-R12-01) chưa
 nhận nên chưa làm. Web đã bàn giao React W-17.1 Người dùng/Nhật ký: nhánh `work/w17-admin-users-react`, mã kiểm `b75e611b` (nền main `647149b3`),
 commit hồ sơ `af461e8a`; báo cáo `report/w17-react-tich-hop-2026-10-29.md` trên nhánh. Nhóm tự báo 3833 Python/0 fail/3 skip/1 xfail, 281 React,
