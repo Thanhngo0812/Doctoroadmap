@@ -1,5 +1,26 @@
 # WayFinder — chạy backend và frontend
 
+## Máy chủ demo local (W-26) — dựng sách thật, mail thật, ảnh trên đĩa
+
+Một lệnh `demo-local` chạy backend + bản build React cùng cổng 8000 và một worker dựng ở tiến trình riêng. **Mỗi bản dựng tốn tiền Vertex thật** (mô hình `gemini-3.1-flash-lite`): mọi tài khoản đều tải sách và dựng được; trần 3 USD/cuốn, 10 USD/ngày cho cả máy chủ (giờ Việt Nam), người học 3 USD/người/ngày. Hết trần ngày thì bản dựng nằm hàng chờ tới 00:00 hôm sau (cửa sổ worker in lý do). Mail đăng ký/xác minh/quên mật khẩu/mời/báo dựng xong gửi thật qua Gmail SMTP trong `src/web/.env`. Ảnh và tệp gốc nằm dưới `<artifact-root>\demo-local\<tên DB>\media`, không dùng Cloudinary. Chỉ lệnh này mới cấp giấy phép chi tự động; `serve` và `worker` thường vẫn khoá chi.
+
+DB riêng `wayfinder_demo_<ngày>` được tạo trên container PostgreSQL dev, không đụng DB `wayfinder`. Lần chạy đầu hỏi mật khẩu admin (admin đầu tiên được xác lập ở DB mới) và nạp sáu khoá mẫu từ PDF trên đĩa; các lần sau bỏ qua phần đã có. Sáu cuốn mẫu cần PDF ở thư mục cha của `--artifact-root` và artifact đã dựng trong `--artifact-root`.
+
+**PowerShell (một terminal):**
+
+~~~powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap          # hoặc worktree đã ghép W-26
+$wfPython = "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Scripts\python.exe"
+$wfEnv = "C:\Users\ngoco\Desktop\Doctoroadmap\src\web\.env"
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+npm.cmd --prefix src/web/frontend ci --no-audit --no-fund
+npm.cmd --prefix src/web/frontend run build
+& $wfPython -X utf8 -m wayfinder.cli --env-file $wfEnv demo-local --admin-email <email-admin> --artifact-root C:\Users\ngoco\Desktop\Doctoroadmap\artifacts
+~~~
+
+Mở **http://127.0.0.1:8000**. Dừng bằng Ctrl+C (worker con dừng theo). `--database wayfinder_demo_<đuôi>` đổi tên DB; `--role server` hoặc `--role worker` chạy riêng từng phần (mở hai terminal), `--port` đổi cổng (địa chỉ gửi trong thư đổi theo). Không dùng chung DB hay thư mục media này cho việc khác; dọn dẹp thuộc người vận hành.
+
 ## Mở bản W-16 React — mức dùng
 
 Worktree: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-react, nhánh work/w16-usage-react. Bản này kế thừa W-10 và backend usage-1 đã nghiệm thu; không dùng service đang chạy từ một worktree cũ để kiểm API W-16.

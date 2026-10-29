@@ -1,4 +1,5 @@
 """W-26: the local demo server. PostgreSQL db-test only; model, SMTP and media are all in-process fakes."""
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from io import BytesIO
@@ -219,12 +220,23 @@ def test_ensure_database_refuses_the_shared_database_before_any_connection(build
         ensure_database(shared)
 
 
-def test_ensure_database_creates_a_migrated_database_and_first_admin_once(builds, monkeypatch):
+@contextmanager
+def disposable_demo_database(b):
+    """A real `wayfinder_demo_*` database made by ensure_database, dropped afterwards (admins cannot be demoted)."""
     name = 'wayfinder_demo_t' + uuid4().hex[:12]
-    cfg = config(builds).model_copy(update={'database_url': demo_database_url(
-        builds.postgres_database_url.render_as_string(hide_password=False), name).render_as_string(hide_password=False)})
-    admin = create_database_engine(builds.postgres_database_url.set(database='postgres')).execution_options(isolation_level='AUTOCOMMIT')
+    cfg = config(b).model_copy(update={'database_url': demo_database_url(
+        b.postgres_database_url.render_as_string(hide_password=False), name).render_as_string(hide_password=False)})
+    admin = create_database_engine(b.postgres_database_url.set(database='postgres')).execution_options(isolation_level='AUTOCOMMIT')
     try:
+        yield cfg, name
+    finally:
+        with admin.connect() as connection:
+            connection.execute(text(f'DROP DATABASE IF EXISTS "{name}" WITH (FORCE)'))
+        admin.dispose()
+
+
+def test_ensure_database_creates_a_migrated_database_and_first_admin_once(builds, monkeypatch):
+    with disposable_demo_database(builds) as (cfg, name):
         ensure_database(cfg)
         ensure_database(cfg)  # idempotent
         engine = create_database_engine(cfg.database_url)
@@ -241,10 +253,6 @@ def test_ensure_database_creates_a_migrated_database_and_first_admin_once(builds
             assert PostgresAuthStore(engine).first_admin_id() is not None
         finally:
             engine.dispose()
-    finally:
-        with admin.connect() as connection:
-            connection.execute(text(f'DROP DATABASE IF EXISTS "{name}" WITH (FORCE)'))
-        admin.dispose()
 
 
 # --- Media on disk, no Cloudinary -------------------------------------------------------------
@@ -514,28 +522,33 @@ def test_build_finished_notice_goes_through_smtp_in_the_demo_worker(builds, prov
 def test_six_sample_courses_load_from_disk_without_network(builds, tmp_path, monkeypatch):
     import socket
     from wayfinder.application.seed_samples import SAMPLE_DOCS
-    b, cfg = builds, config(builds)
     def no_network(*args, **kwargs):
         raise AssertionError('Sample seeding must not open a network connection')
-    monkeypatch.setattr(socket.socket, 'connect', no_network)
     sources = tmp_path / 'sources'
     sources.mkdir()
     payload = pdf(1)
     for doc in SAMPLE_DOCS.values():
         (sources / doc['pdf']).write_bytes(payload)
-    with b.engine.begin() as connection:
-        connection.execute(text("TRUNCATE phase_b_record"))
-        connection.execute(text("UPDATE account SET role='admin',email_verified_at=now() WHERE id=:id"), {'id': b.actor.user_id})
-    email = sql(b, 'SELECT email FROM account WHERE id=:id', {'id': b.actor.user_id})[0]['email']
-    media = DiskMediaStore(tmp_path / 'media')
-    rows = demo_local.seed_samples(cfg, b.engine, email, media, source_root=sources, graph_loader=loader)
-    assert sorted(course.doc_id for course in rows) == sorted(SAMPLE_DOCS)
-    stored = sql(b, 'SELECT doc_id,source_public_id FROM course WHERE is_sample')
-    assert len(stored) == 6
-    for row in stored:
-        assert (media.root / row['source_public_id']).read_bytes() == payload
-    assert len(demo_local.seed_samples(cfg, b.engine, email, media, source_root=sources, graph_loader=loader)) == 6
-    assert sql(b, 'SELECT count(*) AS n FROM course WHERE is_sample')[0]['n'] == 6  # idempotent
+    with disposable_demo_database(builds) as (cfg, name):
+        ensure_database(cfg)
+        engine = create_database_engine(cfg.database_url)
+        try:
+            demo_local.ensure_admin(cfg, engine, 'quan-tri@example.vn', password=lambda: 'W26 demo admin passphrase!')
+            media = DiskMediaStore(tmp_path / 'media')
+            monkeypatch.setattr(socket.socket, 'connect', no_network)
+            rows = demo_local.seed_samples(cfg, engine, 'quan-tri@example.vn', media, source_root=sources, graph_loader=loader)
+            assert sorted(course.doc_id for course in rows) == sorted(SAMPLE_DOCS)
+            with engine.connect() as connection:
+                stored = connection.execute(text('SELECT doc_id,source_public_id FROM course WHERE is_sample')).mappings().all()
+            assert len(stored) == 6
+            for row in stored:
+                assert (media.root / row['source_public_id']).read_bytes() == payload
+            assert len(demo_local.seed_samples(cfg, engine, 'quan-tri@example.vn', media, source_root=sources,
+                                               graph_loader=loader)) == 6
+            with engine.connect() as connection:
+                assert connection.scalar(text('SELECT count(*) FROM course WHERE is_sample')) == 6  # idempotent
+        finally:
+            engine.dispose()
 
 
 # --- Lệnh: worker là tiến trình riêng, mặc định tắt chi ngoài lệnh demo --------------------------------
@@ -586,3 +599,48 @@ def test_role_all_runs_the_builder_as_a_separate_process_and_stops_it(builds, tm
     command = started[0]
     assert command[1:3] == ['-m', 'wayfinder.cli'] and command[command.index('--role') + 1] == 'worker'
     assert '--env-file' in command and events == ['terminate', 'wait']
+
+
+SMTP_ENV = {'WAYFINDER_SMTP_USERNAME': 'u', 'WAYFINDER_SMTP_PASSWORD': 'p', 'WAYFINDER_SMTP_FROM': 'a@example.vn'}
+
+
+def test_cli_demo_local_refuses_to_start_without_smtp(monkeypatch, capsys):
+    from wayfinder import cli
+    monkeypatch.setenv('WAYFINDER_DATABASE_URL', 'postgresql+psycopg://u:p@127.0.0.1:5432/wayfinder')
+    for key in SMTP_ENV:
+        monkeypatch.delenv(key, raising=False)
+    assert cli.main(['demo-local', '--admin-email', 'a@example.vn']) == 2
+    assert 'SMTP' in capsys.readouterr().err
+
+
+def test_cli_demo_local_worker_role_gets_the_dedicated_database_and_disk_media(monkeypatch, tmp_path):
+    from wayfinder import cli
+    monkeypatch.setenv('WAYFINDER_DATABASE_URL', 'postgresql+psycopg://u:p@127.0.0.1:5432/wayfinder')
+    for key, value in SMTP_ENV.items():
+        monkeypatch.setenv(key, value)
+    seen = {}
+    runtime = SimpleNamespace(close=lambda: seen.setdefault('runtime_closed', True))
+    engine = SimpleNamespace(dispose=lambda: seen.setdefault('engine_disposed', True))
+    def fake_worker(settings, media, **kwargs):
+        seen.update(settings=settings, media=media)
+        return SimpleNamespace(build_runtime=runtime), engine
+    monkeypatch.setattr(demo_local, 'make_demo_worker', fake_worker)
+    monkeypatch.setattr(demo_local, 'run_demo_worker', lambda worker, **kwargs: 0)
+    assert cli.main(['demo-local', '--role', 'worker', '--database', 'wayfinder_demo_cli', '--artifact-root', str(tmp_path)]) == 0
+    settings = seen['settings']
+    assert settings.database_url.endswith('/wayfinder_demo_cli') and settings.build_runner == 'real' and settings.env == 'dev'
+    assert settings.cloudinary_url is None and settings.mailer == 'smtp'
+    assert type(seen['media']) is DiskMediaStore
+    assert seen['media'].root == tmp_path.resolve() / 'demo-local' / 'wayfinder_demo_cli' / 'media'
+    assert seen['runtime_closed'] and seen['engine_disposed']
+
+
+def test_cli_demo_local_reports_a_missing_sample_roadmap_without_a_traceback(monkeypatch, capsys):
+    from wayfinder import cli
+    from wayfinder.api.errors import WebError
+    monkeypatch.setenv('WAYFINDER_DATABASE_URL', 'postgresql+psycopg://u:p@127.0.0.1:5432/wayfinder')
+    def missing(*args, **kwargs):
+        raise WebError('conflict', 'Chưa có lộ trình hoàn tất')
+    monkeypatch.setattr(demo_local, 'run_demo_local', missing)
+    assert cli.main(['demo-local', '--admin-email', 'a@example.vn']) == 1
+    assert 'Chưa có lộ trình hoàn tất' in capsys.readouterr().err

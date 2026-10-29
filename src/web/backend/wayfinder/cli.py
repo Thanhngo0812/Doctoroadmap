@@ -61,6 +61,8 @@ def main(argv=None) -> int:
 
     if args.command == "demo-local":
         from google.auth.exceptions import DefaultCredentialsError
+        from sqlalchemy.exc import SQLAlchemyError
+        from wayfinder.api.errors import WebError
         from wayfinder.demo_local import default_database_name, run_demo_local
 
         args.database = args.database or default_database_name()
@@ -69,6 +71,12 @@ def main(argv=None) -> int:
         except (ValueError, DefaultCredentialsError) as error:
             print(f"Không chạy được máy chủ demo: {error}", file=sys.stderr)
             return 2
+        except WebError as error:
+            print(f"Không chạy được máy chủ demo: {error.message}", file=sys.stderr)
+            return 1
+        except SQLAlchemyError:
+            print("Không chạy được máy chủ demo: PostgreSQL dev chưa chạy hoặc từ chối kết nối.", file=sys.stderr)
+            return 1
 
     if args.command == "seed-samples":
         from wayfinder.api.errors import WebError
