@@ -1,0 +1,23 @@
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 31%]
+............................................................F........... [ 42%]
+......................................s................................. [ 52%]
+........................................................................ [ 63%]
+........................................................................ [ 74%]
+........................................................................ [ 84%]
+........................................................................ [ 95%]
+.................................                                        [100%]
+================================== FAILURES ===================================
+_ test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate] _
+src\web\backend\tests\test_internal_dry_run_w15.py:38: in test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost
+    assert source.stat().st_nlink == 1 and not source.is_symlink()
+           ^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:840: in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r14-acceptance-20261029\\tmp\\w15-candidate\\input.pdf'
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r14-acceptance-20261029\tmp\r14-gate\web-backend.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_internal_dry_run_w15.py::test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate]
+1 failed, 679 passed, 1 skipped in 468.40s (0:07:48)

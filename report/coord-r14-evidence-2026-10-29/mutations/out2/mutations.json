@@ -1,0 +1,44 @@
+[
+  {
+    "mutant": "admin-once",
+    "file": "demo_local.py",
+    "exit": 1,
+    "killed": true,
+    "summary": "1 failed, 31 passed in 22.78s"
+  },
+  {
+    "mutant": "limit-zero",
+    "file": "demo_local.py",
+    "exit": 0,
+    "killed": false,
+    "summary": "32 passed in 23.76s"
+  },
+  {
+    "mutant": "upload-raw-any",
+    "file": "infrastructure/disk_media.py",
+    "exit": 1,
+    "killed": true,
+    "summary": "1 failed, 31 passed in 22.36s"
+  },
+  {
+    "mutant": "no-localhost-origin",
+    "file": "demo_local.py",
+    "exit": 0,
+    "killed": false,
+    "summary": "32 passed in 19.79s"
+  },
+  {
+    "mutant": "learner-default-3",
+    "file": "settings.py",
+    "exit": 1,
+    "killed": true,
+    "summary": "2 failed, 30 passed in 20.43s"
+  },
+  {
+    "mutant": "child-not-stopped",
+    "file": "demo_local.py",
+    "exit": 1,
+    "killed": true,
+    "summary": "1 failed, 31 passed in 23.93s"
+  }
+]
