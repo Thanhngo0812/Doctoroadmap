@@ -112,6 +112,13 @@ def kiem_voi(tmp_path, manifest, trang_text, dong, nguong=0.85):
     return kiem_phieu(p, manifest, trang_text, nguong=nguong)
 
 
+def test_phieu_trang_khong_khai_niem_nao_la_loi(tmp_path, manifest, trang_text):
+    # 29/10: một người gán tập thử nộp lại phiếu trắng và bộ kiểm cho là hợp lệ với 0 khái niệm
+    kq = kiem_phieu(sinh(tmp_path, manifest), manifest, trang_text)
+    assert [l.ma_loi for l in kq.loi] == ["phieu_rong"] and kq.du_lieu is None
+    assert kiem_phieu(hai_dong(tmp_path, manifest), manifest, trang_text).ok   # điền một chương, chương kia trống: vẫn hợp lệ (nộp theo thứ tự chương)
+
+
 def test_loi_thieu_ten(tmp_path, manifest, trang_text):
     kq = kiem_voi(tmp_path, manifest, trang_text, {"c10-001": {"ten": None}})
     assert ("thieu_truong", "c10-001") in ma_loi(kq) and kq.du_lieu is None

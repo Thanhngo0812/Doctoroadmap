@@ -1,0 +1,2026 @@
+{
+  "schema": "danh-gia-g3-can-1",
+  "ma_sach": "dev-nhap-mon-ml",
+  "phien_ban_huong_dan": "g3-2",
+  "nguoi": [
+    "cntt-a",
+    "cntt-b"
+  ],
+  "chuong": [
+    "m1-2",
+    "m1-3",
+    "m1-4"
+  ],
+  "khai_niem": {
+    "a": {
+      "m1-2-001": {
+        "ma": "m1-2-001",
+        "chuong": "m1-2",
+        "ten": "Quy trình xây dựng một hệ thống học",
+        "ten_khac": [
+          "quy trình học máy",
+          "quy trình ML"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "Để xây dựng một hệ thống có khả năng học, chúng ta cần thực hiện những bước chính như trong Hình 4."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Quy trình tổng thể 10 bước xây dựng hệ thống ML."
+      },
+      "m1-2-002": {
+        "ma": "m1-2-002",
+        "chuong": "m1-2",
+        "ten": "Thấu hiểu nghiệp vụ",
+        "ten_khac": [
+          "Business understanding"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "1. Business understanding: Đầu tiên chúng ta cần hiểu rõ nhu cầu thực tế đang được đặt ra để giải quyết."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 1 trong quy trình xây dựng hệ thống học."
+      },
+      "m1-2-003": {
+        "ma": "m1-2-003",
+        "chuong": "m1-2",
+        "ten": "Tiếp cận phân tích",
+        "ten_khac": [
+          "Analytic approach"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "2. Analytic approach: Chúng ta cần đưa nhu cầu trên về một bài toán ML."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 2: phát biểu bài toán ML phù hợp với nhu cầu thực tế."
+      },
+      "m1-2-004": {
+        "ma": "m1-2-004",
+        "chuong": "m1-2",
+        "ten": "Yêu cầu dữ liệu",
+        "ten_khac": [
+          "Data requirements"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "3. Data requirements: Tiếp theo chúng ta cần xác định rõ các yêu cầu về tập dữ liệu cần thu thập để huấn luyện hệ thống, tuỳ vào bài toán ML đã chọn ở trên."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 3: xác định các yêu cầu đối với tập dữ liệu huấn luyện."
+      },
+      "m1-2-005": {
+        "ma": "m1-2-005",
+        "chuong": "m1-2",
+        "ten": "Thu thập dữ liệu trong quy trình ML",
+        "ten_khac": [
+          "Data collection"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "4. Data collection: Sau khi đã biết các yêu cầu về dữ liệu, chúng ta cần xây dựng một hệ thống (bán) tự động hoặc cử người để thu thập tập dữ liệu huấn luyện."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 4: xây dựng hệ thống hoặc thu thập dữ liệu huấn luyện."
+      },
+      "m1-2-006": {
+        "ma": "m1-2-006",
+        "chuong": "m1-2",
+        "ten": "Thấu hiểu dữ liệu",
+        "ten_khac": [
+          "Data understanding"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "5. Data understanding: Sau khi có một tập dữ liệu, chúng ta có thể thực hiện một vài tính toán đơn giản hoặc dùng các công cụ trực quan hoá để xem xét một vài tính chất của dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 5: tính toán và trực quan hoá khám phá đặc trưng dữ liệu."
+      },
+      "m1-2-007": {
+        "ma": "m1-2-007",
+        "chuong": "m1-2",
+        "ten": "Chuẩn bị dữ liệu",
+        "ten_khac": [
+          "Data preparation",
+          "tiền xử lý dữ liệu"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "6. Data preparation: Tiếp đó, chúng ta cần thực hiện tiền xử lý dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 6: lọc nhiễu, loại bỏ lỗi, chuyển về dạng vectơ phù hợp với mô hình."
+      },
+      "m1-2-008": {
+        "ma": "m1-2-008",
+        "chuong": "m1-2",
+        "ten": "Mô hình hoá",
+        "ten_khac": [
+          "Modeling"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "7. Modeling: Sau khi có tập dữ liệu đã được tiền xử lý D, chúng ta chọn một mô hình ML phù hợp và huấn luyện nó từ D."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 7: lựa chọn kiểu mô hình và giải thuật học để huấn luyện."
+      },
+      "m1-2-009": {
+        "ma": "m1-2-009",
+        "chuong": "m1-2",
+        "ten": "Đánh giá mô hình",
+        "ten_khac": [
+          "Evaluation"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "8. Evaluation: Sau khi có mô hình vừa huấn luyện, chúng ta cần tiến hành đánh giá hiệu năng (chất lượng) của nó."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 8: dùng chiến lược và độ đo phù hợp đánh giá hiệu năng."
+      },
+      "m1-2-010": {
+        "ma": "m1-2-010",
+        "chuong": "m1-2",
+        "ten": "Triển khai",
+        "ten_khac": [
+          "Deployment"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "9. Deployment: Nếu mô hình được huấn luyện tốt thì có thể dùng nó để đưa vào triển khai hệ thống (sản phẩm) đầy đủ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 9: đưa mô hình vào triển khai hệ thống thực tế."
+      },
+      "m1-2-011": {
+        "ma": "m1-2-011",
+        "chuong": "m1-2",
+        "ten": "Phản hồi",
+        "ten_khac": [
+          "Feedback"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "10. Feedback: Hệ thống sau khi hoàn thành có thể cần người dùng đánh giá."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 10: thu thập phản hồi người dùng để cải thiện hệ thống."
+      },
+      "m1-2-012": {
+        "ma": "m1-2-012",
+        "chuong": "m1-2",
+        "ten": "Hàm cần học",
+        "ten_khac": [
+          "target function",
+          "y*"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nghĩa là chúng ta cần xác định rõ hàm cần học y ∗ : X → Y có đặc trưng cơ bản ra sao về đầu vào và đầu ra."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hàm mục tiêu y*: X -> Y cần xấp xỉ."
+      },
+      "m1-2-013": {
+        "ma": "m1-2-013",
+        "chuong": "m1-2",
+        "ten": "Không gian dữ liệu",
+        "ten_khac": [
+          "data space",
+          "X"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nói cách khác, ta cần xác định được không gian dữ liệu X và tập nhãn Y ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Không gian chứa các mẫu dữ liệu đầu vào X."
+      },
+      "m1-2-014": {
+        "ma": "m1-2-014",
+        "chuong": "m1-2",
+        "ten": "Tập nhãn",
+        "ten_khac": [
+          "không gian đầu ra",
+          "label set",
+          "Y"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nói cách khác, ta cần xác định được không gian dữ liệu X và tập nhãn Y ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tập hợp các giá trị nhãn đầu ra Y."
+      },
+      "m1-2-015": {
+        "ma": "m1-2-015",
+        "chuong": "m1-2",
+        "ten": "Tính đại diện của tập dữ liệu",
+        "ten_khac": [
+          "tính đại diện"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nghĩa là, tập dữ liệu này cần có tính đại diện cao cho không gian X ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tập học cần mô tả được nhiều đặc trưng cốt lõi của không gian dữ liệu."
+      },
+      "m1-2-016": {
+        "ma": "m1-2-016",
+        "chuong": "m1-2",
+        "ten": "Kiểu mô hình",
+        "ten_khac": [
+          "lớp mô hình",
+          "hypothesis class",
+          "H"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Vì hàm y ∗ thường không biết và ta chỉ thu thập được tập dữ liệu D, nên một cách phổ biến trong ML là chọn một kiểu (lớp) mô hình H để xấp xỉ hàm y ∗ ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tập hợp các hàm khả dĩ H để tìm hàm xấp xỉ y*."
+      },
+      "m1-2-017": {
+        "ma": "m1-2-017",
+        "chuong": "m1-2",
+        "ten": "Giả thuyết trong học máy",
+        "ten_khac": [
+          "giả thuyết",
+          "hypothesis",
+          "f"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Như vậy H là một lớp các hàm, mà mỗi hàm còn được gọi là giả thuyết (hypothesis)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mỗi hàm f thuộc lớp mô hình H."
+      },
+      "m1-2-018": {
+        "ma": "m1-2-018",
+        "chuong": "m1-2",
+        "ten": "Giải thuật học",
+        "ten_khac": [
+          "thuật toán học",
+          "learning algorithm",
+          "A"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Tiếp theo ta cần chọn một giải thuật học A nào đó để giúp ta tìm ra một hàm f ∈ H , dựa vào tập học D."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Thuật toán A: (H, D) -> f."
+      },
+      "m1-2-019": {
+        "ma": "m1-2-019",
+        "chuong": "m1-2",
+        "ten": "Mô hình đã được huấn luyện",
+        "ten_khac": [
+          "trained model"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Hàm f này đôi khi còn được gọi là mô hình đã được huấn luyện (trained model)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hàm f = A(H, D) thu được sau quá trình huấn luyện."
+      },
+      "m1-2-020": {
+        "ma": "m1-2-020",
+        "chuong": "m1-2",
+        "ten": "Học máy",
+        "ten_khac": [
+          "Machine Learning",
+          "ML"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 5,
+          "cau": "Nếu đứng ở góc độ ứng dụng thì chúng ta có thể xem: ML là một lĩnh vực cung cấp một con đường để giải quyết một nhiệm vụ thực tế, thông qua khả năng tự cải thiện, dựa vào dữ liệu hoặc kinh nghiệm đã có."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dạy ở mục 1.1.1 (p. 5)."
+      },
+      "m1-2-021": {
+        "ma": "m1-2-021",
+        "chuong": "m1-2",
+        "ten": "Khai phá dữ liệu",
+        "ten_khac": [
+          "Data mining",
+          "DM"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 10,
+          "cau": "Khả năng tìm ra tri thức này có liên hệ chặt chẽ với một lĩnh vực có tên gọi là Khai phá dữ liệu (Data mining - DM) [Han et al., 2023]."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dạy ở mục 1.1.4 (p. 10)."
+      },
+      "m1-2-022": {
+        "ma": "m1-2-022",
+        "chuong": "m1-2",
+        "ten": "Phát hiện tri thức",
+        "ten_khac": [
+          "KDD",
+          "Knowledge Discovery in Databases"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "DM là một bước chính trong toàn bộ quy trình về phát hiện tri thức (KDD) [Fayyad et al., 1996]."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dạy ở mục 1.1.4 (p. 11)."
+      },
+      "m1-2-023": {
+        "ma": "m1-2-023",
+        "chuong": "m1-2",
+        "ten": "Tập huấn luyện",
+        "ten_khac": [
+          "training set",
+          "tập học",
+          "D"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 8,
+          "cau": "Tập D thường được gọi là tập huấn luyện (training set) hoặc tập học."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dạy ở mục 1.1.2 (p. 8)."
+      },
+      "m1-3-001": {
+        "ma": "m1-3-001",
+        "chuong": "m1-3",
+        "ten": "Thuật toán học dạng lặp",
+        "ten_khac": [
+          "thuật toán học lặp"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Đối với nhiều mô hình học máy, một thuật toán học A có thể ở dạng lặp."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mỗi bước lặp cố gắng cải thiện hàm giả thuyết so với bước trước."
+      },
+      "m1-3-002": {
+        "ma": "m1-3-002",
+        "chuong": "m1-3",
+        "ten": "Định lý No Free Lunch",
+        "ten_khac": [
+          "No Free Lunch theorem"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Định lý \"No Free Lunch\" [Wolpert and Macready, 1997] nói rằng nếu một thuật toán hiệu quả đối với một lớp bài toán này thì nó sẽ trả giá về hiệu quả đối với tập các bài toán còn lại."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Không có thuật toán nào luôn vượt trội trên mọi bài toán."
+      },
+      "m1-3-003": {
+        "ma": "m1-3-003",
+        "chuong": "m1-3",
+        "ten": "Tập huấn luyện",
+        "ten_khac": [
+          "training set",
+          "nơi chứa tri thức"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Tập huấn luyện là nơi chứa tri thức để cho máy học và quyết định chất lượng tri thức của máy."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Quyết định chất lượng học của mô hình."
+      },
+      "m1-3-004": {
+        "ma": "m1-3-004",
+        "chuong": "m1-3",
+        "ten": "Kích cỡ tập huấn luyện",
+        "ten_khac": [
+          "cỡ tập học"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Nói cách khác, việc tăng kích cỡ tập học lên thì thường giúp mô hình có thể tốt hơn."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Số lượng mẫu cần thiết để mô hình học đạt hiệu năng tốt."
+      },
+      "m1-3-005": {
+        "ma": "m1-3-005",
+        "chuong": "m1-3",
+        "ten": "Nhiễu trong dữ liệu",
+        "ten_khac": [
+          "dữ liệu nhiễu",
+          "noise"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Trong nhiều miền ứng dụng, dữ liệu thường bị nhiễu, lỗi, thiếu, ... Những yếu tố này thường ảnh hưởng mạnh mẽ đến hiệu quả của các mô hình ML."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Yếu tố sai lệch làm sai hướng dẫn giải thuật học."
+      },
+      "m1-3-006": {
+        "ma": "m1-3-006",
+        "chuong": "m1-3",
+        "ten": "Khả năng tổng quát hoá",
+        "ten_khac": [
+          "tổng quát hoá",
+          "Generalization"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Một trong những mục tiêu quan trọng nhất của các mô hình ML là Khả năng tổng quát hoá (Generalization), tức là sau khi học, mô hình có thể làm việc (phán đoán) tốt với những mẫu dữ liệu sẽ gặp trong tương lai."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Khả năng phán đoán chính xác trên dữ liệu chưa từng gặp."
+      },
+      "m1-3-007": {
+        "ma": "m1-3-007",
+        "chuong": "m1-3",
+        "ten": "Lỗi kiểm tra",
+        "ten_khac": [
+          "Test error"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "\"Test error\" mô tả lỗi phán đoán của mô hình đối với những mẫu dữ liệu không có mặt trong quá trình huấn luyện mô hình ấy."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Lỗi trên tập dữ liệu kiểm tra ngoài tập huấn luyện (Hình 5)."
+      },
+      "m1-3-008": {
+        "ma": "m1-3-008",
+        "chuong": "m1-3",
+        "ten": "Quá khớp",
+        "ten_khac": [
+          "Overfitting"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "Đôi khi trong thực tế chúng ta có thể gặp phải tình huống: một mô hình đạt độ chính xác cao trên tập huấn luyện D, nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài D. Tình huống này thường được gọi là Quá khớp (Overfitting)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mô hình khớp quá mức tập học dẫn đến tổng quát hoá kém."
+      },
+      "m1-3-009": {
+        "ma": "m1-3-009",
+        "chuong": "m1-3",
+        "ten": "Định nghĩa quá khớp theo Mitchell",
+        "ten_khac": [
+          "định nghĩa Overfitting"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "Theo Mitchell [1997], một hàm f được gọi là quá khớp nếu tồn tại hàm g sao cho: g có thể tệ hơn f khi phán đoán các mẫu huấn luyện D, nhưng g tốt hơn f đối với các mẫu dữ liệu ngoài D."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Định nghĩa hình thức của hiện tượng overfitting."
+      },
+      "m1-3-010": {
+        "ma": "m1-3-010",
+        "chuong": "m1-3",
+        "ten": "Nguyên nhân quá khớp do mô hình quá phức tạp",
+        "ten_khac": [
+          "mô hình quá phức tạp"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "• Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Lớp giả thuyết quá giàu biểu đạt dễ khớp cả nhiễu."
+      },
+      "m1-3-011": {
+        "ma": "m1-3-011",
+        "chuong": "m1-3",
+        "ten": "Nguyên nhân quá khớp do tập học quá bé",
+        "ten_khac": [
+          "tập học quá bé"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "• Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Cỡ mẫu nhỏ không đại diện đủ cho không gian dữ liệu."
+      },
+      "m1-3-012": {
+        "ma": "m1-3-012",
+        "chuong": "m1-3",
+        "ten": "Kém khớp",
+        "ten_khac": [
+          "Underfitting"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "Một tình huống khác là Kém khớp (Underfitting)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hiện tượng mô hình học chưa đủ tốt cả trên tập huấn luyện."
+      },
+      "m1-3-013": {
+        "ma": "m1-3-013",
+        "chuong": "m1-3",
+        "ten": "Đặc trưng của hàm kém khớp",
+        "ten_khac": [
+          "hàm kém khớp"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "Khi đó một hàm kém khớp h thường có lỗi phán đoán lớn (về mặt trung bình) cho bất kỳ mẫu dữ liệu nào, ngay cả những mẫu đã học."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Lỗi lớn trên cả tập học lẫn tập kiểm tra."
+      },
+      "m1-3-014": {
+        "ma": "m1-3-014",
+        "chuong": "m1-3",
+        "ten": "Nguyên nhân kém khớp do mô hình quá đơn giản",
+        "ten_khac": [
+          "mô hình quá đơn giản"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "Trường hợp kém khớp có thể diễn ra nếu chúng ta dùng một kiểu mô hình H quá đơn giản để giải quyết một bài toán phức tạp."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Lớp mô hình không đủ năng lực biểu diễn dữ liệu."
+      },
+      "m1-3-015": {
+        "ma": "m1-3-015",
+        "chuong": "m1-3",
+        "ten": "Hiệu chỉnh",
+        "ten_khac": [
+          "kỹ thuật hiệu chỉnh",
+          "regularization"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Đối với quá khớp, một con đường thường được sử dụng trong ML là Hiệu chỉnh (regularization)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Phương pháp hạn chế quá khớp bằng cách thu hẹp không gian tìm kiếm."
+      },
+      "m1-3-016": {
+        "ma": "m1-3-016",
+        "chuong": "m1-3",
+        "ten": "Cơ chế thu hẹp không gian tìm kiếm",
+        "ten_khac": [
+          "thu hẹp không gian tìm kiếm"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Nói một cách dễ hiểu thì các phương pháp hiệu chỉnh thường thu hẹp không gian tìm kiếm."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tìm kiếm hàm f trong vùng không gian nhỏ hơn H' con H."
+      },
+      "m1-3-017": {
+        "ma": "m1-3-017",
+        "chuong": "m1-3",
+        "ten": "Bài toán học",
+        "ten_khac": [
+          "Learning problem"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 8,
+          "cau": "Định nghĩa 1 (Bài toán học - Learning problem) Cần tìm ra hàm y ∗ : x 7→ y từ một tập dữ liệu D = {x1, x2,..., xN, y1, y2,..., yM} cho trước."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dạy ở mục 1.1.2 (p. 8)."
+      },
+      "m1-4-001": {
+        "ma": "m1-4-001",
+        "chuong": "m1-4",
+        "ten": "Thu thập dữ liệu",
+        "ten_khac": [
+          "data collection"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Thu thập (data collection) và tiền xử lý dữ liệu (data preprocessing) là hai bước quan trọng trong quá trình xử lý thông tin hiện đại."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Giai đoạn tích lũy dữ liệu từ nhiều nguồn."
+      },
+      "m1-4-002": {
+        "ma": "m1-4-002",
+        "chuong": "m1-4",
+        "ten": "Bản chất của thu thập dữ liệu",
+        "ten_khac": [
+          "quá trình thu thập dữ liệu"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Thu thập dữ liệu là quá trình tổng hợp dữ liệu từ nhiều nguồn để tìm kiếm câu trả lời cho các vấn đề nghiên cứu, giải đáp câu hỏi, đánh giá kết quả và dự đoán xu hướng và khả năng xảy ra."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mục đích và phạm vi của việc thu thập dữ liệu."
+      },
+      "m1-4-003": {
+        "ma": "m1-4-003",
+        "chuong": "m1-4",
+        "ten": "Tiền xử lý dữ liệu",
+        "ten_khac": [
+          "data preprocessing"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Tiền xử lý dữ liệu bao gồm loạt các bước: Làm sạch dữ liệu (data cleaning) (lọc dữ liệu nhiễu, điền giá trị còn thiếu, chuẩn hóa đơn vị đo, và kiểm tra tính nhất quán của dữ liệu), tích hợp dữ liệu (data integration) và biến đổi dữ liệu (data transformation)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Các kỹ thuật chuyển đổi dữ liệu thô thành dạng có chất lượng."
+      },
+      "m1-4-004": {
+        "ma": "m1-4-004",
+        "chuong": "m1-4",
+        "ten": "Lấy mẫu",
+        "ten_khac": [
+          "sampling"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Lấy mẫu là quá trình chọn lựa một phần của toàn bộ dữ liệu để đại diện cho toàn bộ tập dữ liệu này."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Phương pháp giảm chi phí tài nguyên khi tập dữ liệu lớn."
+      },
+      "m1-4-005": {
+        "ma": "m1-4-005",
+        "chuong": "m1-4",
+        "ten": "Tính đại diện của lấy mẫu",
+        "ten_khac": [
+          "tính đại diện"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Tính đại diện hướng tới lấy mẫu đại diện cho đặc điểm của quần thể mà chúng ta đang nghiên cứu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mẫu cần đa dạng và tránh thiên lệch."
+      },
+      "m1-4-006": {
+        "ma": "m1-4-006",
+        "chuong": "m1-4",
+        "ten": "Tính hiệu quả của lấy mẫu",
+        "ten_khac": [
+          "tính hiệu quả"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Trong khi đó, tính hiệu quả hướng tới tiết kiệm thời gian, chi phí và nỗ lực so với việc lấy dữ liệu từ toàn bộ tập dữ liệu lớn."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tiết kiệm thời gian và tài nguyên tính toán."
+      },
+      "m1-4-007": {
+        "ma": "m1-4-007",
+        "chuong": "m1-4",
+        "ten": "Ghi lịch sử",
+        "ten_khac": [
+          "logging"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "• Ghi lịch sử (logging): Là quá trình ghi lại các sự kiện, hành động hoặc thông tin liên quan trong hệ thống, ứng dụng hoặc môi trường máy tính."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Thu thập dữ liệu dựa trên nhật ký hệ thống."
+      },
+      "m1-4-008": {
+        "ma": "m1-4-008",
+        "chuong": "m1-4",
+        "ten": "Thu thập dữ liệu từ internet",
+        "ten_khac": [
+          "crawling",
+          "scraping",
+          "web scraping"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "• Thu thập dữ liệu từ internet (crawling/scraping): Là quá trình tự động hóa việc trích xuất thông tin từ trang web."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tự động trích xuất thông tin từ các trang web công cộng."
+      },
+      "m1-4-009": {
+        "ma": "m1-4-009",
+        "chuong": "m1-4",
+        "ten": "Làm sạch dữ liệu",
+        "ten_khac": [
+          "data cleaning"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Việc làm sạch dữ liệu (data cleaning) có thể được áp dụng để loại bỏ nhiễu và sửa các không nhất quán trong dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Kỹ thuật loại bỏ nhiễu, xử lý khuyết thiếu và bất nhất."
+      },
+      "m1-4-010": {
+        "ma": "m1-4-010",
+        "chuong": "m1-4",
+        "ten": "Tích hợp dữ liệu",
+        "ten_khac": [
+          "data integration"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Tích hợp dữ liệu (data integration) kết hợp dữ liệu từ nhiều nguồn thành một kho dữ liệu nhất quán như một kho dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hợp nhất dữ liệu từ nhiều nguồn vào một kho chung."
+      },
+      "m1-4-011": {
+        "ma": "m1-4-011",
+        "chuong": "m1-4",
+        "ten": "Giảm dữ liệu",
+        "ten_khac": [
+          "data reduction"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Giảm dữ liệu (data reduction) có thể giảm kích thước dữ liệu bằng cách tổng hợp, loại bỏ các đặc trưng dư thừa hoặc gom cụm."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Thu gọn kích thước dữ liệu mà giữ được thông tin quan trọng."
+      },
+      "m1-4-012": {
+        "ma": "m1-4-012",
+        "chuong": "m1-4",
+        "ten": "Biến đổi dữ liệu",
+        "ten_khac": [
+          "data transformation",
+          "chuẩn hóa"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Biến đổi dữ liệu (data transformation) (ví dụ, chuẩn hóa) có thể được áp dụng, trong đó dữ liệu được chia tỷ lệ để nằm trong một khoảng nhỏ hơn, chẳng hạn từ 0.0 đến 1.0."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Chuẩn hóa khoảng giá trị dữ liệu phục vụ các độ đo khoảng cách."
+      },
+      "m1-4-013": {
+        "ma": "m1-4-013",
+        "chuong": "m1-4",
+        "ten": "Quy trình làm sạch dữ liệu",
+        "ten_khac": [
+          "các bước làm sạch dữ liệu"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Các quy trình làm sạch dữ liệu gồm các bước để \"làm sạch\" dữ liệu bằng cách điền vào các giá trị thiếu, làm mịn dữ liệu nhiễu, xác định hoặc loại bỏ các giá trị ngoại lệ và giải quyết sự không nhất quán."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bốn bước chính: điền giá trị thiếu, làm mịn nhiễu, loại ngoại lệ, giải quyết không nhất quán."
+      },
+      "m1-4-014": {
+        "ma": "m1-4-014",
+        "chuong": "m1-4",
+        "ten": "Giá trị ngoại lệ",
+        "ten_khac": [
+          "ngoại lệ",
+          "outlier"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "xác định hoặc loại bỏ các giá trị ngoại lệ và giải quyết sự không nhất quán."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Các điểm dữ liệu bất thường sai khác đáng kể so với phần còn lại."
+      }
+    },
+    "b": {
+      "m1-2-001": {
+        "ma": "m1-2-001",
+        "chuong": "m1-2",
+        "ten": "Quy trình xây dựng một hệ thống học",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "Để xây dựng một hệ thống có khả năng học, chúng ta cần thực hiện những bước chính như trong Hình 4."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hình 4 và danh sách: Business understanding; Analytic approach; Data requirements; Data collection; Data understanding; Data preparation; Modeling; Evaluation; Deployment; Feedback. Có thể quay lại các bước trước. Chỉ lấy từ đề mục 1.2, không lấy phần DM thuộc 1.1.4 trên cùng trang."
+      },
+      "m1-2-002": {
+        "ma": "m1-2-002",
+        "chuong": "m1-2",
+        "ten": "Business understanding",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "Đầu tiên chúng ta cần hiểu rõ nhu cầu thực tế đang được đặt ra để giải quyết."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 1: hiểu nhu cầu thực tế."
+      },
+      "m1-2-003": {
+        "ma": "m1-2-003",
+        "chuong": "m1-2",
+        "ten": "Analytic approach",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "Chúng ta cần đưa nhu cầu trên về một bài toán ML."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 2: phát biểu bài toán ML rõ ràng, phù hợp; một nhu cầu có thể đưa về nhiều bài toán khác nhau (tiếp PDF 12)."
+      },
+      "m1-2-004": {
+        "ma": "m1-2-004",
+        "chuong": "m1-2",
+        "ten": "Data requirements",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Tiếp theo chúng ta cần xác định rõ các yêu cầu về tập dữ liệu cần thu thập để huấn luyện hệ thống, tuỳ vào bài toán ML đã chọn ở trên."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 3: xác định yêu cầu tập huấn luyện; với hồi qui, dữ liệu cần nhãn."
+      },
+      "m1-2-005": {
+        "ma": "m1-2-005",
+        "chuong": "m1-2",
+        "ten": "Thu thập dữ liệu",
+        "ten_khac": [
+          "Data collection"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Sau khi đã biết các yêu cầu về dữ liệu, chúng ta cần xây dựng một hệ thống (bán) tự động hoặc cử người để thu thập tập dữ liệu huấn luyện."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 4; nếu thu thập khó hoặc quá đắt cần xem lại yêu cầu và bài toán."
+      },
+      "m1-2-006": {
+        "ma": "m1-2-006",
+        "chuong": "m1-2",
+        "ten": "Data understanding",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Sau khi có một tập dữ liệu, chúng ta có thể thực hiện một vài tính toán đơn giản hoặc dùng các công cụ trực quan hoá để xem xét một vài tính chất của dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 5: tính toán/trực quan hóa để xem tính chất, sự đa dạng và thiếu giá trị."
+      },
+      "m1-2-007": {
+        "ma": "m1-2-007",
+        "chuong": "m1-2",
+        "ten": "Tiền xử lý dữ liệu",
+        "ten_khac": [
+          "Data preparation"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Tiếp đó, chúng ta cần thực hiện tiền xử lý dữ liệu. Tập dữ liệu thu thập được thường ở dạng thô. Do đó cần đưa chúng về dạng phù hợp hơn với các mô hình ML."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 6: lọc nhiễu, loại bỏ lỗi, biến đổi về dạng vectơ; các kỹ thuật chỉ nêu tên được để ở ghi chú."
+      },
+      "m1-2-008": {
+        "ma": "m1-2-008",
+        "chuong": "m1-2",
+        "ten": "Mô hình hoá",
+        "ten_khac": [
+          "Modeling"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Sau khi có tập dữ liệu đã được tiền xử lý D, chúng ta chọn một mô hình ML phù hợp và huấn luyện nó từ D."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 7; mục 1.2.2 PDF 14 giải thích thêm chọn lớp mô hình và giải thuật học. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-009": {
+        "ma": "m1-2-009",
+        "chuong": "m1-2",
+        "ten": "Evaluation",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 12,
+          "cau": "Sau khi có mô hình vừa huấn luyện, chúng ta cần tiến hành đánh giá hiệu năng (chất lượng) của nó."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 8: chọn chiến lược, độ đo đánh giá; nếu chưa tốt có thể quay lại các bước trước."
+      },
+      "m1-2-010": {
+        "ma": "m1-2-010",
+        "chuong": "m1-2",
+        "ten": "Deployment",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nếu mô hình được huấn luyện tốt thì có thể dùng nó để đưa vào triển khai hệ thống (sản phẩm) đầy đủ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 9: triển khai hệ thống."
+      },
+      "m1-2-011": {
+        "ma": "m1-2-011",
+        "chuong": "m1-2",
+        "ten": "Feedback",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Hệ thống sau khi hoàn thành có thể cần người dùng đánh giá."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Bước 10: thu thập phản hồi để xem hệ thống đạt yêu cầu hay cần cải thiện."
+      },
+      "m1-2-012": {
+        "ma": "m1-2-012",
+        "chuong": "m1-2",
+        "ten": "Hàm cần học",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Nghĩa là chúng ta cần xác định rõ hàm cần học y* : X → Y có đặc trưng cơ bản ra sao về đầu vào và đầu ra."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mục 1.2.1; tiếp theo cần xác định không gian dữ liệu X và tập nhãn Y. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-013": {
+        "ma": "m1-2-013",
+        "chuong": "m1-2",
+        "ten": "Không gian dữ liệu",
+        "ten_khac": [
+          "data space"
+        ],
+        "trang_thai": "day_qua_vi_du",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Bài toán lọc thư rác: X là không gian tất cả thư điện tử (emails); Y = {0, 1}, trong đó nhãn 1 nghĩa là rác, 0 là thư thường"
+        },
+        "khong_chac": true,
+        "ghi_chu": "Ví dụ giải thích X là không gian email và Y={0,1}; mục 1.1 PDF 8 đã có định nghĩa tổng quát. Đánh dấu cách chọn trạng thái vì mục này dạy lại qua ví dụ."
+      },
+      "m1-2-014": {
+        "ma": "m1-2-014",
+        "chuong": "m1-2",
+        "ten": "Tập nhãn",
+        "ten_khac": [
+          "không gian đầu ra"
+        ],
+        "trang_thai": "day_qua_vi_du",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Bài toán lọc thư rác: X là không gian tất cả thư điện tử (emails); Y = {0, 1}, trong đó nhãn 1 nghĩa là rác, 0 là thư thường"
+        },
+        "khong_chac": true,
+        "ghi_chu": "Ví dụ giải thích X là không gian email và Y={0,1}; mục 1.1 PDF 8 đã có định nghĩa tổng quát. Đánh dấu cách chọn trạng thái vì mục này dạy lại qua ví dụ."
+      },
+      "m1-2-015": {
+        "ma": "m1-2-015",
+        "chuong": "m1-2",
+        "ten": "Tập huấn luyện",
+        "ten_khac": [
+          "training set",
+          "tập học"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Đối với việc thu thập dữ liệu: ta cần thiết kế kỹ lưỡng bởi dữ liệu thu thập được sẽ dùng để huấn luyện hệ thống."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Đoạn đầu mục 1.2.1 nhấn mạnh vai trò dữ liệu thu thập. Câu định nghĩa tên gọi tổng quát ở PDF 8; tại đây giải thích thêm chất lượng và tính đại diện."
+      },
+      "m1-2-016": {
+        "ma": "m1-2-016",
+        "chuong": "m1-2",
+        "ten": "Tính đại diện của tập huấn luyện",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Để hệ thống có hiệu quả cao, tập huấn luyện cần chứa những mẫu mà có thể mô tả được nhiều đặc trưng cốt lõi của không gian X . Nghĩa là, tập dữ liệu này cần có tính đại diện cao cho không gian X ."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Giải thích bằng việc chứa mẫu mô tả nhiều đặc trưng cốt lõi của X; không tách các ví dụ thư rác/loài vật thành dòng."
+      },
+      "m1-2-017": {
+        "ma": "m1-2-017",
+        "chuong": "m1-2",
+        "ten": "Lớp mô hình",
+        "ten_khac": [
+          "kiểu mô hình"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Vì hàm y* thường không biết và ta chỉ thu thập được tập dữ liệu D, nên một cách phổ biến trong ML là chọn một kiểu (lớp) mô hình H để xấp xỉ hàm y*."
+        },
+        "khong_chac": false,
+        "ghi_chu": "H là lớp các hàm. Tuyến tính, mạng nơron, cây quyết định chỉ được nêu tên làm ví dụ, chưa được giải thích tại đây. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-018": {
+        "ma": "m1-2-018",
+        "chuong": "m1-2",
+        "ten": "Giả thuyết",
+        "ten_khac": [
+          "hypothesis"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Như vậy H là một lớp các hàm, mà mỗi hàm còn được gọi là giả thuyết (hypothesis)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Phân biệt một giả thuyết f với cả lớp H. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-019": {
+        "ma": "m1-2-019",
+        "chuong": "m1-2",
+        "ten": "Giải thuật học",
+        "ten_khac": [
+          "thuật toán học",
+          "learning algorithm"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Tiếp theo ta cần chọn một giải thuật học A nào đó để giúp ta tìm ra một hàm f ∈ H, dựa vào tập học D."
+        },
+        "khong_chac": false,
+        "ghi_chu": "f=A(H,D). Backpropagation và ID3 chỉ được nhắc làm ví dụ, không có nội dung dạy phương pháp trong bản trích này. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-020": {
+        "ma": "m1-2-020",
+        "chuong": "m1-2",
+        "ten": "Mô hình đã được huấn luyện",
+        "ten_khac": [
+          "trained model"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Hàm f này đôi khi còn được gọi là mô hình đã được huấn luyện (trained model)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hàm f=A(H,D), đầu ra của giải thuật học; phân biệt với lớp mô hình H. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-021": {
+        "ma": "m1-2-021",
+        "chuong": "m1-2",
+        "ten": "Học máy",
+        "ten_khac": [
+          "Machine Learning",
+          "ML"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 5,
+          "cau": "ML là một lĩnh vực cung cấp một con đường để giải quyết một nhiệm vụ thực tế, thông qua khả năng tự cải thiện, dựa vào dữ liệu hoặc kinh nghiệm đã có."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tiên quyết của quy trình xây dựng hệ thống học."
+      },
+      "m1-2-022": {
+        "ma": "m1-2-022",
+        "chuong": "m1-2",
+        "ten": "Mẫu dữ liệu",
+        "ten_khac": [
+          "data instance",
+          "ví dụ",
+          "example"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 7,
+          "cau": "Mỗi quan sát thường ở dưới dạng một tập tín hiệu và thường được gọi là một mẫu dữ liệu (data instance) hoặc một ví dụ (example)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Cần cho hàm đầu vào, tập học và tính đại diện."
+      },
+      "m1-2-023": {
+        "ma": "m1-2-023",
+        "chuong": "m1-2",
+        "ten": "Nhãn",
+        "ten_khac": [
+          "label",
+          "phản hồi",
+          "response",
+          "đầu ra",
+          "output"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 8,
+          "cau": "yⱼ là một quan sát về y, sao cho yⱼ = y*(xⱼ). Chúng thường được gọi là nhãn (label) hoặc phản hồi (response) hoặc đầu ra (output)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Cần cho yêu cầu dữ liệu, không gian đầu ra và hàm cần học. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF. “Phản hồi” (response) ở đây là đầu ra/nhãn, khác phản hồi người dùng trong bước Feedback."
+      },
+      "m1-2-024": {
+        "ma": "m1-2-024",
+        "chuong": "m1-2",
+        "ten": "Phân loại",
+        "ten_khac": [
+          "classification"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 9,
+          "cau": "Phân loại (classification): nếu miền Y rời rạc và hữu hạn."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Tiên quyết khi đưa nhu cầu thực tế về bài toán ML ở bước Analytic approach. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-2-025": {
+        "ma": "m1-2-025",
+        "chuong": "m1-2",
+        "ten": "Hồi qui",
+        "ten_khac": [
+          "regression"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 9,
+          "cau": "Hồi qui (regression): nếu Y ⊆ R, tức là miền số thực"
+        },
+        "khong_chac": true,
+        "ghi_chu": "Giữ cách gọi hồi qui của sách. Chỉ biết Y⊆R chưa phân biệt được mọi bài toán phân loại mã số; ghi định nghĩa của sách, không tự bổ sung. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF. Đánh dấu vì cách mô tả miền Y trong định nghĩa rất rộng."
+      },
+      "m1-3-001": {
+        "ma": "m1-3-001",
+        "chuong": "m1-3",
+        "ten": "Thuật toán học",
+        "ten_khac": [
+          "Learning algorithm",
+          "giải thuật học"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Đối với nhiều mô hình học máy, một thuật toán học A có thể ở dạng lặp. Mỗi bước lặp có thể tìm ra một hàm nào đó trong H, bước lặp sau cố gắng cải thiện bước lặp trước."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Chỉ lấy đoạn sau đề mục 1.3.1. Tên đề mục in “Thuận toán học”; tên dùng trong nội dung là thuật toán học. Không hội tụ tới hàm tốt thì mô hình chưa được huấn luyện tốt. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-3-002": {
+        "ma": "m1-3-002",
+        "chuong": "m1-3",
+        "ten": "Định lý No Free Lunch",
+        "ten_khac": [
+          "No Free Lunch"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Định lý \"No Free Lunch\" [Wolpert and Macready, 1997] nói rằng nếu một thuật toán hiệu quả đối với một lớp bài toán này thì nó sẽ trả giá về hiệu quả đối với tập các bài toán còn lại."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Không có thuật toán luôn tốt nhất trên mọi miền ứng dụng; lựa chọn thuật toán và mô hình theo bài toán."
+      },
+      "m1-3-003": {
+        "ma": "m1-3-003",
+        "chuong": "m1-3",
+        "ten": "Tập huấn luyện",
+        "ten_khac": [
+          "Training set",
+          "tập học"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Tập huấn luyện là nơi chứa tri thức để cho máy học và quyết định chất lượng tri thức của máy."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mục này dạy vai trò tri thức, tính đại diện, kích cỡ và tác động nhiễu/lỗi/thiếu; định nghĩa tổng quát đã ở PDF 8."
+      },
+      "m1-3-004": {
+        "ma": "m1-3-004",
+        "chuong": "m1-3",
+        "ten": "Khả năng tổng quát hoá",
+        "ten_khac": [
+          "Generalization"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 15,
+          "cau": "Một trong những mục tiêu quan trọng nhất của các mô hình ML là Khả năng tổng quát hoá (Generalization), tức là sau khi học, mô hình có thể làm việc (phán đoán) tốt với những mẫu dữ liệu sẽ gặp trong tương lai."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Câu giải thích đầu tiên trọn vẹn nằm PDF 15; đoạn sau nối qua PDF 16."
+      },
+      "m1-3-005": {
+        "ma": "m1-3-005",
+        "chuong": "m1-3",
+        "ten": "Quá khớp",
+        "ten_khac": [
+          "Overfitting"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "Đôi khi trong thực tế chúng ta có thể gặp phải tình huống: một mô hình đạt độ chính xác cao trên tập huấn luyện D, nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài D. Tình huống này thường được gọi là Quá khớp (Overfitting)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Nguyên nhân được nêu: mô hình quá phức tạp; nhiễu/lỗi dữ liệu; tập học quá bé. Sau đó sách có cách diễn đạt bằng so sánh hàm f và g theo Mitchell. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-3-006": {
+        "ma": "m1-3-006",
+        "chuong": "m1-3",
+        "ten": "Test error",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "\"Test error\" mô tả lỗi phán đoán của mô hình đối với những mẫu dữ liệu không có mặt trong quá trình huấn luyện mô hình ấy."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Định nghĩa trong chú thích Hình 5; không phải độ đo cụ thể như accuracy hay MSE."
+      },
+      "m1-3-007": {
+        "ma": "m1-3-007",
+        "chuong": "m1-3",
+        "ten": "Training error",
+        "ten_khac": [],
+        "trang_thai": "day_qua_vi_du",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "Minh họa về quá khớp (Overfitting) và kém khớp (Underfitting). \"Test error\" mô tả lỗi phán đoán của mô hình đối với những mẫu dữ liệu không có mặt trong quá trình huấn luyện mô hình ấy."
+        },
+        "khong_chac": true,
+        "ghi_chu": "Hình 5 dạy đường lỗi trên tập huấn luyện (Training error) bên cạnh Test error theo độ phức tạp. Câu chú thích chỉ định nghĩa trực tiếp Test error; chọn trạng thái dạy qua hình, cần hội ý."
+      },
+      "m1-3-008": {
+        "ma": "m1-3-008",
+        "chuong": "m1-3",
+        "ten": "Mô hình quá phức tạp",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 16,
+          "cau": "Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp."
+        },
+        "khong_chac": true,
+        "ghi_chu": "Sách giải thích tại gạch đầu dòng về nguyên nhân quá khớp; phân vân tách thành khái niệm hay để ở ghi chú Quá khớp."
+      },
+      "m1-3-009": {
+        "ma": "m1-3-009",
+        "chuong": "m1-3",
+        "ten": "Kém khớp",
+        "ten_khac": [
+          "Underfitting"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "Một tình huống khác là Kém khớp (Underfitting). Khi đó một hàm kém khớp h thường có lỗi phán đoán lớn (về mặt trung bình) cho bất kỳ mẫu dữ liệu nào, ngay cả những mẫu đã học."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Hàm h chưa được huấn luyện tốt hoặc quá đơn giản; H quá đơn giản so với bài toán thì các hàm đều xấp xỉ kém."
+      },
+      "m1-3-010": {
+        "ma": "m1-3-010",
+        "chuong": "m1-3",
+        "ten": "Hàm đúng",
+        "ten_khac": [
+          "ground truth",
+          "hàm cần học"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 17,
+          "cau": "y* là hàm đúng (ground truth), nhưng ta thường không biết."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Chú thích Hình 6; cùng vai trò hàm cần học y* ở mục 1.2 nhưng tại đây đặt tên ground truth. Ký hiệu toán được gõ gần đúng bằng Unicode; giữ phần chữ theo PDF."
+      },
+      "m1-3-011": {
+        "ma": "m1-3-011",
+        "chuong": "m1-3",
+        "ten": "Hiệu chỉnh",
+        "ten_khac": [
+          "regularization"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Đối với quá khớp, một con đường thường được sử dụng trong ML là Hiệu chỉnh (regularization). Đây là cách giúp ta giảm bớt vấn đề quá khớp cho các mô hình ML."
+        },
+        "khong_chac": true,
+        "ghi_chu": "Mục 1.3.5 bắt đầu PDF 17 và tiếp đầu PDF 18 trước đề mục 1.4. Ghi trang có câu giải thích thật là 18 dù giao việc ghi 14–17, theo quy tắc lấy đúng phần thuộc mục khi chung trang. Sách giải thích thu hẹp tìm kiếm vào H′⊂H; không tự thêm L1/L2 vì bản trích không dạy."
+      },
+      "m1-3-012": {
+        "ma": "m1-3-012",
+        "chuong": "m1-3",
+        "ten": "Học máy",
+        "ten_khac": [
+          "Machine Learning",
+          "ML"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 5,
+          "cau": "ML là một lĩnh vực cung cấp một con đường để giải quyết một nhiệm vụ thực tế, thông qua khả năng tự cải thiện, dựa vào dữ liệu hoặc kinh nghiệm đã có."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2."
+      },
+      "m1-3-013": {
+        "ma": "m1-3-013",
+        "chuong": "m1-3",
+        "ten": "Mẫu dữ liệu",
+        "ten_khac": [
+          "data instance",
+          "ví dụ",
+          "example"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 7,
+          "cau": "Mỗi quan sát thường ở dưới dạng một tập tín hiệu và thường được gọi là một mẫu dữ liệu (data instance) hoặc một ví dụ (example)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2."
+      },
+      "m1-3-014": {
+        "ma": "m1-3-014",
+        "chuong": "m1-3",
+        "ten": "Không gian dữ liệu",
+        "ten_khac": [
+          "data space"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 13,
+          "cau": "Bài toán lọc thư rác: X là không gian tất cả thư điện tử (emails); Y = {0, 1}, trong đó nhãn 1 nghĩa là rác, 0 là thư thường"
+        },
+        "khong_chac": true,
+        "ghi_chu": "Được giải thích tại m1-2. Cần hiểu tính đại diện và dữ liệu ngoài tập học."
+      },
+      "m1-3-015": {
+        "ma": "m1-3-015",
+        "chuong": "m1-3",
+        "ten": "Lớp mô hình",
+        "ten_khac": [
+          "kiểu mô hình"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Vì hàm y* thường không biết và ta chỉ thu thập được tập dữ liệu D, nên một cách phổ biến trong ML là chọn một kiểu (lớp) mô hình H để xấp xỉ hàm y*."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2. Cần cho thuật toán lặp và quá khớp/kém khớp."
+      },
+      "m1-3-016": {
+        "ma": "m1-3-016",
+        "chuong": "m1-3",
+        "ten": "Giả thuyết",
+        "ten_khac": [
+          "hypothesis"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Như vậy H là một lớp các hàm, mà mỗi hàm còn được gọi là giả thuyết (hypothesis)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2. Hàm thành viên của H."
+      },
+      "m1-3-017": {
+        "ma": "m1-3-017",
+        "chuong": "m1-3",
+        "ten": "Mô hình đã được huấn luyện",
+        "ten_khac": [
+          "trained model"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 14,
+          "cau": "Hàm f này đôi khi còn được gọi là mô hình đã được huấn luyện (trained model)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2."
+      },
+      "m1-4-001": {
+        "ma": "m1-4-001",
+        "chuong": "m1-4",
+        "ten": "Thu thập dữ liệu",
+        "ten_khac": [
+          "data collection"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Việc thu thập dữ liệu đòi hỏi sự tập trung và tổ chức để lấy được thông tin cần thiết từ nhiều nguồn khác nhau, bao gồm cả cơ sở dữ liệu, bảng tính, thiết bị cảm biến, và nguồn thông tin trực tuyến."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Giải thích đầu mục 1.4; định nghĩa formal “quá trình tổng hợp dữ liệu từ nhiều nguồn…” được trình bày lại PDF 19."
+      },
+      "m1-4-002": {
+        "ma": "m1-4-002",
+        "chuong": "m1-4",
+        "ten": "Tiền xử lý dữ liệu",
+        "ten_khac": [
+          "data preprocessing"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Sau khi dữ liệu được thu thập, quá trình tiền xử lý trở thành bước quan trọng để làm cho dữ liệu trở nên hữu ích và chính xác hơn."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mục tiêu dữ liệu chất lượng cao; mục 1.4.2 PDF 20 dạy thêm làm sạch, tích hợp, giảm và biến đổi."
+      },
+      "m1-4-003": {
+        "ma": "m1-4-003",
+        "chuong": "m1-4",
+        "ten": "Làm sạch dữ liệu",
+        "ten_khac": [
+          "data cleaning"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 18,
+          "cau": "Tiền xử lý dữ liệu bao gồm loạt các bước: Làm sạch dữ liệu (data cleaning) (lọc dữ liệu nhiễu, điền giá trị còn thiếu, chuẩn hóa đơn vị đo, và kiểm tra tính nhất quán của dữ liệu), tích hợp dữ liệu (data integration) và biến đổi dữ liệu (data transformation)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Câu đầu giải thích bằng các thao tác trong ngoặc. PDF 20: loại nhiễu, sửa không nhất quán, điền thiếu, làm mịn nhiễu, xác định/loại ngoại lệ. Không tách thao tác chỉ được liệt kê mà chưa được dạy riêng."
+      },
+      "m1-4-004": {
+        "ma": "m1-4-004",
+        "chuong": "m1-4",
+        "ten": "Lấy mẫu",
+        "ten_khac": [
+          "sampling"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Lấy mẫu là quá trình chọn lựa một phần của toàn bộ dữ liệu để đại diện cho toàn bộ tập dữ liệu này."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Chọn một phần thay toàn bộ; cần đại diện và hiệu quả. Sách in “Lấy mẫu giúp chi phí…” thiếu từ trong câu kế tiếp; không lấy lỗi này làm định nghĩa."
+      },
+      "m1-4-005": {
+        "ma": "m1-4-005",
+        "chuong": "m1-4",
+        "ten": "Tính đại diện",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Tính đại diện hướng tới lấy mẫu đại diện cho đặc điểm của quần thể mà chúng ta đang nghiên cứu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Mẫu cần đa dạng và tránh thiên lệch; áp dụng cho lấy mẫu."
+      },
+      "m1-4-006": {
+        "ma": "m1-4-006",
+        "chuong": "m1-4",
+        "ten": "Tính hiệu quả",
+        "ten_khac": [],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Trong khi đó, tính hiệu quả hướng tới tiết kiệm thời gian, chi phí và nỗ lực so với việc lấy dữ liệu từ toàn bộ tập dữ liệu lớn."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Trong ngữ cảnh lấy mẫu: tiết kiệm thời gian, chi phí, nỗ lực; khác hiệu năng dự đoán của mô hình."
+      },
+      "m1-4-007": {
+        "ma": "m1-4-007",
+        "chuong": "m1-4",
+        "ten": "Ghi lịch sử",
+        "ten_khac": [
+          "logging"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Ghi lịch sử (logging): Là quá trình ghi lại các sự kiện, hành động hoặc thông tin liên quan trong hệ thống, ứng dụng hoặc môi trường máy tính."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Xác định mục tiêu và các sự kiện/điểm mốc cần ghi; phục vụ giám sát, phân tích hiệu suất, hành vi người dùng."
+      },
+      "m1-4-008": {
+        "ma": "m1-4-008",
+        "chuong": "m1-4",
+        "ten": "Thu thập dữ liệu từ internet",
+        "ten_khac": [
+          "crawling",
+          "scraping"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 19,
+          "cau": "Thu thập dữ liệu từ internet (crawling/scraping): Là quá trình tự động hóa việc trích xuất thông tin từ trang web."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Phương pháp được gộp như sách, không tự tách crawling và scraping. Cần xác định dữ liệu đích, xem cấu trúc HTML, chọn công cụ phù hợp và tuân thủ điều kiện trang. BeautifulSoup, Scrapy, Selenium chỉ nêu tên."
+      },
+      "m1-4-009": {
+        "ma": "m1-4-009",
+        "chuong": "m1-4",
+        "ten": "Tích hợp dữ liệu",
+        "ten_khac": [
+          "data integration"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Tích hợp dữ liệu (data integration) kết hợp dữ liệu từ nhiều nguồn thành một kho dữ liệu nhất quán như một kho dữ liệu."
+        },
+        "khong_chac": false,
+        "ghi_chu": "PDF 18 mới liệt kê tên, PDF 20 mới giải thích; giữ lặp từ “kho dữ liệu” trong nguồn."
+      },
+      "m1-4-010": {
+        "ma": "m1-4-010",
+        "chuong": "m1-4",
+        "ten": "Giảm dữ liệu",
+        "ten_khac": [
+          "data reduction"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Giảm dữ liệu (data reduction) có thể giảm kích thước dữ liệu bằng cách tổng hợp, loại bỏ các đặc trưng dư thừa hoặc gom cụm."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Giảm kích thước bằng tổng hợp, loại đặc trưng dư thừa, gom cụm; không tự bổ sung phương pháp PCA."
+      },
+      "m1-4-011": {
+        "ma": "m1-4-011",
+        "chuong": "m1-4",
+        "ten": "Biến đổi dữ liệu",
+        "ten_khac": [
+          "data transformation"
+        ],
+        "trang_thai": "day_o_day",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Biến đổi dữ liệu (data transformation) (ví dụ, chuẩn hóa) có thể được áp dụng, trong đó dữ liệu được chia tỷ lệ để nằm trong một khoảng nhỏ hơn, chẳng hạn từ 0.0 đến 1.0."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Sách dùng ví dụ chia tỷ lệ dữ liệu; có thể hỗ trợ độ đo khoảng cách. Ví dụ đổi trường ngày về định dạng chung ở đoạn sau."
+      },
+      "m1-4-012": {
+        "ma": "m1-4-012",
+        "chuong": "m1-4",
+        "ten": "Chuẩn hóa",
+        "ten_khac": [],
+        "trang_thai": "day_qua_vi_du",
+        "dinh_nghia": {
+          "trang": 20,
+          "cau": "Biến đổi dữ liệu (data transformation) (ví dụ, chuẩn hóa) có thể được áp dụng, trong đó dữ liệu được chia tỷ lệ để nằm trong một khoảng nhỏ hơn, chẳng hạn từ 0.0 đến 1.0."
+        },
+        "khong_chac": true,
+        "ghi_chu": "Được giải thích qua ví dụ chia tỷ lệ về khoảng nhỏ hơn. Phân vân tách khái niệm con so với biến đổi dữ liệu. Sách không cho công thức min–max hay z-score; không thêm."
+      },
+      "m1-4-013": {
+        "ma": "m1-4-013",
+        "chuong": "m1-4",
+        "ten": "Mẫu dữ liệu",
+        "ten_khac": [
+          "data instance",
+          "ví dụ",
+          "example"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 7,
+          "cau": "Mỗi quan sát thường ở dưới dạng một tập tín hiệu và thường được gọi là một mẫu dữ liệu (data instance) hoặc một ví dụ (example)."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Được giải thích tại m1-2. Cần cho lấy mẫu và tính đại diện."
+      },
+      "m1-4-014": {
+        "ma": "m1-4-014",
+        "chuong": "m1-4",
+        "ten": "Khai phá dữ liệu",
+        "ten_khac": [
+          "Data mining",
+          "DM"
+        ],
+        "trang_thai": "chi_nhac",
+        "dinh_nghia": {
+          "trang": 11,
+          "cau": "Mối quan tâm chính của DM là việc tìm ra những tri thức (knowledge) hoặc mẫu (patterns) ẩn trong các tập dữ liệu lớn, bằng việc sử dụng các thuật toán cụ thể nào đó một cách (bán) tự động."
+        },
+        "khong_chac": false,
+        "ghi_chu": "Định nghĩa thuộc 1.1.4, ở trước đề mục 1.2; dùng làm tiên quyết để hiểu mục tiêu tiền xử lý."
+      },
+      "m1-4-015": {
+        "ma": "m1-4-015",
+        "chuong": "m1-4",
+        "ten": "Dữ liệu nhiễu",
+        "ten_khac": [],
+        "trang_thai": "kien_thuc_nen",
+        "dinh_nghia": {
+          "trang": null,
+          "cau": ""
+        },
+        "khong_chac": true,
+        "ghi_chu": "Dùng trong làm sạch; mục 1.3 PDF 17 chỉ nêu tác động sai lệch thông tin, chưa định nghĩa bản chất nhiễu."
+      },
+      "m1-4-016": {
+        "ma": "m1-4-016",
+        "chuong": "m1-4",
+        "ten": "Giá trị ngoại lệ",
+        "ten_khac": [],
+        "trang_thai": "kien_thuc_nen",
+        "dinh_nghia": {
+          "trang": null,
+          "cau": ""
+        },
+        "khong_chac": false,
+        "ghi_chu": "Dùng trong quy trình làm sạch, không có định nghĩa trong bản trích 20 trang."
+      },
+      "m1-4-017": {
+        "ma": "m1-4-017",
+        "chuong": "m1-4",
+        "ten": "HTML",
+        "ten_khac": [],
+        "trang_thai": "kien_thuc_nen",
+        "dinh_nghia": {
+          "trang": null,
+          "cau": ""
+        },
+        "khong_chac": false,
+        "ghi_chu": "Cấu trúc trang cần hiểu để trích xuất dữ liệu từ internet; sách chỉ nêu tên, không dạy HTML."
+      }
+    }
+  },
+  "khop": [
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-001",
+      "b": "m1-2-001",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-002",
+      "b": "m1-2-002",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-003",
+      "b": "m1-2-003",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-004",
+      "b": "m1-2-004",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-005",
+      "b": "m1-2-005",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-006",
+      "b": "m1-2-006",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-007",
+      "b": "m1-2-007",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-008",
+      "b": "m1-2-008",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-009",
+      "b": "m1-2-009",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-010",
+      "b": "m1-2-010",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-011",
+      "b": "m1-2-011",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-012",
+      "b": "m1-2-012",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-013",
+      "b": "m1-2-013",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-014",
+      "b": "m1-2-014",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-016",
+      "b": "m1-2-017",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-017",
+      "b": "m1-2-018",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-018",
+      "b": "m1-2-019",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-019",
+      "b": "m1-2-020",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-020",
+      "b": "m1-2-021",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-023",
+      "b": "m1-2-015",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-002",
+      "b": "m1-3-002",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-003",
+      "b": "m1-3-003",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-006",
+      "b": "m1-3-004",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-007",
+      "b": "m1-3-006",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-008",
+      "b": "m1-3-005",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-010",
+      "b": "m1-3-008",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-012",
+      "b": "m1-3-009",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-015",
+      "b": "m1-3-011",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-001",
+      "b": "m1-4-001",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-003",
+      "b": "m1-4-002",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-004",
+      "b": "m1-4-004",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-005",
+      "b": "m1-4-005",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-006",
+      "b": "m1-4-006",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-007",
+      "b": "m1-4-007",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-008",
+      "b": "m1-4-008",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-009",
+      "b": "m1-4-003",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-010",
+      "b": "m1-4-009",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-011",
+      "b": "m1-4-010",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-012",
+      "b": "m1-4-011",
+      "luat": "ten"
+    },
+    {
+      "chuong": "m1-4",
+      "a": "m1-4-014",
+      "b": "m1-4-016",
+      "luat": "ten"
+    }
+  ],
+  "cap_gan": [
+    {
+      "chuong": "m1-2",
+      "a": "m1-2-015",
+      "b": "m1-2-016",
+      "ly_do": "gan_ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-001",
+      "b": "m1-3-001",
+      "ly_do": "gan_ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-005",
+      "b": "m1-3-013",
+      "ly_do": "gan_ten"
+    },
+    {
+      "chuong": "m1-3",
+      "a": "m1-3-017",
+      "b": "m1-3-001",
+      "ly_do": "gan_ten"
+    }
+  ],
+  "chi_a": [
+    "m1-2-015",
+    "m1-2-021",
+    "m1-2-022",
+    "m1-3-001",
+    "m1-3-004",
+    "m1-3-005",
+    "m1-3-009",
+    "m1-3-011",
+    "m1-3-013",
+    "m1-3-014",
+    "m1-3-016",
+    "m1-3-017",
+    "m1-4-002",
+    "m1-4-013"
+  ],
+  "chi_b": [
+    "m1-2-016",
+    "m1-2-022",
+    "m1-2-023",
+    "m1-2-024",
+    "m1-2-025",
+    "m1-3-001",
+    "m1-3-007",
+    "m1-3-010",
+    "m1-3-012",
+    "m1-3-013",
+    "m1-3-014",
+    "m1-3-015",
+    "m1-3-016",
+    "m1-3-017",
+    "m1-4-012",
+    "m1-4-013",
+    "m1-4-014",
+    "m1-4-015",
+    "m1-4-017"
+  ]
+}
