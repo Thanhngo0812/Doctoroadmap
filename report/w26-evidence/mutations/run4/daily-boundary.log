@@ -1,0 +1,13 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________ test_a_day_spent_to_exactly_the_cap_grants_nothing ______________
+src\web\backend\tests\test_demo_local_w26.py:426: in test_a_day_spent_to_exactly_the_cap_grants_nothing
+    assert outcome == 'stopped'
+E   AssertionError: assert 'ValueError' == 'stopped'
+E     
+E     - stopped
+E     + ValueError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w26-demo-local\report\w26-evidence\mutations\run4\daily-boundary.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_demo_local_w26.py::test_a_day_spent_to_exactly_the_cap_grants_nothing
+1 failed, 34 deselected in 3.85s

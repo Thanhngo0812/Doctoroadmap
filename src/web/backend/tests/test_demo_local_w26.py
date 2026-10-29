@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from io import BytesIO
 import json
+import re
 from types import SimpleNamespace
 from urllib.request import Request
 from uuid import uuid4
@@ -104,7 +105,8 @@ def config(b, **kwargs):
     base = WebSettings(_env_file=None, database_url=b.postgres_database_url.render_as_string(hide_password=False),
         smtp_username='demo-user', smtp_password='demo-pass', smtp_from='demo@example.vn',
         artifact_root=b.settings.artifact_root, frontend_dist=b.settings.frontend_dist,
-        allowed_origins=['http://testserver'])
+        allowed_origins=['http://testserver'],
+        public_base_url='http://127.0.0.1:5173')  # as in the real src/web/.env (Vite mode); the demo serves the UI on 8000
     demo = demo_settings(base, database='wayfinder_demo_unit', artifact_root=b.settings.artifact_root, **kwargs)
     return demo.model_copy(update={'database_url': base.database_url})  # points at the disposable test database
 
@@ -406,6 +408,25 @@ def test_daily_cap_leaves_only_the_remainder_to_the_next_build(builds, provider,
         finish(worker, engine)
 
 
+def test_a_day_spent_to_exactly_the_cap_grants_nothing(builds, tmp_path):
+    from wayfinder.infrastructure.build_spend import BuildSpendStopped
+    b = builds
+    now = datetime.now(timezone.utc)
+    PostgresPhaseBStore(b.engine).append_usage(dict(purpose='build', doc_id='earlier', cost_usd=10.0, created_at=now.isoformat()))
+    book = tmp_path / 'book.pdf'
+    book.write_bytes(pdf(1))
+    runtime = SimpleNamespace(phase_b_store=SimpleNamespace(engine=b.engine), pipeline_version='w26-test')
+    try:
+        with DemoSpendPolicy(clock=FakeClock(now)).activate(book, 'u-x', runtime):
+            outcome = 'granted a zero-dollar approval'
+    except BuildSpendStopped:
+        outcome = 'stopped'
+    except Exception as error:  # a different failure must still read as a failed assertion, not a setup error
+        outcome = type(error).__name__
+    assert outcome == 'stopped'
+    assert sql(b, "SELECT count(*) AS n FROM phase_b_record WHERE kind='w15_build_approval'")[0]['n'] == 0
+
+
 def test_a_full_day_queues_builds_until_vietnam_midnight(builds, provider, tmp_path):
     b = builds
     clock = FakeClock(datetime(2026, 1, 1, 16, 30, tzinfo=timezone.utc))  # 23:30 on 1 Jan in Vietnam
@@ -491,11 +512,30 @@ def test_demo_mailer_is_smtp_and_account_mail_reaches_the_smtp_server(builds, sm
     accounts = compose_account_service(cfg, b.engine)
     client = TestClient(create_app(cfg, WebServices(health_check=lambda: 'ok', accounts=accounts)))
     email = uuid4().hex + '@example.vn'
-    response = client.post('/api/v1/auth/register', headers={'Origin': cfg.public_base_url},
+    response = client.post('/api/v1/auth/register', headers={'Origin': 'http://127.0.0.1:8000'},
         json={'email': email, 'password': 'W26 safe test passphrase!', 'display_name': 'Người xem demo'})
     assert response.status_code == 200, response.text
     accounts.mailer.close()
-    assert [message['To'] for message in smtp.sent] == [email] and cfg.public_base_url in smtp.sent[0].get_body().get_content()
+    assert [message['To'] for message in smtp.sent] == [email]
+    body = smtp.sent[0].get_body().get_content()
+    links = re.findall(r'https?://[^\s<>"\']+', body)
+    assert links and all(link.startswith('http://127.0.0.1:8000/') for link in links), links
+    assert '5173' not in body  # the .env value (Vite) must not leak into mail links
+
+
+def test_demo_links_and_origins_follow_the_demo_port_not_the_env_file(builds):
+    assert config(builds).public_base_url == 'http://127.0.0.1:8000'
+    other = config(builds, port=8010)
+    assert other.public_base_url == 'http://127.0.0.1:8010'
+    assert demo_settings(WebSettings(_env_file=None, database_url=builds.postgres_database_url.render_as_string(hide_password=False),
+                                     smtp_username='u', smtp_password='p', smtp_from='a@example.vn',
+                                     public_base_url='http://127.0.0.1:5173'), database='wayfinder_demo_unit',
+                         artifact_root=builds.settings.artifact_root, port=8010).public_base_url == 'http://127.0.0.1:8010'
+
+
+def test_demo_origins_include_both_loopback_names(builds):
+    assert {'http://127.0.0.1:8000', 'http://localhost:8000'} <= set(config(builds).allowed_origins)
+    assert set(config(builds, port=8010).allowed_origins) == {'http://127.0.0.1:8010', 'http://localhost:8010'}
 
 
 def test_demo_needs_smtp_credentials(builds):

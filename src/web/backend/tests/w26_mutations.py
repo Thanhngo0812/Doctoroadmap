@@ -51,6 +51,9 @@ CASES = [
     ('route-first', DEMO, 'app.router.routes.insert(0,', 'app.router.routes.append(', 'signed_server_link'),
     ('disk-path-safety', 'infrastructure/disk_media.py', 'return safe_path(self.root, public_id)', 'return self.root / public_id',
      'outside_its_root'),
+    ('base-url', DEMO, 'public_base_url=origin, ', '', 'follow_the_demo_port or reaches_the_smtp'),
+    ('no-localhost-origin', DEMO, "([f'http://localhost:{port}'] if host == '127.0.0.1' else [])", '[]', 'both_loopback_names'),
+    ('daily-boundary', DEMO, 'if limit <= 0:', 'if limit < 0:', 'exactly_the_cap'),
     ('page-render', 'infrastructure/disk_media.py', "bitmap = sheet.render(scale=width / sheet.get_width())",
      "bitmap = sheet.render(scale=1)", 'real_images'),
 ]
