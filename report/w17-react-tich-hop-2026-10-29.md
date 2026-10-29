@@ -1,5 +1,7 @@
 # W-17.1 React — Người dùng và Nhật ký, 2026-10-29
 
+**Trạng thái:** đang sửa sau nghiệm thu lần 13. Xong: WEB-R13-01 (báo cáo viết lại UTF-8). Đang làm: WEB-R13-02/03 (thêm test trong `Admin.test.tsx`). Kế tiếp: bảng phá, chạy vitest toàn bộ, build, cập nhật SHA báo cáo trong `manifest.json`.
+
 **Báo cáo triển khai, đang hoàn thiện kiểm cuối; chưa tự nghiệm thu W-17.1 hoặc toàn W-17.** Chỉ hai màn Người dùng/Nhật ký và ba API backend đã nhận. Bản dựng/khoá mẫu/chi/lecture_validation tiếp tục thuộc mốc sau. Không sửa use case lõi, registry, migration, profile/password/epoch hoặc W-12.
 
 ## Nền, hợp đồng và phạm vi
@@ -78,52 +80,52 @@ Tự soát theo `code-review-and-quality`: ranh giới quyền ở server; Auth/
 - Có13 kết quả Axe incomplete/color-contrast ở cột ngoài vùng cuộn hoặc dialog; **không** gọi chúng tự động đạt. Hai run bổ sung `browser-manual1` và `browser-manual-legacy1` đo **765 lượt phần tử thực**, tất cả contrast>=4,5, tối thiểu **5,8448:1**, hit-test thấy được sau scroll. Bằng chứng CSS rect, scroll position, font CDP và PNG thuộc đúng run bổ sung; không ghép số đo này vào PNG canonical cũ. `manual-a11y-summary.json` và `manual-a11y-equivalence.json` ghi scope và đối chiếu source không đổi sau ghép.
 - Runtime giữ các warning Windows WinError10054 khi đóng kết nối và graceful shutdown “Cancel0”; console giữ HTTP401/403/409 có chủ ý và CSP do Axe/font inspection. Không hạ CSP; không gọi log tuyệt đối sạch. Pageerror và kiểm nghiệp vụ nằm riêng trong audit JSON.
 
-### L??t t?ch h?p b75e611b tr?n n?n ?? ch?t 647149b3
+### Lượt tích hợp b75e611b trên nền đã chốt 647149b3
 
-- `gate-build-integrated`: native0, 13,41 gi?y, TypeScript/Vite build th?nh c?ng.
-- `gate-react-integrated`: native0, **281 test/21 t?p**, kh?ng fail/skip; 290,84 gi?y theo wrapper. C? ??22 ca Admin c?ng h?i quy W-04/W-08/W-09/W-10/W-11/W-12/W-16.
-- `gate-browser-integrated`: native0, **12 c?u h?nh/40 ?nh/40 Axe/89 HTTP/7 SQL stages**, kh?ng pageerror/vi ph?m Axe. Font Be Vietnam Pro th?t ? t?ng ?nh; 390/768/1280 ? s?ng/t?i ? normal/reduced-motion. Taste inspector ba chi?u r?ng0 FAIL/0 WARN. DB UUID ?? g? v? server ?? d?ng sau ki?m.
-- S?u mutation ch?y l?i t?i **b75e611b** tr??c c?ng b?nh th??ng; native1 v?i assertion fail/0 setup error, ngu?n ph?c h?i c?ng SHA Admin.tsx n?u tr?n. `mutation-summary.json` l? b? hi?n h?nh; b? ce86f12c v? tr??c ?? ch? l? l?ch s?.
+- `gate-build-integrated`: native 0, 13,41 giây, TypeScript/Vite build thành công.
+- `gate-react-integrated`: native 0, **281 test/21 tệp**, không fail/skip; 290,84 giây theo wrapper. Có đủ 22 ca Admin cùng hồi quy W-04/W-08/W-09/W-10/W-11/W-12/W-16.
+- `gate-browser-integrated`: native 0, **12 cấu hình/40 ảnh/40 Axe/89 HTTP/7 SQL stages**, không pageerror/vi phạm Axe. Font Be Vietnam Pro thật ở từng ảnh; 390/768/1280 × sáng/tối × normal/reduced-motion. Taste inspector ba chiều rộng 0 FAIL/0 WARN. DB UUID đã gỡ và server đã dừng sau kiểm.
+- Sáu mutation chạy lại tại **b75e611b** trước cổng bình thường; native 1 với assertion fail/0 setup error, nguồn phục hồi cùng SHA Admin.tsx nêu trên. `mutation-summary.json` là bộ hiện hành; bộ ce86f12c và trước đó chỉ là lịch sử.
 
-?nh ch?nh: [Ng??i d?ng s?ng1280](w17-react-evidence/browser-integrated/users-1280-light.png), [Ng??i d?ng s?ng390](w17-react-evidence/browser-integrated/users-390-light.png), [dialog t?i768](w17-react-evidence/browser-integrated/first-admin-768-dark.png), [Nh?t k? s?ng1280](w17-react-evidence/browser-integrated/audit-1280-light.png). Video `owner.webm` g?m l?c/trang/ch?nh s?a/x?c nh?n/quy?n/audit; c?c context B/B2/learner c? video ri?ng. Payload JSON th?t v? SQL n?m trong audit/runtime, kh?ng d?ng fetch gi? cho b?ng ch?ng n?y.
+Ảnh chính: [Người dùng sáng 1280](w17-react-evidence/browser-integrated/users-1280-light.png), [Người dùng sáng 390](w17-react-evidence/browser-integrated/users-390-light.png), [dialog tối 768](w17-react-evidence/browser-integrated/first-admin-768-dark.png), [Nhật ký sáng 1280](w17-react-evidence/browser-integrated/audit-1280-light.png). Video `owner.webm` gồm lọc/trang/chỉnh sửa/xác nhận/quyền/audit; các context B/B2/learner có video riêng. Payload JSON thật và SQL nằm trong audit/runtime, không dùng fetch giả cho bằng chứng này.
 
-- `gate-browser-legacy-integrated`: native0, **3 ?nh/3 Axe/10 HTTP/1 SQL stage**, kh?ng pageerror/vi ph?m t? ??ng. Registry r?ng, is_first_admin=null, thao t?c h?n ch? quy?n tr?409/bootstrap_required v? kh?ng ??i role/registry/audit. DB UUID ri?ng ?? g?; kh?ng g?n bootstrap tr?n DB ch? d? ?n.
-- T?ng browser hi?n h?nh43 ?nh/43 Axe. Axe c? **13 incomplete** (12 regular +1 legacy) c?n quan s?t b? sung. Ngu?n React/CSS/scripts t??ng ???ng byte v?i l??t b? sung765 ph?p ?o ? ce86f12c; c?c ?nh/s? ?o b? sung gi? source pin c? trong `manual-a11y-equivalence.json`, kh?ng nh?n ch?ng l? s? ?o m?i tr?n43 ?nh hi?n h?nh. ?? xem l?i tr?c ti?p c?c PNG users-390-light, users-1280-light v? first-admin-768-dark c?a l??t t?ch h?p, kh?ng v?/tr?n/c?t ?i?u khi?n.
+- `gate-browser-legacy-integrated`: native 0, **3 ảnh/3 Axe/10 HTTP/1 SQL stage**, không pageerror/vi phạm tự động. Registry rỗng, is_first_admin=null, thao tác hạn chế quyền trả 409/bootstrap_required và không đổi role/registry/audit. DB UUID riêng đã gỡ; không gán bootstrap trên DB chủ dự án.
+- Tổng browser hiện hành 43 ảnh/43 Axe. Axe có **13 incomplete** (12 regular + 1 legacy) cần quan sát bổ sung. Nguồn React/CSS/scripts tương đương byte với lượt bổ sung 765 phép đo ở ce86f12c; các ảnh/số đo bổ sung giữ source pin cũ trong `manual-a11y-equivalence.json`, không nhận chứng là số đo mới trên 43 ảnh hiện hành. Đã xem lại trực tiếp các PNG users-390-light, users-1280-light và first-admin-768-dark của lượt tích hợp, không vỡ/tràn/cắt điều khiển.
 
-### L?nh c?a ??t t?ch h?p (ch?y t? g?c worktree)
+### Lệnh của đợt tích hợp (chạy từ gốc worktree)
 
-Python l? `C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe`. Wrapper v? JSON exit l?u nguy?n command/cwd/native/source SHA, kh?ng suy native0 t? stdout.
+Python là `C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe`. Wrapper và JSON exit lưu nguyên command/cwd/native/source SHA, không suy native 0 từ stdout.
 
 ```powershell
 & $wfPython scripts/w17_react_capture.py gate-build-integrated npm.cmd --prefix src/web/frontend run build
 & $wfPython scripts/w17_react_capture.py gate-react-integrated npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/gate-react-integrated.xml
 & $wfPython scripts/w17_react_capture.py gate-python-integrated $wfPython scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/cong-w17-react-integrated --junitxml=report/w17-react-evidence/gate-python-integrated.xml
 $env:W17_REACT_RUN='browser-integrated'
-# Kh?ng ??t W17_REACT_SMOKE ho?c W17_REACT_LEGACY trong l??t ch?nh.
+# Không đặt W17_REACT_SMOKE hoặc W17_REACT_LEGACY trong lượt chính.
 & $wfPython scripts/w17_react_capture.py gate-browser-integrated $wfPython -X utf8 scripts/w17_react_runtime.py
 $env:W17_REACT_RUN='browser-legacy-integrated'
 $env:W17_REACT_LEGACY='1'
 & $wfPython scripts/w17_react_capture.py gate-browser-legacy-integrated $wfPython -X utf8 scripts/w17_react_runtime.py
 ```
 
-Kh?ng ch?y l?i v?i label/basetemp ?? c?: m?i l??t m?i ch?n t?n m?i, gi? b?ng ch?ng c?. Mutation ?? ch?y tr??c server/full gate, l?n l??t `role-presence`, `read`, `callback`, `first`, `focus`, `repeat` b?ng helper `report/w17-react-evidence-mutate.py`; m?i l??t ph?c h?i ngu?n trong finally v? ??i chi?u SHA tr??c l??t k? ti?p. Kh?ng thay m?/t?ng timeout/skip trong khi ch?y c?ng.
+Không chạy lại với label/basetemp đã cũ: mỗi lượt mới chọn tên mới, giữ bằng chứng cũ. Mutation đã chạy trước server/full gate, lần lượt `role-presence`, `read`, `callback`, `first`, `focus`, `repeat` bằng helper `report/w17-react-evidence-mutate.py`; mỗi lượt phục hồi nguồn trong finally và đối chiếu SHA trước lượt kế tiếp. Không thay mã/tăng timeout/skip trong khi chạy cổng.
 
-## Gi?i h?n v? b?n giao ?? ?i?u ph?i so?t
+## Giới hạn và bàn giao để điều phối soát
 
-M?c n?y ch? React Ng??i d?ng/Nh?t k?. Kh?ng nh?n to?n W-17: B?n d?ng, Chi, Kho? m?u v? log lecture_validation v?n ngo?i ph?n React ??t n?y. Kh?ng th?m API/DTO qu?n tr? gi?, migration ho?c thay use case l?i. Kh?ng ch?y SMTP/Cloudinary/provider th?t; kh?ng c?n Cloud Figma.
+Mục này chỉ React Người dùng/Nhật ký. Không nhận toàn W-17: Bản dựng, Chi, Khoá mẫu và log lecture_validation vẫn ngoài phần React đợt này. Không thêm API/DTO quản trị giả, migration hoặc thay use case lõi. Không chạy SMTP/Cloudinary/provider thật; không cần Cloud Figma.
 
-DB d?ng chung ch?a ???c nh?m React migrate/g?n bootstrap. Ng??i v?n h?nh th?c hi?n theo h? s? backend ?? nh?n, sau ??i chi?u ??nh danh; kh?ng ch?n admin ??u ti?n t? h?ng ??u/ng?y t?o. Browser ch?ng minh c? registry ?? x?c l?p v? registry r?ng tr?n DB UUID t?ng h?p ri?ng.
+DB dùng chung chưa được nhóm React migrate/gán bootstrap. Người vận hành thực hiện theo hồ sơ backend đã nhận, sau đối chiếu định danh; không chọn admin đầu tiên từ hàng đầu/ngày tạo. Browser chứng minh cả registry đã xác lập và registry rỗng trên DB UUID tổng hợp riêng.
 
-?nh v? JSON fetch gi? trong test component ch? l? h?i quy UI; JSON HTTP/SQL, ?nh/video browser-integrated v? browser-legacy-integrated m?i l? b?ng ch?ng ??u-cu?i hi?n h?nh. C?c m?c Axe incomplete ???c gi? nguy?n v? c? h? s? b? sung ri?ng/t??ng ???ng ngu?n, kh?ng vi?t l? m?i node t? ??ng ?? ki?m. Warning ??ng k?t n?i Windows/console HTTP t? ch?i c? ch? ? v?n ???c l?u.
+Ảnh và JSON fetch giả trong test component chỉ là hồi quy UI; JSON HTTP/SQL, ảnh/video browser-integrated và browser-legacy-integrated mới là bằng chứng đầu-cuối hiện hành. Các mục Axe incomplete được giữ nguyên vì có hồ sơ bổ sung riêng/tương đương nguồn, không viết là mọi node tự động đã kiểm. Warning đóng kết nối Windows/console HTTP từ chối có chủ ý vẫn được lưu.
 
-Commit m? ???c ki?m l? b75e611b60ca64db539b364d8dce0eb20cf4ad4f; commit b?n giao b? sung b?o c?o/b?ng ch?ng s? gi? nguy?n src/scripts, ??i chi?u to?n b? SHA trong manifest v? git diff. Kh?ng g?n l??t mutation/c?ng c? cho ngu?n m?i. Ch? ?i?u ph?i nghi?m thu/gh?p main; nh?nh v? d? li?u l?ch s? ???c gi? nguy?n, ch?a push.
+Commit mã được kiểm là b75e611b60ca64db539b364d8dce0eb20cf4ad4f; commit bàn giao bổ sung báo cáo/bằng chứng sẽ giữ nguyên src/scripts, đối chiếu toàn bộ SHA trong manifest và git diff. Không gán lượt mutation/cổng cũ cho nguồn mới. Chờ điều phối nghiệm thu/ghép main; nhánh và dữ liệu lịch sử được giữ nguyên, chưa push.
 
-### K?t qu? c?ng PostgreSQL cu?i v? tr? c?a
+### Kết quả cổng PostgreSQL cuối và trả cửa
 
-`gate-python-integrated`: **3.833 passed, 0 failed, 3 skipped, 1 xfailed, 8 warnings**, native exit **0**; pytest1589,62 gi?y, wrapper1621,22 gi?y. JUnit `gate-python-integrated.xml`; stdout/stderr nguy?n ? `gate-python-integrated/output.log`, l?nh/source SHA/native ? `exit.json`. Ba skip c? s?n: hai replay ??nh gi? y?u c?u DANHGIA_KHO_CHUNG (kh?ng tr? kho live chung) v? Cloudinary live ch?a b?t; m?t xfail l? replay answer-2 c?, kh?ng tr? ti?n ?? ghi l?i. Kh?ng ??i assertion/skip/threshold c?a test ?? c? k?t qu? n?y. Ca checkpoint c? l?i peak3/4 ?? ?i qua trong c?ng ??y ?? m?i, gi? nguy?n ngu?n test v? l?ch s? th?t b?i.
+`gate-python-integrated`: **3.833 passed, 0 failed, 3 skipped, 1 xfailed, 8 warnings**, native exit **0**; pytest 1589,62 giây, wrapper 1621,22 giây. JUnit `gate-python-integrated.xml`; stdout/stderr nguyên ở `output.log`, lệnh/source SHA/native ở `exit.json`. Ba skip có sẵn: hai replay đánh giá yêu cầu DANHGIA_KHO_CHUNG (không trả kho live chung) và Cloudinary live chưa bật; một xfail là replay answer-2 cũ, không trả tiền, đã ghi lại. Không đổi assertion/skip/threshold của test để có kết quả này. Ca checkpoint có lỗi peak 3/4 đã đi qua trong cổng đầy đủ mới, giữ nguyên nguồn test và lịch sử thất bại.
 
-T?m t?p report W-06/W-14 do full gate ghi ?? ph?c h?i byte g?c ? finally; b?n JSON m?i gi? d??i gate-python-integrated/legacy-test-output. SQL m?i W-15/W-25 ???c ordinary-copy sang evidence c?a v? v? ??i chi?u SHA, gi? nguy?n ngu?n local. `git diff -- src scripts` r?ng su?t l??t; sau c?ng kh?ng c?n tracked diff ngo?i v?. **?? tr? c?a PostgreSQL khi native0 ho?n t?t**, kh?ng c?n full gate/server W-17 ?ang ch?y. Chi ph? nh? cung c?p0 USD.
+Tám tệp report W-06/W-14 do full gate ghi đè đã phục hồi byte gốc ở finally; bản JSON mới giữ dưới `gate-python-integrated/legacy-test-output`. SQL mới W-15/W-25 được ordinary-copy sang evidence của vé và đối chiếu SHA, giữ nguyên nguồn local. `git diff -- src scripts` rỗng suốt lượt; sau cổng không còn tracked diff ngoài vé. **Đã trả cửa PostgreSQL khi native 0 hoàn tất**, không còn full gate/server W-17 đang chạy. Chi phí nhà cung cấp 0 USD.
 
-`gate-summary.json`, `mutation-summary.json`, `preserved-source.json`, `manual-a11y-equivalence.json`, `privacy-scan.json` v? `manifest.json` l? ?i?m v?o h? s?. Manifest b?m to?n b? src/scripts tracked, ngu?n thi?t k? v? t?ng b?ng ch?ng/b?o c?o/helper; tested-source.zip ch?a ch?n t?p m?/test/harness thay ??i so v?i n?n ???c ch?t. Kh?ng c? c?u h?i c?n ch?n ph?m vi React W-17.1; thao t?c operator tr?n DB d?ng chung v? c?c m?c W-17 c?n l?i gi? ngo?i ??t n?y.
+`gate-summary.json`, `mutation-summary.json`, `preserved-source.json`, `manual-a11y-equivalence.json`, `privacy-scan.json` và `manifest.json` là điểm vào hồ sơ. Manifest băm toàn bộ src/scripts tracked, nguồn thiết kế và từng bằng chứng/báo cáo/helper; tested-source.zip chứa chọn tệp mã/test/harness thay đổi so với nền được chốt. Không có câu hỏi cần chặn phạm vi React W-17.1; thao tác operator trên DB dùng chung và các mục W-17 còn lại giữ ngoài đợt này.
 
-Byte b?ng ch?ng d??i w17-react-evidence ???c gi? -text; report/.gitattributes ch? ghim LF cho helper/b?o c?o W-17.1 ?? checkout Windows kh?ng ??i hash ?? b?n giao. Kh?ng thay quy t?c t?p c?a v? kh?c. ?? ??i chi?u SHA c?a t?ng blob staged v?i manifest, ngo?i ki?m file working tree.
+Byte bằng chứng dưới w17-react-evidence được giữ -text; `report/.gitattributes` chỉ ghim LF cho helper/báo cáo W-17.1 để checkout Windows không đổi hash đã bàn giao. Không thay quy tắc tệp của vé khác. Đã đối chiếu SHA của từng blob staged với manifest, ngoài kiểm file working tree.
