@@ -25,6 +25,7 @@ _LENH = {
     "g1g2": "danhgia.g1g2.lenh",
     "luot": "danhgia.luot.lenh",
     "bang-hinh": "danhgia.bao_cao.lenh_bang_hinh",
+    "datasheet": "danhgia.bao_cao.lenh_datasheet",
 }
 
 
