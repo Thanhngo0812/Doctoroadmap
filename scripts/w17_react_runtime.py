@@ -77,6 +77,7 @@ def main():
   @app.post('/api/v1/__test/w17/disable-binh',dependencies=[Depends(observer)])
   def disable():return service.update_user(Actor(ids['mai'],'admin',True,'active'),ids['binh'],{'status':'disabled'})
   for _ in range(3):app.router.routes.insert(0,app.router.routes.pop())
+  save('openapi.json',app.openapi())
   summary.update(accountIds=ids)
   with audit.connect() as c:summary['migrationHead']=c.scalar(text('SELECT version_num FROM alembic_version'))
   assert summary['migrationHead']=='w17_0009';save('runtime.json',summary)
