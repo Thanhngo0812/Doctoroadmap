@@ -2,7 +2,7 @@
 
 **Nguồn:** chủ dự án 2026-10-29: "dựng sver frontend backend bản thật có dựng sách thật, ko cần cloudinary, mail thật lên tôi coi"; "sao ko phải là tài
 khoản nào cũng up đc"; trần người học "Nâng 3 USD/người/ngày".
-**Ai:** subagent lõi · **Chi phí khi cài và test:** 0 USD (mọi test dùng đồ giả) · **Chặn bởi:** — · **Trạng thái:** ready-for-agent
+**Ai:** subagent lõi · **Chi phí khi cài và test:** 0 USD (mọi test dùng đồ giả) · **Chặn bởi:** — · **Trạng thái:** đạt, ghép local `843c07ef` (nghiệm thu lần 14)
 
 ## Vì sao
 

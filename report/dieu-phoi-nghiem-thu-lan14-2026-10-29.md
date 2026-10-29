@@ -57,3 +57,5 @@ React không đổi nên không chạy lại.
 1. Lý do xếp hàng khi hết trần ngày hiện ở cửa sổ worker; muốn hiện trên web phải thêm trường vào hợp đồng `build-1` và React.
 2. `retry_unknown_within_cap=True`: một lần timeout không làm hỏng cả cuốn, nhưng phần chưa rõ chi không vào sổ ngày, nên trần 10 USD có thể
    vượt vài lần khoảng 0,36 USD. Giữ nguyên tới khi chủ dự án quyết; đổi sang `False` là một dòng.
+
+**Chủ dự án trả lời 2026-10-29:** (1) "có làm viết vé thêm" → vé `task/web/W-27-ly-do-xep-hang-het-tran-ngay.md`; (2) "ko sao cứ giữ vậy" → giữ `retry_unknown_within_cap=True`.

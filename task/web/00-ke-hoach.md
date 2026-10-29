@@ -1,7 +1,7 @@
 # Web WayFinder — kế hoạch vé
 
 **Mới nhất — 2026-10-29:** Claude điều phối thay Codex; ba subagent (web, lõi, thiết kế) làm thay ba nhóm, luật chung giữ nguyên. Lời giao lần 12 chỉ
-tới nhóm web: React W-17.1 đạt sau sửa, ghép local `e4465b4c`. Thứ tự subagent: lõi W-26 máy chủ demo (đang làm) → lõi W-17.2 → thiết kế D-R12-01.
+tới nhóm web: React W-17.1 đạt sau sửa, ghép local `e4465b4c`. Thứ tự subagent: lõi W-26 máy chủ demo (đạt, ghép `843c07ef`) → lõi W-17.2 → lõi W-27 mốc 1 → thiết kế D-R12-01 → web W-27 mốc 2.
 [Bàn giao điều phối](../../report/handoff-dieu-phoi-2026-10-18.md) mục 2.
 
 **Mới nhất — nghiệm thu lần 12, 2026-10-28:** nhận **backend W-17.1 a07bff3f**, ghép **local 4e6f33cb**, chưa push. Candidate 34c1712f trên main 35f15fa3: **3696 Python/0 fail/3 skip/1 xfail, 259 React/build**; 81 ca W-17/probe độc lập xanh, hai mutation bị bắt. CORE-R11-01 đóng; định danh admin đầu tiên và guard admin active được giữ. Web vẫn ở W-12 đã nhận, chưa có bàn giao React W-17.1 mới; nay được mở Người dùng/Nhật ký. Lõi sang W-17.2 metadata bản dựng/khoá mẫu. W-23 f9705f42 giữ nhánh vì D-R12-01 số đo React ghi sẵn, đã có ảnh/JSON đo thật của điều phối để sửa. Chưa áp migration/CLI vào DB dùng chung. 0 USD mới, Vertex, không Cloud/dọn dữ liệu; chỉ commit local. [Biên bản lần 12](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan12-2026-10-28.md), [lời giao lần 12](../../report/lenh-giao-viec-ba-nhom-lan12-2026-10-28.md); chưa gửi phiên bên ngoài.
@@ -129,7 +129,8 @@ còn đổi; nhóm web đã được báo.
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22/W-24 đã nhận; W-08/W-09/W-10 | f9705f42 có ảnh/decoded PNG/source hẹp đúng; lát 1 chưa nhận do D-R12-01 số đo React ghi sẵn; toàn vé mở, không Cloud |
 | [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | giữ mốc web đã nhận; D-R8-02 wiring bda1366b đạt, ghép local 1513ac7f; W-23 còn mở |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
-| [W-26](W-26-may-chu-demo-local-chay-that.md) | máy chủ demo local chạy thật: dựng sách thật mọi tài khoản (3 USD/cuốn, 10 USD/ngày), mail SMTP thật, ảnh trên đĩa, DB riêng, trần học 3 USD/người/ngày | — | ready-for-agent; chủ dự án yêu cầu 2026-10-29; giao subagent lõi sau sửa W-17.1 |
+| [W-26](W-26-may-chu-demo-local-chay-that.md) | máy chủ demo local chạy thật: dựng sách thật mọi tài khoản (3 USD/cuốn, 10 USD/ngày), mail SMTP thật, ảnh trên đĩa, DB riêng, trần học 3 USD/người/ngày | — | **đạt** · ghép local `843c07ef` (nghiệm thu lần 14); máy chủ demo chạy http://127.0.0.1:8000, DB `wayfinder_demo_20261029` |
+| [W-27](W-27-ly-do-xep-hang-het-tran-ngay.md) | hiện lý do xếp hàng khi hết trần dựng ngày trên web (DTO bản dựng + React) | W-26 | ready-for-agent; chủ dự án 2026-10-29 "có làm viết vé thêm"; sau W-17.2 |
 | [W-final](W-final-goi-ban-chay-may-khac.md) | gói thư mục ngoài Desktop chỉ chứa mã + dữ liệu tối thiểu, README và một lệnh bật máy chủ trên máy khác | mọi vé web còn mở | chờ; làm sau cùng, Claude viết chi tiết khi các vé khác đạt |
 
 ## Thứ tự đề xuất
