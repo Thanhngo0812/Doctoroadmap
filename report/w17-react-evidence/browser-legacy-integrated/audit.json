@@ -1,0 +1,1198 @@
+{
+  "http": [
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/courses",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "owned": [],
+        "joined": [],
+        "samples": []
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 401,
+      "method": "GET",
+      "body": {
+        "error": {
+          "code": "unauthenticated",
+          "message": "Vui lòng đăng nhập để tiếp tục.",
+          "retry_after": null,
+          "ref": null
+        }
+      }
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "query": "",
+      "status": 200,
+      "method": "POST",
+      "body": {
+        "account": {
+          "id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/admin/users",
+      "method": "GET",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "forbidden",
+          "message": "Không có quyền quản trị.",
+          "retry_after": null,
+          "ref": null
+        }
+      },
+      "via": "direct-http"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/me",
+      "query": "",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "account": {
+          "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "email_verified": false
+        },
+        "csrf_token": "[REDACTED]"
+      }
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users",
+      "query": "?role=admin&limit=20&offset=0",
+      "status": 200,
+      "method": "GET",
+      "body": {
+        "items": [
+          {
+            "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+            "email": "mai@w17.example.invalid",
+            "display_name": "Nguyễn Mai",
+            "role": "admin",
+            "status": "active",
+            "email_verified_at": null,
+            "created_at": "2026-10-29T08:00:00Z",
+            "last_login_at": "2026-10-29T08:00:00Z",
+            "owned_courses": 0,
+            "build_monthly_max": null,
+            "builds_this_month": {
+              "used": 0,
+              "max": null,
+              "resets_at": "2026-11-01T00:00:00+07:00"
+            },
+            "is_first_admin": null
+          }
+        ],
+        "total": 1,
+        "limit": 20,
+        "offset": 0
+      }
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users/5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+      "query": "",
+      "status": 409,
+      "method": "PATCH",
+      "body": {
+        "error": {
+          "code": "bootstrap_required",
+          "message": "Cần xác lập định danh admin đầu tiên.",
+          "retry_after": null,
+          "ref": null,
+          "fields": [
+            {
+              "loc": "role",
+              "message": "Tài khoản được bảo vệ bởi chính sách admin đầu tiên."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "requests": [
+    {
+      "stage": "setup",
+      "path": "/dang-nhap",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/index-9Cp0vTJK.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/LectureMarkdown-BRuklUbo.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/LectureMarkdown-Ngnvt50Q.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/index-C3OUsUXP.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/Artboard%2024.png",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "queryKeys": [],
+      "method": "POST"
+    },
+    {
+      "stage": "setup",
+      "path": "/dang-nhap",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/index-9Cp0vTJK.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/LectureMarkdown-BRuklUbo.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/LectureMarkdown-Ngnvt50Q.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/index-C3OUsUXP.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/courses",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/OTP4.png",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/assets/Artboard%2024.png",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/me",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "setup",
+      "path": "/api/v1/auth/login",
+      "queryKeys": [],
+      "method": "POST"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/admin/nguoi-dung",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/assets/index-9Cp0vTJK.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/assets/LectureMarkdown-BRuklUbo.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/assets/LectureMarkdown-Ngnvt50Q.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/assets/index-C3OUsUXP.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/api/v1/me",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/assets/Artboard%2024.png",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "regular-denied",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/admin/nguoi-dung",
+      "queryKeys": [
+        "role"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/assets/index-9Cp0vTJK.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/assets/LectureMarkdown-BRuklUbo.js",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/assets/LectureMarkdown-Ngnvt50Q.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/assets/index-C3OUsUXP.css",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/me",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/assets/Artboard%2024.png",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2",
+      "queryKeys": [],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users",
+      "queryKeys": [
+        "role",
+        "limit",
+        "offset"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/api/v1/admin/users/5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+      "queryKeys": [],
+      "method": "PATCH"
+    },
+    {
+      "stage": "legacy-null",
+      "path": "/css2",
+      "queryKeys": [
+        "family",
+        "display"
+      ],
+      "method": "GET"
+    }
+  ],
+  "screens": [
+    {
+      "file": "regular-denied-1280-light.png",
+      "width": 1280,
+      "overflow": false,
+      "targets": [
+        {
+          "label": "Về khoá học của tôi",
+          "width": 195.9375,
+          "height": 44
+        }
+      ],
+      "theme": "light",
+      "reduced": false,
+      "liveFonts": {
+        "fonts": [
+          {
+            "familyName": "Be Vietnam Pro",
+            "postScriptName": "BeVietnamPro-Bold",
+            "isCustomFont": true,
+            "glyphCount": 8
+          }
+        ]
+      }
+    },
+    {
+      "file": "legacy-null-1280-light.png",
+      "width": 1280,
+      "overflow": false,
+      "targets": [
+        {
+          "label": "Đóng chỉnh sửa",
+          "width": 75.5,
+          "height": 44
+        },
+        {
+          "label": "Đang hoạt độngĐã khoá",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Người dùngQuản trị viên",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Dùng hạn mức chung",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Huỷ",
+          "width": 64.578125,
+          "height": 44
+        },
+        {
+          "label": "Lưu thay đổi",
+          "width": 124.03125,
+          "height": 44
+        }
+      ],
+      "theme": "light",
+      "reduced": false,
+      "liveFonts": {
+        "fonts": [
+          {
+            "familyName": "Be Vietnam Pro",
+            "postScriptName": "BeVietnamPro-Bold",
+            "isCustomFont": true,
+            "glyphCount": 10
+          }
+        ]
+      }
+    },
+    {
+      "file": "legacy-bootstrap-required-1280-light.png",
+      "width": 1280,
+      "overflow": false,
+      "targets": [
+        {
+          "label": "Đóng chỉnh sửa",
+          "width": 75.5,
+          "height": 44
+        },
+        {
+          "label": "Đang hoạt độngĐã khoá",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Người dùngQuản trị viên",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Dùng hạn mức chung",
+          "width": 550,
+          "height": 44
+        },
+        {
+          "label": "Huỷ",
+          "width": 64.578125,
+          "height": 44
+        },
+        {
+          "label": "Lưu thay đổi",
+          "width": 124.03125,
+          "height": 44
+        }
+      ],
+      "theme": "light",
+      "reduced": false,
+      "liveFonts": {
+        "fonts": [
+          {
+            "familyName": "Be Vietnam Pro",
+            "postScriptName": "BeVietnamPro-Bold",
+            "isCustomFont": true,
+            "glyphCount": 10
+          }
+        ]
+      }
+    }
+  ],
+  "axe": [
+    {
+      "file": "regular-denied-1280-light.png",
+      "scope": "document",
+      "violations": [],
+      "incomplete": [],
+      "passes": 21
+    },
+    {
+      "file": "legacy-null-1280-light.png",
+      "scope": "document",
+      "violations": [],
+      "incomplete": [],
+      "passes": 17
+    },
+    {
+      "file": "legacy-bootstrap-required-1280-light.png",
+      "scope": "document",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscuring",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it partially overlaps other elements"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"admin-policy\">Chưa xác lập định danh bảo vệ admin đầu tiên. Người vận hành cần đối chiếu phía máy chủ; thao tác hạn chế quyền có thể bị từ chối.</p>",
+              "target": [
+                ".admin-policy"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscuring",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it partially overlaps other elements"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"admin-error\" role=\"alert\">Máy chủ chưa xác lập định danh admin đầu tiên. Cần người vận hành đối chiếu trước thao tác này.</p>",
+              "target": [
+                "p[role=\"alert\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ]
+        }
+      ],
+      "passes": 20
+    }
+  ],
+  "sql": [
+    {
+      "stage": "legacy-refused",
+      "users": [
+        {
+          "id": "ef39689a-9d96-4183-a405-1959c4193886",
+          "email": "binh@w17.example.invalid",
+          "display_name": "Trần Bình",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "635a7a12-cbac-4da2-afbd-2a8a5a5f82fa",
+          "email": "hocvien-01@w17.example.invalid",
+          "display_name": "Người học 01",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "59f13ae7-eb83-43d2-b3b8-42f95e33447d",
+          "email": "hocvien-02@w17.example.invalid",
+          "display_name": "Người học 02",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "c7fea92a-7883-4873-9f51-98642ebabc8c",
+          "email": "hocvien-03@w17.example.invalid",
+          "display_name": "Người học 03",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "f29964f8-dfbe-47ec-8c9d-c5ef4c55d690",
+          "email": "hocvien-04@w17.example.invalid",
+          "display_name": "Người học 04",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "e8510b7d-e458-4415-8e2e-552991ddcf5c",
+          "email": "hocvien-05@w17.example.invalid",
+          "display_name": "Người học 05",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "70f47a78-5941-49a1-9d5e-02a153f9517c",
+          "email": "hocvien-06@w17.example.invalid",
+          "display_name": "Người học 06",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "d61092b5-7fae-4ea7-9e75-2cab851f5189",
+          "email": "hocvien-07@w17.example.invalid",
+          "display_name": "Người học 07",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "0c767335-32ac-44fc-9f6f-30ec271ee822",
+          "email": "hocvien-08@w17.example.invalid",
+          "display_name": "Người học 08",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "46667252-7c78-491c-85aa-ff3fb7b08932",
+          "email": "hocvien-09@w17.example.invalid",
+          "display_name": "Người học 09",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "d26f3e2a-04ca-4755-95ce-9be43c882d8c",
+          "email": "hocvien-10@w17.example.invalid",
+          "display_name": "Người học 10",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "15404b7d-9f1a-4c64-81d1-914ff67d81c0",
+          "email": "hocvien-11@w17.example.invalid",
+          "display_name": "Người học 11",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "04db80dd-8f52-4fc1-a3c7-511613b05e6c",
+          "email": "hocvien-12@w17.example.invalid",
+          "display_name": "Người học 12",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "54d40eb9-3d69-40f4-907e-0183c1779dda",
+          "email": "hocvien-13@w17.example.invalid",
+          "display_name": "Người học 13",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "a151f2d3-fe10-4166-baf7-7e7612ed5354",
+          "email": "hocvien-14@w17.example.invalid",
+          "display_name": "Người học 14",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "cb8f3706-1a6e-4309-802c-63b2638636b3",
+          "email": "hocvien-15@w17.example.invalid",
+          "display_name": "Người học 15",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "1cde145f-9fe0-4085-8fb7-5523fc926e48",
+          "email": "hocvien-16@w17.example.invalid",
+          "display_name": "Người học 16",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "f43946ce-4f75-4028-a433-fa7f96321b06",
+          "email": "hocvien-17@w17.example.invalid",
+          "display_name": "Người học 17",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "4e88fa63-68fb-424c-9115-18e51ca779c2",
+          "email": "hocvien-18@w17.example.invalid",
+          "display_name": "Người học 18",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "f54a8cd3-7451-4220-a2e6-c66eded4f140",
+          "email": "hocvien-19@w17.example.invalid",
+          "display_name": "Người học 19",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "cc151e1e-9d7b-42df-b7c6-e73453f9a628",
+          "email": "hocvien-20@w17.example.invalid",
+          "display_name": "Người học 20",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "999a8b8a-a61c-4d56-b04a-d40def02e6a8",
+          "email": "hocvien-21@w17.example.invalid",
+          "display_name": "Người học 21",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "3a6ed3b3-b8c2-4bca-8e99-20cb7b4bce6c",
+          "email": "hocvien-22@w17.example.invalid",
+          "display_name": "Người học 22",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "01693040-998e-42ef-a5e6-ef2d032e379f",
+          "email": "hocvien-23@w17.example.invalid",
+          "display_name": "Người học 23",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "7cc21edd-ce31-42b4-93bc-eed4b105847e",
+          "email": "hocvien-24@w17.example.invalid",
+          "display_name": "Người học 24",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "email": "linh@w17.example.invalid",
+          "display_name": "Hoàng Linh",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "email": "mai@w17.example.invalid",
+          "display_name": "Nguyễn Mai",
+          "role": "admin",
+          "status": "active",
+          "build_monthly_max": null
+        },
+        {
+          "id": "d0c1ac81-d8e9-4692-8bef-68d6663f759a",
+          "email": "observer@w17.example.invalid",
+          "display_name": "Kiểm tra độc lập",
+          "role": "user",
+          "status": "active",
+          "build_monthly_max": null
+        }
+      ],
+      "firstAdminIds": [],
+      "sessions": [
+        {
+          "account_id": "b9989a2c-6c3e-404a-ae46-be5e3b4652bd",
+          "count": 1
+        },
+        {
+          "account_id": "d0c1ac81-d8e9-4692-8bef-68d6663f759a",
+          "count": 1
+        },
+        {
+          "account_id": "5da07a4b-572d-4fd4-9323-fd9dd37536fa",
+          "count": 1
+        }
+      ],
+      "events": []
+    }
+  ],
+  "console": [
+    {
+      "stage": "setup",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "stage": "setup",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "stage": "regular-denied",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "stage": "regular-denied",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-qy5C2zjlfefwKjzILK//rgGpzfb8ny8scNkReUbiPtA='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked."
+    },
+    {
+      "stage": "legacy-null",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "stage": "legacy-null",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-qy5C2zjlfefwKjzILK//rgGpzfb8ny8scNkReUbiPtA='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked."
+    },
+    {
+      "stage": "legacy-null",
+      "message": "Failed to load resource: the server responded with a status of 409 (Conflict)"
+    },
+    {
+      "stage": "legacy-null",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "stage": "legacy-null",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-qy5C2zjlfefwKjzILK//rgGpzfb8ny8scNkReUbiPtA='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked."
+    }
+  ],
+  "pageErrors": [],
+  "configurations": [],
+  "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f"
+}

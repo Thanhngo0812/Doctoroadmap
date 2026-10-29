@@ -1,0 +1,272 @@
+{
+  "base": "http://127.0.0.1:8037",
+  "legacy": false,
+  "databaseName": "wayfinder_w17_react_cccfc1de15b644589bb1d9c2fed0dcb5",
+  "temporaryDatabaseRemoved": true,
+  "externalCostUsd": 0,
+  "sourceCommit": "ce86f12c9bd1bd1199b2b1f66adb6ca04622a4f7",
+  "dirtySourcePaths": [],
+  "providers": "FakeMailer/FakeClock; model/media/embedding unused; real auth/Argon2/admin/PG",
+  "accountIds": {
+    "mai": "0a422054-85d9-4140-8470-ed3bf2943e61",
+    "binh": "fb5438a9-7da6-4254-a5e3-ad135d97f4e6",
+    "linh": "a5119151-b286-43f1-8b9f-d2a1aca73a32",
+    "observer": "0f7b323a-823f-444a-9b96-1d8077d14397"
+  },
+  "migrationHead": "w17_0009",
+  "browserExitCode": 0,
+  "independentSqlFinal": {
+    "users": [
+      {
+        "id": "fb5438a9-7da6-4254-a5e3-ad135d97f4e6",
+        "email": "binh@w17.example.invalid",
+        "display_name": "Trần Bình",
+        "role": "admin",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "42190306-0c93-4a81-a06c-04d677db658b",
+        "email": "hocvien-01@w17.example.invalid",
+        "display_name": "Người học 01",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "297292ca-48ba-45e4-bb2f-55d055f156fa",
+        "email": "hocvien-02@w17.example.invalid",
+        "display_name": "Người học 02",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "193e9386-dcea-4d86-bda0-4ebd8bff8fdc",
+        "email": "hocvien-03@w17.example.invalid",
+        "display_name": "Người học 03",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "8885bbee-e0b5-470a-b6f6-57302644dd9c",
+        "email": "hocvien-04@w17.example.invalid",
+        "display_name": "Người học 04",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "08687efe-764f-476f-94fc-58eb84db28db",
+        "email": "hocvien-05@w17.example.invalid",
+        "display_name": "Người học 05",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "fb06a6b9-efd9-4a78-8ab6-e331a0e74da6",
+        "email": "hocvien-06@w17.example.invalid",
+        "display_name": "Người học 06",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "3cb54474-a3cf-4fdc-b5ed-9b1c331a5a89",
+        "email": "hocvien-07@w17.example.invalid",
+        "display_name": "Người học 07",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "ed3c1ea7-091e-48c7-95b5-db891ed3b194",
+        "email": "hocvien-08@w17.example.invalid",
+        "display_name": "Người học 08",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "cd6b4c46-4b97-4006-93e2-270cd871e0b8",
+        "email": "hocvien-09@w17.example.invalid",
+        "display_name": "Người học 09",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "a1171c4f-0fb3-4b85-b26b-ce9b40059f24",
+        "email": "hocvien-10@w17.example.invalid",
+        "display_name": "Người học 10",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "2050113b-9f34-4e45-a72c-75cc9cdc1beb",
+        "email": "hocvien-11@w17.example.invalid",
+        "display_name": "Người học 11",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "8ec91e6f-1913-437e-993a-42a7aa01912c",
+        "email": "hocvien-12@w17.example.invalid",
+        "display_name": "Người học 12",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "c56175b1-21c4-49df-a6e3-72df54c99ead",
+        "email": "hocvien-13@w17.example.invalid",
+        "display_name": "Người học 13",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "4604fb40-fe86-4865-9bf5-33f9e5895272",
+        "email": "hocvien-14@w17.example.invalid",
+        "display_name": "Người học 14",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "8672dd3d-b382-494b-82b2-6579d48cc1d3",
+        "email": "hocvien-15@w17.example.invalid",
+        "display_name": "Người học 15",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "3d47da8b-8a21-4543-b186-4d74748d9c60",
+        "email": "hocvien-16@w17.example.invalid",
+        "display_name": "Người học 16",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "534b467f-85c6-4132-ba18-978950edb127",
+        "email": "hocvien-17@w17.example.invalid",
+        "display_name": "Người học 17",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "261d3ee1-e5ee-4dd7-a0ff-09a3a6916f69",
+        "email": "hocvien-18@w17.example.invalid",
+        "display_name": "Người học 18",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "d2099b9e-5b69-4806-8920-ab648266740c",
+        "email": "hocvien-19@w17.example.invalid",
+        "display_name": "Người học 19",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "55671d8b-cb7c-4bfb-b064-bc6a78d9c860",
+        "email": "hocvien-20@w17.example.invalid",
+        "display_name": "Người học 20",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "02a5eb01-b55d-4f7d-938c-7260543170c1",
+        "email": "hocvien-21@w17.example.invalid",
+        "display_name": "Người học 21",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "c388803e-8447-44fa-a2c8-758e8b74525c",
+        "email": "hocvien-22@w17.example.invalid",
+        "display_name": "Người học 22",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "6f6457c0-0013-4bca-b440-0a7ec1e4b8ad",
+        "email": "hocvien-23@w17.example.invalid",
+        "display_name": "Người học 23",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "0f87f15d-3922-4d86-a7fb-a67e223d7ea9",
+        "email": "hocvien-24@w17.example.invalid",
+        "display_name": "Người học 24",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "a5119151-b286-43f1-8b9f-d2a1aca73a32",
+        "email": "linh@w17.example.invalid",
+        "display_name": "Hoàng Linh",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "0a422054-85d9-4140-8470-ed3bf2943e61",
+        "email": "mai@w17.example.invalid",
+        "display_name": "Nguyễn Mai",
+        "role": "admin",
+        "status": "active",
+        "build_monthly_max": null
+      },
+      {
+        "id": "0f7b323a-823f-444a-9b96-1d8077d14397",
+        "email": "observer@w17.example.invalid",
+        "display_name": "Kiểm tra độc lập",
+        "role": "user",
+        "status": "active",
+        "build_monthly_max": null
+      }
+    ],
+    "firstAdminIds": [
+      "0a422054-85d9-4140-8470-ed3bf2943e61"
+    ],
+    "sessions": [
+      {
+        "account_id": "0a422054-85d9-4140-8470-ed3bf2943e61",
+        "count": 1
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "at": "2026-10-29 08:00:00+00:00",
+        "actor_id": "0a422054-85d9-4140-8470-ed3bf2943e61",
+        "action": "admin_account_created",
+        "target_id": "0a422054-85d9-4140-8470-ed3bf2943e61"
+      },
+      {
+        "id": 2,
+        "at": "2026-10-29 08:00:00+00:00",
+        "actor_id": "fb5438a9-7da6-4254-a5e3-ad135d97f4e6",
+        "action": "admin_account_created",
+        "target_id": "fb5438a9-7da6-4254-a5e3-ad135d97f4e6"
+      }
+    ]
+  },
+  "serverThreadStopped": true
+}

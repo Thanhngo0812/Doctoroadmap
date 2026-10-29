@@ -1,0 +1,117 @@
+{
+  "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+  "main": "647149b3977f8b58e4c086e7521d4991ffc0e693",
+  "gates": {
+    "gate-build-integrated": {
+      "commit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w17-admin-users-react",
+      "nativeExitCode": 0,
+      "seconds": 13.41
+    },
+    "gate-react-integrated": {
+      "commit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=../../../report/w17-react-evidence/gate-react-integrated.xml"
+      ],
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w17-admin-users-react",
+      "nativeExitCode": 0,
+      "seconds": 290.84,
+      "junit": {
+        "tests": 281,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "gate-python-integrated": {
+      "commit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/cong-w17-react-integrated",
+        "--junitxml=report/w17-react-evidence/gate-python-integrated.xml"
+      ],
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w17-admin-users-react",
+      "nativeExitCode": 0,
+      "seconds": 1621.22,
+      "junit": {
+        "tests": 3837,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      }
+    },
+    "gate-browser-integrated": {
+      "commit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w17_react_runtime.py"
+      ],
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w17-admin-users-react",
+      "nativeExitCode": 0,
+      "seconds": 325.25
+    },
+    "gate-browser-legacy-integrated": {
+      "commit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w17_react_runtime.py"
+      ],
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w17-admin-users-react",
+      "nativeExitCode": 0,
+      "seconds": 63.23
+    }
+  },
+  "browsers": {
+    "browser-integrated": {
+      "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "configurations": 12,
+      "images": 40,
+      "axe": 40,
+      "violations": 0,
+      "incomplete": 12,
+      "http": 89,
+      "sqlStages": 7,
+      "pageErrors": 0,
+      "dbRemoved": true,
+      "providersCostUsd": 0
+    },
+    "browser-legacy-integrated": {
+      "sourceCommit": "b75e611b60ca64db539b364d8dce0eb20cf4ad4f",
+      "configurations": 0,
+      "images": 3,
+      "axe": 3,
+      "violations": 0,
+      "incomplete": 1,
+      "http": 10,
+      "sqlStages": 1,
+      "pageErrors": 0,
+      "dbRemoved": true,
+      "providersCostUsd": 0
+    }
+  },
+  "externalCostUsd": 0
+}

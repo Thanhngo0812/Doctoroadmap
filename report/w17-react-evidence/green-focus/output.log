@@ -1,0 +1,26 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Admin.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/green-focus.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/src/web/frontend
+
+ ✓ src/Admin.test.tsx (21 tests) 6077ms
+   ✓ sends email/role/status filtering to the server and resets paging 449ms
+   ✓ allows enable plus demote of a disabled later admin, confirms and submits only changed fields 510ms
+   ✓ keeps an unsuccessful mutation visible and maps protected_admin without claiming success 417ms
+   ✓ keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success 353ms
+   ✓ keeps an unsuccessful mutation visible and maps validation without claiming success 323ms
+   ✓ renders public audit fields and server filters without rendering raw extra metadata 652ms
+   ✓ ignores a delayed PATCH after closing its dialog 317ms
+   ✓ rejects invalid quota locally, keeps a network-failed draft and retries a canonical update 506ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another user 368ms
+   ✓ discards an old PATCH success/finally when the current identity becomes another admin 327ms
+   ✓ keeps keyboard focus on the completion message while the changed row is reloaded 343ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  11:51:35
+   Duration  8.15s (tests 76%, environment 11%, import 8%, setup 3%, transform 2%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/report/w17-react-evidence/green-focus.xml

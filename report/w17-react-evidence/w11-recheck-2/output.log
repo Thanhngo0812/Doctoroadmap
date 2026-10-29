@@ -1,0 +1,37 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/W11AuthReturn.repro.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/w11-recheck-2.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/src/web/frontend
+
+ ✓ src/W11AuthReturn.repro.test.tsx (22 tests) 41679ms
+   ✓ control: direct login returns to the exact invitation after authentication 1381ms
+   ✓ control: direct register returns to the exact invitation after authentication 2000ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 2087ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 2105ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 2025ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 2190ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 2395ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 2284ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 2073ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 1918ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 2015ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 1945ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 1992ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 2013ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2104ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 2077ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 2045ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2092ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 1194ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 1283ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1195ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1265ms
+
+ Test Files  1 passed (1)
+      Tests  22 passed (22)
+   Start at  12:12:58
+   Duration  44.92s (tests 93%, environment 3%, import 2%, setup 1%, transform 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w17-admin-users-react/report/w17-react-evidence/w11-recheck-2.xml

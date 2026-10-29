@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="1" errors="0" time="10.5524543">
+    <testsuite name="src/Admin.test.tsx" timestamp="2026-10-29T05:03:14.834Z" hostname="ADMIN" tests="22" failures="1" errors="0" skipped="0" time="10.5524543">
+        <testcase classname="src/Admin.test.tsx" name="loads the server user page with only the two delivered admin destinations and real counts" time="0.5812688">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="sends email/role/status filtering to the server and resets paging" time="0.4499494">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="uses the server first-admin flag even when the protected row is not first; quota null means inherited" time="0.2772164">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="allows enable plus demote of a disabled later admin, confirms and submits only changed fields" time="0.7496546">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps protected_admin without claiming success" time="0.6172803">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps bootstrap_required without claiming success" time="0.4847878">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps conflict without claiming success" time="0.4835856">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps an unsuccessful mutation visible and maps validation without claiming success" time="0.475382">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="renders public audit fields and server filters without rendering raw extra metadata" time="0.9182222">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="blocks a regular account without requesting an admin list" time="0.0558421">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns forbidden" time="0.089169">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="removes admin data when the live server returns unauthenticated" time="0.1008368">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="ignores a delayed PATCH after closing its dialog" time="0.7045532">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;admin-success&quot;
+  role=&quot;status&quot;
+  tabindex=&quot;-1&quot;
+&gt;
+  Đã cập nhật tài khoản binh@example.invalid.
+&lt;/p&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;p
+  class=&quot;admin-success&quot;
+  role=&quot;status&quot;
+  tabindex=&quot;-1&quot;
+&gt;
+  Đã cập nhật tài khoản binh@example.invalid.
+&lt;/p&gt; instead
+ ❯ src/Admin.test.tsx:75:251
+            </failure>
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="does not apply an older list after a newer filter result" time="0.3548802">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different user" time="0.1695467">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards a delayed list after the identity changes to a different admin" time="0.1735837">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="rejects invalid quota locally, keeps a network-failed draft and retries a canonical update" time="0.9825063">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="a failed list is not an empty result and can be retried" time="0.1794532">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another user" time="0.7057187">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="discards an old PATCH success/finally when the current identity becomes another admin" time="0.6568914">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="keeps keyboard focus on the completion message while the changed row is reloaded" time="0.552004">
+        </testcase>
+        <testcase classname="src/Admin.test.tsx" name="clears the previous completion before editing the same account again and focuses the next completion" time="0.7848209">
+        </testcase>
+    </testsuite>
+</testsuites>
