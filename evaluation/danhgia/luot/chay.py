@@ -19,18 +19,24 @@ from types import SimpleNamespace
 from danhgia.giao_thuc import kiem_giao_thuc
 
 from . import ban_ghi, thu_muc, uoc_chi
+from .ban_ghi import TuChoi
 from .chay_cli import chay_cli_that
+from .san_pham import dung_pipeline_that
 
-BIEN_THE = ("chinh", "xao-k", "docling", "pass-phu-llm", "oracle-a8", "tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10",
+BIEN_THE = ("chinh", "chinh-vong-chu", "xao-k", "docling", "pass-phu-llm", "oracle-a8", "tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10",
             "b1", "b2", "b3", "b4", "b5a", "b5b")
-SINH = ("chinh", "docling")
+SINH = ("chinh", "chinh-vong-chu", "docling")
+HAU_TO_VONG_CHU = "-vong-chu"
 DUNG_LAI = ("xao-k", "pass-phu-llm", "oracle-a8")
 PHAT_LAI = ("tat-r17", "bo-pass-chinh", "bo-pass-phu", "oracle-a10")
 BASELINE = ("b1", "b2", "b3", "b4")
 B5 = ("b5a", "b5b")
-BUOC_TRA_TIEN = {"label-roles", "a3", "a4", "roadmap", "b5"}
+BUOC_TRA_TIEN = {"label-roles", "a3", "canonical", "roadmap", "b5"}
+# DG-08b: `DocumentPipeline.roadmap` chưa nhận hai công tắc đánh giá (`main_context_shuffle_seed` cho BuildMainEdges, `secondary_target_filter` cho pass phụ),
+# nên hai biến thể chỉ đổi cấu hình bằng công tắc ở lại CLI phát triển cho bước roadmap. Bỏ khỏi bộ này khi sản phẩm nhận công tắc (test_cli_roadmap_khop_ma_san_pham).
+CLI_ROADMAP = ("xao-k", "pass-phu-llm")
 MO_HINH = "gemini-3.1-flash-lite"
-HE = {"chinh": "chinh", "xao-k": "xao", "docling": "docling", "pass-phu-llm": "pass_phu_llm", "oracle-a8": "oracle_a8"}
+HE = {"chinh": "chinh", "chinh-vong-chu": "chinh_vong_chu", "xao-k": "xao", "docling": "docling", "pass-phu-llm": "pass_phu_llm", "oracle-a8": "oracle_a8"}
 
 
 class LoiBuoc(RuntimeError):
@@ -51,7 +57,6 @@ class NguCanh:
     k: int | None = None
     luot_nhieu: int = 0
     tu_luot: Path | None = None
-    vang_a4: Path | None = None
     g3: Path | None = None
     g4: Path | None = None
     can: Path | None = None
@@ -74,7 +79,7 @@ def _sha256(duong):
 
 def ten_buoc(nc: NguCanh) -> list[str]:
     if nc.bien_the in SINH:
-        buoc = ["ingest", "label-roles", "a3", "a4", "roadmap", "pha-b-rieng", "xuat"]
+        buoc = ["read", "label-roles", "a3", "canonical", "roadmap", "pha-b-rieng", "xuat"]
     elif nc.bien_the == "oracle-a8":
         buoc = ["chep-thuong-nguon", "dung-oracle", "roadmap", "pha-b-rieng", "xuat"]
     elif nc.bien_the in DUNG_LAI:
@@ -99,8 +104,9 @@ def _ghi_json(duong, gia_tri):
 
 
 class Luot:
-    def __init__(self, nc: NguCanh, chay_cli=None):
+    def __init__(self, nc: NguCanh, chay_cli=None, tao_pipeline=None):
         self.nc, self.chay_cli = nc, chay_cli or chay_cli_that
+        self.tao_pipeline, self._pipeline = tao_pipeline or dung_pipeline_that, None
         self.thu_muc = thu_muc.kiem_thu_muc_luot(nc.thu_muc, kho_chung=nc.kho_chung)
         self.kho = self.thu_muc / thu_muc.KHO
         self.kho_pha_b = self.thu_muc / thu_muc.KHO_PHA_B
@@ -129,14 +135,20 @@ class Luot:
         nc = self.nc
         env = {k: v for k, v in self.moi_truong().items() if k != "DOC2ROADMAP_ARTIFACT_DIR"} if nc.bien_the not in (
             *PHAT_LAI, *BASELINE, *B5) else {}
-        vang = {t: _sha256(p) for t, p in (("g3", nc.g3), ("g4", nc.g4), ("can", nc.can), ("a4", nc.vang_a4)) if p}
-        return {"env": env, "ly_do_chu": nc.ly_do_chu, "a1": "docling" if nc.bien_the == "docling" else "nhe", "bien_the_b5": nc.bien_the_b5 if nc.bien_the in B5 else None,
+        vang = {t: _sha256(p) for t, p in (("g3", nc.g3), ("g4", nc.g4), ("can", nc.can)) if p}
+        return {"env": env, "ly_do_chu": nc.ly_do_chu, "duong_vong_chu": bool(nc.ly_do_chu),
+                "roadmap_qua": "cli-phat-trien" if nc.bien_the in CLI_ROADMAP else "san-pham", "a1": "docling" if nc.bien_the == "docling" else "nhe", "bien_the_b5": nc.bien_the_b5 if nc.bien_the in B5 else None,
                 "vang": vang}
 
     # ---------- bản ghi ----------
     def _khoi_dong(self):
         nc = self.nc
         sha_giao_thuc = kiem_giao_thuc(nc.manifest, nc.giao_thuc)   # trước mọi thao tác: chưa tạo thư mục, chưa đọc lượt nguồn
+        vong = nc.bien_the.endswith(HAU_TO_VONG_CHU)
+        if vong and not nc.ly_do_chu:
+            raise ValueError(f"biến thể {nc.bien_the} là đường vòng chữ: cần --ly-do-chu")
+        if nc.ly_do_chu and nc.manifest["tap"] == "thu" and not vong:
+            raise ValueError(f"tập thử chỉ dùng --ly-do-chu với biến thể có hậu tố {HAU_TO_VONG_CHU} (ví dụ chinh{HAU_TO_VONG_CHU}), không với {nc.bien_the}")
         tu_luot = None
         if nc.bien_the == "oracle-a8" and nc.g3 is None:
             raise ValueError("oracle-a8 cần --g3 (kho chốt G3 của cuốn)")
@@ -174,7 +186,8 @@ class Luot:
 
     # ---------- bước ----------
     def _cli(self, argv):
-        if self.nc.ly_do_chu and argv[0] in ("ingest", "label-roles", "a3", "roadmap"):
+        """CLI phát triển: chỉ còn bước roadmap của các biến thể đổi cấu hình bằng công tắc (`CLI_ROADMAP`)."""
+        if self.nc.ly_do_chu and argv[0] == "roadmap":
             argv = [*argv, "--allow-text-quality-reason", self.nc.ly_do_chu]
         env = self.moi_truong()
         ma, ra = self.chay_cli(argv, env)
@@ -184,28 +197,37 @@ class Luot:
         if ma != 0:
             raise LoiBuoc(f"{argv[0]} thoát mã {ma}: {ra.strip()[-500:]}")
 
-    def _b_ingest(self):
+    def _pl(self):
+        """Pipeline của sản phẩm trên kho của lượt; chỉ bước có chi mới cần `allow_spend`, dry-run thì không bao giờ."""
+        if self._pipeline is None:
+            self._pipeline = self.tao_pipeline(self.moi_truong(), self.nc.allow_spend and not self.nc.dry_run)
+        return self._pipeline
+
+    def _log(self, ten, ket_qua):
+        (self.thu_muc / "log").mkdir(exist_ok=True)
+        with (self.thu_muc / "log" / "pipeline.log").open("a", encoding="utf-8") as f:
+            f.write(f"$ pipeline.{ten}\n{json.dumps(ket_qua, ensure_ascii=False, default=str)}\n")
+
+    def _b_read(self):
         nc = self.nc
-        self._cli(["ingest", str(nc.pdf), "--doc-id", nc.doc_id] + (["--a1", "docling"] if nc.bien_the == "docling" else []))
+        ra = self._pl().read(nc.pdf, nc.doc_id, a1="docling" if nc.bien_the == "docling" else "nhe", ly_do=nc.ly_do_chu)
+        self._log("read", ra)
+        self.ban["ket_qua"]["read"] = {khoa: ra.get(khoa) for khoa in ("chunks_version", "parse_version", "chunk_count")}
 
     def _b_label_roles(self):
-        self._cli(["label-roles", "--doc-id", self.nc.doc_id, "--allow-spend"])
+        self._log("label_roles", self._pl().label_roles(self.nc.doc_id))
 
     def _b_a3(self):
-        self._cli(["a3", "--doc-id", self.nc.doc_id])
+        self._log("a3", self._pl().a3(self.nc.doc_id))
 
-    def _b_a4(self):
-        nc = self.nc
-        if nc.vang_a4 is None:
-            raise LoiBuoc("A4 cần --vang-a4 (bộ vàng A4 đã gán mù, tài liệu mới không nằm trong đó)")
-        ban_chep = self.thu_muc / "vang-a4.json"  # chép vào lượt: pipeline đọc bản chép, không đọc tệp ở kho chung
-        if not ban_chep.exists():
-            ban_chep.write_bytes(Path(nc.vang_a4).read_bytes())
-        self.ban["ket_qua"]["vang_a4_sha256"] = _sha256(ban_chep)
-        self._cli(["a4", "--doc-id", nc.doc_id, "--gold", str(ban_chep), "--no-gold-for-doc", "--language", "vi", "--allow-spend"])
+    def _b_canonical(self):
+        self._log("canonical", self._pl().canonical(self.nc.doc_id, "vi"))
 
     def _b_roadmap(self):
-        self._cli(["roadmap", "--doc-id", self.nc.doc_id, "--allow-spend"])
+        if self.nc.bien_the in CLI_ROADMAP:
+            self._cli(["roadmap", "--doc-id", self.nc.doc_id, "--allow-spend"])
+        else:
+            self._log("roadmap", self._pl().roadmap(self.nc.doc_id))
 
     def _b_chep(self):
         nc = self.nc
@@ -260,10 +282,10 @@ class Luot:
 
     def _dinh_danh(self):
         nc = self.nc
-        return {"he": HE[nc.bien_the], "bien_the": {"chinh": "mac_dinh", "docling": "a1-docling", "pass-phu-llm": "pass-phu-llm", "oracle-a8": "oracle-a8-g3",
+        return {"he": HE[nc.bien_the], "bien_the": {"chinh": "mac_dinh", "docling": "a1-docling", "chinh-vong-chu": "vong-chu", "pass-phu-llm": "pass-phu-llm", "oracle-a8": "oracle-a8-g3",
                                                     "xao-k": f"xao-seed{nc.seed}"}[nc.bien_the],
                 "luot_nhieu": nc.luot_nhieu, "commit": nc.commit, "ngay_chay": nc.ngay, "transport": nc.transport,
-                "sha256_pdf": _sha256(nc.pdf), "so_trang": nc.manifest["so_trang"]}
+                "sha256_pdf": _sha256(nc.pdf), "so_trang": nc.manifest["so_trang"], "duong_vong_chu": bool(nc.ly_do_chu)}
 
     def _b_xuat(self):
         from danhgia.xuat import xuat
@@ -323,7 +345,7 @@ class Luot:
         _ghi_json(self.thu_muc / thu_muc.BANG_DIEM, {"theo_chuong": rows, "theo_cuon": dong.gop_cuon(rows)})
 
     def _hanh_dong(self):
-        return {"ingest": self._b_ingest, "label-roles": self._b_label_roles, "a3": self._b_a3, "a4": self._b_a4,
+        return {"read": self._b_read, "label-roles": self._b_label_roles, "a3": self._b_a3, "canonical": self._b_canonical,
                 "roadmap": self._b_roadmap, "chep-thuong-nguon": self._b_chep, "dung-oracle": self._b_dung_oracle, "pha-b-rieng": self._b_pha_b, "xuat": self._b_xuat,
                 "phat-lai": self._b_phat_lai, "baseline": self._b_baseline, "b5": self._b_b5, "cham": self._b_cham}
 
@@ -369,7 +391,7 @@ class Luot:
 
     # ---------- chạy ----------
     def chay(self) -> int:
-        """0: xong hay dừng ở dry-run; 1: một bước lỗi (đã lưu điểm, chạy tiếp được)."""
+        """0: xong hay dừng ở dry-run; 1: một bước lỗi (đã lưu điểm, chạy tiếp được); 3: sản phẩm từ chối cuốn (`tu_choi_<mã>`)."""
         self.ban = self._khoi_dong()
         self._luu()
         hanh_dong = self._hanh_dong()
@@ -385,6 +407,11 @@ class Luot:
             self._luu()
             try:
                 hanh_dong[buoc["ten"]]()
+            except TuChoi as loi:   # sản phẩm từ chối cuốn: trạng thái riêng, không phải lỗi chạy
+                buoc.update(trang_thai=f"tu_choi_{loi.ma}", ghi_chu=loi.ly_do[:300], ket_thuc=time.time())
+                self.ban["ket_qua"]["tu_choi"] = {"trang_thai": f"tu_choi_{loi.ma}", "buoc": buoc["ten"], "ma": loi.ma, "ly_do": loi.ly_do}
+                self._luu()
+                return 3
             except BaseException as loi:
                 buoc.update(trang_thai="loi", ghi_chu=f"{type(loi).__name__}: {str(loi)[:300]}", ket_thuc=time.time())
                 self._luu()

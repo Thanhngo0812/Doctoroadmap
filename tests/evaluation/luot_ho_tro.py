@@ -1,6 +1,6 @@
 """Hỗ trợ test điều phối lượt (DG-08): pipeline giả, chốt chặn kho chung, vàng dựng tay.
 
-`GiaPipeline` thay `chay_cli_that`: mỗi lệnh pipeline (ingest, label-roles, a3, a4, roadmap) chép phần artifact tương ứng từ fixture
+`GiaPipeline` thay `chay_cli_that` và `dung_pipeline_that`: mỗi bước pipeline (read, label-roles, a3, canonical, roadmap) chép phần artifact tương ứng từ fixture
 `kho-phat-lai` vào kho của lượt (chỉ vào `DOC2ROADMAP_ARTIFACT_DIR` mà lệnh nhận), và đếm lời gọi mô hình giả của các bước có chi.
 Không có mạng: các test dùng thêm fixture `chan_mang` ở test_luot.py.
 """
@@ -11,6 +11,7 @@ from collections import Counter
 from pathlib import Path
 
 import dung_tay as dt
+from danhgia.luot.ban_ghi import TuChoi
 
 KHO_MAU = Path(__file__).resolve().parent / "fixtures" / "kho-phat-lai"
 DOC = "xstk-ch3-1"
@@ -30,28 +31,40 @@ def chep_neu_thieu(nguon: Path, dich: Path):
 
 
 class GiaPipeline:
+    """Thay cả hai đường chạy bước: `__call__(argv, env)` là CLI phát triển (chỉ còn roadmap của xao-k, pass-phu-llm),
+    `tao_pipeline(env, allow_spend)` là `DocumentPipeline` của sản phẩm. Mọi lời gọi vào `lenh` dưới dạng (argv, env) với argv[0] là tên bước."""
+
     def __init__(self):
         self.goi_mo_hinh = Counter()   # bước có chi -> số lần được gọi (kể cả lần ném lỗi)
-        self.lenh = []                  # (argv, env) của mọi lệnh đã nhận
+        self.lenh = []                  # (argv, env) của mọi lời gọi đã nhận, theo thứ tự
+        self.tao = []                   # (env, allow_spend) mỗi lần dựng pipeline sản phẩm
+        self.chi_tiet = []              # (tên bước, kwargs) của lời gọi pipeline sản phẩm
         self.hong_o = None              # tên bước sẽ ném NganGiua một lần
         self.so_dong_pha_b = 1
         self.canonical_luc_roadmap = []  # mỗi lần roadmap: các algorithm_id canonical có trong kho lúc đó
+        self.canh_bao_chu = None        # chuỗi cảnh báo: `read` không có lý do thì bị sản phẩm từ chối
 
     def __call__(self, argv, env):
-        kho = Path(env["DOC2ROADMAP_ARTIFACT_DIR"])
+        self._buoc(argv[0], Path(env["DOC2ROADMAP_ARTIFACT_DIR"]), argv, env)
+        return 0, "{}"
+
+    def tao_pipeline(self, env, allow_spend):
+        self.tao.append((dict(env), allow_spend))
+        return _PipelineGia(self, env)
+
+    def _buoc(self, buoc, kho, argv, env):
         self.lenh.append((list(argv), dict(env)))
-        buoc = argv[0]
-        if buoc != "ingest":
+        if buoc != "read":
             self.goi_mo_hinh[buoc] += 1
         if self.hong_o == buoc:
             self.hong_o = None
             raise NganGiua(buoc)
-        if buoc == "ingest":
+        if buoc == "read":
             chep_neu_thieu(KHO_MAU / "chunks", kho / "chunks")
         elif buoc == "a3":
             (kho / "candidates" / DOC / "v1").mkdir(parents=True, exist_ok=True)
             (kho / "candidates" / DOC / "v1" / "manifest.json").write_text(json.dumps({"stage": "candidates", "stats": {}}), encoding="utf-8")
-        elif buoc == "a4":
+        elif buoc == "canonical":
             chep_neu_thieu(KHO_MAU / "canonical", kho / "canonical")
         elif buoc == "roadmap":
             thu = kho / "canonical" / DOC
@@ -64,10 +77,42 @@ class GiaPipeline:
             hang = [{"purpose": "module_title", "doc_id": DOC, "elapsed_ms": 1500, "input_tokens": 400, "output_tokens": 20,
                      "cost_usd": 0.0001} for _ in range(self.so_dong_pha_b)]
             (kho / "phase_b" / "live.json").write_text(json.dumps({"usage": hang}), encoding="utf-8")
-        return 0, "{}"
 
     def lenh_dau(self, ten):
         return [(a, e) for a, e in self.lenh if a[0] == ten]
+
+
+class _PipelineGia:
+    """Cùng giao diện với `danhgia.luot.san_pham.DuongSanPham`; ghi lại lời gọi và đặt artifact giả vào kho của lượt."""
+
+    def __init__(self, goc, env):
+        self.goc, self.env = goc, env
+        self.kho = Path(env["DOC2ROADMAP_ARTIFACT_DIR"])
+
+    def _goi(self, ten, argv, **kw):
+        self.goc.chi_tiet.append((ten, kw))
+        self.goc._buoc(ten, self.kho, [ten, *argv], self.env)
+        return {}
+
+    def read(self, pdf, doc_id, *, a1="nhe", ly_do=None):
+        if self.goc.canh_bao_chu and ly_do is None:
+            self.goc.chi_tiet.append(("read", {"a1": a1, "ly_do": ly_do, "tu_choi": True}))
+            self.goc.lenh.append((["read", doc_id, a1, ly_do], dict(self.env)))
+            raise TuChoi("chu_loi", self.goc.canh_bao_chu)
+        self._goi("read", [doc_id, a1, ly_do], a1=a1, ly_do=ly_do)
+        return {"chunks_version": 1, "parse_version": 1, "chunk_count": len(json.loads((KHO_MAU / "chunks" / DOC / "v1" / "chunks.json").read_text(encoding="utf-8")))}
+
+    def label_roles(self, doc_id):
+        return self._goi("label-roles", [doc_id])
+
+    def a3(self, doc_id):
+        return self._goi("a3", [doc_id])
+
+    def canonical(self, doc_id, ngon_ngu):
+        return self._goi("canonical", [doc_id, ngon_ngu], ngon_ngu=ngon_ngu)
+
+    def roadmap(self, doc_id):
+        return self._goi("roadmap", [doc_id])
 
 
 # ---------- chốt chặn kho chung: mọi lần ghi vào thư mục canh là lỗi ----------
