@@ -1,0 +1,21 @@
+[
+  {
+    "label": "no-allowlist",
+    "exit_code": 1,
+    "failures": 5,
+    "caught_by": [
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[DOC-1]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[doc-1 ]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[doc-1/../x]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[u-aaaaaaaaaaaaaaaaaaaa]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[w172-private]"
+    ],
+    "assertion_failures": 5,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "24f9506a116b220dcf79a1a5850c411b862d30444751db541295c341db8cea05"
+    },
+    "caught": true,
+    "source_restored": true
+  }
+]

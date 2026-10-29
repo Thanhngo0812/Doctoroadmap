@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 import json
 from threading import Barrier
+from time import sleep
 from uuid import uuid4
 
 import pytest
@@ -111,6 +112,11 @@ def test_service_layer_refuses_non_admin_and_stale_actors_without_the_route(admi
         with pytest.raises(AuthError) as error:
             service.set_sample_course(actor, course.id, True)
         assert error.value.code == 'forbidden'
+    # the answer for a non-admin must not depend on (and so not reveal) the environment policy
+    service.settings = rt.settings.model_copy(update={'env': 'prod'})
+    with pytest.raises(AuthError) as error:
+        service.set_sample_course(rt.learner.actor, course.id, True)
+    assert error.value.code == 'forbidden'
     assert course_row(rt, course.id)[0]['is_sample'] is False
 
 
@@ -210,6 +216,8 @@ def test_builds_item_contract_example_and_error_message_is_fixed_text(admin_case
         error_message='Traceback (most recent call last): leaked', retryable=True, claim_count=2)
     unknown = new_build(rt, rt.owner.actor, created=T0 + timedelta(hours=2), status='failed', error_code='LEAK <b>raw</b>',
         error_message='RuntimeError: secret', retryable=False)
+    direct = {item['build_id']: item for item in rt.services.admin.list_builds(rt.owner.actor)['items']}
+    assert direct[unknown]['error']['code'] == 'khong_ro'     # asserted before HTTP so a leak fails here, not as a 500
     items = {item['build_id']: item for item in get_builds(rt).json()['items']}
     assert all(set(item) == ITEM_KEYS for item in items.values())
     done = items[ok]
@@ -296,8 +304,9 @@ def test_flag_outside_the_six_allowlisted_documents_is_refused(admin_case, doc_i
     private = sample_course(rt, doc_id, owner=rt.learner, title='W172_PRIVATE_TITLE')
     before = course_row(rt, private.id)
     response = flag(rt, private, True)
-    assert response.status_code == 409 and response.json()['error']['code'] == 'conflict', response.text
-    assert response.json()['error']['fields'][0]['loc'] == 'doc_id'
+    missing = rt.owner.client.patch('/api/v1/admin/courses/' + str(uuid4()), headers=headers(rt.owner), json={'is_sample': True})
+    assert response.status_code == 404 and response.json()['error']['code'] == 'not_found', response.text
+    assert response.json() == missing.json()          # indistinguishable from a course that does not exist
     assert 'W172_PRIVATE_TITLE' not in response.text
     assert course_row(rt, private.id) == before and sample_audit(rt) == []
     assert rt.services.courses.list_sample_courses(rt.learner.actor) == []
@@ -367,6 +376,17 @@ def test_second_course_of_the_same_document_cannot_become_a_duplicate_sample(adm
     assert flag(rt, kept, False).status_code == 200 and flag(rt, duplicate, True).status_code == 200
 
 
+def _slow_check(store, delay=.4):
+    """Hold each caller between the duplicate check and the write, so only a real lock can serialize them."""
+    original = store.other_sample_exists
+
+    def slow(*args):
+        found = original(*args)
+        sleep(delay)
+        return found
+    store.other_sample_exists = slow
+
+
 def _second_runtime(rt):
     from wayfinder.application.admin import AdminService
     from wayfinder.infrastructure.admin_store import PostgresAdminStore
@@ -379,6 +399,8 @@ def test_concurrent_flags_on_two_courses_of_one_document_leave_exactly_one_sampl
     rt = admin_case
     first, second = sample_course(rt), sample_course(rt)
     engine, other = _second_runtime(rt)
+    _slow_check(rt.services.admin.store)
+    _slow_check(other.store)
     barrier = Barrier(2)
 
     def run(pair):

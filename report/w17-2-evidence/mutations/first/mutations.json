@@ -1,0 +1,412 @@
+[
+  {
+    "label": "list-no-admin-service",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_service_layer_refuses_non_admin_and_stale_actors_without_the_route"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "list-no-admin-anywhere",
+    "exit_code": 1,
+    "failures": 8,
+    "caught_by": [
+      "test_builds_date_range_is_half_open_on_created_at",
+      "test_builds_dto_strips_repository_extras",
+      "test_builds_item_contract_example_and_error_message_is_fixed_text",
+      "test_builds_page_filters_totals_and_order_match_independent_sql",
+      "test_builds_response_never_carries_private_or_raw_fields",
+      "test_new_routes_join_the_admin_inventory_and_stay_protected",
+      "test_ordinary_user_and_demoted_admin_cannot_read_or_flag",
+      "test_service_layer_refuses_non_admin_and_stale_actors_without_the_route"
+    ],
+    "assertion_failures": 7,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "6284fd4dc269168033459fc49d6a6e37f9925ffa964158e07beabb8c3df03bcd"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "flag-no-admin-service",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_admin_demoted_after_entering_the_lock_cannot_flag",
+      "test_service_layer_refuses_non_admin_and_stale_actors_without_the_route"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "flag-no-first-admin-check",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_service_layer_refuses_non_admin_and_stale_actors_without_the_route"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "flag-no-recheck-in-lock",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_admin_demoted_after_entering_the_lock_cannot_flag"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "no-allowlist",
+    "exit_code": 1,
+    "failures": 5,
+    "caught_by": [
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[DOC-1]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[doc-1 ]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[doc-1/../x]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[u-aaaaaaaaaaaaaaaaaaaa]",
+      "test_flag_outside_the_six_allowlisted_documents_is_refused[w172-private]"
+    ],
+    "assertion_failures": 5,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "no-env-check",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_flag_refused_when_the_environment_is_not_dev"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "no-duplicate-guard",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_concurrent_flags_on_two_courses_of_one_document_leave_exactly_one_sample",
+      "test_second_course_of_the_same_document_cannot_become_a_duplicate_sample"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "no-advisory-lock",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_concurrent_flags_on_two_courses_of_one_document_leave_exactly_one_sample"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "no-row-lock",
+    "exit_code": 0,
+    "failures": 0,
+    "caught_by": [],
+    "assertion_failures": 0,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": false,
+    "source_restored": true
+  },
+  {
+    "label": "audit-always",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_concurrent_identical_flags_audit_one_change",
+      "test_flag_on_off_changes_the_learner_sample_list_and_audits_once_per_change"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "audit-outside-transaction",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_flag_and_audit_commit_or_roll_back_together"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "flag-not-strict-bool",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_flag_missing_course_and_invalid_bodies_never_change_anything"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "6284fd4dc269168033459fc49d6a6e37f9925ffa964158e07beabb8c3df03bcd"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "dto-error-message-raw",
+    "exit_code": 1,
+    "failures": 2,
+    "caught_by": [
+      "test_builds_item_contract_example_and_error_message_is_fixed_text",
+      "test_builds_response_never_carries_private_or_raw_fields"
+    ],
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760",
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "dto-unknown-code-passthrough",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_item_contract_example_and_error_message_is_fixed_text"
+    ],
+    "assertion_failures": 0,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": false,
+    "source_restored": true
+  },
+  {
+    "label": "dto-no-response-model",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_dto_strips_repository_extras"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "6284fd4dc269168033459fc49d6a6e37f9925ffa964158e07beabb8c3df03bcd"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "until-inclusive",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_date_range_is_half_open_on_created_at"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "since-exclusive",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_date_range_is_half_open_on_created_at"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "search-like-wildcard",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "search-case-sensitive",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "total-ignores-filters",
+    "exit_code": 1,
+    "failures": 5,
+    "caught_by": [
+      "test_builds_date_range_is_half_open_on_created_at",
+      "test_builds_dto_strips_repository_extras",
+      "test_builds_item_contract_example_and_error_message_is_fixed_text",
+      "test_builds_page_filters_totals_and_order_match_independent_sql",
+      "test_builds_response_never_carries_private_or_raw_fields"
+    ],
+    "assertion_failures": 3,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "order-ascending",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "offset-ignored",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "status-filter-ignored",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "usage-filter-ignored",
+    "exit_code": 1,
+    "failures": 1,
+    "caught_by": [
+      "test_builds_page_filters_totals_and_order_match_independent_sql"
+    ],
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin_store.py": "b17394d3a01896b90d0bbbe948a725a26cabf3017e31c23f1faf852b591b0760"
+    },
+    "caught": true,
+    "source_restored": true
+  },
+  {
+    "label": "naive-since-allowed",
+    "exit_code": 1,
+    "failures": 3,
+    "caught_by": [
+      "test_builds_invalid_filters_fail_with_fields_and_no_store[params7]",
+      "test_builds_invalid_filters_fail_with_fields_and_no_store[params8]",
+      "test_builds_invalid_filters_fail_with_fields_and_no_store[params9]"
+    ],
+    "assertion_failures": 3,
+    "setup_errors": 0,
+    "original_sha256": {
+      "admin.py": "f75c6c0e1dc4e2244ffd3a35287366886e6f38f8b8e886a5787d2f8e906e66b7"
+    },
+    "caught": true,
+    "source_restored": true
+  }
+]

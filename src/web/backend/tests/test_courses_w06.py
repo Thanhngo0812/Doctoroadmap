@@ -91,7 +91,8 @@ def routes_with_cid(router):
         included = getattr(route, "original_router", None)
         if included is not None:
             yield from routes_with_cid(included)
-        elif "{cid}" in getattr(route, "path", ""):
+        elif "{cid}" in getattr(route, "path", "") and not route.path.startswith("/api/v1/admin/"):
+            # Admin routes act on any course by design; test_w17_admin/test_w17_builds_samples inventory them instead.
             yield route
 
 

@@ -147,8 +147,8 @@ class AdminService:
             if course is None:
                 raise AuthError('not_found', 'Không tìm thấy khoá học.')
             if course['doc_id'] not in SAMPLE_DOCS:
-                raise AuthError('conflict', 'Chỉ khoá của sáu cuốn phát triển mới đánh dấu được là khoá mẫu.',
-                    fields=[{'loc': 'doc_id', 'message': 'Tài liệu không thuộc danh sách khoá mẫu phát triển.'}])
+                # Same answer as a missing course: a private course's existence is not confirmed even to an admin.
+                raise AuthError('not_found', 'Không tìm thấy khoá học.')
             if is_sample and not course['is_sample'] and self.store.other_sample_exists(course['doc_id'], cid):
                 raise AuthError('conflict', 'Tài liệu này đã có một khoá mẫu khác.',
                     fields=[{'loc': 'is_sample', 'message': 'Đã có khoá mẫu cho cùng tài liệu.'}])
