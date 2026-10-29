@@ -1,8 +1,11 @@
 """Lệnh con `luot` của `python -m danhgia`.
 
   python -m danhgia luot --manifest M --pdf P --bien-the V --ra DIR [--tu-luot DIR_CHINH] [--seed S] [--k K]
-        [--vang-a4 A4.json] [--g3 G3 --g4 G4 --can CAN] [--allow-spend] [--dry-run]
+        [--vang-a4 A4.json] [--g3 G3 --g4 G4 --can CAN] [--giao-thuc DK.md] [--allow-spend] [--dry-run]
   python -m danhgia luot --kiem DIR        kiểm bản ghi lượt (thoát 0 nếu đủ trường và mọi bước xong)
+
+Tập thử (`manifest.tap == "thu"`): bắt buộc --giao-thuc, tệp đã chốt (không còn chữ CHỜ hay NHÁP); SHA-256 của nó vào bản ghi lượt và vào hash cấu hình.
+Thiếu hay chưa chốt thì lệnh từ chối trước bước đầu tiên (không tạo thư mục lượt, không gọi pipeline). Tập phát triển: tuỳ chọn.
 
 Biến thể: chinh, xao-k, docling, pass-phu-llm (sinh artifact, có chi); tat-r17, bo-pass-chinh, bo-pass-phu, oracle-a10, b1..b4 (phát lại
 và baseline, không chi, cần --tu-luot); b5a, b5b (gọi lệnh B5, có chi). Thiếu --allow-spend thì lệnh chỉ dry-run: ghi dry-run.json và dừng
@@ -17,6 +20,8 @@ from pathlib import Path
 
 from . import ban_ghi
 from .chay import BIEN_THE, Luot, NguCanh
+from danhgia.giao_thuc import LoiGiaoThuc, kiem_giao_thuc
+
 from .thu_muc import KhoKhongHopLe
 
 
@@ -34,6 +39,7 @@ def them_lenh(parser):
     parser.add_argument("--g4")
     parser.add_argument("--can")
     parser.add_argument("--ly-do-chu", help="lý do xác nhận cảnh báo chất lượng chữ (--allow-text-quality-reason của pipeline), nếu sách có trang bị cảnh báo")
+    parser.add_argument("--giao-thuc", help="tệp giao thức đăng ký trước đã chốt (bắt buộc với tập thử); SHA-256 của tệp vào bản ghi lượt")
     parser.add_argument("--transport", default="vertex")
     parser.add_argument("--commit")
     parser.add_argument("--ngay")
@@ -57,7 +63,7 @@ def _ngu_canh(args, thu_muc, **them):
                    manifest_path=args.manifest, pdf=Path(args.pdf), bien_the=args.bien_the, transport=args.transport,
                    commit=args.commit or _commit(), tu_luot=chon(args.tu_luot), vang_a4=chon(args.vang_a4), g3=chon(args.g3),
                    g4=chon(args.g4), can=chon(args.can), bien_the_b5=args.bien_the_b5, ly_do_chu=args.ly_do_chu, allow_spend=args.allow_spend,
-                   dry_run=args.dry_run, kho_chung=tuple(args.kho_chung), **({"ngay": args.ngay} if args.ngay else {}), **them)
+                   dry_run=args.dry_run, kho_chung=tuple(args.kho_chung), giao_thuc=Path(args.giao_thuc) if args.giao_thuc else None, **({"ngay": args.ngay} if args.ngay else {}), **them)
 
 
 def chay(args, chay_cli=None):
@@ -76,6 +82,9 @@ def chay(args, chay_cli=None):
     cli = {"chay_cli": chay_cli} if chay_cli else {}
     ma = 0
     try:
+        manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+        sha = kiem_giao_thuc(manifest, args.giao_thuc)    # trước mọi thao tác, kể cả dry-run
+        print("giao thức: " + ("không khai (tập phát triển)" if sha is None else f"sha256={sha} hợp lệ"))
         if args.bien_the == "xao-k":
             seed = 1 if args.seed is None else args.seed
             for i in range(1, args.k + 1):
@@ -83,7 +92,7 @@ def chay(args, chay_cli=None):
                 ma = max(ma, Luot(nc, **cli).chay())
         else:
             ma = Luot(_ngu_canh(args, args.ra, seed=args.seed), **cli).chay()
-    except (KhoKhongHopLe, ban_ghi.CauHinhDoi, ValueError) as loi:
+    except (KhoKhongHopLe, ban_ghi.CauHinhDoi, LoiGiaoThuc, ValueError) as loi:
         print(f"từ chối: {loi}", file=sys.stderr)
         return 2
     return ma
