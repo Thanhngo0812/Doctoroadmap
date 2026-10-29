@@ -281,7 +281,8 @@ class _PipelineSanPhamGia:
         self.settings = SimpleNamespace(max_tokens=1, max_table_tokens=1, hard_cap_tokens=1, target_tokens=1, sentence_overlap=0)
         canh_bao_ = list(canh_bao)
         self.store = SimpleNamespace(load_chunks=lambda doc, v: SimpleNamespace(
-            manifest={"text_quality": {"warnings": canh_bao_}}, result=SimpleNamespace(doc_id=doc)), load_parse=lambda *a: (_ for _ in ()).throw(FileNotFoundError()))
+            manifest={"text_quality": {"warnings": canh_bao_}}, result=SimpleNamespace(doc_id=doc)), load_parse=lambda *a: SimpleNamespace(
+            tree=SimpleNamespace(parse_stats={"page_count": 2}, nodes=[SimpleNamespace(page=1, text=VI * 3), SimpleNamespace(page=2, text=VI * 3)])))   # trang tiếng Việt: qua cổng bản quét
 
     def read(self, pdf, doc_id):
         from doc2roadmap.application.ports.build import BuildRejected
@@ -294,7 +295,7 @@ class _PipelineSanPhamGia:
 def _duong_san_pham(pl, tmp_path):
     from danhgia.luot.san_pham import DuongSanPham
     d = DuongSanPham.__new__(DuongSanPham)
-    d.env, d.pipeline = {}, pl
+    d.env, d.pipeline = {"DOC2ROADMAP_TOKENIZER_MODEL": str(Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model")}, pl
     (tmp_path / "s.pdf").write_bytes(b"%PDF")
     return d, tmp_path / "s.pdf"
 
