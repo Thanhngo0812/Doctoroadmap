@@ -22,6 +22,8 @@ function AdminWorkspace({audit}:{audit:boolean}){
  const auth=useAuth(),[params,setParams]=useSearchParams(),[reload,setReload]=useState(0);
  const [users,setUsers]=useState<AdminPageData<AdminUser>|null>(null),[events,setEvents]=useState<AdminPageData<AuditItem>|null>(null);
  const [loading,setLoading]=useState(true),[error,setError]=useState<string|null>(null),[denied,setDenied]=useState(false),[notice,setNotice]=useState<string|null>(null),[editor,setEditor]=useState<AdminUser|null>(null);
+ const noticeRef=useRef<HTMLParagraphElement>(null);
+ useEffect(()=>{if(notice)noticeRef.current?.focus();},[notice]);
  const query=new URLSearchParams();for(const key of audit?['actor_id','action','since','until']:['email','role','status']){const value=params.get(key);if(value)query.set(key,value);}
  query.set('limit','20');query.set('offset',params.get('offset')||'0');const queryKey=query.toString();
  const fail=useCallback((cause:unknown)=>{
@@ -47,7 +49,7 @@ function AdminWorkspace({audit}:{audit:boolean}){
   <section className="admin-sheet" aria-labelledby="admin-title">
    <header className="admin-heading"><div><h1 id="admin-title">{audit?'Nhật ký':'Người dùng'}</h1><p>{audit?'Theo dõi thao tác và đối tượng thay đổi.':'Quản lý quyền truy cập và hạn mức dựng của từng tài khoản.'}</p></div><button className="button button-secondary" disabled={loading||Boolean(editor)} onClick={()=>setReload(value=>value+1)}>Tải lại</button></header>
    <AdminFilters key={queryKey} audit={audit} params={params} disabled={Boolean(editor)} apply={value=>{setNotice(null);setParams(value);}}/>
-   {error&&<p className="admin-error" role="alert">{error}</p>}{notice&&<p className="admin-success" role="status">{notice}</p>}
+   {error&&<p className="admin-error" role="alert">{error}</p>}{notice&&<p ref={noticeRef} tabIndex={-1} className="admin-success" role="status">{notice}</p>}
    {loading?<div className="admin-loading" role="status">Đang tải {audit?'nhật ký':'người dùng'}…</div>:data&&<>
     <p className="admin-result-count">{count(data.total)} {audit?'thao tác':'người dùng'}</p>
     {!data.items.length?<div className="admin-empty"><h2>Chưa có kết quả</h2><p>{params.size?'Thử thay đổi hoặc xoá bộ lọc.':'Dữ liệu sẽ xuất hiện tại đây khi có.'}</p></div>:audit?<AuditTable items={events!.items}/>:<UserTable items={users!.items} edit={setEditor}/>}

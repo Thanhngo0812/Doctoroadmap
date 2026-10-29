@@ -105,3 +105,7 @@ it.each(['user','admin'])('discards an old PATCH success/finally when the curren
  identity={...identity!,id:'new-account',role};rows=[{...later,email:'NEW_ACCOUNT_VISIBLE@example.invalid'}];await user.click(screen.getByRole('button',{name:'Nhận phiên kiểm mới'}));if(role==='admin')await screen.findByText('NEW_ACCOUNT_VISIBLE@example.invalid');else await screen.findByText('Bạn không có quyền quản trị.');
  await act(async()=>releasePatch(json({...later,email:'OLD_PATCH_PRIVATE@example.invalid'})));expect(screen.queryByText(/OLD_PATCH_PRIVATE|Đã cập nhật tài khoản/)).not.toBeInTheDocument();expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
+it('keeps keyboard focus on the completion message while the changed row is reloaded',async()=>{
+ const user=userEvent.setup();app();await screen.findByText(later.email);await user.click(screen.getByRole('button',{name:'Chỉnh sửa '+later.email}));await user.click(screen.getByLabelText('Dùng hạn mức chung'));await user.type(screen.getByLabelText('Lượt dựng mỗi tháng'),'7');await user.click(screen.getByRole('button',{name:'Lưu thay đổi'}));
+ const notice=await screen.findByText('Đã cập nhật tài khoản '+later.email+'.');await waitFor(()=>expect(notice).toHaveFocus());expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
