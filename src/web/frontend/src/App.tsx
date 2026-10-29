@@ -8,6 +8,7 @@ import { JoinPage, MembersPage } from './Sharing';
 import { BuildPage, UploadPage } from './Builds';
 import { QuizPage, DocumentPage } from './ContentPages';
 import { UsagePage } from './Usage';
+import { AdminPage } from './Admin';
 
 type Theme = 'light' | 'dark';
 
@@ -364,6 +365,9 @@ export default function App() {
     <Route path="/demo" element={<DemoPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/admin" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><AdminPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/admin/nguoi-dung" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><AdminPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/admin/nhat-ky" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><AdminPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/muc-dung" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><UsagePage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
