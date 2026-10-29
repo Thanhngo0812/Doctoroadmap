@@ -1,7 +1,20 @@
 from wayfinder.application.accounts import AuthError
 from wayfinder.application.admin_ports import AdminStore
 from wayfinder.application.auth_ports import AuditEvent
+from wayfinder.application.seed_samples import SAMPLE_DOCS
 from wayfinder.domain.auth import Actor, decide
+
+BUILD_STATUSES = {'awaiting_confirmation', 'queued', 'reading', 'running', 'rejected', 'succeeded', 'failed', 'cancelled'}
+# Fixed texts keyed by the known codes: build.error_message is never read, so raw exceptions cannot reach the admin API.
+BUILD_ERROR_MESSAGES = {
+    'ban_quet': 'Tài liệu không đủ văn bản; hãy chọn bản có chữ',
+    'chu_loi': 'Văn bản của tài liệu bị lỗi',
+    'ngon_ngu_khong_ho_tro': 'Chỉ hỗ trợ tài liệu tiếng Việt',
+    'loi_mang': 'Kết nối bị gián đoạn; bạn có thể thử lại',
+    'het_tran_he_thong': 'Đã chạm trần dựng hôm nay',
+    'loi_noi_bo': 'Không thể hoàn tất bản dựng',
+    'confirmation_expired': 'Đã hết hạn xác nhận dựng',
+}
 
 
 class AdminService:
@@ -78,6 +91,76 @@ class AdminService:
         if since is not None and until is not None and since >= until:
             self._invalid('until')
         return self.store.list_audit(actor_id=actor_id,action=action,since=since,until=until,limit=limit,offset=offset)
+
+    def list_builds(self, actor, *, q='', status=None, usage_complete=None, since=None, until=None, limit=50, offset=0):
+        self.authorize(actor)
+        self._page(limit, offset)
+        if not isinstance(q, str) or len(q) > 254:
+            self._invalid('q')
+        if status not in {None, *BUILD_STATUSES}:
+            self._invalid('status')
+        if usage_complete not in {None, True, False}:
+            self._invalid('usage_complete')
+        for field, value in (('since', since), ('until', until)):
+            if value is not None and (value.tzinfo is None or value.utcoffset() is None):
+                self._invalid(field)
+        if since is not None and until is not None and since >= until:
+            self._invalid('until')
+        page = self.store.list_builds(q=q.strip().lower(), status=status, usage_complete=usage_complete,
+            since=since, until=until, limit=limit, offset=offset)
+        page['items'] = [self._build_view(row) for row in page['items']]
+        return page
+
+    @staticmethod
+    def _build_view(row):
+        code = row['error_code']
+        return {
+            'build_id': row['id'], 'doc_id': row['doc_id'], 'status': row['status'], 'step': row['step'],
+            'pipeline_version': row['pipeline_version'],
+            'requested_by': {'user_id': row['requester_id'], 'email': row['requester_email']} if row['requester_id'] else None,
+            'upload': ({'kind': row['upload_kind'], 'page_count': row['upload_pages'], 'size_bytes': row['upload_size']}
+                if row['upload_kind'] else None),
+            'course_count': row['course_count'], 'counts_quota': row['counts_quota'],
+            'cancel_requested': row['cancel_requested'], 'claim_count': row['claim_count'],
+            'created_at': row['created_at'], 'queued_at': row['queued_at'],
+            'started_at': row['started_at'], 'finished_at': row['finished_at'],
+            'error': ({'code': code if code in BUILD_ERROR_MESSAGES else 'khong_ro',
+                       'message': BUILD_ERROR_MESSAGES.get(code, 'Mã lỗi không nhận diện được'),
+                       'retryable': row['retryable']} if code else None),
+            'usage': {'spent_usd': float(row['spent_usd']), 'model_calls': row['model_calls'],
+                      'input_tokens': row['input_tokens'], 'output_tokens': row['output_tokens'],
+                      'usage_complete': row['usage_complete'], 'elapsed_seconds': row['elapsed_seconds']},
+            'graph_version': row['graph_version'], 'module_count': row['module_count'],
+        }
+
+    def set_sample_course(self, actor, cid, is_sample, *, ip=None):
+        self.authorize(actor)
+        if type(is_sample) is not bool:
+            self._invalid('is_sample')
+        if self.settings.env != 'dev':
+            raise AuthError('conflict', 'Khoá mẫu chỉ dùng được ở môi trường dev.',
+                fields=[{'loc': 'env', 'message': 'Môi trường hiện tại không phải dev.'}])
+        # Serialize all sample flags: the one-sample-per-document rule is a check-then-write across rows.
+        with self.store.atomic(['admin:samples']):
+            self.authorize(actor)
+            course = self.store.lock_course(cid)
+            if course is None:
+                raise AuthError('not_found', 'Không tìm thấy khoá học.')
+            if course['doc_id'] not in SAMPLE_DOCS:
+                raise AuthError('conflict', 'Chỉ khoá của sáu cuốn phát triển mới đánh dấu được là khoá mẫu.',
+                    fields=[{'loc': 'doc_id', 'message': 'Tài liệu không thuộc danh sách khoá mẫu phát triển.'}])
+            if is_sample and not course['is_sample'] and self.store.other_sample_exists(course['doc_id'], cid):
+                raise AuthError('conflict', 'Tài liệu này đã có một khoá mẫu khác.',
+                    fields=[{'loc': 'is_sample', 'message': 'Đã có khoá mẫu cho cùng tài liệu.'}])
+            if course['is_sample'] != is_sample:
+                now = self.clock.now()
+                course = self.store.set_course_sample(cid, is_sample, now)
+                self.store.append_audit(AuditEvent(now, actor.user_id,
+                    'admin_course_sample_set' if is_sample else 'admin_course_sample_unset', 'course', cid, ip))
+            return {'course_id': course['id'], 'doc_id': course['doc_id'], 'title': course['title'],
+                'status': course['status'], 'is_sample': course['is_sample'],
+                'published_graph_version': course['published_graph_version'],
+                'module_count': course['module_count'], 'updated_at': course['updated_at']}
 
     @staticmethod
     def _page(limit, offset):

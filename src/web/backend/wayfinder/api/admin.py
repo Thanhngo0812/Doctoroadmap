@@ -3,7 +3,7 @@ from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Request
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
 
 from wayfinder.api.auth import client_ip, get_actor
 from wayfinder.api.errors import WebError
@@ -62,6 +62,80 @@ class AdminAuditResponse(BaseModel):
     offset: int
 
 
+BuildStatus = Literal['awaiting_confirmation','queued','reading','running','rejected','succeeded','failed','cancelled']
+
+
+class AdminBuildRequester(BaseModel):
+    user_id: str
+    email: str
+
+
+class AdminBuildUpload(BaseModel):
+    kind: Literal['pdf','docx']
+    page_count: int | None
+    size_bytes: int
+
+
+class AdminBuildError(BaseModel):
+    code: Literal['ban_quet','chu_loi','ngon_ngu_khong_ho_tro','loi_mang','het_tran_he_thong','loi_noi_bo','confirmation_expired','khong_ro']
+    message: str
+    retryable: bool
+
+
+class AdminBuildUsage(BaseModel):
+    spent_usd: float
+    model_calls: int
+    input_tokens: int
+    output_tokens: int
+    usage_complete: bool
+    elapsed_seconds: float
+
+
+class AdminBuildItem(BaseModel):
+    build_id: str
+    doc_id: str
+    status: BuildStatus
+    step: Literal['doc_reading','concepts','graph','learning_prep'] | None
+    pipeline_version: str
+    requested_by: AdminBuildRequester | None
+    upload: AdminBuildUpload | None
+    course_count: int
+    counts_quota: bool
+    cancel_requested: bool
+    claim_count: int
+    created_at: datetime
+    queued_at: datetime | None
+    started_at: datetime | None
+    finished_at: datetime | None
+    error: AdminBuildError | None
+    usage: AdminBuildUsage
+    graph_version: int | None
+    module_count: int
+
+
+class AdminBuildsResponse(BaseModel):
+    items: list[AdminBuildItem]
+    total: int
+    limit: int
+    offset: int
+
+
+class AdminCoursePatch(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    is_sample: StrictBool
+
+
+class AdminCourseResponse(BaseModel):
+    course_id: str
+    doc_id: str
+    title: str
+    status: Literal['building','ready','failed']
+    is_sample: bool
+    published_graph_version: int | None
+    module_count: int
+    updated_at: datetime
+
+
 class AdminPolicyField(BaseModel):
     loc: str
     message: str
@@ -107,5 +181,17 @@ def admin_router():
               limit: int=Query(50,ge=1,le=100),offset: int=Query(0,ge=0,le=100000)):
         return admin.list_audit(actor,actor_id=str(actor_id) if actor_id else None,action=action,
             since=since,until=until,limit=limit,offset=offset)
+
+    @router.get('/builds',response_model=AdminBuildsResponse)
+    def builds(request: Request, admin=Depends(service), actor: Actor=Depends(get_actor),
+               q: str=Query('',max_length=254), status: BuildStatus | None=None, usage_complete: bool | None=None,
+               since: datetime | None=None, until: datetime | None=None,
+               limit: int=Query(50,ge=1,le=100),offset: int=Query(0,ge=0,le=100000)):
+        return admin.list_builds(actor,q=q,status=status,usage_complete=usage_complete,since=since,until=until,
+            limit=limit,offset=offset)
+
+    @router.patch('/courses/{cid}',response_model=AdminCourseResponse,responses={409:{'model':AdminPolicyErrorResponse}})
+    def set_sample(cid: UUID, data: AdminCoursePatch, request: Request, admin=Depends(service),actor: Actor=Depends(get_actor)):
+        return admin.set_sample_course(actor,str(cid),data.is_sample,ip=client_ip(request))
 
     return router

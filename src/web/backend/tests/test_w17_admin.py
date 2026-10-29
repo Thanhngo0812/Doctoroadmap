@@ -175,8 +175,8 @@ def assert_admin_routes_protected(rt):
     assert {route.path for route, _ in routes} >= {'/api/v1/admin/users', '/api/v1/admin/users/{uid}', '/api/v1/admin/audit'}
     with TestClient(rt.app, base_url=ORIGIN) as guest:
         for route, method in routes:
-            path = route.path.replace('{uid}', rt.learner.id)
-            body = {'status':'disabled'} if method == 'PATCH' else None
+            path = route.path.replace('{uid}', rt.learner.id).replace('{cid}', str(uuid4()))
+            body = ({'is_sample':True} if '/courses/' in route.path else {'status':'disabled'}) if method == 'PATCH' else None
             for client, extra, status, code in ((rt.learner.client, headers(rt.learner),403,'forbidden'),
                 (guest, {'Origin':ORIGIN},401 if method=='GET' else 403,'unauthenticated' if method=='GET' else 'csrf_failed')):
                 response = client.request(method,path,headers=extra,json=body)
@@ -378,6 +378,8 @@ def test_private_learning_records_are_inaccessible_to_admin_and_absent_from_ever
     assert len(sql(rt,'SELECT record_id FROM phase_b_record WHERE owner=:uid',uid=rt.learner.id))==4
     assert_private_course_routes_protected(rt.app,rt.owner.client,headers(rt.owner),course.id)
     for route,method in admin_routes(rt.app):
+        if route.path.startswith('/api/v1/admin/courses/'):
+            continue  # W17.2 flag route has its own marker tests in test_w17_builds_samples.py
         response=rt.owner.client.request(method,route.path.replace('{uid}',rt.learner.id),headers=headers(rt.owner),
             json={'build_monthly_max':5} if method=='PATCH' else None)
         assert response.status_code==200,response.text

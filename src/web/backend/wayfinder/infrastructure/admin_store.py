@@ -71,3 +71,40 @@ class PostgresAdminStore(PostgresAuthStore):
             rows = conn.execute(select(*columns).where(*predicates).order_by(table.c.at.desc(),table.c.id.desc()).limit(limit).offset(offset)).mappings()
             items = [{key:str(value) if isinstance(value,UUID) or key=='ip' and value is not None else value for key,value in row.items()} for row in rows]
         return dict(items=items,total=total,limit=limit,offset=offset)
+
+    def list_builds(self, *, q, status, usage_complete, since, until, limit, offset):
+        params = dict(q=q, status=status, usage_complete=usage_complete, since=since, until=until, limit=limit, offset=offset)
+        where = ("(:q='' OR strpos(lower(b.doc_id),:q)>0 OR strpos(a.email_normalized,:q)>0 OR CAST(b.id AS text)=:q)"
+            ' AND (CAST(:status AS text) IS NULL OR b.status=:status)'
+            ' AND (CAST(:usage_complete AS boolean) IS NULL OR b.usage_complete=:usage_complete)'
+            ' AND (CAST(:since AS timestamptz) IS NULL OR b.created_at>=:since)'
+            ' AND (CAST(:until AS timestamptz) IS NULL OR b.created_at<:until)')
+        join = ' FROM build b LEFT JOIN account a ON a.id=b.requested_by LEFT JOIN upload u ON u.id=b.upload_id WHERE '
+        # Explicit allowlist of columns: error_message, claimed_by, lease_id, upload names/public ids and attempt results are never read.
+        columns = '''SELECT b.id,b.doc_id,b.status,b.step,b.pipeline_version,b.counts_quota,b.cancel_requested,b.claim_count,
+            b.created_at,b.queued_at,b.started_at,b.finished_at,b.error_code,b.retryable,b.spent_usd,b.model_calls,
+            b.input_tokens,b.output_tokens,b.usage_complete,b.elapsed_seconds,b.graph_version,b.module_count,
+            a.id AS requester_id,a.email AS requester_email,u.kind AS upload_kind,u.page_count AS upload_pages,
+            u.size_bytes AS upload_size,(SELECT count(*) FROM course c WHERE c.build_id=b.id) AS course_count'''
+        with self._use_connection() as conn:
+            total = conn.execute(text('SELECT count(*)' + join + where), params).scalar_one()
+            rows = conn.execute(text(columns + join + where + ' ORDER BY b.created_at DESC,b.id LIMIT :limit OFFSET :offset'), params).mappings()
+            items = [{key: str(value) if isinstance(value, UUID) else value for key, value in row.items()} for row in rows]
+        return dict(items=items, total=total, limit=limit, offset=offset)
+
+    def lock_course(self, cid):
+        with self._use_connection(write=True) as conn:
+            row = conn.execute(text('SELECT id,doc_id,title,status,is_sample,published_graph_version,module_count,updated_at '
+                'FROM course WHERE id=:cid FOR UPDATE'), dict(cid=cid)).mappings().first()
+        return {key: str(value) if isinstance(value, UUID) else value for key, value in row.items()} if row else None
+
+    def other_sample_exists(self, doc_id, cid):
+        with self._use_connection() as conn:
+            return conn.scalar(text('SELECT EXISTS(SELECT 1 FROM course WHERE is_sample AND doc_id=:doc AND id<>:cid)'),
+                dict(doc=doc_id, cid=cid))
+
+    def set_course_sample(self, cid, is_sample, at):
+        with self._use_connection(write=True) as conn:
+            row = conn.execute(text('UPDATE course SET is_sample=:flag,updated_at=:at WHERE id=:cid RETURNING id,doc_id,title,status,'
+                'is_sample,published_graph_version,module_count,updated_at'), dict(flag=is_sample, at=at, cid=cid)).mappings().one()
+        return {key: str(value) if isinstance(value, UUID) else value for key, value in row.items()}
