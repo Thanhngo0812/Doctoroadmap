@@ -23,6 +23,7 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | **đã ghép** (6255edfa, 27/10); cổng toàn repo 3205 passed |
 | [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | **đã ghép** (ba784a5, 27/10) |
 | [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | **đã ghép** (902f5122, 28/10); 14 biến thể; dry-run dev-xstk: chinh khoảng 0,48 USD |
+| [08b](08b-luot-theo-duong-san-pham.md) | Lượt hệ chính chạy đúng đường sản phẩm (`DocumentPipeline`): A4 không cổng vàng, cổng chất lượng chữ như sản phẩm, đường vòng có cờ | agent mới | 08, 18a | 31/10 | giao 29/10 (lượt phát triển đầu dừng ở A4 vì `a4 --gold`) |
 | [09](09-can-khai-niem.md) | Căn khái niệm: luật tự động, phiếu căn tay mù, nhật ký, phiếu kiểm 20% | agent A | 02, 04 | 01/11 | **đã ghép** (7e3a5a2f, 27/10); k ứng viên 3/1, chưa hiệu chỉnh (chốt ở DG-18) |
 | [10](10-thuoc-khai-niem-va-truy-nguyen.md) | Thước A3/A4/A5 và truy nguyên | agent A | 09 | 01/11 | **đã ghép** (b3cab7ab, 27/10); ánh xạ trạng thái và ngưỡng truy nguyên còn nháp (chốt ở DG-18) |
 | [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | **đã ghép** (638de205, 27/10); kiểm tái tạo xstk v68, doc-4 v27 khớp; E8 khớp |
@@ -31,10 +32,11 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | **đã ghép** (51c714dc, 29/10); bộ phá Claude 20/22 (2 hết áp dụng); cổng rút gọn 786 test |
 | [15](15-quy-loi-theo-khau.md) | Quy lỗi 7 bậc, xếp loại cạnh ngoài vàng | agent B | 10, 13 | 03/11 | **đã ghép** (69d9a335, 28/10); bộ phá Claude 20/20; xstk v68: 61 cạnh vàng, 45 đúng, lý do 4: 12, lý do 6: 4 |
 | [16](16-phieu-g5.md) | Phiếu G5 mù, câu đối chứng, precision hiệu chỉnh, rubric | agent A | 07, 09, 11 | 03/11 | **đã ghép** (208e8a70, 28/10); so cặp vòng tròn ba hệ; cặp ngẫu nhiên ngoài bao đóng; precision có cận dưới; hướng dẫn g5 còn nháp, chờ duyệt |
-| [17](17-bang-hinh-datasheet-allowlist.md) | Bảng, hình, datasheet, cổng allowlist | agent A | 05, 15, 16 | 04/11 | giao agent A (28/10), lời giao `tmp/claude-tools/prompt-cai-dg17.md` |
+| [17](17-bang-hinh-datasheet-allowlist.md) | Bảng, hình, datasheet, cổng allowlist | agent A | 05, 15, 16 | 04/11 | **đã ghép** (1a7b03f6, 29/10); bộ phá Claude 13/14; nợ test bí mật của 12 lệnh chuyển sang DG-17b (sau DG-08b) |
 | [18](18-giao-thuc-dang-ky-truoc.md) | Giao thức đăng ký trước, mô phỏng công suất, danh sách đóng băng | Claude | 05, 07, 08, 10 | 06/11 | nháp dk-0 `evaluation/giao-thuc/dang-ky-truoc.md` (28/10), còn ô CHỜ số tập phát triển; DG-18a **đã ghép** (e782ec89, 29/10): `luot`/`b5` trên tập thử bắt buộc giao thức đã chốt (không còn chữ CHỜ, NHÁP), SHA vào bản ghi và hash; tranh chấp ra khỏi mẫu số A5 |
 | [19](19-tat-a2-tat-loc-a5.md) | *(tuỳ chọn)* Tắt A2, tắt lọc A5 | agent | 08 | — | chỉ làm nếu lịch còn chỗ |
 | [20](20-hoc-lai-mo-hinh-ml.md) | Chọn lại siêu tham số ba mô hình LightGBM (LOBO-16, luật một SE), baseline logistic, cross-encoder pass phụ (Q40) | agent C; Claude chạy phần GPU | — | A, B 30/10; C 31/10 | **đã ghép** (2e5929b5, 28/10); M1 7 lá, M2 15 lá, M3 7 lá; cross-encoder không hơn LightGBM |
+| [21](21-bien-the-logistic-cross-encoder.md) | Phần D của DG-20: logistic cuối trên 16 cuốn, A1 logistic, pass phụ chấm lại bằng logistic hay cross-encoder rồi phát lại A9 → A10 | agent mới; Claude chạy phần `torch` | 20, 11 | 04/11 | giao 29/10; cross-encoder 16 cuốn chờ máy GPU (không thì dùng nếp 0, 12/16 cuốn) |
 
 Các việc chạy song song theo ba làn:
 - **Làn A, phiếu:** 02 → 03 → 12 → 09 → 10 → 16 → 17.
