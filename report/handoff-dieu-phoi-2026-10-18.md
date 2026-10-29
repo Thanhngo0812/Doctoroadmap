@@ -43,6 +43,8 @@ agent khác. Người điều phối:
 
 ## 2. Tình hình lúc bàn giao
 
+**Mới nhất — 2026-10-29 khuya, Claude:** phần web nay có bàn giao riêng, đầy đủ: [handoff-web-2026-10-29.md](handoff-web-2026-10-29.md) (trạng thái vé, nghiệm thu W-17.2 đang dở, hàng đợi, cách chạy/kiểm/ghép, máy chủ demo, câu hỏi chờ chủ dự án). W-26 đã ghép `843c07ef`; vé W-27 mới; chủ dự án yêu cầu push mã web và bàn giao lên GitHub.
+
 **Mới nhất — 2026-10-29 tối, Claude:** W-17.1 React đạt, ghép local `e4465b4c`. Đang chạy subagent lõi **W-26** máy chủ demo local (`tmp/w26-demo-local`); xong thì Claude nghiệm thu, ghép rồi tự chạy máy chủ cho chủ dự án xem. Hàng đợi: W-17.2 → D-R12-01/W-23 → vé còn mở → **W-final** gói chạy máy khác. **W-21 bỏ** (demo chỉ local). Lời giao ở `tmp/claude-tools/prompt-cai-*.md`, sổ tay `so-tay-agent-web.md`. Web chặn Gemini Developer API ở `composition.py:57`, `real_build.py:19`, `build_spend.py:63,175`. Chưa push.
 
 **Mới nhất — 2026-10-29, Claude tiếp nhận điều phối:** chủ dự án báo lời giao lần 12 **chỉ gửi nhóm web**; lõi (W-17.2) và thiết kế (D-R12-01) chưa
