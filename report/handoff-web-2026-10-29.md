@@ -1,7 +1,10 @@
 # Bàn giao điều phối web WayFinder — 2026-10-29
 
 **Trạng thái:** viết tối 2026-10-29 bởi Claude (người điều phối web từ 29/10). Đang dừng giữa **nghiệm thu lần 15 (W-17.2)** theo lời chủ dự án
-("khoan chạy toàn test… ngưng lát về làm tiếp"). Máy chủ demo **đang tắt** (Docker Desktop tắt). Main local `96515f08` + commit bàn giao này.
+("khoan chạy toàn test… ngưng lát về làm tiếp"). Máy chủ demo **đang tắt** (Docker Desktop tắt).
+**Đã push GitHub ngày 29/10 theo yêu cầu chủ dự án** ("push cả main"): `origin/main` lên tới commit chứa dòng này; nhánh
+`work/w17-builds-samples-backend` (`cd198812`) được đẩy riêng **chưa nghiệm thu** — chủ dự án dặn "đẩy đi và handoff nhờ nó nghiệm thu": **người điều
+phối tiếp theo làm nốt nghiệm thu W-17.2 theo mục 4** trước mọi vé khác, rồi mới ghép vào main.
 
 Tài liệu này đủ để một người hay một agent khác tiếp tục điều phối phần web mà không cần đọc lại cuộc trò chuyện. Bàn giao chung cũ
 ([handoff-dieu-phoi-2026-10-18.md](handoff-dieu-phoi-2026-10-18.md)) giữ làm lịch sử Pha B và các lần nghiệm thu 1–12 của Codex; phần web hiện hành
@@ -58,9 +61,11 @@ Từ 2026-10-29 ba subagent thay ba nhóm người (web, lõi, thiết kế). Lu
 
 - Thư mục chung `C:\Users\ngoco\Desktop\Doctoroadmap` **luôn ở `main`**. Mỗi vé một worktree `tmp/<tên>`, nhánh `work/<tên>`.
 - Remote: `https://github.com/Thanhngo0812/Doctoroadmap.git`. **Repo đang ở chế độ công khai (PUBLIC)**; bộ nhớ cũ ghi "riêng tư" là sai.
-- Lúc viết: `origin/main` = `5e19b9b3` (24/10); main local hơn 476 commit (web, Pha B, đánh giá Pha A, khoảng 1 GB bằng chứng gồm video `.webm` tới 54 MB).
-  Trước khi push đã quét: không giá trị bí mật nào của `.env`/`src/web/.env` nằm trong cây mã hay trong 14 tệp zip đã commit; không đường dẫn tập giữ lại.
-  Kết quả push ghi ở dòng trạng thái đầu tệp sau khi đẩy.
+- Trước lần push 29/10: `origin/main` = `5e19b9b3` (24/10); main local hơn 477 commit (web, Pha B, đánh giá Pha A, khoảng 1 GB bằng chứng gồm video
+  `.webm` tới 54 MB, không blob nào vượt 100 MB). Trước khi push đã quét: không giá trị bí mật nào của `.env`/`src/web/.env` nằm trong cây mã hay trong
+  14 tệp zip đã commit; không đường dẫn tập giữ lại. Quyết định 24/10 "chỉ commit local" hết hiệu lực từ lần push này; từ nay **ghép xong thì push**
+  như quy trình gốc, trừ khi chủ dự án nói khác.
+- Trên GitHub còn nhánh `work/w17-builds-samples-backend` (W-17.2, chưa nghiệm thu, mục 4).
 - Commit web/điều phối ngày 29/10 trên main:
 
 | commit | nội dung |
@@ -122,8 +127,10 @@ Biên bản nghiệm thu do Claude viết: [lần 13](dieu-phoi-nghiem-thu-lan13
 ## 4. Việc đang dở: nghiệm thu lần 15 — W-17.2
 
 **Vé:** [W-17](../task/web/W-17-quan-tri.md), mốc 17.2. **Lời giao:** [prompt-cai-w17-2.md](handoff-web-2026-10-29/loi-giao/prompt-cai-w17-2.md).
-**Nhánh:** `work/w17-builds-samples-backend`, worktree `tmp/w17-builds-samples-backend`, đỉnh `cd198812`, gốc main `96515f08` (bằng main hiện tại,
-nên chưa cần nhận main). Báo cáo của subagent: `report/w17-2-builds-samples-backend-2026-10-29.md` trên nhánh.
+**Nhánh:** `work/w17-builds-samples-backend`, worktree `tmp/w17-builds-samples-backend`, đỉnh `cd198812`, gốc main `96515f08`. Nhánh **đã đẩy
+lên GitHub** (cùng tên) để người điều phối tiếp nhận nghiệm thu; ở máy khác thì `git fetch origin` rồi tạo worktree từ `origin/work/w17-builds-samples-backend`.
+Main đã có thêm các commit bàn giao sau `96515f08` (chỉ `report/`, `task/`), nên trước cổng phải `git merge --no-ff main` vào nhánh để `ghep_guard.sh`
+chấp nhận. Báo cáo của subagent: `report/w17-2-builds-samples-backend-2026-10-29.md` trên nhánh.
 
 **Subagent đã làm** (tự báo, Claude đã đọc diff thấy khớp):
 - `GET /api/v1/admin/builds`: tìm `q` (doc_id, email người dựng, build_id), lọc `status`, `usage_complete`, `since`/`until` (nửa mở, phải có múi giờ),
