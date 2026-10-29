@@ -68,6 +68,16 @@ def phat_lai_voi_bo_cham(goc_kho, doc, phien_ban, bo_cham):
     return phat_lai(goc_kho, doc, phien_ban, phu_thay=thay), artifact
 
 
+def mo_hinh_khop(cu_manifest, moi_manifest):
+    """Mô hình đã dựng graph (`config.scorer` của manifest edges) có trùng bộ chấm đang dùng không. `None` nếu graph không ghi (fixture cắt, graph cũ):
+    khi đó kiểm tái tạo chỉ có nghĩa nếu người chạy truyền đúng mô hình đã dựng graph."""
+    cu = (cu_manifest.get("config") or {}).get("scorer")
+    if not isinstance(cu, dict) or not cu.get("model_sha256"):
+        return None
+    moi = (moi_manifest.get("config") or {}).get("scorer") or {}
+    return (cu.get("model_sha256"), cu.get("calibration_sha256")) == (moi.get("model_sha256"), moi.get("calibration_sha256"))
+
+
 def so_voi_da_luu(ket_qua, artifact):
     """So pass phụ mới với pass phụ đã lưu trong edges, và dãy học, cạnh sau A10 với graph đã lưu. Trả dict các cờ và số đếm."""
     cu = ket_qua.chuoi.canh.payload
@@ -85,7 +95,8 @@ def so_voi_da_luu(ket_qua, artifact):
           "so_day_hoc": [len(ket_qua.payload["sequence"]), len(da_luu["sequence"])]}
     cap_moi = {(e["source"], e["target"]) for e in moi["secondary_edges"]}
     cap_cu = {(e["source"], e["target"]) for e in cu["secondary_edges"]}
-    return {**cong, **so, "canh_phu_chi_o_moi": len(cap_moi - cap_cu), "canh_phu_chi_o_cu": len(cap_cu - cap_moi)}
+    return {**cong, **so, "mo_hinh_khop": mo_hinh_khop(ket_qua.chuoi.canh.manifest, artifact.manifest),
+            "canh_phu_chi_o_moi": len(cap_moi - cap_cu), "canh_phu_chi_o_cu": len(cap_cu - cap_moi)}
 
 
 def cap_ung_vien(goc_kho, doc, phien_ban):

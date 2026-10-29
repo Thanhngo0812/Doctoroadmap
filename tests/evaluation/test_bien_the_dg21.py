@@ -198,3 +198,186 @@ def test_phan_van_ban_giong_make_row_cua_lan_hoc():
     for khoa in ("y_ten", "x_ten", "x_dinh_nghia", "cau", "cau_neo", "cau_co_x"):
         assert thuc[khoa] == mong_doi[khoa], khoa
     assert any("@" in c.split() for c in thuc["cau"]) and any("#" in c.split() for c in thuc["cau"])
+
+
+# ================================================================================================ C. bộ chấm logistic và điểm có sẵn
+
+M3 = MO_HINH / "m3-logistic"
+
+
+def test_bo_cham_logistic_khop_predict_proba_va_isotonic_tinh_tay(cap):
+    import joblib
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer
+    from doc2roadmap.domain.secondary_features import FEATURE_NAMES
+    bo = LogisticSecondaryScorer(M3)
+    dong = [h[3] for h in cap]
+    diem = bo.score(dong)
+    mo = joblib.load(M3 / "model.joblib")
+    x = np.asarray([[np.nan if d[t] in ("", None) else float(d[t]) for t in FEATURE_NAMES] for d in dong], dtype=float)
+    assert np.isnan(x).any()                                              # fixture có ô thiếu: đường xử lý NaN thật sự chạy
+    assert np.abs(np.asarray(diem) - mo.predict_proba(x)[:, 1]).max() < 1e-12
+    # isotonic nội suy tuyến tính từng đoạn, tính tay bằng vòng lặp rồi so với bộ chấm
+    hc = _doc(M3 / "manifest.json")["hieu_chinh"]
+    d, v = hc["diem"], hc["xac_suat"]
+    for p, thuc in zip(diem, bo.calibrate(diem)):
+        if p <= d[0]:
+            mong_doi = v[0]
+        elif p >= d[-1]:
+            mong_doi = v[-1]
+        else:
+            i = max(j for j in range(len(d) - 1) if d[j] <= p)
+            mong_doi = v[i] + (p - d[i]) / (d[i + 1] - d[i]) * (v[i + 1] - v[i])
+        assert thuc == pytest.approx(mong_doi, abs=1e-12)
+    assert len(set(np.round(bo.calibrate(diem), 9))) > 1                 # hiệu chỉnh không phẳng
+
+
+def test_bo_cham_logistic_tu_choi_mo_hinh_bi_sua(tmp_path):
+    from danhgia.phat_lai.bo_cham import LogisticSecondaryScorer
+    shutil.copytree(M3, tmp_path / "m")
+    with (tmp_path / "m" / "model.joblib").open("ab") as f:
+        f.write(b"x")
+    with pytest.raises(ValueError, match="băm"):
+        LogisticSecondaryScorer(tmp_path / "m")
+
+
+def _tep_diem(cap_, duong, sua=None):
+    from danhgia.phat_lai.bo_cham import dac_trung_sha
+    dau = {"schema": "diem-co-san-1", "mo_hinh": "ce-thu", "sha256_mo_hinh": "0" * 64, "sha256_hieu_chinh": "1" * 64}
+    n = max(1, len(cap_) - 1)
+    hang = [{"id": f"{h[0]}|{h[1]}|{h[2]}", "dac_trung_sha": dac_trung_sha(h[3]), "p": round(0.1 + 0.8 * i / n, 6),
+             "xac_suat": round(0.2 + 0.6 * i / n, 6)} for i, h in enumerate(cap_)]
+    if sua:
+        hang = sua(hang)
+    Path(duong).write_text("".join(json.dumps(d) + "\n" for d in [dau, *hang]), encoding="utf-8")
+    return duong
+
+
+def test_diem_co_san_thieu_diem_la_loi_khong_phai_0(cap, tmp_path):
+    from danhgia.phat_lai.bo_cham import DiemCoSanScorer
+    dong = [h[3] for h in cap]
+    bo = DiemCoSanScorer(_tep_diem(cap, tmp_path / "d.jsonl"))
+    diem = bo.score(dong)
+    assert len(diem) == len(cap) and bo.calibrate(diem)[0] == 0.2 and bo.calibrate(diem)[-1] == 0.8
+    with pytest.raises(ValueError, match="thiếu hay thừa"):
+        DiemCoSanScorer(_tep_diem(cap, tmp_path / "t.jsonl", lambda h: h[:-1])).score(dong)
+    with pytest.raises(ValueError, match="thiếu p"):
+        DiemCoSanScorer(_tep_diem(cap, tmp_path / "n.jsonl", lambda h: [{**h[0], "p": None}, *h[1:]]))
+    with pytest.raises(ValueError, match="không khớp"):
+        DiemCoSanScorer(_tep_diem(cap, tmp_path / "h.jsonl", lambda h: list(reversed(h)))).score(dong)   # đổi thứ tự cặp
+
+
+# ================================================================================================ lệnh cap-ce, pass-phu-thay
+
+@pytest.fixture(scope="module")
+def hd_chinh(tmp_path_factory):
+    from danhgia.xuat import xuat
+    duong = tmp_path_factory.mktemp("chinh21") / "chinh.json"
+    duong.write_text(json.dumps(xuat(KHO, DOC, PB, dinh_danh=DINH_DANH), ensure_ascii=False), encoding="utf-8")
+    return duong
+
+
+def _cap_ce(tmp_path):
+    ra = tmp_path / "cap.jsonl"
+    assert main(["cap-ce", "--kho", str(KHO), "--doc", DOC, "--phien-ban", str(PB), "--ra", str(ra)]) == 0
+    return [json.loads(d) for d in ra.read_text(encoding="utf-8").splitlines()]
+
+
+def test_cap_ce_moi_chieu_dung_mot_dong_va_thu_tu_bo_cham(cap, tmp_path, chan_mang):
+    dong = _cap_ce(tmp_path)
+    assert [d["id"] for d in dong] == [f"{h[0]}|{h[1]}|{h[2]}" for h in cap]
+    assert len({d["id"] for d in dong}) == len(dong)
+    theo_cap = Counter(d["pair_id"] for d in dong)
+    ids = {d["id"] for d in dong}
+    for d in dong:
+        if theo_cap[d["pair_id"]] == 2:                        # luật chấm hai chiều: chiều ngược lại có mặt
+            assert f"{d['pair_id']}|{d['y']}|{d['x']}" in ids
+    assert set(theo_cap.values()) == {1, 2}                    # fixture có cả cặp một chiều lẫn hai chiều
+
+
+@pytest.mark.parametrize("bo,he", [("logistic", "a8_logistic"), ("diem-co-san", "a8_cross_encoder")])
+def test_pass_phu_thay_ra_hop_dong_hop_le_va_khong_ghi_kho(bo, he, cap, hd_chinh, tmp_path, chan_mang):
+    truoc = bam_cay(KHO)
+    them = (["--mo-hinh", str(M3)] if bo == "logistic" else ["--diem", str(_tep_diem(cap, tmp_path / "d.jsonl"))])
+    ra = tmp_path / "ra.json"
+    assert main(["pass-phu-thay", "--kho", str(KHO), "--doc", DOC, "--phien-ban", str(PB), "--bo-cham", bo, *them, "--hop-dong", str(hd_chinh),
+                 "--commit", "b" * 40, "--ngay-chay", "2026-10-30", "--ra", str(ra)]) == 0
+    hd = _doc(ra)
+    assert kiem(hd) == [] and hd["dinh_danh"]["he"] == he and hd["dinh_danh"]["commit"] == "b" * 40
+    assert hd["chi_phi"]["tong"]["usd"] == 0 and hd["chi_phi"]["tong"]["token_vao"] == 0
+    assert bam_cay(KHO) == truoc                                # kho lượt chính không bị ghi
+
+
+def test_pass_phu_thay_diem_co_san_khong_the_dung_cho_dong_khac(cap, hd_chinh, tmp_path, chan_mang):
+    """Điểm của cặp này không được gán cho dòng đặc trưng khác: dấu vân tay bắt được."""
+    tep = _tep_diem(cap, tmp_path / "d.jsonl", lambda h: [{**h[0], "dac_trung_sha": "f" * 64}, *h[1:]])
+    with pytest.raises(ValueError, match="không khớp"):
+        main(["pass-phu-thay", "--kho", str(KHO), "--doc", DOC, "--phien-ban", str(PB), "--bo-cham", "diem-co-san", "--diem", str(tep),
+              "--hop-dong", str(hd_chinh), "--ra", str(tmp_path / "ra.json")])
+
+
+# ================================================================================================ kiểm tái tạo đúng mô hình
+
+E1 = GOC / "tests" / "evaluation" / "fixtures" / "mo-hinh-e5-d01-a-v1"
+
+
+def _chay_kiem(kho, mo_hinh, capsys):
+    argv = ["pass-phu-thay", "--kho", str(kho), "--doc", DOC, "--phien-ban", str(PB), "--bo-cham", "lightgbm", "--kiem-tai-tao"]
+    ma = main(argv + (["--mo-hinh", str(mo_hinh)] if mo_hinh else []))
+    ra = capsys.readouterr()
+    return ma, ra.out, ra.err
+
+
+def _kho_dung_bang_e5_v1(tmp_path):
+    """Bản chép fixture mà bước pass phụ do mô hình `e5-d01-a-v1` dựng: cạnh và nhật ký pass phụ của v2 ghi lại đúng kết quả mô hình đó, và manifest ghi
+    `config.scorer` như graph thật. (Fixture gốc là bản cắt 17 node nên điểm đã lưu không còn tái tạo được bằng bất kỳ mô hình nào, kể cả v1.)"""
+    from danhgia.phat_lai.pass_phu import chay_pass_phu
+    from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
+    bo = LightGBMSecondaryScorer(model_dir=E1)
+    artifact, _ = chay_pass_phu(KHO, DOC, PB, bo)
+    kho = tmp_path / "kho"
+    shutil.copytree(KHO, kho)
+    thu_muc = kho / "graph" / DOC / "v2"
+    payload = _doc(thu_muc / "graph.json")
+    for k in ("secondary_edges", "secondary_log"):
+        payload[k] = artifact.payload[k]
+    (thu_muc / "graph.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    manifest = _doc(thu_muc / "manifest.json")
+    manifest["config"]["scorer"] = bo.metadata
+    (thu_muc / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    return kho
+
+
+def _so_voi(kho, mo_hinh):
+    from danhgia.phat_lai.pass_phu import phat_lai_voi_bo_cham, so_voi_da_luu
+    from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
+    ket_qua, artifact = phat_lai_voi_bo_cham(kho, DOC, PB, LightGBMSecondaryScorer(model_dir=mo_hinh))
+    return so_voi_da_luu(ket_qua, artifact)
+
+
+def test_e5_v1_dong_bang_trong_fixture_khop_manifest_sha():
+    assert hashlib.sha256((E1 / "model.txt").read_bytes()).hexdigest() == _doc(E1 / "manifest.json")["sha256_model"]
+    assert _doc(E1 / "manifest.json")["phien_ban"] == "e5-d01-a-v1"
+    assert _doc(GOC / "vendor" / "a8-pass-phu-ml" / "manifest.json")["phien_ban"] != "e5-d01-a-v1"    # mô hình sản phẩm hiện tại là bản khác
+
+
+def test_kiem_tai_tao_dung_mo_hinh_da_dung_lech_0(tmp_path, capsys, chan_mang):
+    kho = _kho_dung_bang_e5_v1(tmp_path)
+    so = _so_voi(kho, E1)
+    assert so["canh_phu_dung"] and so["nhat_ky_phu_dung"] and so["mo_hinh_khop"] is True
+    assert so["canh_phu_chi_o_moi"] == so["canh_phu_chi_o_cu"] == 0 and so["so_canh_phu"][0] == so["so_canh_phu"][1] > 0
+    ma, out, err = _chay_kiem(kho, E1, capsys)                    # lệnh cũng thấy khớp và không cảnh báo
+    assert "CẢNH BÁO" not in err and "mo_hinh_khop_graph" in out
+
+
+def test_kiem_tai_tao_sai_mo_hinh_lech_va_canh_bao(tmp_path, capsys, chan_mang):
+    """Bảng phá: không truyền đúng mô hình đã dựng graph (mô hình sản phẩm hiện tại) thì lệch, và lệnh nói rõ nguyên nhân."""
+    kho = _kho_dung_bang_e5_v1(tmp_path)
+    so = _so_voi(kho, None)
+    assert so["mo_hinh_khop"] is False and not (so["canh_phu_dung"] and so["nhat_ky_phu_dung"])
+    ma, out, err = _chay_kiem(kho, None, capsys)
+    assert ma == 1 and "CẢNH BÁO: mô hình chấm khác mô hình đã dựng graph" in err
+
+
+def test_kiem_tai_tao_graph_khong_ghi_mo_hinh_thi_canh_bao_phai_truyen_mo_hinh(capsys, chan_mang):
+    ma, out, err = _chay_kiem(KHO, E1, capsys)     # fixture gốc: manifest edges không ghi `config.scorer`
+    assert "graph không ghi mô hình đã dựng" in err

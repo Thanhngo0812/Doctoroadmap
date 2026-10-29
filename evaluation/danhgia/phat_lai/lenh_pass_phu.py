@@ -15,13 +15,14 @@ nên chạy trên sách tập thử cũng không lộ tên khái niệm hay câu
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from danhgia.bao_cao import cong
 
 HE = {"logistic": "a8_logistic", "diem-co-san": "a8_cross_encoder"}
 CHO_PHEP_KIEM = ("tai_tao_dung", "canh_phu_dung", "nhat_ky_phu_dung", "day_hoc_dung", "canh_requires_dung", "so_canh_phu_moi", "so_canh_phu_cu",
-                 "so_day_hoc_moi", "so_day_hoc_cu", "canh_phu_chi_o_moi", "canh_phu_chi_o_cu")
+                 "so_day_hoc_moi", "so_day_hoc_cu", "canh_phu_chi_o_moi", "canh_phu_chi_o_cu", "mo_hinh_khop_graph")
 CHO_PHEP_THAY = ("so_khai_niem", "so_canh", "so_canh_cung", "so_day_hoc", "so_canh_phu_moi", "so_canh_phu_cu", "canh_phu_chi_o_moi", "canh_phu_chi_o_cu")
 CHO_PHEP_CAP = ("so_cap_ung_vien", "so_dong", "so_chieu_phu_hop")
 
@@ -31,7 +32,8 @@ def them_lenh(parser):
     parser.add_argument("--doc", required=True)
     parser.add_argument("--phien-ban", type=int, required=True)
     parser.add_argument("--bo-cham", choices=("lightgbm", "logistic", "diem-co-san"), required=True)
-    parser.add_argument("--mo-hinh", help="thư mục mô hình logistic (model.joblib + manifest.json)")
+    parser.add_argument("--mo-hinh", help="thư mục mô hình: logistic (model.joblib + manifest.json) hay LightGBM (model.txt + manifest.json; mặc định mô hình sản phẩm). "
+                        "Kiểm tái tạo phải truyền đúng mô hình đã dựng graph")
     parser.add_argument("--diem", help="tệp điểm có sẵn của cross-encoder")
     parser.add_argument("--kiem-tai-tao", action="store_true", help="chỉ so với pass phụ và dãy học đã lưu, không xuất hợp đồng")
     parser.add_argument("--hop-dong", help="hợp đồng hệ chính của cùng graph (nguồn của dinh_danh)")
@@ -52,7 +54,7 @@ def them_lenh_cap_ce(parser):
 def bo_cham(args):
     if args.bo_cham == "lightgbm":
         from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
-        return LightGBMSecondaryScorer()
+        return LightGBMSecondaryScorer(model_dir=args.mo_hinh)
     from .bo_cham import DiemCoSanScorer, LogisticSecondaryScorer
     if args.bo_cham == "logistic":
         if not args.mo_hinh:
@@ -75,7 +77,12 @@ def chay(args):
                            "day_hoc_dung": so["day_hoc_dung"], "canh_requires_dung": so["canh_requires_dung"],
                            "so_canh_phu_moi": so["so_canh_phu"][0], "so_canh_phu_cu": so["so_canh_phu"][1],
                            "so_day_hoc_moi": so["so_day_hoc"][0], "so_day_hoc_cu": so["so_day_hoc"][1],
-                           "canh_phu_chi_o_moi": so["canh_phu_chi_o_moi"], "canh_phu_chi_o_cu": so["canh_phu_chi_o_cu"]}, CHO_PHEP_KIEM)
+                           "canh_phu_chi_o_moi": so["canh_phu_chi_o_moi"], "canh_phu_chi_o_cu": so["canh_phu_chi_o_cu"],
+                           "mo_hinh_khop_graph": so["mo_hinh_khop"]}, CHO_PHEP_KIEM)
+        if so["mo_hinh_khop"] is False:
+            print("CẢNH BÁO: mô hình chấm khác mô hình đã dựng graph (config.scorer của manifest edges); lệch nếu có là do mô hình, không phải bộ nối", file=sys.stderr)
+        elif so["mo_hinh_khop"] is None:
+            print("CẢNH BÁO: graph không ghi mô hình đã dựng; kiểm tái tạo chỉ đáng tin nếu --mo-hinh là mô hình đã dựng graph", file=sys.stderr)
         return 0 if so["tai_tao_dung"] else 1
     if args.bo_cham == "lightgbm":
         raise SystemExit("--bo-cham lightgbm chỉ dùng với --kiem-tai-tao (hệ chính đã có hợp đồng riêng)")
