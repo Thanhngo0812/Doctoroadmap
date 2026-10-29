@@ -7,8 +7,8 @@ import { AuthProvider, useAuth } from './Auth';
 import { AdminPage } from './Admin';
 import type { AdminUser } from './admin-api';
 
-const first={id:'admin-a',email:'mai@example.invalid',display_name:'Mai',role:'admin',status:'active',email_verified_at:'2026-10-01T00:00:00Z',created_at:'2026-10-01T00:00:00Z',last_login_at:null,owned_courses:2,build_monthly_max:null,builds_this_month:{used:0,max:null,resets_at:'2026-11-01T00:00:00+07:00'},is_first_admin:true};
-const later={...first,id:'admin-b',email:'binh@example.invalid',display_name:'Bình',status:'disabled',is_first_admin:false};
+const first:AdminUser={id:'admin-a',email:'mai@example.invalid',display_name:'Mai',role:'admin',status:'active',email_verified_at:'2026-10-01T00:00:00Z',created_at:'2026-10-01T00:00:00Z',last_login_at:null,owned_courses:2,build_monthly_max:null,builds_this_month:{used:0,max:null,resets_at:'2026-11-01T00:00:00+07:00'},is_first_admin:true};
+const later:AdminUser={...first,id:'admin-b',email:'binh@example.invalid',display_name:'Bình',status:'disabled',is_first_admin:false};
 let identity: {id:string;email:string;display_name:string;role:string;email_verified:boolean}|null;
 let rows: AdminUser[],calls:Array<{url:string;method:string;body:Record<string,unknown>|null}>,failure:string|null,holdPatch:boolean,releasePatch:(response:Response)=>void;
 const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
