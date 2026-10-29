@@ -20,6 +20,11 @@ def _vat(thuoc_tinh):
     return {"type": "object", "properties": thuoc_tinh, "required": sorted(thuoc_tinh), "additionalProperties": False}
 
 
+def _tuy_chon(vat, *khoa):
+    """Object đóng như `_vat` nhưng các `khoa` được phép vắng (hợp đồng cũ vẫn hợp lệ)."""
+    return {**vat, "required": [k for k in vat["required"] if k not in khoa]}
+
+
 _CHUOI, _SO_NGUYEN, _SO, _BOOL = {"type": "string"}, {"type": "integer"}, {"type": "number"}, {"type": "boolean"}
 _DS_CHUOI = {"type": "array", "items": _CHUOI}
 _CHUOI_HOAC_NULL, _NGUYEN_HOAC_NULL, _SO_HOAC_NULL = _doi("string", "null"), _doi("integer", "null"), _doi("number", "null")
@@ -37,11 +42,12 @@ LUOC_DO = {
     "additionalProperties": False,
     "properties": {
         "schema": {"enum": [TEN_LUOC_DO]},
-        "dinh_danh": _vat({
+        "dinh_danh": _tuy_chon(_vat({
             "doc_id": _CHUOI, "sha256_pdf": _CHUOI_HOAC_NULL, "so_trang": _NGUYEN_HOAC_NULL, "he": _CHUOI,
             "bien_the": _CHUOI, "luot_nhieu": _SO_NGUYEN, "commit": _CHUOI, "hash_cau_hinh": _CHUOI,
             "mo_hinh": _CHUOI, "transport": _CHUOI, "ngay_chay": _CHUOI,
-        }),
+            "duong_vong_chu": _BOOL,   # DG-08b, tuỳ chọn: true = lượt đi đường vòng cổng chất lượng chữ của sản phẩm
+        }), "duong_vong_chu"),
         "cau_truc": {"type": ["object", "null"], "required": ["tieu_de", "muc", "doan_van"],
                      "additionalProperties": False, "properties": {
             "tieu_de": {"type": "array", "items": _vat({

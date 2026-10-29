@@ -16,7 +16,15 @@ _SO_LAN_THU_DOI_TEN = 8
 TRUONG = {"schema": str, "ma_luot": str, "bien_the": str, "ma_sach": str, "doc_id": str, "sha256_pdf": str, "commit": str,
           "hash_cau_hinh": str, "mo_hinh": str, "transport": str, "seed": (int, type(None)), "k": (int, type(None)),
           "luot_nhieu": int, "ngay": str, "cau_hinh": dict, "tu_luot": (str, type(None)), "buoc": list, "ket_qua": dict, "xong": bool}
-TRANG_THAI = ("cho", "dang_chay", "xong", "loi")
+TRANG_THAI = ("cho", "dang_chay", "xong", "loi")   # cộng `tu_choi_<mã>` khi sản phẩm từ chối cuốn (DG-08b)
+
+
+class TuChoi(Exception):
+    """Sản phẩm từ chối cuốn (`BuildRejected`): không phải lỗi chạy. `ma` là mã từ chối của sản phẩm (`chu_loi`, `ban_quet`, ...)."""
+
+    def __init__(self, ma: str, ly_do: str):
+        super().__init__(ly_do)
+        self.ma, self.ly_do = ma, ly_do
 
 
 class CauHinhDoi(ValueError):
@@ -77,7 +85,8 @@ def kiem(ban_ghi) -> list[str]:
     if ban_ghi.get("tap") == "thu" and sha is None:
         loi.append("lượt tập thử thiếu sha256_giao_thuc (lượt không mang SHA giao thức đăng ký trước)")
     for chi_so, buoc in enumerate(ban_ghi.get("buoc") or []):
-        if not isinstance(buoc, dict) or buoc.get("trang_thai") not in TRANG_THAI or not buoc.get("ten"):
+        if not isinstance(buoc, dict) or not buoc.get("ten") or not (
+                buoc.get("trang_thai") in TRANG_THAI or str(buoc.get("trang_thai")).startswith("tu_choi_")):
             loi.append(f"buoc[{chi_so}]: thiếu tên hay trạng thái không hợp lệ")
     return loi
 
