@@ -1,0 +1,39 @@
+{
+ "sha_goc": "ce6da3df5cb30c1e4a78b6d278908feaef8fcb6564f36a15a881caf9bcb896da",
+ "phep": {
+  "mui-gio": {
+   "thay": [
+    "new Date(value+'+07:00')",
+    "new Date(value+'Z')"
+   ],
+   "exit": 1,
+   "tests_do": [
+    "sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time"
+   ],
+   "sha_khoi_phuc": "ce6da3df5cb30c1e4a78b6d278908feaef8fcb6564f36a15a881caf9bcb896da"
+  },
+  "patch-403-giu-du-lieu": {
+   "thay": [
+    "cause.code==='forbidden'){setDenied(true)",
+    "cause.code==='__tat__'){setDenied(true)"
+   ],
+   "exit": 1,
+   "tests_do": [
+    "removes admin data when the live server returns forbidden",
+    "drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden"
+   ],
+   "sha_khoi_phuc": "ce6da3df5cb30c1e4a78b6d278908feaef8fcb6564f36a15a881caf9bcb896da"
+  },
+  "hien-lai-gio-lech": {
+   "thay": [
+    "new Date(time+7*3600000)",
+    "new Date(time+0*3600000)"
+   ],
+   "exit": 1,
+   "tests_do": [
+    "sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time"
+   ],
+   "sha_khoi_phuc": "ce6da3df5cb30c1e4a78b6d278908feaef8fcb6564f36a15a881caf9bcb896da"
+  }
+ }
+}

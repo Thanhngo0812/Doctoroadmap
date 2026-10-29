@@ -1,6 +1,40 @@
 # W-17.1 React — Người dùng và Nhật ký, 2026-10-29
 
-**Trạng thái:** đang sửa sau nghiệm thu lần 13. Xong: WEB-R13-01 (báo cáo viết lại UTF-8). Đang làm: WEB-R13-02/03 (thêm test trong `Admin.test.tsx`). Kế tiếp: bảng phá, chạy vitest toàn bộ, build, cập nhật SHA báo cáo trong `manifest.json`.
+**Trạng thái:** xong, chờ nghiệm thu (sửa WEB-R13-01…03 sau nghiệm thu lần 13; không đổi `Admin.tsx`).
+
+## Sửa sau nghiệm thu lần 13
+
+Nhánh nhận main `647149b3`→`ddb52df0` bằng merge `07feca5e` (mã thoát 0). Chỉ đổi `Admin.test.tsx` và báo cáo này; `Admin.tsx` giữ nguyên SHA `ce6da3df…`. 0 USD, không gọi nhà cung cấp, không chạy test Python.
+
+- **WEB-R13-01.** Viết lại bằng UTF-8 từ mục "Lượt tích hợp b75e611b" tới hết (số lấy từ `gate-summary.json`, `mutation-summary.json`, `exit.json`, `README`; không đoán). Đếm dòng chứa dấu hỏi trong blob Git của báo cáo (lệnh `grep -c` với ký tự hỏi) cho đúng 1: câu hỏi thật ở mục Thiết kế; không còn ký tự hỏng. `report/.gitattributes` giữ `eol=lf` cho tệp này. `manifest.json` băm báo cáo nên SHA đã cập nhật (xem cuối mục).
+- **WEB-R13-02.** Test mới `sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time`: nhập "Từ" 2026-10-29 10:00 và "Đến" 2026-10-30 00:30 (giờ Việt Nam) trên `/admin/nhat-ky`, kiểm query gửi đi là `since=2026-10-29T03:00:00.000Z`, `until=2026-10-29T17:30:00.000Z`; rồi tải trang với hai giá trị UTC đó trên URL và kiểm ô nhập hiện lại `2026-10-29T10:00` / `2026-10-30T00:30`.
+- **WEB-R13-03.** Test mới `drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden`: bảng đã tải, mở sửa, PATCH trả 403 `forbidden` thì hộp thoại, bảng, cả hai email, nút "Tải lại" và "Áp dụng bộ lọc" biến mất, còn link "Về khoá học của tôi". Test GET 403 hiện có (`removes admin data when the live server returns forbidden`) cũng đòi link đó và không còn nút Tải lại/Áp dụng bộ lọc, nên phân biệt được màn Denied với thông báo lỗi.
+
+### Lệnh và kết quả (từ `src/web/frontend` của worktree)
+
+| lệnh | kết quả |
+|---|---|
+| `npx vitest run --pool=threads --maxWorkers=1 src/Admin.test.tsx` | 24 pass (22 cũ + 2 mới), mã thoát 0 |
+| `npx vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=../../../report/w17-react-evidence/r13-sua/react-all.xml` | **283 pass / 21 tệp**, mã thoát 0 |
+| `npm run build` | mã thoát 0 |
+
+### Bảng phá (script `report/w17-react-evidence/r13-sua/pha.py`, kết quả `mutations-summary.json`, JUnit từng phép cùng thư mục)
+
+Mỗi phép chụp bytes `Admin.tsx` trước, chạy `src/Admin.test.tsx`, khôi phục bytes trong `finally`; SHA sau khôi phục đều `ce6da3df5cb30c1e4a78b6d278908feaef8fcb6564f36a15a881caf9bcb896da`, bằng SHA gốc. Cả ba phép mã thoát 1 với assertion fail.
+
+| phép phá | chuỗi thay thế | test đỏ |
+|---|---|---|
+| `mui-gio` (R13-02) | `new Date(value+'+07:00')` → `new Date(value+'Z')` | `sends the audit since/until typed in Vietnam time as UTC and shows UTC URL values back in Vietnam time` |
+| `patch-403-giu-du-lieu` (R13-03) | `cause.code==='forbidden'){setDenied(true)` → `cause.code==='__tat__'){setDenied(true)` (nhánh `forbidden` trong `fail` rơi xuống `setError`) | `drops the loaded table and the open dialog and shows the denied screen when a PATCH returns forbidden` và `removes admin data when the live server returns forbidden` |
+| `hien-lai-gio-lech` (thêm, nửa hiển thị lại) | `new Date(time+7*3600000)` → `new Date(time+0*3600000)` | cùng test múi giờ ở trên |
+
+### Optional (không sửa)
+
+Hai ô chọn bị khoá của admin đầu tiên ở chế độ tối còn gần giống ô đang bật (ảnh `first-admin-768-dark.png`). Không đụng CSS đợt này, nên không có ảnh mới; để lượt thiết kế/UI xử lý.
+
+### Giới hạn
+
+Các số cổng ở các mục dưới (3.833 Python, 40 ảnh browser…) vẫn là của lượt `b75e611b`; ghim `Admin.test.tsx` trong `manifest.json` cũng là của lượt đó và không đổi, vì hồ sơ này không tuyên bố nó là bản test mới. Chỉ SHA của báo cáo được cập nhật.
 
 **Báo cáo triển khai, đang hoàn thiện kiểm cuối; chưa tự nghiệm thu W-17.1 hoặc toàn W-17.** Chỉ hai màn Người dùng/Nhật ký và ba API backend đã nhận. Bản dựng/khoá mẫu/chi/lecture_validation tiếp tục thuộc mốc sau. Không sửa use case lõi, registry, migration, profile/password/epoch hoặc W-12.
 
