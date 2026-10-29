@@ -24,7 +24,7 @@ khác lượt đó chỉ ở phần đánh giá, do phiên Pha A gác bằng c�
 |---|---|---|
 | build TypeScript/Vite | native 0 | lệnh `npm run build` |
 | React toàn bộ | **281 pass / 21 tệp**, native 0 | `coord-r13-evidence-2026-10-29/react-candidate.xml` |
-| `src/web/backend/tests` qua runner, PostgreSQL bắt buộc | **đang chạy lúc ghi biên bản** (hết lượt dùng); đọc `web-backend-candidate.log` trong worktree nghiệm thu khi tiếp tục | `coord-r13-evidence-2026-10-29/web-backend-candidate.xml` |
+| `src/web/backend/tests` qua runner, PostgreSQL bắt buộc **644 pass / 1 fail / 1 skip**, native 1. Ca đỏ duy nhất `test_internal_dry_run_w15…[candidate]` là thiếu fixture `tmp/w15-candidate/input.pdf` trong worktree nghiệm thu (FileNotFoundError khi dựng), không phải hồi quy; nhánh không đổi Python và ca này xanh trong cổng 3833 của nhóm web | `coord-r13-evidence-2026-10-29/web-backend-candidate.xml` |
 
 ## 3. Đọc mã
 
