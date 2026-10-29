@@ -16,6 +16,7 @@ import socket
 import sys
 from collections import Counter
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -381,3 +382,112 @@ def test_kiem_tai_tao_sai_mo_hinh_lech_va_canh_bao(tmp_path, capsys, chan_mang):
 def test_kiem_tai_tao_graph_khong_ghi_mo_hinh_thi_canh_bao_phai_truyen_mo_hinh(capsys, chan_mang):
     ma, out, err = _chay_kiem(KHO, E1, capsys)     # fixture gốc: manifest edges không ghi `config.scorer`
     assert "graph không ghi mô hình đã dựng" in err
+
+
+# ================================================================================================ script cross-encoder (phần không cần torch)
+
+def test_ce_cham_nhap_duoc_khong_can_torch_va_ghi_diem_nap_duoc(cap, tmp_path):
+    import ce_cham
+    from danhgia.phat_lai.bo_cham import DiemCoSanScorer, dac_trung_sha
+    dong_cap = [{"id": f"{h[0]}|{h[1]}|{h[2]}", "dac_trung_sha": dac_trung_sha(h[3])} for h in cap]
+    p = [0.05 + 0.9 * i / (len(cap) - 1) for i in range(len(cap))]
+    hc = {"diem": [0.0, 0.5, 1.0], "xac_suat": [0.0, 0.25, 1.0]}
+    ce_cham.ghi_diem(tmp_path / "d.jsonl", dong_cap, p, hc, {"mo_hinh": "thu", "sha256_mo_hinh": "0" * 64, "sha256_hieu_chinh": "1" * 64})
+    bo = DiemCoSanScorer(tmp_path / "d.jsonl")
+    diem = bo.score([h[3] for h in cap])
+    assert diem == pytest.approx(p)
+    for v, x in zip(diem, bo.calibrate(diem)):                                 # isotonic tính tay trên hai đoạn của bộ hiệu chỉnh thử
+        assert x == pytest.approx(v * 0.5 if v <= 0.5 else 0.25 + (v - 0.5) * 1.5)
+    with pytest.raises(ValueError, match="điểm"):
+        ce_cham.ghi_diem(tmp_path / "x.jsonl", dong_cap, p[:-1], hc, {})       # thiếu điểm là lỗi, không đệm 0
+
+
+def test_ce_hieu_chinh_isotonic_tinh_tay_va_nep_phai_roi_nhau():
+    import ce_hieu_chinh
+    ngoai_mau = {k: [{"id": f"n{k}-{i}", "p": [0.1 * (1 + 2 * k + i), 0.0]} for i in range(2)] for k in range(4)}   # 8 điểm tăng dần 0,1 … 0,8 (hai điểm mỗi nếp)
+    nhan = {}
+    for k in range(4):
+        for i in range(2):
+            nhan[f"n{k}-{i}"] = "can_de_hieu" if (2 * k + i) in (1, 4, 6, 7) else "khong"     # y = 0,1,0,0,1,0,1,1 theo điểm
+    kq = ce_hieu_chinh.hieu_chinh_tu_ngoai_mau(ngoai_mau, nhan)
+    # PAV tính độc lập bằng vòng gộp các khối vi phạm đơn điệu
+    khoi = [[v, 1] for v in (0, 1, 0, 0, 1, 0, 1, 1)]
+    i = 0
+    while i < len(khoi) - 1:
+        if khoi[i][0] / khoi[i][1] > khoi[i + 1][0] / khoi[i + 1][1] + 1e-12:
+            khoi[i] = [khoi[i][0] + khoi[i + 1][0], khoi[i][1] + khoi[i + 1][1]]
+            del khoi[i + 1]
+            i = max(0, i - 1)
+        else:
+            i += 1
+    mong_doi = [s / n for s, n in khoi for _ in range(n)]
+    gan = np.interp([0.1 * j for j in range(1, 9)], kq["diem"], kq["xac_suat"])
+    assert gan.tolist() == pytest.approx(mong_doi)
+    ngoai_mau[1][0] = {"id": "n0-0", "p": [0.5, 0.0]}                           # id trùng giữa hai nếp
+    with pytest.raises(ValueError, match="hai nếp"):
+        ce_hieu_chinh.hieu_chinh_tu_ngoai_mau(ngoai_mau, nhan)
+
+
+# ================================================================================================ giữ mù tập thử cho ba lệnh mới
+
+def _kho_co_bi_mat(tmp_path):
+    """Bản chép fixture mà bí danh khái niệm (xuất vào hợp đồng) mang chuỗi bí mật giả."""
+    kho = tmp_path / "kho"
+    shutil.copytree(KHO, kho)
+
+    def nhiem(x):
+        if isinstance(x, dict):
+            return {k: (v + [{"name": f"{SECRET} bí danh", "evidence": [], "candidate_id": "x"}] if k == "aliases" and isinstance(v, list) else nhiem(v))
+                    for k, v in x.items()}
+        return [nhiem(v) for v in x] if isinstance(x, list) else x
+    for g in (kho / "graph" / DOC).glob("v*/graph.json"):      # bí danh không có trong văn bản nên không đổi đặc trưng; hợp đồng ra có xuất bí danh
+        g.write_text(json.dumps(nhiem(_doc(g)), ensure_ascii=False), encoding="utf-8")
+    return kho
+
+
+def test_lenh_moi_khong_lo_bi_mat_len_man_hinh(tmp_path, monkeypatch, capsys, hd_chinh, cap, chan_mang):
+    kho = _kho_co_bi_mat(tmp_path)
+
+    def gom(argv):
+        try:
+            main(argv)
+        except SystemExit as e:
+            print(e.code)
+        ra = capsys.readouterr()
+        return ra.out + ra.err
+    hd_thu = tmp_path / "hd-chinh.json"
+    hd_thu.write_text(hd_chinh.read_text(encoding="utf-8"), encoding="utf-8")
+    cung = ["--kho", str(kho), "--doc", DOC, "--phien-ban", str(PB)]
+    cac_lenh = {
+        "cap-ce": ["cap-ce", *cung, "--ra", str(tmp_path / "cap.jsonl")],
+        "pass-phu-thay": ["pass-phu-thay", *cung, "--bo-cham", "logistic", "--mo-hinh", str(M3), "--hop-dong", str(hd_thu), "--ra", str(tmp_path / "ra.json")],
+        "kiem": ["pass-phu-thay", *cung, "--bo-cham", "lightgbm", "--kiem-tai-tao"],
+    }
+    for ten, argv in cac_lenh.items():
+        chu = gom(argv)
+        assert SECRET not in chu and chu.strip(), ten                          # có in số, nhưng không lộ
+    assert SECRET in (tmp_path / "ra.json").read_text(encoding="utf-8")        # chuỗi bí mật thật sự đã đi vào hợp đồng ra (tệp, theo thiết kế)
+    # bản in ngây thơ làm lộ chuỗi: cổng thật sự chặn chứ không phải đầu vào vô hại
+    import danhgia.phat_lai.lenh_pass_phu as lenh
+    monkeypatch.setattr(lenh, "cong", SimpleNamespace(in_allowlist=lambda d, cho_phep: print((tmp_path / "ra.json").read_text(encoding="utf-8"))))
+    assert SECRET in gom(cac_lenh["pass-phu-thay"])
+
+
+def test_a1_logistic_khong_lo_bi_mat_len_man_hinh(tmp_path, monkeypatch, capsys):
+    from tests.evaluation.ho_tro import tao_pdf
+    trang = [f"1 {SECRET} Gioi thieu\nDay la doan van dau tien cua {SECRET} sach thu nghiem.", "1.1 Khai niem\nNoi dung muc mot co day du cau van."]
+    pdf = tao_pdf(tmp_path / "s.pdf", trang)
+    manifest = {"ma_sach": "thu-bi-mat", "tap": "thu", "so_trang": len(trang), "pdf_sha256": hashlib.sha256(pdf.read_bytes()).hexdigest()}
+    (tmp_path / "m.json").write_text(json.dumps(manifest), encoding="utf-8")
+    argv = ["a1-logistic", "--pdf", str(pdf), "--manifest", str(tmp_path / "m.json"), "--mo-hinh", str(MO_HINH / "a1-logistic"), "--commit", "c" * 40,
+            "--ngay-chay", "2026-10-30", "--ra", str(tmp_path / "hd.json")]
+    assert main(argv) == 0
+    ra = capsys.readouterr()
+    hd = _doc(tmp_path / "hd.json")
+    assert kiem(hd) == [] and hd["dinh_danh"]["he"] == "a1_logistic" and hd["chi_phi"]["tong"]["usd"] == 0
+    assert SECRET in json.dumps(hd, ensure_ascii=False)                        # tiêu đề bí mật có trong hợp đồng ra
+    assert SECRET not in ra.out + ra.err and "tap_thu" in ra.out
+    import danhgia.xuat.lenh_a1_logistic as lenh
+    monkeypatch.setattr(lenh, "cong", SimpleNamespace(in_allowlist=lambda d, cho_phep: print(json.dumps(hd, ensure_ascii=False))))
+    main(argv)
+    assert SECRET in capsys.readouterr().out
