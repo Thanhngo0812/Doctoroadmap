@@ -338,14 +338,15 @@ def test_read_cua_luot_cung_chunk_voi_document_pipeline_read(sach, tmp_path, mon
     token = Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model"   # test chdir sang tmp_path nên đường tương đối mặc định không còn đúng
     monkeypatch.setenv("DOC2ROADMAP_TOKENIZER_MODEL", str(token))
     ra = tmp_path / "luot"
-    assert main(lenh(sach, ra, "chinh", "--transport", "developer_api", co_chi=False)) == 0    # không --allow-spend: chạy read rồi dừng ở dry-run
+    # PDF fixture ngắn và chỉ có chữ ASCII: cổng bản quét của sản phẩm từ chối sau khi đã cắt chunk; chunk vẫn phải giống từng byte
+    assert main(lenh(sach, ra, "chinh", "--transport", "developer_api", co_chi=False)) == 3
     ban = ban_ghi.doc(ra)
-    assert [b["trang_thai"] for b in ban["buoc"]][:2] == ["xong", "cho"] and (ra / "dry-run.json").exists()
+    assert ban["buoc"][0]["trang_thai"] == "tu_choi_ban_quet"
     truc_tiep = tmp_path / "truc-tiep"
     doc_id = "xstk-ch3-1"
     kq = DocumentPipeline(Settings(artifact_dir=truc_tiep, llm_transport="developer_api", tokenizer_model=token), allow_spend=False).read(sach["pdf"], doc_id)
     v = kq["chunks_version"]
-    assert ban["ket_qua"]["read"]["chunks_version"] == v and ban["ket_qua"]["read"]["chunk_count"] == kq["chunk_count"]
+    assert ban["ket_qua"]["tu_choi"]["ma"] == "ban_quet" and "read" not in ban["ket_qua"]
     mot = doc_json(ra / "kho" / "chunks" / doc_id / f"v{v}" / "chunks.json")
     hai = doc_json(truc_tiep / "chunks" / doc_id / f"v{v}" / "chunks.json")
     assert mot == hai and len(mot) == kq["chunk_count"] > 0
@@ -387,6 +388,7 @@ def test_thieu_allow_spend_chi_dry_run_khong_goi_mo_hinh(sach, gia, tmp_path):
 def test_dry_run_chan_ca_khi_co_allow_spend(sach, gia, tmp_path):
     assert main(lenh(sach, tmp_path / "luot", "chinh", "--dry-run")) == 0
     assert sum(gia.goi_mo_hinh.values()) == 0
+    assert [allow for _, allow in gia.tao] == [False]   # có --allow-spend nhưng dry-run: pipeline vẫn dựng với allow_spend=False (phép phá S10)
 
 
 # ---------- chạy tiếp ----------
@@ -790,3 +792,139 @@ def test_ban_ghi_chap_nhan_tu_choi_cua_san_pham_nhung_khong_trang_thai_la(chinh)
     for la in ("hu", "tu_choi", "xong_roi"):
         ban["buoc"][0]["trang_thai"] = la
         assert any("buoc[0]" in dong for dong in ban_ghi.kiem(ban)), la
+
+
+# ---------- cổng bản quét và ngôn ngữ của sản phẩm (BuildDocument._check_pages) ----------
+
+VI = "Xác suất thống kê nghiên cứu các hiện tượng ngẫu nhiên và quy luật của chúng trong đời sống. "
+
+
+class _PipelineDoc:
+    """Thay `DocumentPipeline` bên trong `DuongSanPham`: `read` trả `page_texts` đã định; `ingest` ghi lại việc đường vòng có gọi."""
+
+    def __init__(self, trang):
+        self.trang, self.ingest_goi = trang, 0
+        from types import SimpleNamespace
+        self.settings = SimpleNamespace(max_tokens=1, max_table_tokens=1, hard_cap_tokens=1, target_tokens=1, sentence_overlap=0)
+        self.ingest = self
+        self.store = self
+
+    def read(self, pdf, doc_id):
+        return {"page_texts": self.trang, "chunks_version": 1, "parse_version": 1, "chunk_count": 3}
+
+    def execute(self, *a, **k):
+        from types import SimpleNamespace
+        self.ingest_goi += 1
+        return SimpleNamespace(chunk_version=1, parse_version=1, chunk_count=3)
+
+    def load_chunks(self, doc_id, ban):
+        from types import SimpleNamespace
+        return SimpleNamespace(manifest={})
+
+    def load_parse(self, doc_id, ban):
+        from types import SimpleNamespace
+        nut = [SimpleNamespace(page=i + 1, text=t) for i, t in enumerate(self.trang)]
+        return SimpleNamespace(tree=SimpleNamespace(parse_stats={"page_count": len(self.trang)}, nodes=nut))
+
+
+@pytest.fixture
+def duong(tmp_path, monkeypatch):
+    from danhgia.luot import san_pham
+    monkeypatch.setenv("DOC2ROADMAP_TOKENIZER_MODEL", str(Path(__file__).resolve().parents[2] / "vendor" / "gemma" / "tokenizer.model"))
+
+    def tao(trang):
+        d = object.__new__(san_pham.DuongSanPham)
+        d.env = {"DOC2ROADMAP_ARTIFACT_DIR": str(tmp_path / "kho"), "DOC2ROADMAP_LLM_TRANSPORT": "developer_api"}
+        d.pipeline = _PipelineDoc(trang)
+        return d
+    return tao
+
+
+def test_cong_ban_quet_sach_hop_le_qua_va_ghi_so_do(duong):
+    ra = duong([VI * 3] * 4).read("x.pdf", "D")
+    assert ra["ban_quet"]["page_count"] == 4 and ra["ban_quet"]["empty_page_ratio"] == 0 and ra["ban_quet"]["vi_diacritic_ratio"] > 0.01
+    assert "page_texts" not in ra and ra["chunk_count"] == 3
+
+
+def test_cong_ban_quet_it_dau_tieng_viet_bi_tu_choi(duong):
+    from danhgia.luot.ban_ghi import TuChoi
+    with pytest.raises(TuChoi) as e:
+        duong(["Probability and statistics study random phenomena and their laws in daily life. " * 3] * 4).read("x.pdf", "D")
+    assert e.value.ma == "ngon_ngu_khong_ho_tro"
+
+
+def test_cong_ban_quet_nhieu_trang_trong_bi_tu_choi(duong):
+    from danhgia.luot.ban_ghi import TuChoi
+    with pytest.raises(TuChoi) as e:
+        duong([VI * 3, "", "", ""]).read("x.pdf", "D")
+    assert e.value.ma == "ban_quet"
+
+
+def test_duong_vong_chu_van_bi_cong_ban_quet_chan_va_ghi_so_do_khi_qua(duong, tmp_path):
+    pdf = tmp_path / "x.pdf"
+    pdf.write_bytes(b"%PDF")
+    from danhgia.luot.ban_ghi import TuChoi
+    d = duong([VI * 3, "", "", ""])
+    with pytest.raises(TuChoi) as e:
+        d.read(pdf, "D", ly_do="phân tích phụ")
+    assert e.value.ma == "ban_quet" and d.pipeline.ingest_goi == 1   # đường vòng đã chạy ingest, rồi cổng chặn
+    ok = duong([VI * 3] * 2).read(pdf, "D", ly_do="phân tích phụ")
+    assert ok["ban_quet"]["page_count"] == 2
+
+
+def test_luot_ghi_so_do_ban_quet_vao_ket_qua_read(sach, tmp_path, monkeypatch):
+    class G(lh.GiaPipeline):
+        def tao_pipeline(self, env, allow_spend):
+            p = super().tao_pipeline(env, allow_spend)
+            goc = p.read
+            p.read = lambda *a, **k: {**goc(*a, **k), "ban_quet": {"page_count": 4, "vi_diacritic_ratio": 0.2}}
+            return p
+    g = G()
+    monkeypatch.setattr(chay, "chay_cli_that", g)
+    monkeypatch.setattr(chay, "dung_pipeline_that", g.tao_pipeline)
+    ra = tmp_path / "luot"
+    assert main(lenh(sach, ra, "chinh")) == 0
+    assert ban_ghi.doc(ra)["ket_qua"]["read"]["ban_quet"] == {"page_count": 4, "vi_diacritic_ratio": 0.2}
+
+
+def test_nguong_cong_ban_quet_la_nguong_cua_san_pham(duong, monkeypatch):
+    """Ngưỡng không chép lại: đổi ngưỡng ở chỗ sản phẩm dựng `BuildDocument` thì kết quả của luot đổi theo. (Settings không có ngưỡng này.)"""
+    import doc2roadmap.application.use_cases.build_document as bd
+    from danhgia.luot.ban_ghi import TuChoi
+    trang = [VI] * 3   # khoảng 85 chữ mỗi trang: dưới ngưỡng 150 của sản phẩm
+    with pytest.raises(TuChoi) as e:
+        duong(trang).read("x.pdf", "D")
+    assert e.value.ma == "ban_quet"
+
+    class Long(bd.BuildDocument):
+        def __init__(self, *a, **k):
+            super().__init__(*a, **{**k, "scan_min_chars_per_page": 10})
+    monkeypatch.setattr(bd, "BuildDocument", Long)
+    assert duong(trang).read("x.pdf", "D")["ban_quet"]["page_count"] == 3
+
+
+# ---------- biến môi trường của lượt được hoàn lại (phép phá S9) ----------
+
+def test_moi_truong_hoan_lai_ca_khi_bien_chua_co(monkeypatch):
+    import os
+    from danhgia.luot import san_pham
+    monkeypatch.delenv("DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED", raising=False)
+    monkeypatch.setenv("DOC2ROADMAP_ARTIFACT_DIR", "truoc")
+    with san_pham._moi_truong({"DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED": "7", "DOC2ROADMAP_ARTIFACT_DIR": "luot"}):
+        assert os.environ["DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"] == "7" and os.environ["DOC2ROADMAP_ARTIFACT_DIR"] == "luot"
+    assert "DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED" not in os.environ and os.environ["DOC2ROADMAP_ARTIFACT_DIR"] == "truoc"
+
+
+def test_moi_truong_hoan_lai_sau_moi_buoc_cua_duong_san_pham(duong, monkeypatch):
+    import os
+    khoa = "DOC2ROADMAP_MAIN_CONTEXT_SHUFFLE_SEED"
+    monkeypatch.delenv(khoa, raising=False)
+    d = duong([VI * 3] * 2)
+    d.env[khoa] = "7"
+    d.pipeline.label_roles = d.pipeline.a3 = d.pipeline.roadmap = lambda doc_id: os.environ[khoa]
+    d.pipeline.canonical = lambda doc_id, ngon_ngu: os.environ[khoa]
+    for buoc in (d.label_roles, d.a3, d.roadmap):
+        assert buoc("D") == "7" and khoa not in os.environ
+    assert d.canonical("D", "vi") == "7" and khoa not in os.environ
+    d.read("x.pdf", "D")
+    assert khoa not in os.environ

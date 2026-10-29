@@ -212,7 +212,7 @@ class Luot:
         nc = self.nc
         ra = self._pl().read(nc.pdf, nc.doc_id, a1="docling" if nc.bien_the == "docling" else "nhe", ly_do=nc.ly_do_chu)
         self._log("read", ra)
-        self.ban["ket_qua"]["read"] = {khoa: ra.get(khoa) for khoa in ("chunks_version", "parse_version", "chunk_count")}
+        self.ban["ket_qua"]["read"] = {khoa: ra.get(khoa) for khoa in ("chunks_version", "parse_version", "chunk_count", "ban_quet")}   # ban_quet: số đo, không văn bản
 
     def _b_label_roles(self):
         self._log("label_roles", self._pl().label_roles(self.nc.doc_id))
