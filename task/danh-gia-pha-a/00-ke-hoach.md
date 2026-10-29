@@ -28,7 +28,7 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | [11](11-baseline-va-phat-lai.md) | Baseline B1–B4, bộ phát lại A9 → A10 và các biến thể | agent B | 04 | 01/11 | **đã ghép** (638de205, 27/10); kiểm tái tạo xstk v68, doc-4 v27 khớp; E8 khớp |
 | [12](12-nhap-g1-g2-va-phieu-duyet.md) | Gói nháp G1/G2, lỗi cài, phiếu duyệt | agent A | lược đồ manifest của 01 | 31/10 | **đã ghép** (ac63fae2, 27/10) |
 | [13](13-cham-a1-a2.md) | Chấm A1/A2 | agent A | 04, 12 | 02/11 | **đã ghép** (29e4be5c, 28/10); khớp D-02 18/18; bộ xuất căn dòng 95,8% |
-| [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | vòng 3 xong (ab3c7939, 28/10); Claude đang chạy bộ phá |
+| [14](14-oracle-a8.md) | Oracle A8 trên kho chốt G3 | agent B | 02, 08 | 02/11 | **đã ghép** (51c714dc, 29/10); bộ phá Claude 20/22 (2 hết áp dụng); cổng rút gọn 786 test |
 | [15](15-quy-loi-theo-khau.md) | Quy lỗi 7 bậc, xếp loại cạnh ngoài vàng | agent B | 10, 13 | 03/11 | **đã ghép** (69d9a335, 28/10); bộ phá Claude 20/20; xstk v68: 61 cạnh vàng, 45 đúng, lý do 4: 12, lý do 6: 4 |
 | [16](16-phieu-g5.md) | Phiếu G5 mù, câu đối chứng, precision hiệu chỉnh, rubric | agent A | 07, 09, 11 | 03/11 | **đã ghép** (208e8a70, 28/10); so cặp vòng tròn ba hệ; cặp ngẫu nhiên ngoài bao đóng; precision có cận dưới; hướng dẫn g5 còn nháp, chờ duyệt |
 | [17](17-bang-hinh-datasheet-allowlist.md) | Bảng, hình, datasheet, cổng allowlist | agent A | 05, 15, 16 | 04/11 | giao agent A (28/10), lời giao `tmp/claude-tools/prompt-cai-dg17.md` |
