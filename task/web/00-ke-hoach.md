@@ -124,7 +124,7 @@ còn đổi; nhóm web đã được báo.
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
-| [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
+| [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | **bỏ** theo chủ dự án 2026-10-29: "chỉ cần 1 src dựng trên máy rồi demo th, ko cần cái deploy w21"; bản demo chạy local qua W-26 |
 | [W-22](W-22-ban-figma.md) | bàn giao thiết kế web HTML/CSS/token | — | đạt có ghi chú mốc web đã kiểm, theo chủ dự án 24/10; bỏ Cloud Figma, tiếp hỗ trợ React và các màn theo vé tương ứng |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22/W-24 đã nhận; W-08/W-09/W-10 | f9705f42 có ảnh/decoded PNG/source hẹp đúng; lát 1 chưa nhận do D-R12-01 số đo React ghi sẵn; toàn vé mở, không Cloud |
 | [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | giữ mốc web đã nhận; D-R8-02 wiring bda1366b đạt, ghép local 1513ac7f; W-23 còn mở |
